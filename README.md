@@ -6,6 +6,23 @@
 - `io.github.nutria.nutria.controller`: Servlets responsáveis por receber requisições HTTP.
 - `src/main/webapp`: Páginas JSP (views) para interação com o usuário.
 
+# Configuração de Variáveis de Ambiente (.env)
+
+O projeto utiliza um arquivo `.env` para armazenar variáveis sensíveis, como configurações de banco de dados.  
+⚠️ **Nunca versionar o `.env` no repositório.**
+
+### Estrutura de `.env` que deve ser criada em 
+`src/main/resources`:
+
+```dotenv
+DB_URL=jdbc:mysql://host:port/nosso_banco
+DB_USER=nosso_usuario
+DB_PASSWORD=nossa_senha
+```
+⚠️ **Nunca versionar o `.env` no repositório.**
+
+
+
 # Padrão de Commits - Conventional Commits
 
 Este projeto adota o padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/) para mensagens de commit. Isso facilita a leitura do histórico de commits e futuras soluções.
