@@ -1,7 +1,7 @@
-package java.model;
+package io.github.nutria.nutria.model.entity;
 public class Usuario {
     // Atributos
-    private int id;
+    private long id;
     private String nomeCompleto;
     private String enderecoEmail;
     private String senha;
@@ -10,7 +10,21 @@ public class Usuario {
     private String foto; 
 
     // Métodos construtores;
-    public Usuario (int id, String nomeCompleto, String enderecoEmail, String senha, String telefone, String empresa, String foto){
+
+
+    public Usuario() {
+    }
+
+    public Usuario (String nomeCompleto, String enderecoEmail, String senha, String telefone, String empresa, String foto){
+        this.nomeCompleto = nomeCompleto;
+        this.enderecoEmail = enderecoEmail;
+        this.senha = senha;
+        this.telefone = telefone;
+        this.empresa = empresa;
+        this.foto = foto;
+    }
+
+    public Usuario (long id, String nomeCompleto, String enderecoEmail, String senha, String telefone, String empresa, String foto){
         this.id = id;
         this.nomeCompleto = nomeCompleto;
         this.enderecoEmail = enderecoEmail;
@@ -20,7 +34,7 @@ public class Usuario {
         this.foto = foto;
     }
 
-    public Usuario(int id, String nomeCompleto, String enderecoEmail, String senha, String telefone){
+    public Usuario(long id, String nomeCompleto, String enderecoEmail, String senha, String telefone){
         this.id = id;
         this.nomeCompleto = nomeCompleto;
         this.enderecoEmail = enderecoEmail;
@@ -29,7 +43,7 @@ public class Usuario {
     }
 
     // Métodos getters
-    public int getId(){
+    public long getId(){
         return id;
     }
 
