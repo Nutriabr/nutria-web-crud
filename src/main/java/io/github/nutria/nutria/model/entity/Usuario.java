@@ -10,8 +10,6 @@ public class Usuario {
     private String foto; 
 
     // Métodos construtores;
-
-
     public Usuario() {
     }
 

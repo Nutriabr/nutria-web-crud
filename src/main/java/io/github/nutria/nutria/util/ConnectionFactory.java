@@ -29,12 +29,12 @@ public class ConnectionFactory {
 
     // Método para testar a conexão com o banco de dados
     public void testConnection() {
-        try {
-            Connection con = connect();
+        try (Connection con = connect();) {
+
             System.out.println(con);
 
             // Fechando a conexão com o banco de dados
-            con.close();
+//            con.close();
         } catch (Exception e) {
             throw new RuntimeException("Ocorreu um erro na conexão com o Banco de dados: " + e.getMessage());
         }

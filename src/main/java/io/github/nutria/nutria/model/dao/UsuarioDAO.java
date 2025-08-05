@@ -7,14 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class UsuarioDAO {
+public class UsuarioDAO implements IUsuarioDAO {
     ConnectionFactory factory = new ConnectionFactory();
 
     // Validar se e-mail já está cadastrado
     public boolean emailUsed(String email) {
-        try {
-            Connection connection = factory.connect();
-
+        try(Connection connection = factory.connect()) {
             String sql = "SELECT COUNT(*) FROM usuario WHERE endereco_email = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, email);
@@ -24,6 +22,7 @@ public class UsuarioDAO {
                 // Se o resultado da função COUNT for maior que 0, significa que o e-mail já está cadastrado
                 return rs.getInt(1) > 0;
             }
+
         } catch (Exception e) {
             throw new RuntimeException("Erro ao validar o e-mail: " + e.getMessage());
         }
@@ -32,8 +31,7 @@ public class UsuarioDAO {
 
     // Cadastrar usuario
     public void insertUser(Usuario usuario) {
-        try {
-            Connection connect = factory.connect();
+        try (Connection connect = factory.connect()) {
 
             // Preparando a query de inserção no banco de dados
             String sql = "INSERT INTO usuario (nome_completo, endereco_email, senha, telefone, empresa, foto) " +
@@ -54,14 +52,12 @@ public class UsuarioDAO {
             }
 
             // Fechando o objeto
-            ps.close();
+//            ps.close();
 
-            // Encerrando a conexão com o banco
-            connect.close();
+//            // Encerrando a conexão com o banco
+//            connect.close();
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
     }
-
-
 }
