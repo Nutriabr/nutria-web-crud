@@ -1,4 +1,4 @@
-package io.github.nutria.nutria.model.dao;
+package main.java.io.github.nutria.nutria.model.dao;
 
 import io.github.nutria.nutria.model.entity.Usuario;
 

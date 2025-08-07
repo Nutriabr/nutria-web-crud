@@ -1,14 +1,18 @@
-package io.github.nutria.nutria.model.dao;
+package main.java.io.github.nutria.nutria.model.dao;
 
 import io.github.nutria.nutria.model.entity.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.PasswordHasher;
 
+import java.security.ProtectionDomain;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
-public class UsuarioDAO implements IUsuarioDAO {
+
+public class UsuarioDAO {
     ConnectionFactory factory = new ConnectionFactory();
 
     // Validar se e-mail já está cadastrado
@@ -61,5 +65,36 @@ public class UsuarioDAO implements IUsuarioDAO {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    //Método read() para listar todos os usuários do banco
+    public List<Usuario> read() {
+//        Criamos a lista dinâmica para armazenar os usuário
+        List<Usuario> usuarios = new ArrayList<>();
+
+//        Tenta fazer a conexão com o banco
+        try (Connection connect = factory.connect()) {
+//            Comando de fazer a consulta no banco
+            String sql = "SELECT * FROM usuario";
+//            Prepara a consulta para enviar ao banco
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+//            Enquanto o rs tiver usuários como resultado nós vamos criar um usuário e armazenar na lista
+            while (rs.next()) {
+                Usuario user = new Usuario();
+                user.setNomeCompleto(rs.getString("nomeCompleto"));
+                user.setEnderecoEmail(rs.getString("enderecoEmail"));
+                user.setSenha(rs.getString("senha"));
+                user.setTelefone(rs.getString("telefone"));
+                user.setEmpresa(rs.getString("empresa"));
+                user.setFoto(rs.getString("foto"));
+//                Adicionamos o usuário à lista
+                usuarios.add(user);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        return usuarios;
     }
 }
