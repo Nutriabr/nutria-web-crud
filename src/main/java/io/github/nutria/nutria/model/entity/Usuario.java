@@ -2,8 +2,8 @@ package io.github.nutria.nutria.model.entity;
 public class Usuario {
     // Atributos
     private long id;
-    private String nomeCompleto;
-    private String enderecoEmail;
+    private String nome;
+    private String email;
     private String senha;
     private String telefone;
     private String empresa;
@@ -13,29 +13,29 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario (String nomeCompleto, String enderecoEmail, String senha, String telefone, String empresa, String foto){
-        this.nomeCompleto = nomeCompleto;
-        this.enderecoEmail = enderecoEmail;
+    public Usuario (String nome, String email, String senha, String telefone, String empresa, String foto){
+        this.nome = nome;
+        this.email = email;
         this.senha = senha;
         this.telefone = telefone;
         this.empresa = empresa;
         this.foto = foto;
     }
 
-    public Usuario (long id, String nomeCompleto, String enderecoEmail, String senha, String telefone, String empresa, String foto){
+    public Usuario (long id, String nome, String email, String senha, String telefone, String empresa, String foto){
         this.id = id;
-        this.nomeCompleto = nomeCompleto;
-        this.enderecoEmail = enderecoEmail;
+        this.nome = nome;
+        this.email = email;
         this.senha = senha;
         this.telefone = telefone;
         this.empresa = empresa;
         this.foto = foto;
     }
 
-    public Usuario(long id, String nomeCompleto, String enderecoEmail, String senha, String telefone){
+    public Usuario(long id, String nome, String email, String senha, String telefone){
         this.id = id;
-        this.nomeCompleto = nomeCompleto;
-        this.enderecoEmail = enderecoEmail;
+        this.nome = nome;
+        this.email = email;
         this.senha = senha;
         this.telefone = telefone;
     }
@@ -45,12 +45,12 @@ public class Usuario {
         return id;
     }
 
-    public String getNomeCompleto(){
-        return nomeCompleto;
+    public String getNome(){
+        return nome;
     }
 
-    public String getEnderecoEmail(){
-        return enderecoEmail;
+    public String getEmail(){
+        return email;
     }
 
     public String getSenha(){
@@ -70,12 +70,12 @@ public class Usuario {
     }
 
     // Métodos setters
-    public void setNomeCompleto(String nomeCompleto){
-        this.nomeCompleto = nomeCompleto;
+    public void setNome(String nome){
+        this.nome = nome;
     }
 
-    public void setEnderecoEmail(String enderecoEmail){
-        this.enderecoEmail = enderecoEmail;
+    public void setEmail(String email){
+        this.email = email;
     }
 
     public void setSenha(String senha){

@@ -2,6 +2,7 @@ package io.github.nutria.nutria.model.dao;
 
 import io.github.nutria.nutria.model.entity.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
+import io.github.nutria.nutria.util.PasswordHasher;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,11 +37,12 @@ public class UsuarioDAO implements IUsuarioDAO {
             // Preparando a query de inserção no banco de dados
             String sql = "INSERT INTO usuario (nome_completo, endereco_email, senha, telefone, empresa, foto) " +
                     "VALUES (?, ?, ?, ?, ?, ?)";
+            String hashedPassword = PasswordHasher.hashPassword(usuario.getSenha());
 
             PreparedStatement ps = connect.prepareStatement(sql);
-            ps.setString(1, usuario.getNomeCompleto());
-            ps.setString(2, usuario.getEnderecoEmail());
-            ps.setString(3, usuario.getSenha());
+            ps.setString(1, usuario.getNome());
+            ps.setString(2, usuario.getEmail());
+            ps.setString(3, hashedPassword);
             ps.setString(4, usuario.getTelefone());
             ps.setString(5, usuario.getEmpresa());
             ps.setString(6, usuario.getFoto());
