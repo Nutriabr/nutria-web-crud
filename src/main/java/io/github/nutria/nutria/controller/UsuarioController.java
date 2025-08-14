@@ -7,12 +7,12 @@ import io.github.nutria.nutria.service.UsuarioService;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "usuarioController", urlPatterns = {"/usuarios", "/usuarios/inserir"})
-public class UsuarioController {
+@WebServlet(name = "usuarioController", urlPatterns = {"/usuarios", "/usuarios/inserir", "/usuarios/visualizar"})
+public class UsuarioController extends HttpServlet {
+    UsuarioService service = new UsuarioService();
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getServletPath();
-        UsuarioService service = new UsuarioService();
-
         if (path.equals("/usuarios/inserir")) {
             // Instanciando o objeto Usuario com os parâmetros recebidos da requisição
             Usuario usuario = new Usuario(
@@ -37,5 +37,14 @@ public class UsuarioController {
         }
         // Testando a conexão com o banco de dados
 //        factory.testConnection();
+    }
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String path = request.getServletPath();
+        if (path.equals("/usuarios") || path.equals("usuarios/visualizar")) {
+            PrintWriter out = response.getWriter();
+
+            out.write(service.readUser().toString());
+        }
     }
 }

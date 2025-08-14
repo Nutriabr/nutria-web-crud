@@ -1,23 +1,22 @@
-package main.java.io.github.nutria.nutria.model.dao;
+package io.github.nutria.nutria.model.dao;
 
 import io.github.nutria.nutria.model.entity.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
+import io.github.nutria.nutria.util.PasswordHasher;
 
-import java.security.ProtectionDomain;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 
-public class UsuarioDAO {
+public class UsuarioDAO implements IUsuarioDAO {
     ConnectionFactory factory = new ConnectionFactory();
 
     // Validar se e-mail já está cadastrado
     public boolean emailUsed(String email) {
         try(Connection connection = factory.connect()) {
-            String sql = "SELECT COUNT(*) FROM usuario WHERE endereco_email = ?";
+            String sql = "SELECT COUNT(*) FROM usuarios WHERE email = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, email);
 
@@ -38,13 +37,14 @@ public class UsuarioDAO {
         try (Connection connect = factory.connect()) {
 
             // Preparando a query de inserção no banco de dados
-            String sql = "INSERT INTO usuario (nome_completo, endereco_email, senha, telefone, empresa, foto) " +
+            String sql = "INSERT INTO usuarios (nome, email, senha, telefone, empresa, foto) " +
                     "VALUES (?, ?, ?, ?, ?, ?)";
+            String hashedPassword = PasswordHasher.hashPassword(usuario.getSenha());
 
             PreparedStatement ps = connect.prepareStatement(sql);
-            ps.setString(1, usuario.getNomeCompleto());
-            ps.setString(2, usuario.getEnderecoEmail());
-            ps.setString(3, usuario.getSenha());
+            ps.setString(1, usuario.getNome());
+            ps.setString(2, usuario.getEmail());
+            ps.setString(3, hashedPassword);
             ps.setString(4, usuario.getTelefone());
             ps.setString(5, usuario.getEmpresa());
             ps.setString(6, usuario.getFoto());
@@ -73,7 +73,7 @@ public class UsuarioDAO {
 //        Tenta fazer a conexão com o banco
         try (Connection connect = factory.connect()) {
 //            Comando de fazer a consulta no banco
-            String sql = "SELECT * FROM usuario";
+            String sql = "SELECT * FROM usuarios";
 //            Prepara a consulta para enviar ao banco
             PreparedStatement ps = connect.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -81,8 +81,8 @@ public class UsuarioDAO {
 //            Enquanto o rs tiver usuários como resultado nós vamos criar um usuário e armazenar na lista
             while (rs.next()) {
                 Usuario user = new Usuario();
-                user.setNomeCompleto(rs.getString("nomeCompleto"));
-                user.setEnderecoEmail(rs.getString("enderecoEmail"));
+                user.setNome(rs.getString("nome"));
+                user.setEmail(rs.getString("email"));
                 user.setSenha(rs.getString("senha"));
                 user.setTelefone(rs.getString("telefone"));
                 user.setEmpresa(rs.getString("empresa"));
