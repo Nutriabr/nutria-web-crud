@@ -3,6 +3,8 @@ package io.github.nutria.nutria.service;
 import io.github.nutria.nutria.model.dao.UsuarioDAO;
 import io.github.nutria.nutria.model.entity.Usuario;
 
+import java.util.List;
+
 public class UsuarioService {
 
     private final UsuarioDAO dao = new UsuarioDAO();
@@ -41,5 +43,10 @@ public class UsuarioService {
         // Inserindo o usuário no banco de dados
         dao.insertUser(usuario);
         return null;
+
+    }
+
+    public List<Usuario> readUser() {
+        return dao.read();
     }
 }
