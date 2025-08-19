@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IUsuarioDAO {
     boolean emailUsed(String email);
-    void insertUser(Usuario usuario);
+    void create(Usuario usuario);
     List<Usuario> read();
+    int deleteUserById(int id);
 }
