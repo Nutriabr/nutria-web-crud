@@ -1,14 +1,15 @@
+<%@ page contentType="text/html;charset=UTF-8"  language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="nutria-web-crud/src/main/webapp/assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 <main>
-    <img src= "nutria-web-crud/src/main/webapp/assets/img/Nutria.svg" alt="logo" class="logo-image">
+    <img src="../assets/img/Nutria.svg" alt="logo" class="logo-image">
     <section class="login-container">
         <h1>Bem vindo(a) de volta!</h1>
         <p>Insira suas credenciais para acessar sua conta</p>
