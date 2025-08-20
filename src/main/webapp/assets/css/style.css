@@ -5,6 +5,13 @@
     padding: 0;
     box-sizing: border-box;
 }
+.logo-image{
+    width: 350px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
 
 main{
     display: flex;
@@ -25,7 +32,7 @@ main{
     margin-bottom: 8px;
 }
 
-/* Subtítulo */
+
 .login-container p {
     font-family: 'Montserrat', sans-serif;
     font-size: 0.8rem;
@@ -55,7 +62,7 @@ main{
 #login-forget{
     font-family: 'Montserrat', sans-serif;
     font-size: small;
-    color: green;
+    color: #21B558;
     margin: 5px 0 10px;
     width: 80%;           
     text-align: left;    
@@ -64,7 +71,7 @@ main{
 
 .login-button{
     width: 80%;
-    background-color: #f97316;
+    background-color: #EE7026;
     color: white;
     border: none;
     border-radius: 6px;

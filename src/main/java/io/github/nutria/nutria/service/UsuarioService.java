@@ -1,6 +1,6 @@
 package io.github.nutria.nutria.service;
 
-import io.github.nutria.nutria.model.dao;
+import io.github.nutria.nutria.model.dao.UsuarioDAO;
 import io.github.nutria.nutria.model.entity.Usuario;
 
 import java.util.List;
