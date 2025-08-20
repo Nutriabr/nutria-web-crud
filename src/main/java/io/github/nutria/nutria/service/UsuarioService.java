@@ -41,12 +41,16 @@ public class UsuarioService {
         }
 
         // Inserindo o usuário no banco de dados
-        dao.insertUser(usuario);
+        dao.create(usuario);
         return null;
 
     }
 
     public List<Usuario> readUser() {
         return dao.read();
+    }
+
+    public boolean deleteUser(int id) {
+        return dao.deleteUserById(id) == 1;
     }
 }

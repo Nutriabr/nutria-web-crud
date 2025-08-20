@@ -7,6 +7,7 @@ import io.github.nutria.nutria.util.PasswordHasher;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 
@@ -33,7 +34,7 @@ public class UsuarioDAO implements IUsuarioDAO {
     }
 
     // Cadastrar usuario
-    public void insertUser(Usuario usuario) {
+    public void create(Usuario usuario) {
         try (Connection connect = factory.connect()) {
 
             // Preparando a query de inserção no banco de dados
@@ -50,10 +51,10 @@ public class UsuarioDAO implements IUsuarioDAO {
             ps.setString(6, usuario.getFoto());
 
             // Executando a query de inserção
-            int result = ps.executeUpdate();
-            if (result == 1) {
-                System.out.println("Usuário cadastrado com sucesso.");
-            }
+            ps.executeUpdate();
+//            if (result == 1) {
+//                System.out.println("Usuário cadastrado com sucesso.");
+//            }
 
             // Fechando o objeto
 //            ps.close();
@@ -81,6 +82,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 //            Enquanto o rs tiver usuários como resultado nós vamos criar um usuário e armazenar na lista
             while (rs.next()) {
                 Usuario user = new Usuario();
+                user.setId(rs.getLong("id"));
                 user.setNome(rs.getString("nome"));
                 user.setEmail(rs.getString("email"));
                 user.setSenha(rs.getString("senha"));
@@ -94,5 +96,19 @@ public class UsuarioDAO implements IUsuarioDAO {
             throw new RuntimeException(e.getMessage());
         }
         return usuarios;
+    }
+
+    public int deleteUserById(int id) {
+        try (Connection connect = factory.connect()) {
+            String sql = "DELETE FROM usuarios WHERE id = ?";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            return ps.executeUpdate();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

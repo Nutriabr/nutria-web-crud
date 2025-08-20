@@ -7,7 +7,7 @@ import io.github.nutria.nutria.service.UsuarioService;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "usuarioController", urlPatterns = {"/usuarios", "/usuarios/inserir", "/usuarios/visualizar"})
+@WebServlet(name = "usuarioController", urlPatterns = {"/usuarios", "/usuarios/inserir", "/usuarios/visualizar", "/usuarios/excluir"})
 public class UsuarioController extends HttpServlet {
     UsuarioService service = new UsuarioService();
 
@@ -32,8 +32,8 @@ public class UsuarioController extends HttpServlet {
             } else {
                 // Se não houver erro, retorna o status 201 (Created)
                 response.setStatus(HttpServletResponse.SC_CREATED);
+                response.getWriter().write(String.format("Usuário com email: %s cadastrado com sucesso!", usuario.getEmail()));
             }
-
         }
         // Testando a conexão com o banco de dados
 //        factory.testConnection();
@@ -41,10 +41,25 @@ public class UsuarioController extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getServletPath();
-        if (path.equals("/usuarios") || path.equals("usuarios/visualizar")) {
-            PrintWriter out = response.getWriter();
+        if (path.equals("/usuarios") || path.equals("/usuarios/visualizar")) {
+            response.getWriter().write(service.readUser().toString());
+        }
+    }
 
-            out.write(service.readUser().toString());
+    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String path = request.getServletPath();
+        if (path.equals("/usuarios/excluir")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            if (!(id <= 0)) {
+                boolean deleted = service.deleteUser(id);
+                if (deleted) {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().write(String.format("Usuário com ID: %s deletado com sucesso!", id));
+                } else {
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    response.getWriter().write(String.format("Usuário com ID: %s não existe ou não pode ser deletado!", id));
+                }
+            }
         }
     }
 }
