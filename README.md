@@ -53,7 +53,7 @@ O escopo indica a área afetada, por exemplo: `usuario`, `dao`, `service`, `cont
 
 ### Descrição
 
-Breve e no imperativo, explicando o que foi feito.
+Breve e no infinitivo, explicando o que foi feito.
 
 ## Exemplos
 

@@ -98,12 +98,12 @@ public class UsuarioDAO implements IUsuarioDAO {
         return usuarios;
     }
 
-    public int deleteUserById(int id) {
+    public int deleteUserById(long id) {
         try (Connection connect = factory.connect()) {
             String sql = "DELETE FROM usuarios WHERE id = ?";
 
             PreparedStatement ps = connect.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setLong(1, id);
 
             return ps.executeUpdate();
 

@@ -8,5 +8,5 @@ public interface IUsuarioDAO {
     boolean emailUsed(String email);
     void create(Usuario usuario);
     List<Usuario> read();
-    int deleteUserById(int id);
+    int deleteUserById(long id);
 }
