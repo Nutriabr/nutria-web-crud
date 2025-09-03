@@ -9,7 +9,7 @@ public class UsuarioService {
 
     private final UsuarioDAO dao = new UsuarioDAO();
 
-    public String insertUser(Usuario usuario) {
+    public String save(Usuario usuario) {
         // Inicializando os atributos do usuário
         String nome = usuario.getNome();
         String endereco_email = usuario.getEmail();
@@ -36,21 +36,21 @@ public class UsuarioService {
         }
 
         // Validando se o e-mail é válido
-        if (dao.emailUsed(endereco_email)) {
+        if (dao.findByEmailUsed(endereco_email)) {
             return "E-mail " + endereco_email + " já cadastrado no sistema.";
         }
 
         // Inserindo o usuário no banco de dados
-        dao.create(usuario);
+        dao.save(usuario);
         return null;
 
     }
 
-    public List<Usuario> readUser() {
-        return dao.read();
+    public List<Usuario> findAll() {
+        return dao.findAll();
     }
 
-    public boolean deleteUser(int id) {
+    public boolean deleteUserById(int id) {
         return dao.deleteUserById(id) == 1;
     }
 }

@@ -3,5 +3,5 @@ package io.github.nutria.nutria.model.dao;
 import io.github.nutria.nutria.model.entity.Admin;
 
 public interface IAdminDAO {
-    void insertAdmin(Admin admin);
+    void save(Admin admin);
 }

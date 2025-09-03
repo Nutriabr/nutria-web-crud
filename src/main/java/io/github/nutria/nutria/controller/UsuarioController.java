@@ -24,7 +24,7 @@ public class UsuarioController extends HttpServlet {
                     request.getParameter("foto")
             );
 
-            String error = service.insertUser(usuario);
+            String error = service.save(usuario);
 
             if (error != null) {
                 // Se houver erro, retorna o erro com o código 400
@@ -42,7 +42,7 @@ public class UsuarioController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getServletPath();
         if (path.equals("/usuarios") || path.equals("/usuarios/visualizar")) {
-            response.getWriter().write(service.readUser().toString());
+            response.getWriter().write(service.findAll().toString());
         }
     }
 
@@ -51,7 +51,7 @@ public class UsuarioController extends HttpServlet {
         if (path.equals("/usuarios/excluir")) {
             int id = Integer.parseInt(request.getParameter("id"));
             if (!(id <= 0)) {
-                boolean deleted = service.deleteUser(id);
+                boolean deleted = service.deleteUserById(id);
                 if (deleted) {
                     response.setStatus(HttpServletResponse.SC_OK);
                     response.getWriter().write(String.format("Usuário com ID: %s deletado com sucesso!", id));

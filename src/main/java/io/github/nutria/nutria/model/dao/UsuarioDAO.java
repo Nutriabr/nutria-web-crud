@@ -11,38 +11,49 @@ import java.sql.SQLException;
 import java.util.*;
 
 
-public class UsuarioDAO implements IUsuarioDAO {
-    ConnectionFactory factory = new ConnectionFactory();
+public class UsuarioDAO implements IUsuarioDAO, AutoCloseable {
+     /**Classe para transferência de dados do Usuario no banco de dados
+     * @author Mariana Marrão, Luis Henrique e Enzo Mota
+     * @version 1.05
+     */
+
+     // Instanciação do
+    private static Connection connect = ConnectionFactory.connect();
 
     // Validar se e-mail já está cadastrado
-    public boolean emailUsed(String email) {
-        try(Connection connection = factory.connect()) {
-            String sql = "SELECT COUNT(*) FROM usuarios WHERE email = ?";
-            PreparedStatement ps = connection.prepareStatement(sql);
+    /**
+     * Método para validar se o email já está cadastrado no Banco de Dados
+     * @param email
+     * @return boolean
+     * */
+    public boolean findByEmailUsed(String email) {
+        String sql = "SELECT COUNT(*) FROM usuario WHERE email = ?";
+
+        try(PreparedStatement ps = connect.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
+
             ps.setString(1, email);
 
-            ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 // Se o resultado da função COUNT for maior que 0, significa que o e-mail já está cadastrado
                 return rs.getInt(1) > 0;
             }
-
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao validar o e-mail: " + e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }
 
     // Cadastrar usuario
-    public void create(Usuario usuario) {
-        try (Connection connect = factory.connect()) {
+    public void save(Usuario usuario) {
+        // Preparando a query de inserção no banco de dados
+        String sql = "INSERT INTO usuario (nome, email, senha, telefone, empresa, foto) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
 
-            // Preparando a query de inserção no banco de dados
-            String sql = "INSERT INTO usuarios (nome, email, senha, telefone, empresa, foto) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+
             String hashedPassword = PasswordHasher.hashPassword(usuario.getSenha());
 
-            PreparedStatement ps = connect.prepareStatement(sql);
             ps.setString(1, usuario.getNome());
             ps.setString(2, usuario.getEmail());
             ps.setString(3, hashedPassword);
@@ -52,32 +63,25 @@ public class UsuarioDAO implements IUsuarioDAO {
 
             // Executando a query de inserção
             ps.executeUpdate();
-//            if (result == 1) {
-//                System.out.println("Usuário cadastrado com sucesso.");
-//            }
 
-            // Fechando o objeto
-//            ps.close();
-
-//            // Encerrando a conexão com o banco
-//            connect.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     //Método read() para listar todos os usuários do banco
-    public List<Usuario> read() {
+    public List<Usuario> findAll() {
+        // Comando de fazer a consulta no banco
+        String sql = "SELECT * FROM usuario";
+
 //        Criamos a lista dinâmica para armazenar os usuário
-        List<Usuario> usuarios = new ArrayList<>();
+        List<Usuario> usuarioArrayList = new ArrayList<Usuario>();
 
 //        Tenta fazer a conexão com o banco
-        try (Connection connect = factory.connect()) {
-//            Comando de fazer a consulta no banco
-            String sql = "SELECT * FROM usuarios";
-//            Prepara a consulta para enviar ao banco
-            PreparedStatement ps = connect.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+        //            Prepara a consulta para enviar ao banco
+        try (PreparedStatement ps = connect.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()
+        ) {
 
 //            Enquanto o rs tiver usuários como resultado nós vamos criar um usuário e armazenar na lista
             while (rs.next()) {
@@ -89,26 +93,38 @@ public class UsuarioDAO implements IUsuarioDAO {
                 user.setTelefone(rs.getString("telefone"));
                 user.setEmpresa(rs.getString("empresa"));
                 user.setFoto(rs.getString("foto"));
+
 //                Adicionamos o usuário à lista
-                usuarios.add(user);
+                usuarioArrayList.add(user);
+
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return usuarios;
+        return usuarioArrayList;
     }
 
     public int deleteUserById(long id) {
-        try (Connection connect = factory.connect()) {
-            String sql = "DELETE FROM usuarios WHERE id = ?";
+        String sql = "DELETE FROM usuario WHERE id = ?";
 
-            PreparedStatement ps = connect.prepareStatement(sql);
+        try (PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setLong(1, id);
 
             return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+    @Override
+    public void close() throws Exception {
+        try {
+            if (connect == null && !connect.isClosed()) {
+                connect.close();
+            };
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

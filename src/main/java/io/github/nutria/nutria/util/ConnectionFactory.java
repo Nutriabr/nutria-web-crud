@@ -7,10 +7,10 @@ import java.sql.DriverManager;
 
 public class ConnectionFactory {
     // Carregando as variáveis de ambiente do arquivo .env
-    Dotenv dotenv = Dotenv.configure().load();
+    static Dotenv dotenv = Dotenv.configure().load();
 
     // Método para estabelecer a conexão com o banco de dados
-    public Connection connect() {
+    public static Connection connect() {
         Connection con = null;
         try {
             final String DRIVER = "org.postgresql.Driver";
@@ -28,7 +28,7 @@ public class ConnectionFactory {
     }
 
     // Método para testar a conexão com o banco de dados
-    public void testConnection() {
+    private void testConnection() {
         try (Connection con = connect();) {
 
             System.out.println(con);
