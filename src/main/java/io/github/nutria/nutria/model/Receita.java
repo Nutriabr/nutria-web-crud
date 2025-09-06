@@ -6,6 +6,29 @@ public class Receita {
     private String porcao;
     private long idProduto;
 
+    // Métodos construtores
+    public Receita(){
+
+    }
+
+    public Receita(long id, String nome, String porcao, long idProduto){
+        this.id = id;
+        this.nome = nome;
+        this.porcao = porcao;
+        this.idProduto = idProduto;
+    }
+
+    public Receita(String nome, String porcao, long idProduto){
+        this.nome = nome;
+        this.porcao = porcao;
+        this.idProduto = idProduto;
+    }
+
+    public Receita(String porcao, long idProduto){
+        this.porcao = porcao;
+        this.idProduto = idProduto;
+    }
+
     // Métodos getters
 
     public long getId() {

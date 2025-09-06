@@ -68,10 +68,42 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, AutoCloseable {
 
 
     @Override
-    public boolean insert(Receita entity) {
-        return false;
-    }
+    /**
+     * Método para inserir uma nova receita no banco de dados
+     * @param receita Objeto Receita a ser inserido
+     * @return boolean Retorna true se a receita foi inserida com sucesso, false caso contrário
+     * @author marianamarrao
+     * @throws RuntimeException Em caso de erro na operação SQL
+     */
+    public boolean insert(Receita receita) {
+        // Query de inserção no banco de dados
+        String sql = "INSERT INTO receitas (nome, porcao, id_produto) VALUES (?, ?, ?)";
 
+        // 1. Usar try-with-resources para garantir que o PreparedStatement seja fechado
+        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+
+            // 2. Setar os parâmetros da query com os valores do objeto Receita
+            ps.setString(1, receita.getNome());
+            ps.setString(2, receita.getPorcao());
+            ps.setLong(3, receita.getIdProduto());
+
+            // 3. Executando o query de inserção
+            int result = ps.executeUpdate();
+
+            // 4. Verificar se a inserção foi realizada com sucesso
+            if (result > 0) {
+                System.out.println("Receita cadastrada com sucesso.");
+                return true;
+            } else {
+                System.out.println("Falha ao cadastrar a receita.");
+                return false;
+            }
+
+        } catch (SQLException e) {
+            // 5. Tratar exceções SQL lançando uma RuntimeException
+            throw new RuntimeException("Erro ao cadastrar receita: " + e.getMessage());
+        }
+    }
 
     /** Método para listar todas as receitas no banco de dados
     * @return List<Receita> Retorna uma lista de objetos Receita
@@ -98,7 +130,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, AutoCloseable {
                 receita.setId(rs.getLong("id"));
                 receita.setNome(rs.getString("nome"));
                 receita.setPorcao(rs.getString("porcao"));
-                receita.setIdProduto(rs.getLong("telefone"));
+                receita.setIdProduto(rs.getLong("id_produto"));
 
                 // 4. Adicionar o objeto Receita à lista
                 receitas.add(receita);
