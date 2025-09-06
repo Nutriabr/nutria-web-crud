@@ -1,4 +1,4 @@
-package io.github.nutria.nutria.model.entity;
+package io.github.nutria.nutria.model;
 public class Receita {
     // Atributos
     private long id;
