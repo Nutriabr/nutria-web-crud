@@ -2,7 +2,7 @@ package io.github.nutria.nutria.controller;
 
 import java.io.*;
 
-import io.github.nutria.nutria.model.entity.Usuario;
+import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.service.UsuarioService;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -24,7 +24,7 @@ public class UsuarioController extends HttpServlet {
                     request.getParameter("foto")
             );
 
-            String error = service.save(usuario);
+            String error = service.insert(usuario);
 
             if (error != null) {
                 // Se houver erro, retorna o erro com o código 400
