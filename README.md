@@ -1,7 +1,7 @@
 # Estrutura de Pacotes utilizada
 
-- `io.github.nutria.nutria.model.entity`: Entidades que representam as tabelas do banco de dados.
-- `io.github.nutria.nutria.model.dao`: Objetos de acesso a dados (DAO) responsáveis pelo CRUD.
+- `io.github.nutria.nutria.model`: Entidades que representam as tabelas do banco de dados.
+- `io.github.nutria.nutria.dao`: Objetos de acesso a dados (DAO) responsáveis pelo CRUD.
 - `io.github.nutria.nutria.service`: Camada de serviço, contém as regras de negócio e validações.
 - `io.github.nutria.nutria.controller`: Servlets responsáveis por receber requisições HTTP.
 - `src/main/webapp`: Páginas JSP (views) para interação com o usuário.
