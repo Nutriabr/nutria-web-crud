@@ -1,7 +1,7 @@
 package io.github.nutria.nutria.service;
 
-import io.github.nutria.nutria.model.dao.TabelaNutricionalDAO;
-import io.github.nutria.nutria.model.entity.TabelaNutricional;
+import io.github.nutria.nutria.dao.TabelaNutricionalDAO;
+import io.github.nutria.nutria.model.TabelaNutricional;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.sql.SQLException;
@@ -58,10 +58,8 @@ public class TabelaNutricionalService {
                             gorduras_saturadas_g, fibra_alimentar_g, sodio_mg, colesterol_mg, vitamina_a_mcg,
                             vitamina_c_mg, vitamina_d_mcg, calcio_mg, ferro_mg, potassio_mg);
             // Inserindo o usuário no banco de dados
-            dao.save(tabela);
+            dao.insert(tabela);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         } catch (NumberFormatException npe) {
             npe.printStackTrace();
         }
