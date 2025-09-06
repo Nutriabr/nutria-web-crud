@@ -1,8 +1,9 @@
-package io.github.nutria.nutria.model.dao;
+package io.github.nutria.nutria.dao;
 
-import io.github.nutria.nutria.model.entity.TabelaNutricional;
+import io.github.nutria.nutria.model.TabelaNutricional;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
+// Importações necessárias para operações com JDBC e manipulação de listas
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,14 +11,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabelaNutricionalDAO implements ITabelaNutricionalDAO, AutoCloseable {
+public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>, AutoCloseable {
 //    ConnectionFactory factory = new ConnectionFactory();
     private final static Connection connect = ConnectionFactory.connect();
 
     public TabelaNutricionalDAO() {}
 
     // Cadastrar usuario
-    public void save(TabelaNutricional tabelaNutricional) throws SQLException {
+    public boolean insert(TabelaNutricional tabelaNutricional) {
         // Preparando a query de inserção no banco de dados
         String sql = "INSERT INTO tabela_nutricional (valor_energetico_kcal, carboidratos_g, acucares_totais_g, acucares_adicionados_g, proteinas_g, gorduras_totais_g, gorduras_saturadas_g, fibra_alimentar_g, sodio_mg, colesterol_mg, vitamina_a_mcg, vitamina_c_mg, vitamina_d_mcg, calcio_mg, ferro_mg, potassio_mg) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         try (PreparedStatement ps = connect.prepareStatement(sql)) {
@@ -45,6 +46,7 @@ public class TabelaNutricionalDAO implements ITabelaNutricionalDAO, AutoCloseabl
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override
@@ -86,16 +88,16 @@ public class TabelaNutricionalDAO implements ITabelaNutricionalDAO, AutoCloseabl
     }
 
     @Override
-    public int deleteTabelaNutricionalById(long id) throws SQLException {
+    public boolean deleteById(Long id) throws SQLException {
         String sql = "DELETE FROM tabela_nutricional WHERE id = ?";
         try (PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setLong(1, id);
 
-            return ps.executeUpdate();
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        return false;
     }
 
     @Override
