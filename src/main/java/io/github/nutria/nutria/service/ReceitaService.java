@@ -28,7 +28,8 @@ public class ReceitaService {
     }
 
     public List<Receita> findAll(){
-        return dao.findAll();
+        int page = 1;
+        return dao.findAll(page);
     }
 
     public boolean deleteById(long id){

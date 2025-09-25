@@ -55,10 +55,18 @@ public class UsuarioService {
 
     // 2. Método para listar todos os usuários
     public List<Usuario> findAll() {
-        return dao.findAll();
+        int page = 1;
+        return dao.findAll(page);
     }
 
-    // 3. Método para deletar usuário por ID e retornar boolean com sucesso ou falha
+
+    // 3. Método para atualizar um usuário específico
+    public boolean update(Long id, String nome, String email, String senha, String telefone, String empresa, String foto) {
+        return dao.update(id, nome, email, senha, telefone, empresa, foto);
+    }
+
+
+    // 4. Método para deletar usuário por ID e retornar boolean com sucesso ou falha
     public boolean deleteUserById(long id) {
         return dao.deleteById(id);
     }

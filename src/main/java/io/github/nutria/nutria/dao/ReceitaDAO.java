@@ -1,6 +1,7 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.model.Receita;
+import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 // Importações necessárias para operações com JDBC e manipulação de listas
@@ -111,37 +112,77 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, AutoCloseable {
     * @throws SQLException Lança uma exceção SQL em caso de erro na consulta
     * */
     @Override
-    public List<Receita> findAll() {
-        // Lista para armazenar os objetos Receita retornados do banco de dados
-        List<Receita> receitas = new ArrayList<>();
+    public List<Receita> findAll(int page) {
+        // 1. Setar em qual página inicia o crud de receitas que será = 1 // O limite de receitas por páginas do .jsp // A partir de qual registro começarão os registros da próxima página
+        int limite = 4;
+        int offset = (page - 1) * limite;
 
-        // Query SQL para selecionar todas as receitas
-        String sql = "SELECT * FROM receitas";
+        // 2. Inicializar variável com a consulta SQL
+        String sql = "SELECT * FROM receitas LIMIT ? OFFSET ?";
 
-        // 1. Usar try-with-resources para garantir que as conexões sejam fechadas
+        // 3. Instanciar uma lista para armazenar as receitas retornados da consulta
+        List<Receita> receitasArrayList = new ArrayList<Receita>();
+        
+        // 4. Usar try-with-resources para garantir que as conexões sejam fechadas
         try (PreparedStatement ps = connect.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
-            // 2. Iterar sobre o ResultSet para criar objetos Receita
+            // 5. Iterar sobre o ResultSet para criar objetos Receita
             while (rs.next()) {
                 Receita receita = new Receita();
 
-                // 3. Preencher os atributos do objeto Receita com os dados do ResultSet
+                // 6. Preencher os atributos do objeto Receita com os dados do ResultSet
                 receita.setId(rs.getLong("id"));
                 receita.setNome(rs.getString("nome"));
                 receita.setPorcao(rs.getString("porcao"));
-                receita.setIdProduto(rs.getLong("id_produto"));
+                receita.setIdProduto(rs.getLong("idProduto"));
 
-                // 4. Adicionar o objeto Receita à lista
-                receitas.add(receita);
+                // 7. Adicionar o objeto Receita à lista
+                receitasArrayList.add(receita);
             }
         } catch (SQLException e) {
-            // 4. Tratar exceções SQL
+            // 8. Tratar exceções SQL
             e.printStackTrace();
         }
-        // 5. Retornar a lista de receitas
-        return receitas;
+        // 9. Retornar a lista de receitas
+        return receitasArrayList;
     }
+
+    /**
+     * Método para contar todos os usuários do Banco de Dados
+     * Esse método será utilizado para mostrar a quantidade de usuários no banco antes de mostrar a tabela.
+     * E como o método seguinte usará LIMIT E OFFSET não terá como guardar o total.
+     * @return inteiro com a quantidade de registros na tabela
+     * @author enzomota
+     * @return ArrayList Retorna um inteiro com o total de usuarios registrados no banco de dados
+     * */
+    public int countAll() {
+        // 1. Inicializar a variavel responsável por armazenar a quantidade de receitas
+        int totalReceitas = 0;
+
+        // 2. Inicializar a variavel responsável por armazenar a instrução sql
+        String sql = "SELECT COUNT(*) FROM receitas";
+
+        // 3. Usar try-with-resources para garantir que as conexões sejam fechadas
+        try (Connection connection = ConnectionFactory.connect()) {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            /* 4. Enquanto o ResultSet tiver receitas como resultado
+             * é incrementado +1 no totalReceitas
+             * */
+            while (rs.next()) {
+                // 5. É incrementado +1 no totalReceitas
+                totalReceitas++;
+            }
+        } catch (SQLException e) {
+            // 6. Tratar exceções SQL
+            e.printStackTrace();
+        }
+        return totalReceitas;
+    }
+
 
     /** Método para deletar uma receita pelo ID
      * @param id ID da receita a ser deletada

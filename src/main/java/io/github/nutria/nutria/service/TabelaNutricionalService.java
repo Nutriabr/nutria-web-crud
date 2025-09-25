@@ -66,6 +66,7 @@ public class TabelaNutricionalService {
     }
 
     public List<TabelaNutricional> findAll() {
-        return dao.findAll();
+        int page = 1;
+        return dao.findAll(page);
     }
 }

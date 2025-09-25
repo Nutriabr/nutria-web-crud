@@ -1,0 +1,618 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;700&display=swap");
+
+/*RECOMEÇANDO O CSS*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    background-color: #ffffff;
+        font-family: "Inter", sans-serif;
+        display: flex;
+        color: #000;
+}
+a {
+    text-decoration: none;
+}
+
+ul li {
+    list-style: none;
+}
+
+/* ASIDE */
+#sidebar {
+    background-color: #f2f2f2;
+    width: 15%;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+}
+
+#logo {
+    width: 50%;
+    max-width: 100%;
+    margin-top: 2.5rem;
+}
+
+#user {
+    display: flex;
+    margin-top: 3.5rem;
+    gap: 5px;
+    align-items: center;
+}
+
+#user img {
+    width: 40%;
+    max-width: 100%;
+}
+
+hr {
+    background: #FFFFFF;
+    width: 100%;
+    margin-top: 1.2rem;
+}
+
+#nav-menu {
+    margin-top: 4rem;
+}
+
+ul li {
+    width: 120%;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1em;
+}
+
+nav ul li a {
+    color: black;
+}
+
+#users {
+    background-color: #EE7026;
+    text-decoration-color: #ffffff;
+}
+
+/*MAIN*/
+
+
+.users-counter {
+    border: 1px solid #E6E6E6;
+}
+
+
+/** {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+/*body {*/
+/*    background-color: #ffffff;*/
+/*    font-family: "Inter", sans-serif;*/
+/*    display: flex;*/
+/*    color: #000;*/
+/*}*/
+
+/*!* Aside e Menu hamburguer *!*/
+
+/*!* Menu hambúrguer *!*/
+/*.hamburguer {*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.hamburguer span {*/
+/*    display: block;*/
+/*    width: 30px;*/
+/*    height: 3px;*/
+/*    background-color: #000;*/
+/*    margin: 6px 0;*/
+/*    transition: 0.4s;*/
+/*}*/
+
+/*!* Aside geral *!*/
+
+/*aside {*/
+/*    background-color: #f2f2f2;*/
+/*    display: flex;*/
+/*    position: fixed;*/
+/*    flex-direction: column;*/
+/*    width: 15%;*/
+/*    height: 100%;*/
+/*}*/
+
+/*!* Aside logo *!*/
+/*aside .logo {*/
+/*    width: 100px;*/
+/*    margin: 0 auto;*/
+/*    margin-top: 75px;*/
+/*}*/
+
+/*!* Aside perfil *!*/
+
+/*aside .user {*/
+/*    display: inline-flex;*/
+/*    gap: 10px;*/
+/*    margin-top: 40px;*/
+/*    align-items: center;*/
+/*    padding: 20px;*/
+/*}*/
+
+/*.user img {*/
+/*    width: 40px;*/
+/*}*/
+
+/*!* Aside menu de navegação *!*/
+/*.nav-menu ul {*/
+/*    display: inline-flex;*/
+/*    flex-direction: column;*/
+/*    width: 85%;*/
+/*    list-style: none;*/
+/*    margin-top: 40px;*/
+/*    padding: 10px;*/
+/*}*/
+
+/*.nav-menu ul .home {*/
+/*    !* Menu de navegação  --> botão de inicio *!*/
+/*    padding: 7px;*/
+/*    margin-top: 20px;*/
+/*    border-radius: 3px;*/
+/*    font-size: 12px;*/
+/*    margin-left: 7px;*/
+/*}*/
+
+/*.nav-menu ul .home img {*/
+/*    width: 15px;*/
+/*}*/
+
+/*.nav-menu ul .home a {*/
+/*    color: #000;*/
+/*    text-decoration: none;*/
+/*    margin-left: 8px;*/
+/*}*/
+
+/*.nav-menu ul .users {*/
+/*    !* Menu de navegação --> botão de usuários *!*/
+/*    background-color: #ee7026;*/
+/*    padding: 7px;*/
+/*    margin-top: 20px;*/
+/*    border-radius: 3px;*/
+/*    font-size: 12px;*/
+/*}*/
+
+/*.nav-menu ul .users img {*/
+/*    width: 15px;*/
+/*}*/
+
+/*.nav-menu ul .users a {*/
+/*    color: #f3f3f3;*/
+/*    text-decoration: none;*/
+/*    margin-left: 8px;*/
+/*}*/
+
+/*.logout {*/
+/*    !* Menu de navegação --> botão de encerrar sessão *!*/
+/*    align-self: center;*/
+/*    margin-top: 470px;*/
+/*}*/
+
+/*.logout a {*/
+/*    color: #000;*/
+/*    text-decoration: none;*/
+/*    font-size: 12px;*/
+/*}*/
+
+/*.logout img {*/
+/*    width: 15px;*/
+/*}*/
+
+/*!* Main *!*/
+
+/*main {*/
+/*    width: 100%;*/
+/*    padding: 20px;*/
+/*    margin-left: 20%;*/
+/*}*/
+
+/*main h1,*/
+/*.users-count {*/
+/*    color: #6c6c6c;*/
+/*}*/
+
+/*main .hero-title p,*/
+/*.users-total {*/
+/*    color: #333333;*/
+/*}*/
+
+/*!* Main --> ícones de notificações e perfil *!*/
+/*.main-icons {*/
+/*    display: flex;*/
+/*    justify-content: flex-end;*/
+/*    gap: 15px;*/
+/*    margin-bottom: 25px;*/
+/*    border-bottom: #f2f2f2 solid 3px;*/
+/*}*/
+
+/*.main-icons img {*/
+/*    width: 3%;*/
+/*}*/
+
+/*!* Main --> conteúdo principal *!*/
+/*.hero-content {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    gap: 10px;*/
+/*}*/
+
+/*.hero-title {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    margin-left: 60px;*/
+/*}*/
+
+/*.hero-title h1 {*/
+/*    font-size: 27px;*/
+/*}*/
+
+/*.hero-title p {*/
+/*    font-size: 15px;*/
+/*    color: #333333;*/
+/*}*/
+
+/*.users-counter {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    margin-top: 5px;*/
+/*    margin-left: 80px;*/
+/*}*/
+
+/*.users-total {*/
+/*    margin-top: 12px;*/
+/*}*/
+
+/*!* Pesquisa por usuários *!*/
+
+/*.search-user {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*}*/
+
+/*.search-elements {*/
+/*    display: inline-flex;*/
+/*    justify-content: flex-end;*/
+/*    gap: 20px;*/
+/*    width: 80%;*/
+/*}*/
+
+/*.search-bar {*/
+/*    background-color: #f2f2f2;*/
+/*    border-radius: 3px;*/
+/*    padding: 12px 7px;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    gap: 10px;*/
+/*}*/
+
+/*.search-bar img {*/
+/*    width: 12px;*/
+/*}*/
+
+/*.search-bar input {*/
+/*    background-color: transparent;*/
+/*    border: none;*/
+/*    outline: none;*/
+/*}*/
+
+/*!* Botão de adicionar usuários *!*/
+/*.add-user-btn {*/
+/*    background-color: #ee7026;*/
+/*    color: white;*/
+/*    border-radius: 3px;*/
+/*    padding: 7px 12px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.popup-container {*/
+/*    display: none;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    background-color: rgba(0, 0, 0, 0.5);*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    z-index: 999;*/
+/*}*/
+
+/*#addUser-popup:checked~.popup-container {*/
+/*    display: flex;*/
+/*}*/
+
+/*!* Estilo do conteúdo do popup *!*/
+/*.newUser-popup {*/
+/*    background: white;*/
+/*    padding: 30px;*/
+/*    border-radius: 15px;*/
+/*    max-width: 600px;*/
+/*    height: 620px;*/
+/*    width: 100%;*/
+/*}*/
+
+/*.newUser-popup h1 {*/
+/*    color: #6c6c6c;*/
+/*    font-size: 20px;*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+/*.newUser-popup form {*/
+/*    display: flex;*/
+/*    justify-content: end;*/
+/*    flex-direction: column;*/
+/*}*/
+
+/*.newUser-popup form div {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    margin-top: 15px;*/
+/*    gap: 8px;*/
+/*}*/
+
+/*.newUser-popup form label {*/
+/*    font-weight: 500;*/
+/*    color: #6c6c6c;*/
+/*}*/
+
+/*.newUser-popup form input {*/
+/*    padding: 10px;*/
+/*    outline: none;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    width: 100%;*/
+/*    background-color: #f2f2f2;*/
+/*    border-radius: 3px;*/
+/*    gap: 10px;*/
+/*}*/
+
+/*!* Botão adicionar *!*/
+/*.newUser-popup form .submit-btn {*/
+/*    background-color: #ee7026;*/
+/*    color: white;*/
+/*    width: 200px;*/
+/*    padding: 9px 12px;*/
+/*    border: none;*/
+/*    border-radius: 3px;*/
+/*    cursor: pointer;*/
+/*    margin-top: 20px;*/
+/*    align-self: flex-end;*/
+/*}*/
+
+/*!* Tabela *!*/
+
+/*table {*/
+/*    width: 87.5%;*/
+/*    margin-left: 40px;*/
+/*}*/
+
+/*table .user-photo img {*/
+/*    width: 70px;*/
+/*}*/
+
+/*table th {*/
+/*    background-color: #fff;*/
+/*    color: #333333;*/
+/*    padding: 10px;*/
+/*}*/
+
+/*table tr {*/
+/*    background-color: #f2f2f2;*/
+/*    color: #333333;*/
+/*}*/
+
+/*table td {*/
+/*    width: 350px;*/
+/*    padding: 10px;*/
+/*    text-align: center;*/
+/*}*/
+
+/*!* Botão de editar usuários *!*/
+/*!* Botão de editar usuários *!*/
+/*.edit-user-btn {*/
+/*    color: white;*/
+/*    border-radius: 3px;*/
+/*    padding: 7px 12px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.popupEdit-container {*/
+/*    display: none;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    background-color: rgba(0, 0, 0, 0.5);*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100vw;*/
+/*    height: 100vh;*/
+/*    z-index: 999;*/
+/*}*/
+
+/*#editUser-popup:checked~.popupEdit-container {*/
+/*    display: flex;*/
+/*}*/
+
+/*!* Estilo do conteúdo do popup *!*/
+/*.editUser-popup {*/
+/*    background: white;*/
+/*    padding: 30px;*/
+/*    border-radius: 15px;*/
+/*    max-width: 600px;*/
+/*    height: 620px;*/
+/*    width: 100%;*/
+/*}*/
+
+/*.editUser-popup h1 {*/
+/*    color: #6c6c6c;*/
+/*    font-size: 20px;*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+/*.editUser-popup form {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+
+/*.editUser-popup form div {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    margin-top: 15px;*/
+/*    gap: 8px;*/
+/*}*/
+
+/*.editUser-popup form label {*/
+/*    font-weight: 500;*/
+/*    color: #6c6c6c;*/
+/*    text-align: left;*/
+/*}*/
+
+/*.editUser-popup form input {*/
+/*    padding: 10px;*/
+/*    outline: none;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    width: 100%;*/
+/*    background-color: #f2f2f2;*/
+/*    border-radius: 3px;*/
+/*    gap: 10px;*/
+/*}*/
+
+/*!* Botão atualizar *!*/
+/*.editUser-popup form .submit-btn {*/
+/*    background-color: #ee7026;*/
+/*    color: white;*/
+/*    width: 200px;*/
+/*    padding: 9px 12px;*/
+/*    border: none;*/
+/*    border-radius: 3px;*/
+/*    cursor: pointer;*/
+/*    margin-top: 20px;*/
+/*    align-self: flex-end;*/
+/*}*/
+
+/*!* Botão de deletar usuários *!*/
+/*!* Botão de deletar usuários *!*/
+/*.popupDelete-container {*/
+/*    display: none;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    background-color: rgba(0, 0, 0, 0.5);*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100vw;*/
+/*    height: 100vh;*/
+/*    z-index: 999;*/
+/*}*/
+
+/*#deleteUser-popup:checked~.popupDelete-container {*/
+/*    display: flex;*/
+/*}*/
+
+/*!* Estilo do conteúdo do popup *!*/
+/*.deleteUser-popup {*/
+/*    background: white;*/
+/*    padding: 30px;*/
+/*    border-radius: 15px;*/
+/*    width: 473px;*/
+/*    height: 294px;*/
+/*}*/
+
+/*.deleteUser-popup {*/
+/*    background: white;*/
+/*}*/
+
+/*.deleteUser-popup h1 {*/
+/*    color: #6c6c6c;*/
+/*    font-size: 20px;*/
+/*    margin-bottom: 20px;*/
+/*    margin-top: 40px;*/
+/*}*/
+
+/*.deleteUser-popup p {*/
+/*    color: #333333;*/
+/*    font-size: 14px;*/
+/*    margin-bottom: 30px;*/
+/*}*/
+
+/*!* Botão adicionar *!*/
+/*.deleteUser-popup .cancelDelete-user-btn {*/
+/*    background-color: #c1c1c1;*/
+/*    color: #fff;*/
+/*    border: none;*/
+/*    border-radius: 3px;*/
+/*    cursor: pointer;*/
+/*    padding: 9px 12px;*/
+/*}*/
+
+/*!* Botão cancelar *!*/
+/*.deleteUser-popup .delete-user-btn {*/
+/*    background-color: #ee7026;*/
+/*    color: white;*/
+/*    border: none;*/
+/*    border-radius: 3px;*/
+/*    cursor: pointer;*/
+/*    padding: 9px 18px;*/
+/*    margin-left: 35px;*/
+/*}*/
+
+/*.delete-user-btn {*/
+/*    color: white;*/
+/*    border-radius: 3px;*/
+/*    padding: 7px 12px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*!* Outra seção *!*/
+/*!* Paginação *!*/
+
+/*.pagination {*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    margin-top: 15px;*/
+/*    align-items: center;*/
+/*}*/
+
+/*.pages {*/
+/*    display: flex;*/
+/*    margin-top: 15px;*/
+/*}*/
+
+/*.arrows {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    gap: 3px;*/
+/*    margin-top: 15px;*/
+/*    width: 20%;*/
+/*}*/
+
+/*.arrows span {*/
+/*    background-color: #ee7026;*/
+/*    color: white;*/
+/*    width: 55px;*/
+/*    height: 41px;*/
+/*    margin-bottom: 4px;*/
+/*    border-radius: 3px;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    font-size: 20px;*/
+/*}*/
+
+/*!* 

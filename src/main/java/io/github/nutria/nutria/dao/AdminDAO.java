@@ -14,7 +14,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, AutoCloseable {
     }
 
     @Override
-    public List<Admin> findAll() {
+    public List<Admin> findAll(int page) {
         return List.of();
     }
 

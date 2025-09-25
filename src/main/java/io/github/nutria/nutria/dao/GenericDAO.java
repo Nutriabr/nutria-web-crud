@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface GenericDAO<T, ID> {
     boolean insert(T entity);
-    List<T> findAll();
+    List<T> findAll(int page);
     boolean deleteById(ID id) throws SQLException;
 }
