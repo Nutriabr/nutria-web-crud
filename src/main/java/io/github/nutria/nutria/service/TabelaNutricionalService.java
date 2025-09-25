@@ -21,6 +21,7 @@ public class TabelaNutricionalService {
             String proteinas_g_str = request.getParameter("proteinas_g");
             String gorduras_totais_g_str = request.getParameter("gorduras_totais");
             String gorduras_saturadas_g_str = request.getParameter("gorduras_saturadas");
+            String gorduras_trans_g_str = request.getParameter("gorduras_trans");
             String fibra_alimentar_g_str = request.getParameter("fibra_alimentar");
 
             String sodio_mg_str = request.getParameter("sodio_mg");
@@ -41,6 +42,7 @@ public class TabelaNutricionalService {
             double proteinas_g = proteinas_g_str != null && !proteinas_g_str.isBlank() ? Double.parseDouble(proteinas_g_str) : 0;
             double gorduras_totais_g = gorduras_totais_g_str != null && !gorduras_totais_g_str.isBlank() ? Double.parseDouble(gorduras_totais_g_str) : 0;
             double gorduras_saturadas_g = gorduras_saturadas_g_str != null && !gorduras_saturadas_g_str.isBlank() ? Double.parseDouble(gorduras_saturadas_g_str) : 0;
+            double gorduras_trans_g = gorduras_trans_g_str != null && !gorduras_trans_g_str.isBlank() ? Double.parseDouble(gorduras_trans_g_str) : 0;
             double fibra_alimentar_g = fibra_alimentar_g_str != null && !fibra_alimentar_g_str.isBlank() ? Double.parseDouble(fibra_alimentar_g_str) : 0;
             double sodio_mg = sodio_mg_str != null && !sodio_mg_str.isBlank() ? Double.parseDouble(sodio_mg_str) : 0;
             double colesterol_mg = colesterol_mg_str != null && !colesterol_mg_str.isBlank() ? Double.parseDouble(colesterol_mg_str) : 0;
@@ -54,8 +56,8 @@ public class TabelaNutricionalService {
 
             TabelaNutricional tabela =
                     new TabelaNutricional(valor_energetico_kcal, carboidratos_g, acucares_totais_g,
-                            acucares_adicionados_g, proteinas_g, gorduras_totais_g,
-                            gorduras_saturadas_g, fibra_alimentar_g, sodio_mg, colesterol_mg, vitamina_a_mcg,
+                            acucares_adicionados_g, proteinas_g, gorduras_totais_g, gorduras_saturadas_g,
+                            gorduras_trans_g, fibra_alimentar_g, sodio_mg, colesterol_mg, vitamina_a_mcg,
                             vitamina_c_mg, vitamina_d_mcg, calcio_mg, ferro_mg, potassio_mg);
             // Inserindo o usuário no banco de dados
             dao.insert(tabela);

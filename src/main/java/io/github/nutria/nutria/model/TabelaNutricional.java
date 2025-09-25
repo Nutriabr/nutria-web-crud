@@ -10,6 +10,7 @@ public class TabelaNutricional {
     private double proteinasG;
     private double gordurasTotaisG;
     private double gordurasSaturadasG;
+    private double gordurasTransG;
     private double fibraAlimentarG;
     private double sodioMg;
     private double colesterolMg;
@@ -26,7 +27,7 @@ public class TabelaNutricional {
 
     // Construtor completo
     public TabelaNutricional(long idIngrediente, double valorEnergeticoKcal, double carboidratosG, double acucaresTotaisG,
-                             double acucaresAdicionadosG, double proteinasG, double gordurasTotaisG, double gordurasSaturadasG,
+                             double acucaresAdicionadosG, double proteinasG, double gordurasTotaisG, double gordurasSaturadasG, double gordurasTransG,
                              double fibraAlimentarG, double sodioMg, double colesterolMg, double vitaminaAMcg,
                              double vitaminaCMg, double vitaminaDMcg, double calcioMg, double ferroMg, double potassioMg) {
         this.idIngrediente = idIngrediente;
@@ -37,6 +38,7 @@ public class TabelaNutricional {
         this.proteinasG = proteinasG;
         this.gordurasTotaisG = gordurasTotaisG;
         this.gordurasSaturadasG = gordurasSaturadasG;
+        this.gordurasTransG = gordurasTransG;
         this.fibraAlimentarG = fibraAlimentarG;
         this.sodioMg = sodioMg;
         this.colesterolMg = colesterolMg;
@@ -51,7 +53,7 @@ public class TabelaNutricional {
     // Construtor reduzido
     public TabelaNutricional(long idIngrediente, double valorEnergeticoKcal, double carboidratosG, double acucaresTotaisG,
                              double acucaresAdicionadosG, double proteinasG, double gordurasTotaisG, double gordurasSaturadasG,
-                             double fibraAlimentarG, double sodioMg) {
+                             double gordurasTransG, double fibraAlimentarG, double sodioMg) {
         this.idIngrediente = idIngrediente;
         this.valorEnergeticoKcal = valorEnergeticoKcal;
         this.carboidratosG = carboidratosG;
@@ -60,13 +62,14 @@ public class TabelaNutricional {
         this.proteinasG = proteinasG;
         this.gordurasTotaisG = gordurasTotaisG;
         this.gordurasSaturadasG = gordurasSaturadasG;
+        this.gordurasTransG = gordurasTransG;
         this.fibraAlimentarG = fibraAlimentarG;
         this.sodioMg = sodioMg;
     }
 
     public TabelaNutricional(double valorEnergeticoKcal, double carboidratosG, double acucaresTotaisG,
                              double acucaresAdicionadosG, double proteinasG, double gordurasTotaisG, double gordurasSaturadasG,
-                             double fibraAlimentarG, double sodioMg, double colesterolMg, double vitaminaAMcg,
+                             double gordurasTransG, double fibraAlimentarG, double sodioMg, double colesterolMg, double vitaminaAMcg,
                              double vitaminaCMg, double vitaminaDMcg, double calcioMg, double ferroMg, double potassioMg) {
         this.valorEnergeticoKcal = valorEnergeticoKcal;
         this.carboidratosG = carboidratosG;
@@ -75,6 +78,7 @@ public class TabelaNutricional {
         this.proteinasG = proteinasG;
         this.gordurasTotaisG = gordurasTotaisG;
         this.gordurasSaturadasG = gordurasSaturadasG;
+        this.gordurasTransG = gordurasTransG;
         this.fibraAlimentarG = fibraAlimentarG;
         this.sodioMg = sodioMg;
         this.colesterolMg = colesterolMg;
@@ -150,6 +154,14 @@ public class TabelaNutricional {
 
     public void setGordurasSaturadasG(double gordurasSaturadasG) {
         this.gordurasSaturadasG = gordurasSaturadasG;
+    }
+
+    public double getGordurasTransG() {
+        return gordurasTransG;
+    }
+
+    public void setGordurasTransG(double gordurasTransG) {
+        this.gordurasTransG = gordurasTransG;
     }
 
     public double getFibraAlimentarG() {
@@ -234,6 +246,7 @@ public class TabelaNutricional {
                 "\nProteínas (g): " + proteinasG +
                 "\nGorduras totais (g): " + gordurasTotaisG +
                 "\nGorduras saturadas (g): " + gordurasSaturadasG +
+                "\nGorduras trans (g): " + gordurasTransG +
                 "\nFibra alimentar (g): " + fibraAlimentarG +
                 "\nSódio (mg): " + sodioMg +
                 "\nColesterol (mg): " + colesterolMg +

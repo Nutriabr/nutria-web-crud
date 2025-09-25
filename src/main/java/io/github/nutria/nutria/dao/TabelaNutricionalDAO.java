@@ -20,7 +20,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     // Cadastrar usuario
     public boolean insert(TabelaNutricional tabelaNutricional) {
         // Preparando a query de inserção no banco de dados
-        String sql = "INSERT INTO tabela_nutricional (valor_energetico_kcal, carboidratos_g, acucares_totais_g, acucares_adicionados_g, proteinas_g, gorduras_totais_g, gorduras_saturadas_g, fibra_alimentar_g, sodio_mg, colesterol_mg, vitamina_a_mcg, vitamina_c_mg, vitamina_d_mcg, calcio_mg, ferro_mg, potassio_mg) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO tabela_nutricional (valor_energetico_kcal, carboidratos_g, acucares_totais_g, acucares_adicionados_g, proteinas_g, gorduras_totais_g, gorduras_saturadas_g, gorduras_trans_g, fibra_alimentar_g, sodio_mg, colesterol_mg, vitamina_a_mcg, vitamina_c_mg, vitamina_d_mcg, calcio_mg, ferro_mg, potassio_mg) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         try (PreparedStatement ps = connect.prepareStatement(sql)) {
 
 //            ps.setLong(1, tabelaNutricional.getIdIngrediente());
@@ -31,18 +31,19 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             ps.setDouble(5, tabelaNutricional.getProteinasG());
             ps.setDouble(6, tabelaNutricional.getGordurasTotaisG());
             ps.setDouble(7, tabelaNutricional.getGordurasSaturadasG());
-            ps.setDouble(8, tabelaNutricional.getFibraAlimentarG());
-            ps.setDouble(9, tabelaNutricional.getSodioMg());
-            ps.setDouble(10, tabelaNutricional.getColesterolMg());
-            ps.setDouble(11, tabelaNutricional.getVitaminaAMcg());
-            ps.setDouble(12, tabelaNutricional.getVitaminaCMg());
-            ps.setDouble(13, tabelaNutricional.getVitaminaDMcg());
-            ps.setDouble(14, tabelaNutricional.getCalcioMg());
-            ps.setDouble(15, tabelaNutricional.getFerroMg());
-            ps.setDouble(16, tabelaNutricional.getPotassioMg());
+            ps.setDouble(8, tabelaNutricional.getGordurasTransG());
+            ps.setDouble(9, tabelaNutricional.getFibraAlimentarG());
+            ps.setDouble(10, tabelaNutricional.getSodioMg());
+            ps.setDouble(11, tabelaNutricional.getColesterolMg());
+            ps.setDouble(12, tabelaNutricional.getVitaminaAMcg());
+            ps.setDouble(13, tabelaNutricional.getVitaminaCMg());
+            ps.setDouble(14, tabelaNutricional.getVitaminaDMcg());
+            ps.setDouble(15, tabelaNutricional.getCalcioMg());
+            ps.setDouble(16, tabelaNutricional.getFerroMg());
+            ps.setDouble(17, tabelaNutricional.getPotassioMg());
 
             // Executando a query de inserção
-            ps.executeUpdate();
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -67,6 +68,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                         rs.getDouble("proteinas_g"),
                         rs.getDouble("gorduras_totais_g"),
                         rs.getDouble("gorduras_saturadas_g"),
+                        rs.getDouble("gorduras_trans_g"),
                         rs.getDouble("fibra_alimentar_g"),
                         rs.getDouble("sodio_mg"),
                         rs.getDouble("colesterol_mg"),
