@@ -49,7 +49,7 @@ public class UsuarioService {
         if (dao.insert(usuario)) {
             return "Usuário cadastrado no banco de dados.";
         }
-        return "Não foi possível cadastrar o usuário no banco de dados";
+        return null;
 
     }
 
