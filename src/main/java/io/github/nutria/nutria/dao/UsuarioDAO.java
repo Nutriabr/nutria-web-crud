@@ -1,5 +1,7 @@
 package io.github.nutria.nutria.dao;
 
+import io.github.nutria.nutria.dao.interfaces.GenericDAO;
+import io.github.nutria.nutria.dao.interfaces.IUsuarioDAO;
 import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.PasswordHasher;
@@ -16,11 +18,7 @@ import java.util.*;
  * @version 1.1
  * @see IUsuarioDAO
  */
-public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoCloseable {
-
-     // Instanciação do objeto connect
-    private static final Connection connect = ConnectionFactory.connect();
-
+public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     /**
      * Método para validar se o email já está cadastrado no Banco de Dados
      * @param email Recebe como o parametro o email que será usado na clausura where na query
@@ -32,10 +30,10 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoC
     public boolean findByEmailUsed(String email) {
         String sql = "SELECT COUNT(*) FROM usuario WHERE email = ?";
 
-        System.out.println(email);
         boolean result = false;
         // 1. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try(PreparedStatement ps = connect.prepareStatement(sql)) {
+        try(Connection connect = ConnectionFactory.connect();
+                PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setString(1, email);
             // 2. Executar a consulta
             try (ResultSet rs = ps.executeQuery()) {
@@ -56,7 +54,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoC
             return result;
         }
     }
-
     /**
      * Método para inserir um novo usuário no Banco de Dados
      * @param usuario Recebe como o parametro o objeto usuario que será inserido no banco de dados
@@ -70,7 +67,8 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoC
         boolean result = false;
 
         // 1. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+        try (Connection connect = ConnectionFactory.connect();
+                PreparedStatement ps = connect.prepareStatement(sql)) {
 
             /* 2. Inicializa uma variável hashedPassword que recebe o retorno método hashPassword
             * o método recebe como parametro o atributo de senha do objeto usuario
@@ -102,6 +100,49 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoC
         return result;
     }
 
+    public Usuario findUsuarioById(long id) {
+        String sql = "SELECT * FROM usuario WHERE id = ?";
+        boolean result = false;
+        Usuario user = null;
+
+        try (Connection connect = ConnectionFactory.connect();
+        PreparedStatement ps = connect.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    user = new Usuario();
+                    user.setId(rs.getLong("id"));
+                    user.setNome(rs.getString("nome"));
+                    user.setEmail(rs.getString("email"));
+                    user.setSenha(rs.getString("senha"));
+                    user.setTelefone(rs.getString("telefone"));
+                    user.setEmpresa(rs.getString("empresa"));
+                    user.setFoto(rs.getString("foto"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public boolean updateEmailById(String email, long id) {
+        String sql = "UPDATE usuario SET email = ? WHERE id = ?";
+
+        boolean result = false;
+
+        try (Connection connect = ConnectionFactory.connect();
+        PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setLong(2, id);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     /**
      * Método para listar todos os usuários do Banco de Dados
      * @return ArrayList Retorna um <i>ArrayList</i> com os usuarios registrados no banco de dados
@@ -114,7 +155,9 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoC
         List<Usuario> usuarioArrayList = new ArrayList<Usuario>();
 
         // 3. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+        try (Connection connect = ConnectionFactory.connect()) {
+            PreparedStatement ps = connect.prepareStatement(sql);
+
             try (ResultSet rs = ps.executeQuery()) {
 
                 /* 4. Enquanto o ResultSet tiver usuarios como resultado
@@ -142,6 +185,26 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoC
         return usuarioArrayList;
     }
 
+    public boolean update(Usuario usuario) {
+        String sql = "UPDATE usuario SET name = ?, email = ?, empresa = ?, senha = ?, foto = ? WHERE id = ?";
+        boolean result;
+        try (Connection connect = ConnectionFactory.connect();
+        PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setString(1, usuario.getNome());
+            ps.setString(2, usuario.getEmail());
+            ps.setString(3, usuario.getSenha());
+            ps.setString(4, usuario.getEmpresa());
+            ps.setString(5, usuario.getFoto());
+
+            result = ps.executeUpdate() > 0;
+            return result;
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return false;
+        }
+    }
+
     /**
      * Método para deletar usuário no Banco de Dados pelo seu id
      * @param id Recebe como o parametro o id do usuario que será deletado
@@ -155,7 +218,8 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoC
         boolean result = false;
 
         // 2. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+        try (Connection connect = ConnectionFactory.connect();
+                PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setLong(1, id);
 
             // 3. Validação sobre o número de linhas afetadas, com atribuição de result para true.
@@ -168,20 +232,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoC
             return false;
         } finally {
             return result;
-        }
-    }
-
-    /**
-     * Método para fechar a conexão com o banco de dados
-     * */
-    @Override
-    public void close() throws Exception {
-        try {
-            if (connect == null && !connect.isClosed()) {
-                connect.close();
-            };
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }

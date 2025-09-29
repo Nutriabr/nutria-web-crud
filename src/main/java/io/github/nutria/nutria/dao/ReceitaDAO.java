@@ -1,5 +1,6 @@
 package io.github.nutria.nutria.dao;
 
+import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
