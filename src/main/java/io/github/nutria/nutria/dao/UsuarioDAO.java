@@ -127,22 +127,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return user;
     }
 
-    public boolean updateEmailById(String email, long id) {
-        String sql = "UPDATE usuario SET email = ? WHERE id = ?";
-
-        boolean result = false;
-
-        try (Connection connect = ConnectionFactory.connect();
-        PreparedStatement ps = connect.prepareStatement(sql)) {
-            ps.setString(1, email);
-            ps.setLong(2, id);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
     /**
      * Método para listar todos os usuários do Banco de Dados
      * @return ArrayList Retorna um <i>ArrayList</i> com os usuarios registrados no banco de dados
@@ -186,22 +170,63 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     }
 
     public boolean update(Usuario usuario) {
-        String sql = "UPDATE usuario SET name = ?, email = ?, empresa = ?, senha = ?, foto = ? WHERE id = ?";
-        boolean result;
-        try (Connection connect = ConnectionFactory.connect();
-        PreparedStatement ps = connect.prepareStatement(sql)) {
-            ps.setString(1, usuario.getNome());
-            ps.setString(2, usuario.getEmail());
-            ps.setString(3, usuario.getSenha());
-            ps.setString(4, usuario.getEmpresa());
-            ps.setString(5, usuario.getFoto());
+        StringBuilder sql = new StringBuilder("UPDATE usuario SET ");
+        List<Object> parameters = new ArrayList<>();
 
-            result = ps.executeUpdate() > 0;
-            return result;
+
+        if (usuario.getNome() != null) {
+            sql.append("nome = ?, ");
+            parameters.add(usuario.getNome());
+        }
+
+        if (usuario.getEmail() != null) {
+            sql.append("email = ?");
+            if (findByEmailUsed(usuario.getEmail())) {
+                return false;
+            }
+            parameters.add(usuario.getEmail());
+        }
+
+        if (usuario.getEmpresa() != null) {
+            sql.append("empresa = ?, ");
+            parameters.add(usuario.getEmpresa());
+        }
+
+        if (usuario.getSenha() != null) {
+            String hashedPassword = PasswordHasher.hashPassword(usuario.getSenha());
+            sql.append("senha = ?, ");
+            parameters.add(hashedPassword);
+        }
+
+        if (usuario.getFoto() != null) {
+            sql.append("foto = ?, ");
+            parameters.add(usuario.getFoto());
+        }
+
+        if (parameters.isEmpty()) {
+            return false;
+        }
+
+        // Remove a última vírgula e espaço
+        sql.setLength(sql.length() - 1);
+
+        sql.append("WHERE id = ?");
+        parameters.add(usuario.getId());
+
+        try {
+            Connection connect = ConnectionFactory.connect();
+            PreparedStatement ps = connect.prepareStatement(sql.toString());
+
+            for (int i = 0; i < parameters.size(); i++) {
+                ps.setObject(i+1, parameters.get(i));
+            }
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException se) {
             se.printStackTrace();
             return false;
+        } finally {
+
         }
     }
 
