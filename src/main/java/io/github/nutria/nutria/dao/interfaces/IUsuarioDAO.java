@@ -1,9 +1,6 @@
-package io.github.nutria.nutria.dao;
+package io.github.nutria.nutria.dao.interfaces;
 
 import io.github.nutria.nutria.model.Usuario;
-
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Interface para operações de CRUD na entidade Usuario.
