@@ -5,27 +5,33 @@ import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.model.Usuario;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/** Classe principal para testes diversos.
+/**
+ * Classe principal para testes diversos.
+ *
  * @author Mariana Marrão, Luis Henrique e Enzo Mota
  * @version 1.1
- * */
+ */
 public class Main {
     public static void main(String[] args) {
 
         // 1. Teste de conexão com o banco de dados
 
         // 2. Teste de CRUD para a entidade Usuario
-        try (UsuarioDAO usuarioDAOTest = new UsuarioDAO()) {
+        try {
+        UsuarioDAO usuarioDAOTest = new UsuarioDAO();
             // TESTE DO MÉTODO findByEmailUsed
             System.out.println("Verificando se o email está em uso:");
 
             boolean isEmailUsed = usuarioDAOTest.findByEmailUsed("Mariana.aparecida@gmail.com");
-            if (isEmailUsed) {
+            if(isEmailUsed)
+
+            {
                 System.out.println("O email já está em uso.");
-            } else {
+            } else
+
+            {
                 System.out.println("O email não está em uso.");
             }
 
@@ -38,9 +44,13 @@ public class Main {
             usuario.setSenha("senhaSegura123");
             usuario.setTelefone("11987654321");
             boolean insertResult = usuarioDAOTest.insert(usuario);
-            if (insertResult) {
+            if(insertResult)
+
+            {
                 System.out.println("Usuário inserido com sucesso.");
-            } else {
+            } else
+
+            {
                 System.out.println("Falha ao inserir o usuário.");
             }
 
@@ -48,24 +58,32 @@ public class Main {
             System.out.println("\nDeletando um usuário por ID:");
             long userIdToDelete = 2;
             boolean deleteResult = usuarioDAOTest.deleteById(userIdToDelete);
-            if (deleteResult) {
+            if(deleteResult)
+
+            {
                 System.out.println("Usuário deletado com sucesso.");
-            } else {
+            } else
+
+            {
                 System.out.println("Falha ao deletar o usuário.");
             }
 
             // Teste do método findAll
             System.out.println("\nListando todos os usuários:");
             List<Usuario> usuarios = usuarioDAOTest.findAll();
-            if (usuarios.isEmpty()) {
+            if(usuarios.isEmpty())
+
+            {
                 System.out.println("Nenhum usuário encontrado.");
-            } else {
+            } else
+
+            {
                 System.out.println("Usuários encontrados:");
                 System.out.println(usuarios);
 
             }
 
-        } catch (Exception e) {
+        } catch(Exception e){
             e.printStackTrace();
         }
 
