@@ -1,4 +1,4 @@
-package io.github.nutria.nutria.dao;
+package io.github.nutria.nutria.dao.interfaces;
 
 import java.sql.SQLException;
 import java.util.List;

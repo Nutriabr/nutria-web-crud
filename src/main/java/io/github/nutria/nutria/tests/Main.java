@@ -56,8 +56,8 @@ public class Main {
 
             // Teste do método findAll
             System.out.println("\nListando todos os usuários:");
-            List<Usuario> usuarios = usuarioDAOTest.findAll(1);   //ATENÇÃO: PRECISAMOS VER COMO COLETAR A QUANTIDADE DE PÁGINAS, ESTOU CANSADO E NÃO CONSIGO PENSAR MAIS DIREITO, AMANHÃ DISCUTIMOS.
-            if (usuarios.isEmpty()) {                                   //ATENÇÃO: TALVEZ NÃO SEJA NECESSÁRIO AQUI PORQUE SÃO APENAS TESTES NESSA CLASSE MAIN
+            List<Usuario> usuarios = usuarioDAOTest.findAll();
+            if (usuarios.isEmpty()) {
                 System.out.println("Nenhum usuário encontrado.");
             } else {
                 System.out.println("Usuários encontrados:");
@@ -99,8 +99,8 @@ public class Main {
 
             // Teste do método findAll
             System.out.println("\nListando todos as receitas:");
-            List<Receita> receitas = receitaDAOTest.findAll(1); //ATENÇÃO: PRECISAMOS VER COMO COLETAR A QUANTIDADE DE PÁGINAS, ESTOU CANSADO E NÃO CONSIGO PENSAR MAIS DIREITO, AMANHÃ DISCUTIMOS.
-            if (receitas.isEmpty()) {                                //ATENÇÃO: TALVEZ NÃO SEJA NECESSÁRIO AQUI PORQUE SÃO APENAS TESTES NESSA CLASSE MAIN.
+            List<Receita> receitas = receitaDAOTest.findAll();
+            if (receitas.isEmpty()) {
                 System.out.println("Nenhuma receita encontrada.");
             } else {
                 System.out.println("Receitas encontradas:");
