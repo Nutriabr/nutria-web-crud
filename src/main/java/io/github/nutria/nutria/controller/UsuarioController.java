@@ -46,34 +46,6 @@ public class UsuarioController extends HttpServlet {
 //        factory.testConnection();
     }
 
-    //        String path = request.getServletPath();
-//
-//        if (path.equals("/usuarios") || path.equals("/usuarios/visualizar")) {
-//            response.getWriter().write(service.findAll().toString());
-//        }
-//        parametroPagina = request.getParameter("page");
-//
-//        if (parametroPagina != null) {
-//            page = Integer.parseInt(parametroPagina);
-//        }
-//
-//        // Busca lista de usuários
-//        List<Usuario> usuarios = dao.findAll(page);
-//
-//        // Conta todos os usuários
-//        totalUsuarios = dao.countAll();
-//
-//        // Faz o cálculo do total de páginas
-//        totalPaginas = (int) Math.ceil((double) totalUsuarios / limit);
-//
-//        request.setAttribute("usuarios", usuarios);
-//        request.setAttribute("page", page);
-//        request.setAttribute("totalPaginas", totalPaginas);
-//        request.setAttribute("totalUsuarios", totalUsuarios);
-//
-//        RequestDispatcher rd = request.getRequestDispatcher("pages/usuarios.jsp");
-//        rd.forward(request, response);
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String path = request.getServletPath();
         int page = 1;
@@ -108,12 +80,6 @@ public class UsuarioController extends HttpServlet {
 //            response.sendRedirect(request.getContextPath() + "/pages/usuarios.jsp");
             RequestDispatcher rd = request.getRequestDispatcher("/pages/usuarios.jsp");
             rd.forward(request, response);
-
-//            if (path.equals("http://localhost:8080/nutria_war_exploded/")) {
-//                response.sendRedirect("pages/usuarios.jsp");
-//            }
-//            RequestDispatcher rd = request.getRequestDispatcher("usuarios.jsp");
-//            rd.forward(request, response);
         }
     }
 
