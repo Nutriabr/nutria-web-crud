@@ -1,4 +1,4 @@
-package io.github.nutria.nutria.controller;
+package io.github.nutria.nutria.servelet;
 import java.io.*;
 
 import io.github.nutria.nutria.model.Receita;
@@ -7,7 +7,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "receitaController", urlPatterns = {"/receitas", "/receitas/inserir", "/receitas/excluir", "/receitas/visualizar"})
-public class ReceitaController extends HttpServlet{
+public class ReceitaServelet extends HttpServlet{
     ReceitaService service = new ReceitaService();
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{

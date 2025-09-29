@@ -1,4 +1,4 @@
-package io.github.nutria.nutria.controller;
+package io.github.nutria.nutria.servelet;
 
 import java.io.*;
 
@@ -8,35 +8,34 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "usuarioController", urlPatterns = {"/usuarios", "/usuarios/inserir", "/usuarios/visualizar", "/usuarios/excluir"})
-public class UsuarioController extends HttpServlet {
+public class UsuarioServelet extends HttpServlet {
     UsuarioService service = new UsuarioService();
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getServletPath();
+
         if (path.equals("/usuarios/inserir")) {
             // Instanciando o objeto Usuario com os parâmetros recebidos da requisição
-            Usuario usuario = new Usuario(
-                    request.getParameter("nome"),
-                    request.getParameter("email"),
-                    request.getParameter("senha"),
-                    request.getParameter("telefone"),
-                    request.getParameter("empresa"),
-                    request.getParameter("foto")
-            );
+            String nome = request.getParameter("nome");
+            String email = request.getParameter("email");
+            String senha = request.getParameter("senha");
+            String telefone = request.getParameter("telefone");
+            String empresa = request.getParameter("empresa");
+            String foto = request.getParameter("foto");
 
-            String error = service.insert(usuario);
+            Usuario usuario = new Usuario(nome, email, senha, telefone, empresa, foto);
 
-            if (error != null) {
+            String result = service.insert(usuario);
+
+            if (result != null) {
                 // Se houver erro, retorna o erro com o código 400
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, error);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, result);
             } else {
                 // Se não houver erro, retorna o status 201 (Created)
                 response.setStatus(HttpServletResponse.SC_CREATED);
                 response.getWriter().write(String.format("Usuário com email: %s cadastrado com sucesso!", usuario.getEmail()));
             }
         }
-        // Testando a conexão com o banco de dados
-//        factory.testConnection();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
