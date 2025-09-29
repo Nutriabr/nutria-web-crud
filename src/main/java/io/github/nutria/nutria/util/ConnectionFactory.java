@@ -30,8 +30,7 @@ public class ConnectionFactory {
             con = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            return con;
         }
+        return con;
     }
 }
