@@ -1,5 +1,7 @@
 package io.github.nutria.nutria.dao;
 
+import io.github.nutria.nutria.dao.interfaces.GenericDAO;
+import io.github.nutria.nutria.dao.interfaces.IUsuarioDAO;
 import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.PasswordHasher;
@@ -16,7 +18,7 @@ import java.util.*;
  * @version 1.1
  * @see IUsuarioDAO
  */
-public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoCloseable {
+public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
      // Instanciação do objeto connect
     private static final Connection connect = ConnectionFactory.connect();
@@ -106,37 +108,47 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoC
      * Método para listar todos os usuários do Banco de Dados
      * @return ArrayList Retorna um <i>ArrayList</i> com os usuarios registrados no banco de dados
      * */
-    public List<Usuario> findAll() {
-        // 1. Inicializar variável com a consulta SQL
-        String sql = "SELECT * FROM usuario";
+    public List<Usuario> findAll(int page) {
+        // 1. Setar em qual página inicia o crud de usuários que será = 1 // O limite de usuário por páginas do .jsp // A partir de qual registro começarão os registros da próxima página
+        int limite = 4;
+        int offset = (page - 1) * limite;
 
-        // 2. Instanciar uma lista para armazenar os usuarios retornados da consulta
+        // 2. Inicializar variável com a consulta SQL
+        String sql = "SELECT * FROM usuario LIMIT ? OFFSET ?";
+
+        // 3. Instanciar uma lista para armazenar os usuarios retornados da consulta
         List<Usuario> usuarioArrayList = new ArrayList<Usuario>();
 
-        // 3. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (PreparedStatement ps = connect.prepareStatement(sql)) {
-            try (ResultSet rs = ps.executeQuery()) {
+        // 4. Usar try-with-resources para garantir que as conexões sejam fechadas
+        try (Connection connect = ConnectionFactory.connect()) {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            /* 5. Setando os parâmetros passados no método para a instrução SQL
+             * */
+            ps.setInt(1, limite);
+            ps.setInt(2, offset);
 
-                /* 4. Enquanto o ResultSet tiver usuarios como resultado
-                 * é instanciado um novo usuario e armazenado no usuarioArrayList
+
+            try (ResultSet rs = ps.executeQuery()) {
+                /* 6. Enquanto o ResultSet tiver tabela Nutricional como resultado
+                 * é instanciado uma nova tablea e armazenado no tabelaNutricionalArrayList
                  * */
                 while (rs.next()) {
-                    Usuario user = new Usuario();
-                    user.setId(rs.getLong("id"));
-                    user.setNome(rs.getString("nome"));
-                    user.setEmail(rs.getString("email"));
-                    user.setSenha(rs.getString("senha"));
-                    user.setTelefone(rs.getString("telefone"));
-                    user.setEmpresa(rs.getString("empresa"));
-                    user.setFoto(rs.getString("foto"));
+                    Usuario usuario = new Usuario(
+                            rs.getLong("id"),
+                            rs.getString("nome"),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("telefone"),
+                            rs.getString("empresa"),
+                            rs.getString("foto")
+                    );
 
-                // 5. O usuario é armazenado na lista
-                    usuarioArrayList.add(user);
-
+                    // 7. A tablela é armazenada na lista
+                    usuarioArrayList.add(usuario);
                 }
             }
         } catch (SQLException e) {
-            // 5. Tratar exceções SQL
+            // 8. Tratar exceções SQL
             e.printStackTrace();
         }
         return usuarioArrayList;
@@ -168,20 +180,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO, AutoC
             return false;
         } finally {
             return result;
-        }
-    }
-
-    /**
-     * Método para fechar a conexão com o banco de dados
-     * */
-    @Override
-    public void close() throws Exception {
-        try {
-            if (connect == null && !connect.isClosed()) {
-                connect.close();
-            };
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }
