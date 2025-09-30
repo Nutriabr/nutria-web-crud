@@ -39,6 +39,12 @@ public class ConnectionFactory {
         return con;
     }
 
+    /**
+     * Método para fechar conexão com o banco de dados
+     *
+     * @return void
+     * @author luismedeiros-ieg
+     */
     public static void desconnect(Connection connection) {
         try {
             if (!connection.isClosed() && connection != null) {
