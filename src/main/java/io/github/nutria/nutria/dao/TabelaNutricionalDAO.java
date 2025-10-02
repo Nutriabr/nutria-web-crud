@@ -12,8 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>, AutoCloseable {
-//    ConnectionFactory factory = new ConnectionFactory();
+public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long> {
     private final static Connection connect = ConnectionFactory.connect();
 
     public TabelaNutricionalDAO() {}
@@ -22,7 +21,10 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     public boolean insert(TabelaNutricional tabelaNutricional) {
         // Preparando a query de inserção no banco de dados
         String sql = "INSERT INTO tabela_nutricional (valor_energetico_kcal, carboidratos_g, acucares_totais_g, acucares_adicionados_g, proteinas_g, gorduras_totais_g, gorduras_saturadas_g, fibra_alimentar_g, sodio_mg, colesterol_mg, vitamina_a_mcg, vitamina_c_mg, vitamina_d_mcg, calcio_mg, ferro_mg, potassio_mg) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+
+        // Usar try simples para tratar as exceções SQL durante a instrução ao banco de dados
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
 
 //            ps.setLong(1, tabelaNutricional.getIdIngrediente());
             ps.setDouble(1, tabelaNutricional.getValorEnergeticoKcal());
@@ -44,6 +46,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
             // Executando a query de inserção
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,8 +65,8 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         // 3. Instanciar uma lista para armazenar os usuarios retornados da consulta
         List<TabelaNutricional> tabelaNutricionalArrayList = new ArrayList<TabelaNutricional>();
 
-        // 4. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (Connection connect = ConnectionFactory.connect()) {
+        // 4. Usar try simples para tratar as exceções SQL durante a instrução ao banco de dados
+        try {
             PreparedStatement ps = connect.prepareStatement(sql);
             /* 5. Setando os parâmetros passados no método para a instrução SQL
              * */
@@ -99,6 +102,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                     // 7. A tablela é armazenada na lista
                     tabelaNutricionalArrayList.add(tabelaNutricional);
                 }
+                ps.close();
             }
         } catch (SQLException e) {
             // 8. Tratar exceções SQL
@@ -120,9 +124,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         // 2. Inicializar a variavel responsável por armazenar a instrução sql
         String sql = "SELECT COUNT(*) FROM tabela_nutricional";
 
-        // 3. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (Connection connection = ConnectionFactory.connect()) {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+        // 3. Usar try simples para tratar as exceções SQL durante a instrução ao banco de dados
+        try {
+            PreparedStatement pstmt = connect.prepareStatement(sql);
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -133,6 +137,8 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                 // 5. É incrementado +1 no totalTabelas
                 totalTabelas++;
             }
+            pstmt.close();
+            rs.close();
         } catch (SQLException e) {
             // 6. Tratar exceções SQL
             e.printStackTrace();
@@ -153,8 +159,8 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         //2. Criamos a variável que receberá o número de linhas afetadas
         int rs = 0;
 
-        //3. Tentamos a conexão com o banco
-        try (Connection con = ConnectionFactory.connect()) {
+        // 3. Usar try simples para tratar as exceções SQL durante a instrução ao banco de dados
+        try {
             //4. Preparamos a instrção para o banco e logo em seguida setamos os valores
             PreparedStatement pstmt = connect.prepareStatement(sql);
 
@@ -180,11 +186,14 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
         //6. Executando a instrução no banco
             rs = pstmt.executeUpdate();
+
+        //7. Fechamos as variáveis PreparedStatement e ResultSet (se necessário)
+            pstmt.close();
         } catch (SQLException sqle) {
-            //7. Tratar exceções SQL
+            //8. Tratar exceções SQL
             sqle.printStackTrace();
         }
-        //8. Verificamos se alguma linha do banco foi afetada, caso tenha sido a quantidade será representada no retorno do resultSet
+        //9. Verificamos se alguma linha do banco foi afetada, caso tenha sido a quantidade será representada no retorno do resultSet
         if (rs > 0) {
             return true;
         } else {
@@ -205,8 +214,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
         boolean result = false;
 
-        // 2. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+        // 2. Usar try simples para tratar as exceções SQL durante a instrução ao banco de dados
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
 
             // 3. Validação sobre o número de linhas afetadas, com atribuição de result para true.
@@ -224,8 +234,8 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     /**
      * Método para fechar a conexão com o banco de dados
      * */
-    @Override
     public void close() throws Exception {
+        // 1. Usar try simples para tratar as exceções SQL durante a instrução ao banco de dados
         try {
             if (connect == null && !connect.isClosed()) {
                 connect.close();

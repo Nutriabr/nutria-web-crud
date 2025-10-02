@@ -18,7 +18,8 @@ public class Main {
         // 1. Teste de conexão com o banco de dados
 
         // 2. Teste de CRUD para a entidade Usuario
-        try (UsuarioDAO usuarioDAOTest = new UsuarioDAO()) {
+        try {
+            UsuarioDAO usuarioDAOTest = new UsuarioDAO();
             // TESTE DO MÉTODO findByEmailUsed
             System.out.println("Verificando se o email está em uso:");
 
@@ -55,15 +56,15 @@ public class Main {
             }
 
             // Teste do método findAll
-            System.out.println("\nListando todos os usuários:");
-            List<Usuario> usuarios = usuarioDAOTest.findAll();
-            if (usuarios.isEmpty()) {
-                System.out.println("Nenhum usuário encontrado.");
-            } else {
-                System.out.println("Usuários encontrados:");
-                System.out.println(usuarios);
-
-            }
+//            System.out.println("\nListando todos os usuários:");
+//            List<Usuario> usuarios = usuarioDAOTest.findAll();
+//            if (usuarios.isEmpty()) {
+//                System.out.println("Nenhum usuário encontrado.");
+//            } else {
+//                System.out.println("Usuários encontrados:");
+//                System.out.println(usuarios);
+//
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,15 +99,15 @@ public class Main {
             }
 
             // Teste do método findAll
-            System.out.println("\nListando todos as receitas:");
-            List<Receita> receitas = receitaDAOTest.findAll();
-            if (receitas.isEmpty()) {
-                System.out.println("Nenhuma receita encontrada.");
-            } else {
-                System.out.println("Receitas encontradas:");
-                System.out.println(receitas);
-
-            }
+//            System.out.println("\nListando todos as receitas:");
+//            List<Receita> receitas = receitaDAOTest.findAll();
+//            if (receitas.isEmpty()) {
+//                System.out.println("Nenhuma receita encontrada.");
+//            } else {
+//                System.out.println("Receitas encontradas:");
+//                System.out.println(receitas);
+//
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
