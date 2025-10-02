@@ -2,6 +2,7 @@ package io.github.nutria.nutria.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /** Classe responsável por estabelecer e fechar a conexão com o banco de dados
  * @author luismedeiros-ieg
@@ -34,5 +35,13 @@ public class ConnectionFactory {
         return con;
     }
 
-
+    public static void disconnect(Connection connection){
+        try {
+            if(connection != null && !connection.isClosed()){
+                connection.close();
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
