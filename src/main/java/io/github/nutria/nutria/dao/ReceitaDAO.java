@@ -21,54 +21,6 @@ import java.util.List;
  */
 public class ReceitaDAO implements GenericDAO<Receita, Long>, AutoCloseable {
     private static final Connection connect = ConnectionFactory.connect();
-
-    // Método para inserir (create) ou atualizar (update)
-//    public void save(Receita receita) {
-//        try (Connection connect = factory.connect()) {
-//            if (receita.getId() == 0) {
-//                // Query de inserção no banco de dados
-//                String sql = "INSERT INTO receitas (nome, porcao, id_Produto)" +
-//                        "VALUES (?,?,?)";
-//
-//                PreparedStatement ps = connect.prepareStatement(sql);
-//                ps.setString(1, receita.getNome());
-//                ps.setString(2, receita.getPorcao());
-//                ps.setLong(3, receita.getIdProduto());
-//
-//                // Executando o query de inserção
-//                int result = ps.executeUpdate();
-//                if (result > 0) {
-//                    System.out.println("Receita cadastrado com sucesso.");
-//                }
-//            } else {
-//
-//                String sql = "UPDATE receitas SET nome = ?, porcao = ?, idProduto = ?" +
-//                        "WHERE id = ?";
-//
-//                PreparedStatement ps = connect.prepareStatement(sql);
-//
-//                ps.setString(1, receita.getNome());
-//                ps.setString(2, receita.getPorcao());
-//                ps.setLong(3, receita.getIdProduto());
-//
-//                // Condição do WHERE
-//                ps.setLong(4, receita.getId());
-//
-//                int result = ps.executeUpdate();
-//
-//                if (result > 0) {
-//                    System.out.println("Receita atualizado com sucesso.");
-//                } else {
-//                    System.out.println("Nenhuma receita encontrada para atualizar.");
-//                }
-//
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException("Erro ao cadastrar receita: " + e.getMessage());
-//        }
-//    }
-
-
     @Override
     /**
      * Método para inserir uma nova receita no banco de dados
