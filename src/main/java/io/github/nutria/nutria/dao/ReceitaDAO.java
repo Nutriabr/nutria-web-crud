@@ -8,6 +8,7 @@ import io.github.nutria.nutria.util.ConnectionFactory;
 // Importações necessárias para operações com JDBC e manipulação de listas
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.List;
  * @author marianamarrao
  * @version 1.1
  */
-public class ReceitaDAO implements GenericDAO<Receita, Long>, AutoCloseable {
+public class ReceitaDAO implements GenericDAO<Receita, Long> {
     private static final Connection connect = ConnectionFactory.connect();
     @Override
     /**
@@ -30,21 +31,25 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, AutoCloseable {
      * @throws RuntimeException Em caso de erro na operação SQL
      */
     public boolean insert(Receita receita) {
-        // Query de inserção no banco de dados
+        // 1. Definir a query de inserção no banco de dados
         String sql = "INSERT INTO receitas (nome, porcao, id_produto) VALUES (?, ?, ?)";
 
-        // 1. Usar try-with-resources para garantir que o PreparedStatement seja fechado
-        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-            // 2. Setar os parâmetros da query com os valores do objeto Receita
+        try {
+            // 2. Criar o PreparedStatement para preparar a query
+            ps = connect.prepareStatement(sql);
+
+            // 3. Definir os parâmetros da query com os valores do objeto Receita
             ps.setString(1, receita.getNome());
             ps.setString(2, receita.getPorcao());
             ps.setLong(3, receita.getIdProduto());
 
-            // 3. Executando o query de inserção
+            // 4. Executar a query de inserção
             int result = ps.executeUpdate();
 
-            // 4. Verificar se a inserção foi realizada com sucesso
+            // 5. Verificar se a inserção foi realizada com sucesso
             if (result > 0) {
                 System.out.println("Receita cadastrada com sucesso.");
                 return true;
@@ -54,8 +59,24 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, AutoCloseable {
             }
 
         } catch (SQLException e) {
-            // 5. Tratar exceções SQL lançando uma RuntimeException
-            throw new RuntimeException("Erro ao cadastrar receita: " + e.getMessage());
+            // 6. Tratar possíveis exceções SQL
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                // 7. Fechar ResultSet, PreparedStatement e conexão, se existirem
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connect != null) {
+                    ConnectionFactory.disconnect(connect);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -66,40 +87,66 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, AutoCloseable {
     * */
     @Override
     public List<Receita> findAll(int page) {
-        // 1. Setar em qual página inicia o crud de receitas que será = 1 // O limite de receitas por páginas do .jsp // A partir de qual registro começarão os registros da próxima página
+        // 1. Definir limite de registros por página e calcular o offset
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        // 2. Inicializar variável com a consulta SQL
+        // 2. Query SQL para buscar receitas com paginação
         String sql = "SELECT * FROM receitas LIMIT ? OFFSET ?";
 
-        // 3. Instanciar uma lista para armazenar as receitas retornados da consulta
-        List<Receita> receitasArrayList = new ArrayList<Receita>();
-        
-        // 4. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (PreparedStatement ps = connect.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        // 3. Lista para armazenar os resultados
+        List<Receita> receitasArrayList = new ArrayList<>();
 
-            // 5. Iterar sobre o ResultSet para criar objetos Receita
+        // 4. Objetos auxiliares para manipular a query e os resultados
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            // 5. Preparar a query e setar parâmetros
+            ps = connect.prepareStatement(sql);
+            ps.setInt(1, limite);
+            ps.setInt(2, offset);
+
+            // 6. Executar a query
+            rs = ps.executeQuery();
+
+            // 7. Iterar sobre o ResultSet e criar objetos Receita
             while (rs.next()) {
                 Receita receita = new Receita();
 
-                // 6. Preencher os atributos do objeto Receita com os dados do ResultSet
+                // 8. Preencher os atributos do objeto Receita com os dados do ResultSet
                 receita.setId(rs.getLong("id"));
                 receita.setNome(rs.getString("nome"));
                 receita.setPorcao(rs.getString("porcao"));
-                receita.setIdProduto(rs.getLong("idProduto"));
+                receita.setIdProduto(rs.getLong("id_produto"));
 
-                // 7. Adicionar o objeto Receita à lista
+                // 9. Adicionar a Receita à lista
                 receitasArrayList.add(receita);
             }
         } catch (SQLException e) {
-            // 8. Tratar exceções SQL
+            // 10. Tratar exceções SQL
             e.printStackTrace();
+        } finally {
+            // 11. Fechar ResultSet, PreparedStatement e conexão
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connect != null) {
+                    ConnectionFactory.disconnect(connect);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        // 9. Retornar a lista de receitas
+
+        // 12. Retornar a lista de receitas
         return receitasArrayList;
     }
+
 
     /**
      * Método para contar todos os usuários do Banco de Dados
@@ -110,29 +157,46 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, AutoCloseable {
      * @return ArrayList Retorna um inteiro com o total de usuarios registrados no banco de dados
      * */
     public int countAll() {
-        // 1. Inicializar a variavel responsável por armazenar a quantidade de receitas
+        // 1. Variável para armazenar a quantidade total de receitas
         int totalReceitas = 0;
 
-        // 2. Inicializar a variavel responsável por armazenar a instrução sql
+        // 2. Query SQL para contar todas as receitas
         String sql = "SELECT COUNT(*) FROM receitas";
 
-        // 3. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (Connection connection = ConnectionFactory.connect()) {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+        // 3. Objetos auxiliares para executar a query
+        Statement stmt = null;
+        ResultSet rs = null;
 
-            ResultSet rs = pstmt.executeQuery();
+        try {
+            // 4. Criar o Statement e executar a query
+            stmt = connect.createStatement();
+            rs = stmt.executeQuery(sql);
 
-            /* 4. Enquanto o ResultSet tiver receitas como resultado
-             * é incrementado +1 no totalReceitas
-             * */
-            while (rs.next()) {
-                // 5. É incrementado +1 no totalReceitas
-                totalReceitas++;
+            // 5. Obter o resultado (quantidade de receitas)
+            if (rs.next()) {
+                totalReceitas = rs.getInt(1);
             }
         } catch (SQLException e) {
-            // 6. Tratar exceções SQL
+            // 6. Tratar possíveis exceções SQL
             e.printStackTrace();
+        } finally {
+            // 7. Fechar ResultSet e Statement
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (connect != null) {
+                    ConnectionFactory.disconnect(connect);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
+        // 8. Retornar o total de receitas
         return totalReceitas;
     }
 
@@ -145,33 +209,33 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, AutoCloseable {
      * */
     @Override
     public boolean deleteById(Long id) {
-        // Inicializar variável com a query de delete do SQL
+        // 1. Query SQL para deletar uma receita pelo ID
         String sql = "DELETE FROM receitas WHERE id = ?";
 
-        // 1. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (Connection connect = ConnectionFactory.connect();
-             PreparedStatement ps = connect.prepareStatement(sql)) {
+        // 2. Objeto auxiliar para executar a query
+        PreparedStatement ps = null;
 
+        try {
+            // 3. Preparar a query e definir o parâmetro (ID)
+            ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
 
-            // 2. Retornar true se o número de linhas afetadas for maior que 0 e false caso contrário
+            // 4. Executar a query e retornar true se alguma linha foi afetada
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            // 3. Tratar exceções SQL
+            // 5. Tratar possíveis exceções SQL
             e.printStackTrace();
             return false;
-        }
-    }
-
-    /** Método para fechar a conexão com o banco de dados
-     * @throws SQLException Lança uma exceção SQL em caso de erro ao fechar a conexão
-     * */
-    @Override
-    public void close() throws SQLException {
-        if (connect != null && !connect.isClosed()) {
+        } finally {
+            // 6. Fechar PreparedStatement e conexão
             try {
-                connect.close();
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connect != null) {
+                    ConnectionFactory.disconnect(connect);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -72,8 +72,8 @@ public class Main {
 
         // 3. Teste de CRUD para a entidade Receita
 
-        try (ReceitaDAO receitaDAOTest = new ReceitaDAO()) {
-
+        try  {
+            ReceitaDAO receitaDAOTest = new ReceitaDAO();
             // TESTE DO MÉTODO insert
             System.out.println("\nInserindo uma nova receita:");
             // Aqui você pode criar um objeto Receita e chamar o método insert
