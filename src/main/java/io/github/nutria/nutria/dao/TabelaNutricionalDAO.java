@@ -152,8 +152,8 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return totalTabelas;
     }
 
-    public boolean update(Long idIngrediente, double valorEnergeticoKcal, double carboidratosG, double acucaresTotaisG, double acucaresAdicionadosG, double proteinasG, double gordurasTotaisG, double gordurasSaturadasG, double fibraAlimentarG, double sodioMg, double colesterolMg, double vitaminaAMcg, double vitaminaCMg, double vitaminaDMcg, double calcioMg, double ferroMg, double potassioMg) {
-        String sql = "UPDATE usuario SET idIngrediente = ?, valorEnergeticoKcal = ?, carboidratosG = ?, acucaresTotaisG = ?, acucaresAdicionadosG = ?, proteinasG = ?, gordurasTotaisG = ?, gordurasSaturadasG = ?, fibraAlimentarG = ?, sodioMg = ?, colesterolMg = ?, vitaminaAMcg = ?, vitaminaCMg = ?, vitaminaDMcg = ?, calcioMg = ?, ferroMg = ?, potassioMg = ? WHERE id = ?";
+    public boolean update(TabelaNutricional tabelaNutricional) {
+        String sql = "UPDATE tabela_nutricional SET idIngrediente = ?, valorEnergeticoKcal = ?, carboidratosG = ?, acucaresTotaisG = ?, acucaresAdicionadosG = ?, proteinasG = ?, gordurasTotaisG = ?, gordurasSaturadasG = ?, fibraAlimentarG = ?, sodioMg = ?, colesterolMg = ?, vitaminaAMcg = ?, vitaminaCMg = ?, vitaminaDMcg = ?, calcioMg = ?, ferroMg = ?, potassioMg = ? WHERE id = ?";
 
         int result = 0;
 
@@ -163,24 +163,23 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             connect = ConnectionFactory.connect();
             pstmt = connect.prepareStatement(sql);
 
-            pstmt.setDouble(1, idIngrediente);
-            pstmt.setDouble(2, valorEnergeticoKcal);
-            pstmt.setDouble(3, carboidratosG);
-            pstmt.setDouble(4, acucaresTotaisG);
-            pstmt.setDouble(5, acucaresAdicionadosG);
-            pstmt.setDouble(6, proteinasG);
-            pstmt.setDouble(7, gordurasTotaisG);
-            pstmt.setDouble(8, gordurasSaturadasG);
-            pstmt.setDouble(9, fibraAlimentarG);
-            pstmt.setDouble(10, sodioMg);
-            pstmt.setDouble(11, colesterolMg);
-            pstmt.setDouble(12, vitaminaAMcg);
-            pstmt.setDouble(13, vitaminaCMg);
-            pstmt.setDouble(14, vitaminaDMcg);
-            pstmt.setDouble(15, calcioMg);
-            pstmt.setDouble(16, ferroMg);
-            pstmt.setDouble(17, potassioMg);
-
+            pstmt.setDouble(1, tabelaNutricional.getIdIngrediente());
+            pstmt.setDouble(2, tabelaNutricional.getValorEnergeticoKcal());
+            pstmt.setDouble(3, tabelaNutricional.getCarboidratosG());
+            pstmt.setDouble(4, tabelaNutricional.getAcucaresTotaisG());
+            pstmt.setDouble(5, tabelaNutricional.getAcucaresAdicionadosG());
+            pstmt.setDouble(6, tabelaNutricional.getProteinasG());
+            pstmt.setDouble(7, tabelaNutricional.getGordurasTotaisG());
+            pstmt.setDouble(8, tabelaNutricional.getGordurasSaturadasG());
+            pstmt.setDouble(9, tabelaNutricional.getFibraAlimentarG());
+            pstmt.setDouble(10, tabelaNutricional.getSodioMg());
+            pstmt.setDouble(11, tabelaNutricional.getColesterolMg());
+            pstmt.setDouble(12, tabelaNutricional.getVitaminaAMcg());
+            pstmt.setDouble(13, tabelaNutricional.getVitaminaCMg());
+            pstmt.setDouble(14, tabelaNutricional.getVitaminaDMcg());
+            pstmt.setDouble(15, tabelaNutricional.getCalcioMg());
+            pstmt.setDouble(16, tabelaNutricional.getFerroMg());
+            pstmt.setDouble(17, tabelaNutricional.getPotassioMg());
 
             result = pstmt.executeUpdate();
 
