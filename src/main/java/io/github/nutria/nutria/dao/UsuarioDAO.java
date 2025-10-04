@@ -7,6 +7,7 @@ import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.PasswordHasher;
 
 // Importações necessárias para operações com JDBC e manipulação de listas
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,11 +37,15 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
         System.out.println(email);
         boolean result = false;
-        // 1. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try(PreparedStatement ps = connect.prepareStatement(sql)) {
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try  {
+            ps = connect.prepareStatement(sql);
             ps.setString(1, email);
             // 2. Executar a consulta
-            try (ResultSet rs = ps.executeQuery()) {
+            rs = ps.executeQuery();
 
                 // 3. Verificar se há linhas encontradas
                 if (rs.next()) {
@@ -49,14 +54,27 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
                      * */
                     result = rs.getInt(1) > 0;
                 }
-            }
         } catch (SQLException e) {
             // 5. Tratar exceções de SQL
             e.printStackTrace();
             return false;
         } finally {
-            return result;
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+
+                if (connect != null) {
+                    ConnectionFactory.disconnect(connect);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+        return result;
     }
 
     /**
@@ -71,8 +89,9 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
         boolean result = false;
 
-        // 1. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+        PreparedStatement ps = null;
+        try  {
+            ps = connect.prepareStatement(sql);
 
             /* 2. Inicializa uma variável hashedPassword que recebe o retorno método hashPassword
             * o método recebe como parametro o atributo de senha do objeto usuario
@@ -91,14 +110,23 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             ps.setString(6, usuario.getFoto());
 
            // 3. Validação sobre o número de linhas afetadas, com atribuição de result para true.
-            if (ps.executeUpdate() > 0) {
-                result = true;
-            }
+            result = (ps.executeUpdate() > 0);
 
         } catch (SQLException e) {
             // 4. Tratar exceções SQL
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connect != null) {
+                    ConnectionFactory.disconnect(connect);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         // 5. Retornar o resultado da validação
         return result;
@@ -119,16 +147,16 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         // 3. Instanciar uma lista para armazenar os usuarios retornados da consulta
         List<Usuario> usuarioArrayList = new ArrayList<Usuario>();
 
-        // 4. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (Connection connect = ConnectionFactory.connect()) {
-            PreparedStatement ps = connect.prepareStatement(sql);
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = connect.prepareStatement(sql);
             /* 5. Setando os parâmetros passados no método para a instrução SQL
              * */
             ps.setInt(1, limite);
             ps.setInt(2, offset);
 
-
-            try (ResultSet rs = ps.executeQuery()) {
+                rs = ps.executeQuery();
                 /* 6. Enquanto o ResultSet tiver tabela Nutricional como resultado
                  * é instanciado uma nova tablea e armazenado no tabelaNutricionalArrayList
                  * */
@@ -145,11 +173,24 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
                     // 7. A tablela é armazenada na lista
                     usuarioArrayList.add(usuario);
-                }
             }
         } catch (SQLException e) {
             // 8. Tratar exceções SQL
             e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+                if (connect != null) {
+                    ConnectionFactory.disconnect(connect);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return usuarioArrayList;
     }
@@ -166,20 +207,31 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
         boolean result = false;
 
-        // 2. Usar try-with-resources para garantir que as conexões sejam fechadas
-        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+        PreparedStatement ps = null;
+
+        try {
+            ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
 
             // 3. Validação sobre o número de linhas afetadas, com atribuição de result para true.
-            if (ps.executeUpdate() > 0) {
-                result = true;
-            }
+            result = (ps.executeUpdate() > 0);
+
         } catch (SQLException e) {
             // 4. Tratar exceções SQL
             e.printStackTrace();
             return false;
         } finally {
-            return result;
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connect != null) {
+                    ConnectionFactory.disconnect(connect);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+        return result;
     }
 }
