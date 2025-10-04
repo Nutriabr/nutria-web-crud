@@ -4,29 +4,29 @@ public class Receita {
     private long id;
     private String nome;
     private String porcao;
-    private long idProduto;
+    private Produto produto;
 
     // Métodos construtores
     public Receita(){
 
     }
 
-    public Receita(long id, String nome, String porcao, long idProduto){
+    public Receita(long id, String nome, String porcao, Produto produto){
         this.id = id;
         this.nome = nome;
         this.porcao = porcao;
-        this.idProduto = idProduto;
+        this.produto = produto;
     }
 
-    public Receita(String nome, String porcao, long idProduto){
+    public Receita(String nome, String porcao, Produto produto){
         this.nome = nome;
         this.porcao = porcao;
-        this.idProduto = idProduto;
+        this.produto = produto;
     }
 
-    public Receita(String porcao, long idProduto){
+    public Receita(String porcao, Produto produto){
         this.porcao = porcao;
-        this.idProduto = idProduto;
+        this.produto = produto;
     }
 
     // Métodos getters
@@ -43,8 +43,8 @@ public class Receita {
         return porcao;
     }
 
-    public long getIdProduto() {
-        return idProduto;
+    public Produto getProduto() {
+        return produto;
     }
 
     // Método setters
@@ -61,8 +61,8 @@ public class Receita {
         this.porcao = porcao;
     }
 
-    public void setIdProduto(long idProduto) {
-        this.idProduto = idProduto;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
     // Método toString
@@ -70,6 +70,6 @@ public class Receita {
         return "ID: " + id +
                 "\nNome: " + nome + '\'' +
                 "\nPorcão: " + porcao + '\'' +
-                "\nID-Produto: " + idProduto;
+                "\nProduto: " + produto;
     }
 }
