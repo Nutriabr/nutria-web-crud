@@ -6,10 +6,10 @@ import io.github.nutria.nutria.model.Admin;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AdminDAO implements GenericDAO<Admin, Long>, AutoCloseable {
+public class AdminDAO implements GenericDAO<Admin, Long> {
 
     @Override
-    public boolean insert(Admin entity) {
+    public boolean insert(Admin admin) {
         return false;
     }
 
@@ -19,12 +19,8 @@ public class AdminDAO implements GenericDAO<Admin, Long>, AutoCloseable {
     }
 
     @Override
-    public boolean deleteById(Long aLong) throws SQLException {
+    public boolean deleteById(Long id) throws SQLException {
         return false;
     }
 
-    @Override
-    public void close() throws Exception {
-
-    }
 }
