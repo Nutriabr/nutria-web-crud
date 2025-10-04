@@ -1,4 +1,4 @@
-package io.github.nutria.nutria.servelet.receitaServelet;
+package io.github.nutria.nutria.servlet.receitaServlet;
 
 import io.github.nutria.nutria.dao.ReceitaDAO;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "receitaController", urlPatterns = {"/receitas", "/receitas/visualizar"})
-public class ReceitaFindAllController extends HttpServlet {
+public class ReceitaFindAllServlet extends HttpServlet {
     // 1. Instância do DAO para acessar o banco de dados
     private final ReceitaDAO dao = new ReceitaDAO();
 

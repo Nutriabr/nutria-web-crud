@@ -1,4 +1,4 @@
-package io.github.nutria.nutria.servelet;
+package io.github.nutria.nutria.servlet.receitaServlet;
 import java.io.*;
 
 import io.github.nutria.nutria.model.Receita;
