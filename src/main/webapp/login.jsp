@@ -14,13 +14,19 @@
         <h1>Bem vindo(a) de volta!</h1>
         <p>Insira suas credenciais para acessar sua conta</p>
 
-        <form class="login-form">
-            <input type="email" placeholder="Endereço de email" class="login-input">
-            <input type="password" placeholder="Senha" class="login-input">
+        <% if (request.getAttribute("error") != null) { %>
+            <div class="error">
+                <%= request.getAttribute("error") %>
+            </div>
+        <%} %>
+
+        <form class="login-form" method="post"  action="${pageContext.request.contextPath}/login">
+            <input type="email" placeholder="Endereço de email" name="email" class="login-input" required>
+            <input type="password" placeholder="Senha" name="password" class="login-input" required>
 
             <a href="#" id="login-forget">Esqueci minha senha</a>
 
-            <button class="login-button">Login</button>
+            <button type="submit" class="login-button">Login</button>
         </form>
     </section>
 </main>
