@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "TabelaNutricionalController", value = "TabelaNutricionalFindAll")
+@WebServlet(name = "TabelaNutricionalController", value = "/TabelaNutricionalFindAll")
 public class TabelaNutricionalFindAllServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath();
