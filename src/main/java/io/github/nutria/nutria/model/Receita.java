@@ -1,32 +1,38 @@
 package io.github.nutria.nutria.model;
+
+import java.util.List;
 public class Receita {
     // Atributos
     private long id;
     private String nome;
     private String porcao;
     private Produto produto;
+    private List<ReceitaIngrediente> ingredientes;
 
     // Métodos construtores
     public Receita(){
 
     }
 
-    public Receita(long id, String nome, String porcao, Produto produto){
+    public Receita(long id, String nome, String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
         this.id = id;
         this.nome = nome;
         this.porcao = porcao;
         this.produto = produto;
+        this.ingredientes = ingredientes;
     }
 
-    public Receita(String nome, String porcao, Produto produto){
+    public Receita(String nome, String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
         this.nome = nome;
         this.porcao = porcao;
         this.produto = produto;
+        this.ingredientes = ingredientes;
     }
 
-    public Receita(String porcao, Produto produto){
+    public Receita(String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
         this.porcao = porcao;
         this.produto = produto;
+        this.ingredientes = ingredientes;
     }
 
     // Métodos getters
@@ -41,6 +47,9 @@ public class Receita {
 
     public String getPorcao() {
         return porcao;
+    }
+    public List<ReceitaIngrediente> getIngredientes(){
+        return this.ingredientes;
     }
 
     public Produto getProduto() {
@@ -64,12 +73,16 @@ public class Receita {
     public void setProduto(Produto produto) {
         this.produto = produto;
     }
+    public void setIngredientes(List<ReceitaIngrediente> ingredientes){
+        this.ingredientes = ingredientes;
+    }
 
     // Método toString
     public String toString() {
         return "ID: " + id +
                 "\nNome: " + nome + '\'' +
                 "\nPorcão: " + porcao + '\'' +
-                "\nProduto: " + produto;
+                "\nProduto: " + produto +
+                "\nIngredientes: " + ingredientes;
     }
 }
