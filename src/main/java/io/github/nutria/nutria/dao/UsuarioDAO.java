@@ -99,6 +99,47 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return result;
     }
 
+    @Override
+    public boolean update(Usuario usuario) {
+        String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, empresa = ?, foto = ? WHERE id = ?";
+
+        int result = 0;
+
+        PreparedStatement pstmt = null;
+        Connection connect = null;
+        try {
+            connect = ConnectionFactory.connect();
+            pstmt = connect.prepareStatement(sql);
+
+            String hashedPassword = PasswordHasher.hashPassword(usuario.getSenha());
+
+            pstmt.setString(1, usuario.getNome());
+            pstmt.setString(2, usuario.getEmail());
+            if (findByEmailUsed(usuario.getEmail())) {
+                return false;
+            }
+            pstmt.setString(3, hashedPassword);
+            pstmt.setString(4, usuario.getEmpresa());
+            pstmt.setString(5, usuario.getFoto());
+            pstmt.setLong(6, usuario.getId());
+
+            result = pstmt.executeUpdate();
+
+            pstmt.close();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return (result > 0);
+    }
+
     public List<Usuario> findAll(int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
