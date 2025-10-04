@@ -1,4 +1,4 @@
-package io.github.nutria.nutria.servelet;
+package io.github.nutria.nutria.servlet.tabelaNutricionalServlet;
 
 import io.github.nutria.nutria.service.TabelaNutricionalService;
 import jakarta.servlet.ServletException;

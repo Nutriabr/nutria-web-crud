@@ -1,4 +1,4 @@
-package io.github.nutria.nutria.servelet.tabelaNutricionalServelet;
+package io.github.nutria.nutria.servlet.tabelaNutricionalServlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "TabelaNutricionalController", value = "TabelaNutricionalDelete")
-public class TabelaNutricionalDeleteController  extends HttpServlet {
+public class TabelaNutricionalDeleteServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
