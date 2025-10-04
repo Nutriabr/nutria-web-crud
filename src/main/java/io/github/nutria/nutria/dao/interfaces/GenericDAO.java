@@ -20,6 +20,8 @@ public interface GenericDAO<T, ID> {
      */
     boolean insert(T entity);
 
+    boolean update(T entity);
+
     /** Método para listar todas os registros de uma entidade no banco de dados
      * @return List<Entity> Retorna uma lista de objetos da entidade
      * @author marianamarrao
@@ -34,7 +36,7 @@ public interface GenericDAO<T, ID> {
      * @return boolean - Retorna <i>true</i> se o número de linhas afetadas foi maior que 0 ou <i>false</i> se o
      * número de linhas afetadas for igual ou menor que 0.
      * */
-    boolean deleteById(ID id) throws SQLException;
+    boolean deleteById(Long id) throws SQLException;
 
     /**
      * Método para contar todos os registros de uma determinada entidade do Banco de Dados
