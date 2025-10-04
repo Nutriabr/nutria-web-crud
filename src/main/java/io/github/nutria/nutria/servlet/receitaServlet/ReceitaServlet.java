@@ -7,7 +7,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "receitaController", urlPatterns = {"/receitas", "/receitas/inserir", "/receitas/excluir", "/receitas/visualizar"})
-public class ReceitaServelet extends HttpServlet{
+public class ReceitaServlet extends HttpServlet{
     ReceitaService service = new ReceitaService();
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{

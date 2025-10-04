@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "TabelaNutricional", urlPatterns = {"/tabela_nutricional", "/tabela_nutricional/inserir"})
-public class TabelaNutricionalServelet extends HttpServlet {
+public class TabelaNutricionalServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TabelaNutricionalService service = new TabelaNutricionalService();
