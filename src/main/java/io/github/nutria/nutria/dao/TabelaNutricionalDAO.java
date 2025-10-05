@@ -97,7 +97,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             }
             else {
                 ps.setDouble(1, filtro.getValor1());
-                ps.setDouble(2, limit);
+                ps.setInt(2, limit);
                 ps.setInt(3, offset);
             }
 
