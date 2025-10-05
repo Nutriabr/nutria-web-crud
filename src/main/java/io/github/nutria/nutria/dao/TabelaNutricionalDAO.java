@@ -1,6 +1,7 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
+import io.github.nutria.nutria.model.FiltroInfo;
 import io.github.nutria.nutria.model.TabelaNutricional;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
@@ -10,8 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long> {
+
+    private static Map<String, FiltroInfo> filtros = FiltroInfo.filtrosNutricionais();
 
     public TabelaNutricionalDAO() {
     }
@@ -57,6 +61,86 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             }
         }
         return false;
+    }
+
+    //  Filtragem
+    public List<TabelaNutricional> filterBy(String nomeFiltro, int page) {
+        int limit = 4;
+        int offset = (page - 1) * limit;
+
+        FiltroInfo filtro = filtros.get(nomeFiltro);
+
+        String sql;
+        if (filtro.getOperador().equals("BETWEEN")) {
+            sql = "SELECT * FROM tabela_nutricional WHERE " + filtro.getColuna() +
+                    " BETWEEN ? AND ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
+        }
+        else {
+            sql = "SELECT * FROM tabela_nutricional WHERE " + filtro.getColuna() + " " +
+                    filtro.getOperador() + "  ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
+        }
+
+        List<TabelaNutricional> tabelaNutricionalArrayList = new ArrayList<TabelaNutricional>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+
+            if (filtro.getOperador().equals("BETWEEN")) {
+                ps.setDouble(1, filtro.getValor1());
+                ps.setDouble(2, filtro.getValor2());
+                ps.setInt(3, limit);
+                ps.setInt(4, offset);
+            }
+            else {
+                ps.setDouble(1, filtro.getValor1());
+                ps.setDouble(2, limit);
+                ps.setInt(3, offset);
+            }
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                TabelaNutricional tabelaNutricional = new TabelaNutricional(
+                        rs.getLong("id_ingrediente"),
+                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("carboidratos_g"),
+                        rs.getDouble("acucares_totais_g"),
+                        rs.getDouble("acucares_adicionados_g"),
+                        rs.getDouble("proteinas_g"),
+                        rs.getDouble("gorduras_totais_g"),
+                        rs.getDouble("gorduras_saturadas_g"),
+                        rs.getDouble("fibra_alimentar_g"),
+                        rs.getDouble("sodio_mg"),
+                        rs.getDouble("colesterol_mg"),
+                        rs.getDouble("vitamina_a_mcg"),
+                        rs.getDouble("vitamina_c_mg"),
+                        rs.getDouble("vitamina_d_mcg"),
+                        rs.getDouble("calcio_mg"),
+                        rs.getDouble("ferro_mg"),
+                        rs.getDouble("potassio_mg")
+                );
+
+                tabelaNutricionalArrayList.add(tabelaNutricional);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return tabelaNutricionalArrayList;
     }
 
     @Override
