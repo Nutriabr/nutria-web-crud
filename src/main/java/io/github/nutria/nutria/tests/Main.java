@@ -80,7 +80,7 @@ public class Main {
             Receita receita = new Receita();
             receita.setNome("Bolo de Açúcar e Canela");
             receita.setPorcao("148g");
-            receita.setIdProduto(1);
+            receita.setId(1);
             boolean insertResult = receitaDAOTest.insert(receita);
             if (insertResult) {
                 System.out.println("Receita inserida com sucesso.");
