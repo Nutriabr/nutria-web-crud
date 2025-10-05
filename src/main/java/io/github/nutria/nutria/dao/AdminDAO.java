@@ -139,11 +139,8 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
             pstmt.setString(1, admin.getNome());
             pstmt.setString(2, admin.getEmail());
-            if (findByEmailUsed(admin.getEmail())) {
-                return false;
-            }
             pstmt.setString(3, hashedPassword);
-            pstmt.setLong(6, admin.getId());
+            pstmt.setLong(4, admin.getId());
 
             result = pstmt.executeUpdate();
 
