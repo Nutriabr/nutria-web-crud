@@ -2,7 +2,7 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IUsuarioDAO;
-import io.github.nutria.nutria.model.FiltroInfo;
+import io.github.nutria.nutria.model.FiltroNutricional;
 import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.PasswordHasher;
@@ -16,7 +16,7 @@ import java.util.*;
  * @see IUsuarioDAO
  */
 public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
-    private static Map<String, FiltroInfo> filtros = FiltroInfo.filtrosNutricionais();
+    private static Map<String, FiltroNutricional> filtros = FiltroNutricional.filtrosNutricionais();
 
     @Override
     public boolean findByEmailUsed(String email) {
@@ -64,7 +64,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         int limit = 4;
         int offset = (page - 1) * limit;
 
-        FiltroInfo filtro = filtros.get(nomeFiltro);
+        FiltroNutricional filtro = filtros.get(nomeFiltro);
 
         List<Usuario> usuarios = new ArrayList<>();
 
