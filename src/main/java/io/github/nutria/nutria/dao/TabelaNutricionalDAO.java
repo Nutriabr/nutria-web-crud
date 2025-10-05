@@ -202,6 +202,61 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return tabelaNutricionalArrayList;
     }
 
+    public TabelaNutricional findById(long id) {
+        String sql = "SELECT * FROM tabela_nutricional WHERE id_ingrediente = ?";
+
+        TabelaNutricional tabelaNutricional = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+
+            ps.setLong(1, id);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                tabelaNutricional = new TabelaNutricional(
+                        rs.getLong("id_ingrediente"),
+                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("carboidratos_g"),
+                        rs.getDouble("acucares_totais_g"),
+                        rs.getDouble("acucares_adicionados_g"),
+                        rs.getDouble("proteinas_g"),
+                        rs.getDouble("gorduras_totais_g"),
+                        rs.getDouble("gorduras_saturadas_g"),
+                        rs.getDouble("fibra_alimentar_g"),
+                        rs.getDouble("sodio_mg"),
+                        rs.getDouble("colesterol_mg"),
+                        rs.getDouble("vitamina_a_mcg"),
+                        rs.getDouble("vitamina_c_mg"),
+                        rs.getDouble("vitamina_d_mcg"),
+                        rs.getDouble("calcio_mg"),
+                        rs.getDouble("ferro_mg"),
+                        rs.getDouble("potassio_mg")
+                );
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (connect != null) ConnectionFactory.disconnect(connect);
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return tabelaNutricional;
+    }
+
     public int countAll() {
         int totalTabelas = 0;
 
