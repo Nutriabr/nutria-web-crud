@@ -15,13 +15,16 @@ import java.util.Map;
 
 public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long> {
 
-    private static Map<String, FiltroInfo> filtros = FiltroInfo.filtrosNutricionais();
+    private static final Map<String, FiltroInfo> filtros = FiltroInfo.filtrosNutricionais();
 
     public TabelaNutricionalDAO() {
     }
 
     public boolean insert(TabelaNutricional tabelaNutricional) {
-        String sql = "INSERT INTO tabela_nutricional (valor_energetico_kcal, carboidratos_g, acucares_totais_g, acucares_adicionados_g, proteinas_g, gorduras_totais_g, gorduras_saturadas_g, fibra_alimentar_g, sodio_mg, colesterol_mg, vitamina_a_mcg, vitamina_c_mg, vitamina_d_mcg, calcio_mg, ferro_mg, potassio_mg) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO tabela_nutricional (valor_energetico_kcal, carboidratos_g, acucares_totais_g, " +
+                "acucares_adicionados_g, proteinas_g, gorduras_totais_g, gorduras_saturadas_g, fibra_alimentar_g, " +
+                "sodio_mg, colesterol_mg, vitamina_a_mcg, vitamina_c_mg, vitamina_d_mcg, calcio_mg, ferro_mg, potassio_mg) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         PreparedStatement ps = null;
         Connection connect = null;
@@ -30,7 +33,6 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
 
-//            ps.setLong(1, tabelaNutricional.getIdIngrediente());
             ps.setDouble(1, tabelaNutricional.getValorEnergeticoKcal());
             ps.setDouble(2, tabelaNutricional.getCarboidratosG());
             ps.setDouble(3, tabelaNutricional.getAcucaresTotaisG());
@@ -289,7 +291,10 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     }
 
     public boolean update(TabelaNutricional tabelaNutricional) {
-        String sql = "UPDATE tabela_nutricional SET idIngrediente = ?, valorEnergeticoKcal = ?, carboidratosG = ?, acucaresTotaisG = ?, acucaresAdicionadosG = ?, proteinasG = ?, gordurasTotaisG = ?, gordurasSaturadasG = ?, fibraAlimentarG = ?, sodioMg = ?, colesterolMg = ?, vitaminaAMcg = ?, vitaminaCMg = ?, vitaminaDMcg = ?, calcioMg = ?, ferroMg = ?, potassioMg = ? WHERE id = ?";
+        String sql = "UPDATE tabela_nutricional SET idIngrediente = ?, valorEnergeticoKcal = ?, carboidratosG = ?, " +
+                "acucaresTotaisG = ?, acucaresAdicionadosG = ?, proteinasG = ?, gordurasTotaisG = ?, gordurasSaturadasG = ?, " +
+                "fibraAlimentarG = ?, sodioMg = ?, colesterolMg = ?, vitaminaAMcg = ?, vitaminaCMg = ?, vitaminaDMcg = ?, " +
+                "calcioMg = ?, ferroMg = ?, potassioMg = ? WHERE id = ?";
 
         int result = 0;
 
