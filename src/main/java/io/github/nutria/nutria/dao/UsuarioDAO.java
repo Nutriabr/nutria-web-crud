@@ -213,7 +213,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
         String sql = "SELECT * FROM usuario LIMIT ? OFFSET ?";
 
-        List<Usuario> usuarioArrayList = new ArrayList<Usuario>();
+        List<Usuario> usuarioArrayList = new ArrayList<>();
 
         PreparedStatement ps = null;
         ResultSet rs = null;

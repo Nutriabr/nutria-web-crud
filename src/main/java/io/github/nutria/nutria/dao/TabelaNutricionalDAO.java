@@ -162,7 +162,6 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             ps.setInt(1, limite);
             ps.setInt(2, offset);
 
-
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -180,7 +179,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                         rs.getDouble("colesterol_mg"),
                         rs.getDouble("vitamina_a_mcg"),
                         rs.getDouble("vitamina_c_mg"),
-                        rs.getDouble("vitamina_d_mc g"),
+                        rs.getDouble("vitamina_d_mcg"),
                         rs.getDouble("calcio_mg"),
                         rs.getDouble("ferro_mg"),
                         rs.getDouble("potassio_mg")
@@ -208,15 +207,14 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
         String sql = "SELECT COUNT(*) FROM tabela_nutricional";
 
-        PreparedStatement pstmt = null;
+        PreparedStatement ps = null;
         ResultSet rs = null;
         Connection connect = null;
         try {
             connect = ConnectionFactory.connect();
-            pstmt = connect.prepareStatement(sql);
+            ps = connect.prepareStatement(sql);
 
-            rs = pstmt.executeQuery();
-
+            rs = ps.executeQuery();
 
             while (rs.next()) {
                 totalTabelas++;
@@ -225,7 +223,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             e.printStackTrace();
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (ps != null) ps.close();
                 if (rs != null) rs.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
             } catch (SQLException e) {
@@ -240,39 +238,39 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
         int result = 0;
 
-        PreparedStatement pstmt = null;
+        PreparedStatement ps = null;
         Connection connect = null;
         try {
             connect = ConnectionFactory.connect();
-            pstmt = connect.prepareStatement(sql);
+            ps = connect.prepareStatement(sql);
 
-            pstmt.setDouble(1, tabelaNutricional.getIdIngrediente());
-            pstmt.setDouble(2, tabelaNutricional.getValorEnergeticoKcal());
-            pstmt.setDouble(3, tabelaNutricional.getCarboidratosG());
-            pstmt.setDouble(4, tabelaNutricional.getAcucaresTotaisG());
-            pstmt.setDouble(5, tabelaNutricional.getAcucaresAdicionadosG());
-            pstmt.setDouble(6, tabelaNutricional.getProteinasG());
-            pstmt.setDouble(7, tabelaNutricional.getGordurasTotaisG());
-            pstmt.setDouble(8, tabelaNutricional.getGordurasSaturadasG());
-            pstmt.setDouble(9, tabelaNutricional.getFibraAlimentarG());
-            pstmt.setDouble(10, tabelaNutricional.getSodioMg());
-            pstmt.setDouble(11, tabelaNutricional.getColesterolMg());
-            pstmt.setDouble(12, tabelaNutricional.getVitaminaAMcg());
-            pstmt.setDouble(13, tabelaNutricional.getVitaminaCMg());
-            pstmt.setDouble(14, tabelaNutricional.getVitaminaDMcg());
-            pstmt.setDouble(15, tabelaNutricional.getCalcioMg());
-            pstmt.setDouble(16, tabelaNutricional.getFerroMg());
-            pstmt.setDouble(17, tabelaNutricional.getPotassioMg());
+            ps.setDouble(1, tabelaNutricional.getIdIngrediente());
+            ps.setDouble(2, tabelaNutricional.getValorEnergeticoKcal());
+            ps.setDouble(3, tabelaNutricional.getCarboidratosG());
+            ps.setDouble(4, tabelaNutricional.getAcucaresTotaisG());
+            ps.setDouble(5, tabelaNutricional.getAcucaresAdicionadosG());
+            ps.setDouble(6, tabelaNutricional.getProteinasG());
+            ps.setDouble(7, tabelaNutricional.getGordurasTotaisG());
+            ps.setDouble(8, tabelaNutricional.getGordurasSaturadasG());
+            ps.setDouble(9, tabelaNutricional.getFibraAlimentarG());
+            ps.setDouble(10, tabelaNutricional.getSodioMg());
+            ps.setDouble(11, tabelaNutricional.getColesterolMg());
+            ps.setDouble(12, tabelaNutricional.getVitaminaAMcg());
+            ps.setDouble(13, tabelaNutricional.getVitaminaCMg());
+            ps.setDouble(14, tabelaNutricional.getVitaminaDMcg());
+            ps.setDouble(15, tabelaNutricional.getCalcioMg());
+            ps.setDouble(16, tabelaNutricional.getFerroMg());
+            ps.setDouble(17, tabelaNutricional.getPotassioMg());
 
-            result = pstmt.executeUpdate();
+            result = ps.executeUpdate();
 
-            pstmt.close();
+            ps.close();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
             return false;
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
             } catch (SQLException e) {
                 e.printStackTrace();
