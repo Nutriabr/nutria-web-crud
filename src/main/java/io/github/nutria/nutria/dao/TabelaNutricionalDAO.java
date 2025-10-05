@@ -1,7 +1,7 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
-import io.github.nutria.nutria.model.FiltroInfo;
+import io.github.nutria.nutria.model.FiltroNutricional;
 import io.github.nutria.nutria.model.TabelaNutricional;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long> {
 
-    private static final Map<String, FiltroInfo> filtros = FiltroInfo.filtrosNutricionais();
+    private static final Map<String, FiltroNutricional> filtros = FiltroNutricional.filtrosNutricionais();
 
     public TabelaNutricionalDAO() {
     }
@@ -70,7 +70,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         int limit = 4;
         int offset = (page - 1) * limit;
 
-        FiltroInfo filtro = filtros.get(nomeFiltro);
+        FiltroNutricional filtro = filtros.get(nomeFiltro);
 
         String sql;
         if (filtro.getOperador().equals("BETWEEN")) {
