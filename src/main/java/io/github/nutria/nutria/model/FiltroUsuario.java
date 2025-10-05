@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FiltroUsuario {
-    private String coluna;
-    private String operador;
-    private String valor;
+    private static String coluna;
+    private static String operador;
+    private static String valor;
 
     public FiltroUsuario(String coluna, String operador, String valor) {
         this.coluna = coluna;
@@ -19,16 +19,30 @@ public class FiltroUsuario {
         this.operador = operador;
     }
 
-    public Map<String, FiltroUsuario> filtrosUsuarios() {
-        Map<String, FiltroUsuario> filtros = new HashMap<>();
+    // getters
+    public String getColuna() {
+        return coluna;
+    }
 
-        filtros.put("nome_usuario", new FiltroUsuario("nome", "LIKE", valor));
-        filtros.put("email_usuario", new FiltroUsuario("email", "=", valor));
-        filtros.put("dominio_email_usuario", new FiltroUsuario("email", "LIKE", valor));
-        filtros.put("empresa", new FiltroUsuario("empresa", "LIKE", valor));
-        filtros.put("com_foto", new FiltroUsuario("foto", "IS NOT NULL"));
-        filtros.put("sem_foto", new FiltroUsuario("foto", "IS NULL"));
+    public String getOperador() {
+        return operador;
+    }
 
-        return filtros;
+    public String getValor() {
+        return valor;
+    }
+
+
+    public static Map<String, FiltroUsuario> filtrosUsuarios() {
+        Map<String, FiltroUsuario> filtroUsuario = new HashMap<>();
+
+        filtroUsuario.put("nome_usuario", new FiltroUsuario("nome", "LIKE", valor));
+        filtroUsuario.put("email_usuario", new FiltroUsuario("email", "=", valor));
+        filtroUsuario.put("dominio_email_usuario", new FiltroUsuario("email", "LIKE", valor));
+        filtroUsuario.put("empresa", new FiltroUsuario("empresa", "LIKE", valor));
+        filtroUsuario.put("com_foto", new FiltroUsuario("foto", "IS NOT NULL"));
+        filtroUsuario.put("sem_foto", new FiltroUsuario("foto", "IS NULL"));
+
+        return filtroUsuario;
     }
 }
