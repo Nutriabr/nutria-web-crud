@@ -54,6 +54,11 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
     }
 
     @Override
+    public boolean update(Receita receita) {
+        return false;
+    }
+
+    @Override
     public List<Receita> findAll(int page) {
 
         int limite = 4;
