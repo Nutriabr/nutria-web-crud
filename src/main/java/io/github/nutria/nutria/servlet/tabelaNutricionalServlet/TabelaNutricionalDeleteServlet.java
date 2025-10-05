@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "TabelaNutricionalController", value = "TabelaNutricionalDelete")
+@WebServlet(name = "TabelaNutricionalController", value = "/TabelaNutricionalDelete")
 public class TabelaNutricionalDeleteServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

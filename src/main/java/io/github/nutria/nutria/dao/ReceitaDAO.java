@@ -2,7 +2,6 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.model.Receita;
-import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 // Importações necessárias para operações com JDBC e manipulação de listas
@@ -34,7 +33,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
 
             ps.setString(1, receita.getNome());
             ps.setString(2, receita.getPorcao());
-            ps.setLong(3, receita.getProduto().getId());
+            ps.setLong(3, receita.getIdProduto());
 
             int result = ps.executeUpdate();
 
@@ -60,12 +59,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = """
-            SELECT r.id, r.nome, r.porcao, r.id_produto, p.nome AS nome_produto
-            FROM receita r
-            JOIN produto p ON r.id_produto = p.id
-            LIMIT ? OFFSET ?
-        """;
+        String sql = "SELECT * FROM receitas LIMIT ? OFFSET ?";
 
         List<Receita> receitasArrayList = new ArrayList<>();
 
@@ -88,12 +82,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
                 receita.setId(rs.getLong("id"));
                 receita.setNome(rs.getString("nome"));
                 receita.setPorcao(rs.getString("porcao"));
-
-                Produto produto = new Produto();
-                produto.setId(rs.getLong("id_produto"));
-                produto.setNome(rs.getString("nome_produto"));
-
-                receita.setProduto(produto);
+                receita.setIdProduto(rs.getLong("id_produto"));
 
                 receitasArrayList.add(receita);
             }
