@@ -1,7 +1,7 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
-import io.github.nutria.nutria.model.FiltroInfo;
+import io.github.nutria.nutria.model.FiltroNutricional;
 import io.github.nutria.nutria.model.TabelaNutricional;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
@@ -15,13 +15,16 @@ import java.util.Map;
 
 public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long> {
 
-    private static Map<String, FiltroInfo> filtros = FiltroInfo.filtrosNutricionais();
+    private static final Map<String, FiltroNutricional> filtros = FiltroNutricional.filtrosNutricionais();
 
     public TabelaNutricionalDAO() {
     }
 
     public boolean insert(TabelaNutricional tabelaNutricional) {
-        String sql = "INSERT INTO tabela_nutricional (valor_energetico_kcal, carboidratos_g, acucares_totais_g, acucares_adicionados_g, proteinas_g, gorduras_totais_g, gorduras_saturadas_g, fibra_alimentar_g, sodio_mg, colesterol_mg, vitamina_a_mcg, vitamina_c_mg, vitamina_d_mcg, calcio_mg, ferro_mg, potassio_mg) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO tabela_nutricional (valor_energetico_kcal, carboidratos_g, acucares_totais_g, " +
+                "acucares_adicionados_g, proteinas_g, gorduras_totais_g, gorduras_saturadas_g, fibra_alimentar_g, " +
+                "sodio_mg, colesterol_mg, vitamina_a_mcg, vitamina_c_mg, vitamina_d_mcg, calcio_mg, ferro_mg, potassio_mg) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         PreparedStatement ps = null;
         Connection connect = null;
@@ -30,7 +33,6 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
 
-//            ps.setLong(1, tabelaNutricional.getIdIngrediente());
             ps.setDouble(1, tabelaNutricional.getValorEnergeticoKcal());
             ps.setDouble(2, tabelaNutricional.getCarboidratosG());
             ps.setDouble(3, tabelaNutricional.getAcucaresTotaisG());
@@ -68,7 +70,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         int limit = 4;
         int offset = (page - 1) * limit;
 
-        FiltroInfo filtro = filtros.get(nomeFiltro);
+        FiltroNutricional filtro = filtros.get(nomeFiltro);
 
         String sql;
         if (filtro.getOperador().equals("BETWEEN")) {
@@ -162,7 +164,6 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             ps.setInt(1, limite);
             ps.setInt(2, offset);
 
-
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -180,7 +181,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                         rs.getDouble("colesterol_mg"),
                         rs.getDouble("vitamina_a_mcg"),
                         rs.getDouble("vitamina_c_mg"),
-                        rs.getDouble("vitamina_d_mc g"),
+                        rs.getDouble("vitamina_d_mcg"),
                         rs.getDouble("calcio_mg"),
                         rs.getDouble("ferro_mg"),
                         rs.getDouble("potassio_mg")
@@ -203,20 +204,75 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return tabelaNutricionalArrayList;
     }
 
+    public TabelaNutricional findById(long id) {
+        String sql = "SELECT * FROM tabela_nutricional WHERE id_ingrediente = ?";
+
+        TabelaNutricional tabelaNutricional = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+
+            ps.setLong(1, id);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                tabelaNutricional = new TabelaNutricional(
+                        rs.getLong("id_ingrediente"),
+                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("carboidratos_g"),
+                        rs.getDouble("acucares_totais_g"),
+                        rs.getDouble("acucares_adicionados_g"),
+                        rs.getDouble("proteinas_g"),
+                        rs.getDouble("gorduras_totais_g"),
+                        rs.getDouble("gorduras_saturadas_g"),
+                        rs.getDouble("fibra_alimentar_g"),
+                        rs.getDouble("sodio_mg"),
+                        rs.getDouble("colesterol_mg"),
+                        rs.getDouble("vitamina_a_mcg"),
+                        rs.getDouble("vitamina_c_mg"),
+                        rs.getDouble("vitamina_d_mcg"),
+                        rs.getDouble("calcio_mg"),
+                        rs.getDouble("ferro_mg"),
+                        rs.getDouble("potassio_mg")
+                );
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (connect != null) ConnectionFactory.disconnect(connect);
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return tabelaNutricional;
+    }
+
     public int countAll() {
         int totalTabelas = 0;
 
         String sql = "SELECT COUNT(*) FROM tabela_nutricional";
 
-        PreparedStatement pstmt = null;
+        PreparedStatement ps = null;
         ResultSet rs = null;
         Connection connect = null;
+
         try {
             connect = ConnectionFactory.connect();
-            pstmt = connect.prepareStatement(sql);
+            ps = connect.prepareStatement(sql);
 
-            rs = pstmt.executeQuery();
-
+            rs = ps.executeQuery();
 
             while (rs.next()) {
                 totalTabelas++;
@@ -225,7 +281,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             e.printStackTrace();
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (ps != null) ps.close();
                 if (rs != null) rs.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
             } catch (SQLException e) {
@@ -236,51 +292,55 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     }
 
     public boolean update(TabelaNutricional tabelaNutricional) {
-        String sql = "UPDATE tabela_nutricional SET idIngrediente = ?, valorEnergeticoKcal = ?, carboidratosG = ?, acucaresTotaisG = ?, acucaresAdicionadosG = ?, proteinasG = ?, gordurasTotaisG = ?, gordurasSaturadasG = ?, fibraAlimentarG = ?, sodioMg = ?, colesterolMg = ?, vitaminaAMcg = ?, vitaminaCMg = ?, vitaminaDMcg = ?, calcioMg = ?, ferroMg = ?, potassioMg = ? WHERE id = ?";
+        String sql = "UPDATE tabela_nutricional SET valorEnergeticoKcal = ?, carboidratosG = ?, " +
+                "acucaresTotaisG = ?, acucaresAdicionadosG = ?, proteinasG = ?, gordurasTotaisG = ?, gordurasSaturadasG = ?, " +
+                "fibraAlimentarG = ?, sodioMg = ?, colesterolMg = ?, vitaminaAMcg = ?, vitaminaCMg = ?, vitaminaDMcg = ?, " +
+                "calcioMg = ?, ferroMg = ?, potassioMg = ? WHERE id_ingrediente = ?";
 
         int result = 0;
 
-        PreparedStatement pstmt = null;
+        PreparedStatement ps = null;
         Connection connect = null;
+
         try {
             connect = ConnectionFactory.connect();
-            pstmt = connect.prepareStatement(sql);
+            ps = connect.prepareStatement(sql);
 
-            pstmt.setDouble(1, tabelaNutricional.getIdIngrediente());
-            pstmt.setDouble(2, tabelaNutricional.getValorEnergeticoKcal());
-            pstmt.setDouble(3, tabelaNutricional.getCarboidratosG());
-            pstmt.setDouble(4, tabelaNutricional.getAcucaresTotaisG());
-            pstmt.setDouble(5, tabelaNutricional.getAcucaresAdicionadosG());
-            pstmt.setDouble(6, tabelaNutricional.getProteinasG());
-            pstmt.setDouble(7, tabelaNutricional.getGordurasTotaisG());
-            pstmt.setDouble(8, tabelaNutricional.getGordurasSaturadasG());
-            pstmt.setDouble(9, tabelaNutricional.getFibraAlimentarG());
-            pstmt.setDouble(10, tabelaNutricional.getSodioMg());
-            pstmt.setDouble(11, tabelaNutricional.getColesterolMg());
-            pstmt.setDouble(12, tabelaNutricional.getVitaminaAMcg());
-            pstmt.setDouble(13, tabelaNutricional.getVitaminaCMg());
-            pstmt.setDouble(14, tabelaNutricional.getVitaminaDMcg());
-            pstmt.setDouble(15, tabelaNutricional.getCalcioMg());
-            pstmt.setDouble(16, tabelaNutricional.getFerroMg());
-            pstmt.setDouble(17, tabelaNutricional.getPotassioMg());
+            ps.setDouble(1, tabelaNutricional.getValorEnergeticoKcal());
+            ps.setDouble(2, tabelaNutricional.getCarboidratosG());
+            ps.setDouble(3, tabelaNutricional.getAcucaresTotaisG());
+            ps.setDouble(4, tabelaNutricional.getAcucaresAdicionadosG());
+            ps.setDouble(5, tabelaNutricional.getProteinasG());
+            ps.setDouble(6, tabelaNutricional.getGordurasTotaisG());
+            ps.setDouble(7, tabelaNutricional.getGordurasSaturadasG());
+            ps.setDouble(8, tabelaNutricional.getFibraAlimentarG());
+            ps.setDouble(9, tabelaNutricional.getSodioMg());
+            ps.setDouble(10, tabelaNutricional.getColesterolMg());
+            ps.setDouble(11, tabelaNutricional.getVitaminaAMcg());
+            ps.setDouble(12, tabelaNutricional.getVitaminaCMg());
+            ps.setDouble(13, tabelaNutricional.getVitaminaDMcg());
+            ps.setDouble(14, tabelaNutricional.getCalcioMg());
+            ps.setDouble(15, tabelaNutricional.getFerroMg());
+            ps.setDouble(16, tabelaNutricional.getPotassioMg());
+            ps.setLong(17, tabelaNutricional.getIdIngrediente());
 
-            result = pstmt.executeUpdate();
-
-            pstmt.close();
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+            result = ps.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
             return false;
-        } finally {
+        }
+        finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return (result > 0);
     }
-
 
     @Override
     public boolean deleteById(Long id) throws SQLException {

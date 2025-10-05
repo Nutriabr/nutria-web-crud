@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FiltroInfo {
-    private String coluna;
-    private String operador;
-    private double valor1;
-    private Double valor2;
+    private final String coluna;
+    private final String operador;
+    private final Double valor1;
+    private final Double valor2;
 
-    public FiltroInfo(String coluna, String operador, double valor1, Double valor2) {
+    public FiltroInfo(String coluna, String operador, Double valor1, Double valor2) {
         this.coluna = coluna;
         this.operador = operador;
         this.valor1 = valor1;
@@ -22,7 +22,7 @@ public class FiltroInfo {
     public String getOperador() {
         return operador;
     }
-    public double getValor1() {
+    public Double getValor1() {
         return valor1;
     }
     public Double getValor2() {
