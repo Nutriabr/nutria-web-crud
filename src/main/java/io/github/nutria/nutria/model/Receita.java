@@ -85,4 +85,12 @@ public class Receita {
                 "\nProduto: " + produto +
                 "\nIngredientes: " + ingredientes;
     }
+
+    public long getIdProduto() {
+        return 1L;
+    }
+
+    public void setIdProduto(long idProduto) {
+
+    }
 }
