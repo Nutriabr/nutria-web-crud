@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FiltroInfo {
-    String coluna;
-    String operador;
-    double valor1;
-    Double valor2;
+    private String coluna;
+    private String operador;
+    private double valor1;
+    private Double valor2;
 
     public FiltroInfo(String coluna, String operador, double valor1, Double valor2) {
         this.coluna = coluna;
