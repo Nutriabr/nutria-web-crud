@@ -4,7 +4,6 @@ import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.model.TabelaNutricional;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
-// Importações necessárias para operações com JDBC e manipulação de listas
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,68 +57,6 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             }
         }
         return false;
-    }
-
-//  Filtros
-    public List<TabelaNutricional> muitoBaixoEmSodio(int page) {
-        int limit = 4;
-        int offset = (page - 1) * limit;
-
-        String sql = "SELECT * FROM tabela_nutricional WHERE sodio_mg <= ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
-        List<TabelaNutricional> tabelaNutricionalArrayList = new ArrayList<TabelaNutricional>();
-
-        Connection connect = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            connect = ConnectionFactory.connect();
-            ps = connect.prepareStatement(sql);
-
-            ps.setDouble(1, 40);
-            ps.setInt(2, limit);
-            ps.setInt(3, offset);
-
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                TabelaNutricional tabelaNutricional = new TabelaNutricional(
-                        rs.getLong("id_ingrediente"),
-                        rs.getDouble("valor_energetivo_kcal"),
-                        rs.getDouble("carboidratos_g"),
-                        rs.getDouble("acucares_totais_g"),
-                        rs.getDouble("acucares_adicionados_g"),
-                        rs.getDouble("proteinas_g"),
-                        rs.getDouble("gorduras_totais_g"),
-                        rs.getDouble("gorduras_saturadas_g"),
-                        rs.getDouble("fibra_alimentar_g"),
-                        rs.getDouble("sodio_mg"),
-                        rs.getDouble("colesterol_mg"),
-                        rs.getDouble("vitamina_a_mcg"),
-                        rs.getDouble("vitamina_c_mg"),
-                        rs.getDouble("vitamina_d_mcg"),
-                        rs.getDouble("calcio_mg"),
-                        rs.getDouble("ferro_mg"),
-                        rs.getDouble("potassio_mg")
-                );
-
-                tabelaNutricionalArrayList.add(tabelaNutricional);
-            }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
-                if (connect != null) ConnectionFactory.disconnect(connect);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return tabelaNutricionalArrayList;
     }
 
     @Override
