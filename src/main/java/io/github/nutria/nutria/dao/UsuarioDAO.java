@@ -2,6 +2,7 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IUsuarioDAO;
+import io.github.nutria.nutria.model.FiltroInfo;
 import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.PasswordHasher;
@@ -15,6 +16,8 @@ import java.util.*;
  * @see IUsuarioDAO
  */
 public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
+    private static Map<String, FiltroInfo> filtros = FiltroInfo.filtrosNutricionais();
+
     @Override
     public boolean findByEmailUsed(String email) {
         String sql = "SELECT COUNT(*) FROM usuario WHERE email = ?";
@@ -51,6 +54,70 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         }
         return result;
     }
+
+    // Filtragem
+    public List<Usuario> filterBy(String nomeFiltro, int page) {
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        int limit = 4;
+        int offset = (page - 1) * limit;
+
+        FiltroInfo filtro = filtros.get(nomeFiltro);
+
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.connect();
+            if (filtro.getColuna().equals("BETWEEN")) {
+                String sql = "SELECT * FROM usuario WHERE ? BETWEEN ? AND ? ORDER BY id LIMIT ? OFFSET ?";
+                ps = connect.prepareStatement(sql);
+                ps.setString(1, filtro.getColuna());
+                ps.setDouble(2, filtro.getValor1());
+                ps.setDouble(3, filtro.getValor2());
+                ps.setInt(4, limit);
+                ps.setInt(5, offset);
+            } else {
+                String sql = "SELECT * FROM usuario WHERE ? ? ? ORDER BY id LIMIT ? OFFSET ?";
+                ps = connect.prepareStatement(sql);
+                ps.setString(1, filtro.getColuna());
+                ps.setString(2, filtro.getOperador());
+                ps.setDouble(3, filtro.getValor1());
+                ps.setInt(4, limit);
+                ps.setInt(5, offset);
+            }
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Usuario usuario = new Usuario(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getString("empresa"),
+                        rs.getString("foto")
+                );
+
+                usuarios.add(usuario);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return usuarios;
+    }
+
 
     public boolean insert(Usuario usuario) {
         String sql = "INSERT INTO usuario (nome, email, senha, telefone, empresa, foto) " +
