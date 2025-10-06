@@ -80,9 +80,9 @@ public class Receita {
     // Método toString
     public String toString() {
         return "ID: " + id +
-                "\nNome: " + nome + '\'' +
-                "\nPorcão: " + porcao + '\'' +
-                "\nProduto: " + produto +
+               "\nNome: " + nome +
+               "\nPorção: " + porcao +
+               "\nProduto: " + produto +
                 "\nIngredientes: " + ingredientes;
     }
 

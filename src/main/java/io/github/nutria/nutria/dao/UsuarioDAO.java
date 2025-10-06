@@ -2,7 +2,6 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IUsuarioDAO;
-import io.github.nutria.nutria.model.FiltroInfo;
 import io.github.nutria.nutria.model.FiltroUsuario;
 import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
@@ -17,7 +16,7 @@ import java.util.*;
  * @see IUsuarioDAO
  */
 public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
-    private static Map<String, FiltroUsuario> filtros = FiltroUsuario.filtrosUsuarios();
+    private final static Map<String, FiltroUsuario> filtros = FiltroUsuario.filtrosUsuarios();
 
     @Override
     public boolean findByEmailUsed(String email) {
@@ -50,14 +49,14 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
                 if (rs != null) rs.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.fillInStackTrace();
             }
         }
         return result;
     }
 
     // Filtragem
-    public List<Usuario> filterBy(String nomeFiltro, int page) {
+    public List<Usuario> findAllFilterBy(String nomeFiltro, String valorBuscado, int page) {
         Connection connect = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -67,36 +66,58 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
         FiltroUsuario filtroUsuario = filtros.get(nomeFiltro);
 
+        FiltroUsuario.setValor(valorBuscado);
+
         List<Usuario> usuarios = new ArrayList<>();
 
         try {
             connect = ConnectionFactory.connect();
-            if (filtroUsuario.getColuna().equals("LIKE")) {
-                String sql = "SELECT * FROM usuario WHERE ? LIKE ? LIMIT ? OFFSET ?";
-                ps = connect.prepareStatement(sql);
-                ps.setString(1, filtroUsuario.getColuna());
-                ps.setString(2, filtroUsuario.getValor());
-                ps.setInt(3, limit);
-                ps.setInt(4, offset);
-            } else if (filtroUsuario.getColuna().equals("=")) {
-                String sql = "SELECT * FROM usuario WHERE ? = ? LIMIT ? OFFSET ?";
-                ps = connect.prepareStatement(sql);
-                ps.setString(1, filtroUsuario.getColuna());
-                ps.setString(2, filtroUsuario.getValor());
-                ps.setInt(3, limit);
-                ps.setInt(4, offset);
-            } else if (filtroUsuario.getColuna().equals("IS NOT NULL")) {
-                String sql = "SELECT * FROM usuario WHERE ? IS NOT NULL LIMIT ? OFFSET ?";
-                ps = connect.prepareStatement(sql);
-                ps.setString(1, filtroUsuario.getColuna());
-                ps.setInt(2, limit);
-                ps.setInt(3, offset);
-            } else {
-                String sql = "SELECT * FROM usuario WHERE ? IS NULL LIMIT ? OFFSET ?";
-                ps = connect.prepareStatement(sql);
-                ps.setString(1, filtroUsuario.getColuna());
-                ps.setInt(2, limit);
-                ps.setInt(3, offset);
+
+            switch (nomeFiltro) {
+                case "nome_usuario" -> {
+                    String sql = "SELECT * FROM usuario WHERE ? LIKE ? LIMIT ? OFFSET ?";
+                    ps = connect.prepareStatement(sql);
+                    ps.setString(1, filtroUsuario.getColuna());
+                    ps.setString(2, filtroUsuario.getValor());
+                    ps.setInt(3, limit);
+                    ps.setInt(4, offset);
+                }
+                case "email_usuario" -> {
+                    String sql = "SELECT * FROM usuario WHERE ? = ? LIMIT ? OFFSET ?";
+                    ps = connect.prepareStatement(sql);
+                    ps.setString(1, filtroUsuario.getColuna());
+                    ps.setString(2, filtroUsuario.getValor());
+                    ps.setInt(3, limit);
+                    ps.setInt(4, offset);
+                }
+                case "dominio_email_usuario" -> {
+                    String sql = "SELECT * FROM usuario WHERE ? LIKE LIMIT ? OFFSET ?";
+                    ps = connect.prepareStatement(sql);
+                    ps.setString(1, filtroUsuario.getColuna());
+                    ps.setInt(2, limit);
+                    ps.setInt(3, offset);
+                }
+                case "empresa" -> {
+                    String sql = "SELECT * FROM usuario WHERE ? LIKE ? OFFSET ?";
+                    ps = connect.prepareStatement(sql);
+                    ps.setString(1, filtroUsuario.getColuna());
+                    ps.setInt(2, limit);
+                    ps.setInt(3, offset);
+                }
+                case "com_foto" -> {
+                    String sql = "SELECT * FROM usuario WHERE ? IS NOT NULL LIMIT ? OFFSET ?";
+                    ps = connect.prepareStatement(sql);
+                    ps.setString(1, filtroUsuario.getColuna());
+                    ps.setInt(2, limit);
+                    ps.setInt(3, offset);
+                }
+                case "sem_foto" -> {
+                    String sql = "SELECT * FROM usuario WHERE ? IS NULL LIMIT ? OFFSET ?";
+                    ps = connect.prepareStatement(sql);
+                    ps.setString(1, filtroUsuario.getColuna());
+                    ps.setInt(2, limit);
+                    ps.setInt(3, offset);
+                }
             }
 
             rs = ps.executeQuery();
