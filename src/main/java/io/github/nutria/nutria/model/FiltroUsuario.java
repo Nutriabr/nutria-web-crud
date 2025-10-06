@@ -32,6 +32,21 @@ public class FiltroUsuario {
         return valor;
     }
 
+    // setters
+
+
+    public static void setColuna(String coluna) {
+        FiltroUsuario.coluna = coluna;
+    }
+
+    public static void setOperador(String operador) {
+        FiltroUsuario.operador = operador;
+    }
+
+    public static void setValor(String valor) {
+        FiltroUsuario.valor = valor;
+    }
+
 
     public static Map<String, FiltroUsuario> filtrosUsuarios() {
         Map<String, FiltroUsuario> filtroUsuario = new HashMap<>();
