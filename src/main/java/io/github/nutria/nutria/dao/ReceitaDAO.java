@@ -23,7 +23,7 @@ import java.util.List;
 public class ReceitaDAO implements GenericDAO<Receita, Long> {
     @Override
     public boolean insert(Receita receita) {
-        String sql = "INSERT INTO receitas (nome, porcao, id_produto) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO receita (nome, porcao, id_produto) VALUES (?, ?, ?)";
 
         PreparedStatement ps = null;
         Connection connect = null;
@@ -61,8 +61,8 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         int offset = (page - 1) * limite;
 
         String sql = "SELECT r.*, p.nome AS nome_produto " +
-                       "FROM receitas r " +
-                       "JOIN produtos p ON r.id_produto = p.id " +
+                       "FROM receita r " +
+                       "JOIN produto p ON r.id_produto = p.id " +
                        "LIMIT ? OFFSET ?";
 
         List<Receita> receitasArrayList = new ArrayList<>();
@@ -117,7 +117,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
     public int countAll() {
         int totalReceitas = 0;
 
-        String sql = "SELECT COUNT(*) FROM receitas";
+        String sql = "SELECT COUNT(*) FROM receita";
 
         Statement stmt = null;
         ResultSet rs = null;
@@ -149,7 +149,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
 
     @Override
     public boolean deleteById(Long id) {
-        String sql = "DELETE FROM receitas WHERE id = ?";
+        String sql = "DELETE FROM receita WHERE id = ?";
 
         PreparedStatement ps = null;
         Connection connect = null;
@@ -173,5 +173,37 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public boolean update(Receita receita){
+        String sql = "UPDATE receita SET nome = ?, porcao = ?, id_produto = ? WHERE id = ?";
+        PreparedStatement psmt = null;
+        Connection connect = null;
+        int result = 0;
+
+        try {
+            connect = ConnectionFactory.connect();
+            psmt = connect.prepareStatement(sql);
+            psmt.setString(1,receita.getNome());
+            psmt.setString(2,receita.getPorcao());
+            psmt.setLong(3,receita.getProduto().getId());
+            psmt.setLong(4,receita.getId());
+
+            result = psmt.executeUpdate();
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if(psmt != null) psmt.close();
+                if(connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return (result > 0);
+
     }
 }
