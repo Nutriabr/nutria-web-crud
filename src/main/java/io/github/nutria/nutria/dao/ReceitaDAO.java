@@ -202,4 +202,48 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         }
         return (result > 0);
     }
+
+    public List<Receita> findByPorcao(String porcao){
+        String sql = """
+                SELECT r.*, p.nome AS nome_produto
+                FROM receita r
+                JOIN produto p ON r.id_produto = p.id
+                WHERE LOWER(r.porcao) LIKE LOWER(?)
+                """;
+
+        PreparedStatement psmt = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        List<Receita> receitas = new ArrayList<>();
+
+        try{
+            connect = ConnectionFactory.connect();
+            psmt = connect.prepareStatement(sql);
+            psmt.setString(1,"%" + porcao + "%");
+            rs = psmt.executeQuery();
+            while (rs.next()){
+                Receita receita = new Receita();
+                receita.setId(rs.getLong("id"));
+                receita.setPorcao(rs.getString("porcao"));
+                Produto produto = new Produto();
+                produto.setId(rs.getLong("id_produto"));
+                produto.setNome(rs.getString("nome_produto"));
+                receita.setProduto(produto);
+
+                receitas.add(receita);
+            }
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+        } finally {
+            try {
+                if(psmt != null) psmt.close();
+                if(rs != null) rs.close();
+                if(connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException sqle){
+                sqle.printStackTrace();
+            }
+        }
+        return receitas;
+    }
 }
