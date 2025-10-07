@@ -51,7 +51,7 @@
 
     <!-- Link para encerrar a sessão e voltar para a página de login -->
     <div id="logout">
-        <a href="../login.jsp">Encerrar sessão</a>
+        <a href="../index.jsp">Encerrar sessão</a>
         <img src="../assets/img/saida.svg" alt="Encerrar sessão">
     </div>
 </aside>
