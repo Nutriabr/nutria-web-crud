@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet {
                 password == null || password.trim().isEmpty()) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             req.setAttribute("error", "Email e senha são obrigatórios");
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("/index.jsp").forward(req, resp);
             return;
         }
 
@@ -36,13 +36,14 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("adminLoggedIn", admin);
             session.setAttribute("adminId", admin.getId());
             session.setAttribute("adminName", admin.getNome());
+            System.out.println(admin.getNome());
             session.setAttribute("adminEmail", admin.getEmail());
 
-            resp.sendRedirect( req.getContextPath()+"/pages/cadastrarUsuarioTest.jsp");
+            resp.sendRedirect( req.getContextPath()+"/pages/administracao.jsp");
         } else {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             req.setAttribute("error", "Email ou senha inválidos");
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("/index.jsp").forward(req, resp);
         }
 
     }
