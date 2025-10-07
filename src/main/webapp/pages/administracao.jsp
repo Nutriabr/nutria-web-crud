@@ -13,7 +13,7 @@
     <img id="nutria" src="../assets/img/logo.svg" alt="">
     <div class="user">
         <i class="fa-solid fa-user-circle"></i>
-        <span>Administrador</span>
+        <span><%=session.getAttribute("adminName")%></span>
     </div>
 
     <ul class="menu">
@@ -27,9 +27,9 @@
         <li><i class="fa-solid fa-clipboard-list"></i> Ingredientes da Receita</li>
     </ul>
 
-    <div class="logout">
-        Encerrar sessão <i class="fa-solid fa-right-from-bracket"></i>
-    </div>
+    <form class="logout" action="${pageContext.request.contextPath}/logout" method="post">
+        <button type="submit">Encerrar sessão</button>  <i class="fa-solid fa-right-from-bracket"></i>
+    </form>
 </div>
 
 <div class="main-content">
