@@ -26,6 +26,18 @@ public class Receita {
         this.ingredientes = ingredientes;
     }
 
+    public Receita(long id, String porcao, Produto produto){
+        this.id = id;
+        this.porcao = porcao;
+        this.produto = produto;
+    }
+
+    public Receita(String porcao, Produto produto){
+        this.id = id;
+        this.porcao = porcao;
+        this.produto = produto;
+    }
+
     // Métodos getters
 
     public long getId() {
@@ -61,10 +73,12 @@ public class Receita {
     }
 
     // Método toString
+    @Override
     public String toString() {
         return "ID: " + id +
-               "\nPorção: " + porcao +
-               "\nProduto: " + produto +
-                "\nIngredientes: " + ingredientes;
+                "\nPorção: " + porcao +
+                "\nProduto: " + (produto != null ? produto.getNome() : "sem produto") +
+                "\nIngredientes: " + (ingredientes != null ? ingredientes.size() + " itens" : "nenhum");
     }
+
 }

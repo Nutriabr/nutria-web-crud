@@ -23,6 +23,11 @@ import java.util.List;
 public class ReceitaDAO implements GenericDAO<Receita, Long> {
     @Override
     public boolean insert(Receita receita) {
+        if (receita == null) return false;
+        if (receita.getPorcao() == null || receita.getPorcao().isEmpty()) return false;
+        if (receita.getProduto() == null || receita.getProduto().getId() <= 0) return false;
+
+
         String sql = "INSERT INTO receita (porcao, id_produto) VALUES (?, ?)";
 
         PreparedStatement ps = null;
@@ -52,6 +57,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             }
         }
     }
+
 
     @Override
     public List<Receita> findAll(int page) {
@@ -204,7 +210,8 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
     }
 
     public List<Receita> findByPorcao(String porcao){
-        String sql = """
+        String sql =
+                """
                 SELECT r.*, p.nome AS nome_produto
                 FROM receita r
                 JOIN produto p ON r.id_produto = p.id
