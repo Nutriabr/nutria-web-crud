@@ -4,7 +4,6 @@ import java.util.List;
 public class Receita {
     // Atributos
     private long id;
-    private String nome;
     private String porcao;
     private Produto produto;
     private List<ReceitaIngrediente> ingredientes;
@@ -14,16 +13,8 @@ public class Receita {
 
     }
 
-    public Receita(long id, String nome, String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
+    public Receita(long id, String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
         this.id = id;
-        this.nome = nome;
-        this.porcao = porcao;
-        this.produto = produto;
-        this.ingredientes = ingredientes;
-    }
-
-    public Receita(String nome, String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
-        this.nome = nome;
         this.porcao = porcao;
         this.produto = produto;
         this.ingredientes = ingredientes;
@@ -35,14 +26,22 @@ public class Receita {
         this.ingredientes = ingredientes;
     }
 
+    public Receita(long id, String porcao, Produto produto){
+        this.id = id;
+        this.porcao = porcao;
+        this.produto = produto;
+    }
+
+    public Receita(String porcao, Produto produto){
+        this.id = id;
+        this.porcao = porcao;
+        this.produto = produto;
+    }
+
     // Métodos getters
 
     public long getId() {
         return id;
-    }
-
-    public String getNome() {
-        return nome;
     }
 
     public String getPorcao() {
@@ -62,10 +61,6 @@ public class Receita {
         this.id = id;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public void setPorcao(String porcao) {
         this.porcao = porcao;
     }
@@ -78,15 +73,12 @@ public class Receita {
     }
 
     // Método toString
+    @Override
     public String toString() {
         return "ID: " + id +
-               "\nNome: " + nome +
-               "\nPorção: " + porcao +
-               "\nProduto: " + produto +
-                "\nIngredientes: " + ingredientes;
+                "\nPorção: " + porcao +
+                "\nProduto: " + (produto != null ? produto.getNome() : "sem produto") +
+                "\nIngredientes: " + (ingredientes != null ? ingredientes.size() + " itens" : "nenhum");
     }
 
-    public long getIdProduto() {
-        return 1L;
-    }
 }

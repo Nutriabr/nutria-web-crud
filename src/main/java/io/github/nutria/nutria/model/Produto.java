@@ -19,6 +19,15 @@ public class Produto {
         this.receitas = receitas;
     }
 
+    public Produto (long id, String nome){
+        this.id = id;
+        this.nome = nome;
+    }
+
+    public Produto (String nome){
+        this.nome = nome;
+    }
+
     // Métodos getters
     public long getId() {
         return id;
@@ -45,8 +54,16 @@ public class Produto {
     // Método toString
 
     public String toString() {
+        String receitasInfo = "Nenhuma receita cadastrada";
+        if (receitas != null && !receitas.isEmpty()) {
+            receitasInfo = "";
+            for (Receita r : receitas) {
+                receitasInfo += "\n  - " + r.getPorcao();
+            }
+        }
+
         return "ID: " + id +
                 "\nNome: " + nome +
-                "\nReceitas" + receitas;
+                "\nReceitas:" + receitasInfo;
     }
 }
