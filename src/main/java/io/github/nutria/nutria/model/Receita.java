@@ -14,22 +14,27 @@ public class Receita {
 
     }
 
-    public Receita(long id, String nome, String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
+    public Receita(long id, String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
         this.id = id;
-        this.nome = nome;
-        this.porcao = porcao;
-        this.produto = produto;
-        this.ingredientes = ingredientes;
-    }
-
-    public Receita(String nome, String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
-        this.nome = nome;
         this.porcao = porcao;
         this.produto = produto;
         this.ingredientes = ingredientes;
     }
 
     public Receita(String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
+        this.porcao = porcao;
+        this.produto = produto;
+        this.ingredientes = ingredientes;
+    }
+
+    public Receita(long id, String porcao, Produto produto){
+        this.id = id;
+        this.porcao = porcao;
+        this.produto = produto;
+    }
+
+    public Receita(String porcao, Produto produto){
+        this.id = id;
         this.porcao = porcao;
         this.produto = produto;
         this.ingredientes = ingredientes;
@@ -78,19 +83,11 @@ public class Receita {
     }
 
     // Método toString
+    @Override
     public String toString() {
         return "ID: " + id +
-                "\nNome: " + nome + '\'' +
-                "\nPorcão: " + porcao + '\'' +
-                "\nProduto: " + produto +
-                "\nIngredientes: " + ingredientes;
-    }
-
-    public long getIdProduto() {
-        return 1L;
-    }
-
-    public void setIdProduto(long idProduto) {
-
+                "\nPorção: " + porcao +
+                "\nProduto: " + (produto != null ? produto.getNome() : "sem produto") +
+                "\nIngredientes: " + (ingredientes != null ? ingredientes.size() + " itens" : "nenhum");
     }
 }
