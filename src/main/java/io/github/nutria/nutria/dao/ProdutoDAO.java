@@ -124,6 +124,33 @@ public class ProdutoDAO implements GenericDAO<Produto, Long> {
         return totalProdutos;
     }
 
+    @Override
+    public boolean update(Produto produto){
+        String sql = "UPDATE produto SET nome = ? WHERE id = ?";
+        PreparedStatement psmt = null;
+        Connection connect = null;
+        int result = 0;
 
+        try {
+            connect = ConnectionFactory.connect();
+            psmt = connect.prepareStatement(sql);
+            psmt.setString(1,produto.getNome());
+            psmt.setLong(2,produto.getId());
+            result = psmt.executeUpdate();
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if(psmt != null) psmt.close();
+                if(connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return (result > 0);
+
+    }
 
 }
