@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long> {
 
-    private static final Map<String, FiltroNutricional> filtros = FiltroNutricional.filtrosNutricionais();
+    private static final Map<String, FiltroNutricional> FILTROS = FiltroNutricional.filtrosNutricionais();
 
     public TabelaNutricionalDAO() {
     }
@@ -70,7 +70,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         int limit = 4;
         int offset = (page - 1) * limit;
 
-        FiltroNutricional filtro = filtros.get(nomeFiltro);
+        FiltroNutricional filtro = FILTROS.get(nomeFiltro);
 
         String sql;
         if (filtro.getOperador().equals("BETWEEN")) {
