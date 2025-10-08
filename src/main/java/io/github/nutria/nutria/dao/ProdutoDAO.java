@@ -43,6 +43,54 @@ public class ProdutoDAO implements GenericDAO<Produto, Long> {
         }
     }
 
+    @Override
+    public List<Produto> findAll(int page) {
+
+        int limite = 4;
+        int offset = (page - 1) * limite;
+
+        String sql = "SELECT * FROM produto LIMIT ? OFFSET ?";
+
+
+        List<Produto> produtosArrayList = new ArrayList<>();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            ps = connect.prepareStatement(sql);
+            ps.setInt(1, limite);
+            ps.setInt(2, offset);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+
+
+                produtosArrayList.add(produto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return produtosArrayList;
+    }
+
     public int countAll() {
         int totalProdutos = 0;
 
@@ -72,6 +120,8 @@ public class ProdutoDAO implements GenericDAO<Produto, Long> {
                 e.printStackTrace();
             }
         }
+
+        return totalProdutos;
     }
 
 }
