@@ -1,28 +1,119 @@
 <%@ page contentType="text/html;charset=UTF-8"  language="java" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Painel de Controle - Nutria</title>
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<main>
-    <img src="assets/img/Nutria.svg" alt="logo" class="logo-image">
-    <section class="login-container">
-        <h1>Bem vindo(a) de volta!</h1>
-        <p>Insira suas credenciais para acessar sua conta</p>
+<div class="sidebar">
+    <img id="nutria" src="../assets/img/logo.svg" alt="">
+    <div class="user">
+        <i class="fa-solid fa-user-circle"></i>
+        <span><%=session.getAttribute("adminName")%></span>
+    </div>
 
-        <form class="login-form">
-            <input type="email" placeholder="Endereço de email" class="login-input">
-            <input type="password" placeholder="Senha" class="login-input">
+    <ul class="menu">
+        <li class="active"><i class="fa-solid fa-house"></i> Início</li>
+        <li><i class="fa-solid fa-users"></i> Usuários</li>
+        <li><i class="fa-solid fa-box"></i> Produtos</li>
+        <li><i class="fa-solid fa-user-gear"></i> Administradores</li>
+        <li><i class="fa-solid fa-carrot"></i> Ingredientes</li>
+        <li><i class="fa-solid fa-list"></i> Tabela Nutricional</li>
+        <li><i class="fa-solid fa-utensils"></i> Receitas</li>
+        <li><i class="fa-solid fa-clipboard-list"></i> Ingredientes da Receita</li>
+    </ul>
 
-            <a href="#" id="login-forget">Esqueci minha senha</a>
+    <form class="logout" action="${pageContext.request.contextPath}/logout" method="post">
+        <button type="submit">Encerrar sessão</button>  <i class="fa-solid fa-right-from-bracket"></i>
+    </form>
+</div>
 
-            <button class="login-button">Login</button>
-        </form>
-    </section>
-</main>
+<div class="main-content">
+
+    <div class="dashboard">
+        <h2>Painel de controle</h2>
+        <p>Gerencie seus dados de forma interativa.</p>
+
+        <div class="cards">
+            <div class="card">
+                <div class="icon">
+                    <h3>Usuários</h3>
+                    <img src="../assets/img/UserLaranja.png" alt="">
+                </div>
+                <span class="value">243</span>
+                <div class="acess">
+                    <a href="#">Acessar</a>
+                    <img src="../assets/img/setaVerde.png" alt="">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="icon">
+                    <h3>Produtos</h3>
+                    <img src="../assets/img/IconeDeProdutos.png" alt="">
+                </div>
+                <span class="value">5500</span>
+                <div class="acess">
+                    <a href="#">Acessar</a>
+                    <img src="../assets/img/setaVerde.png" alt="">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="icon">
+                    <h3>Administradores</h3>
+                    <img src="../assets/img/UserEngre.png" alt="">
+                </div>
+                <span class="value">15</span>
+                <div class="acess">
+                    <a href="#">Acessar</a>
+                    <img src="../assets/img/setaVerde.png" alt="">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="icon">
+                    <h3>Ingredientes</h3>
+                    <img src="../assets/img/IconeIngredientes.png" alt="">
+                </div>
+                <span class="value">0</span>
+                <div class="acess">
+                    <a href="#">Acessar</a>
+                    <img src="../assets/img/setaVerde.png" alt="">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="icon">
+                    <h3>Loren ipsum</h3>
+                    <img src="../assets/img/UserLaranja.png" alt="">
+                </div>
+                <span class="value">0</span>
+                <div class="acess">
+                    <a href="#">Acessar</a>
+                    <img src="../assets/img/setaVerde.png" alt="">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="icon">
+                    <h3>Loren ipsum</h3>
+                    <img src="../assets/img/UserLaranja.png" alt="">
+                </div>
+                <span class="value">0</span>
+                <div class="acess">
+                    <a href="#">Acessar</a>
+                    <img src="../assets/img/setaVerde.png" alt="">
+                </div>
+            </div>
+        </div>
+
+        <p class="info">Clique em “Acessar” para acessar cada seção do sistema</p>
+    </div>
+</div>
 </body>
 </html>
