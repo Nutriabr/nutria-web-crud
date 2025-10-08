@@ -13,8 +13,23 @@
     <img id="nutria" src="../assets/img/logo.svg" alt="">
     <div class="user">
         <i class="fa-solid fa-user-circle"></i>
-        <span>Administrador</span>
+        <span><%
+            String nome = (String) session.getAttribute("adminName");
+            if (nome != null) {
+                int primeiroEspaco = nome.indexOf(" ");
+                int segundoEspaco = nome.indexOf(" ", primeiroEspaco + 1);
+
+                if (primeiroEspaco != -1 && segundoEspaco != -1 ) {
+                    out.print(nome.substring(0, segundoEspaco));
+                } else {
+                    out.print(nome);
+                }
+
+            }
+        %></span>
     </div>
+
+    <hr>
 
     <ul class="menu">
         <li class="active"><i class="fa-solid fa-house"></i> Início</li>
@@ -27,9 +42,9 @@
         <li><i class="fa-solid fa-clipboard-list"></i> Ingredientes da Receita</li>
     </ul>
 
-    <div class="logout">
-        Encerrar sessão <i class="fa-solid fa-right-from-bracket"></i>
-    </div>
+    <form class="logout" action="${pageContext.request.contextPath}/logout" method="post">
+        <button type="submit">Encerrar sessão</button>  <i class="fa-solid fa-right-from-bracket"></i>
+    </form>
 </div>
 
 <div class="main-content">
@@ -46,8 +61,8 @@
                 </div>
                 <span class="value">243</span>
                 <div class="acess">
-                    <a href="#">Acessar</a>
-                    <img src="../assets/img/setaVerde.png" alt="">
+                    <a href="usuarios.jsp">Acessar</a>
+                    <a href="usuarios.jsp"><img src="../assets/img/setaVerde.png" alt=""></a>
                 </div>
             </div>
 

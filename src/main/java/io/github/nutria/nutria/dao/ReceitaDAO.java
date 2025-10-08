@@ -60,6 +60,11 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
 
 
     @Override
+    public boolean update(Receita receita) {
+        return false;
+    }
+
+    @Override
     public List<Receita> findAll(int page) {
 
         int limite = 4;
@@ -177,36 +182,6 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public boolean update(Receita receita){
-        String sql = "UPDATE receita SET porcao = ?, id_produto = ? WHERE id = ?";
-        PreparedStatement psmt = null;
-        Connection connect = null;
-        int result = 0;
-
-        try {
-            connect = ConnectionFactory.connect();
-            psmt = connect.prepareStatement(sql);
-            psmt.setString(1,receita.getPorcao());
-            psmt.setLong(2,receita.getProduto().getId());
-            psmt.setLong(3,receita.getId());
-
-            result = psmt.executeUpdate();
-
-        } catch (SQLException sqle){
-            sqle.printStackTrace();
-            return false;
-        } finally {
-            try {
-                if(psmt != null) psmt.close();
-                if(connect != null) ConnectionFactory.disconnect(connect);
-            } catch (SQLException e){
-                e.printStackTrace();
-            }
-        }
-        return (result > 0);
     }
 
     public List<Receita> findByPorcao(String porcao){

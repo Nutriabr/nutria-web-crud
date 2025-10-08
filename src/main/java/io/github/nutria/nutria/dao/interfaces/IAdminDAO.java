@@ -4,6 +4,8 @@ import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.model.Usuario;
 
 import java.sql.SQLException;
+import java.util.Optional;
+
 /**
  * Interface para operações de CRUD na entidade Admin.
  * @author Luis Henrique
@@ -16,5 +18,5 @@ public interface IAdminDAO {
      * @author Luis Henrique
      * @throws SQLException Lança uma exceção SQL em caso de erro na consulta
      * */
-    Admin findByEmail(String email);
+    Optional<Admin> findByEmail(String email);
 }

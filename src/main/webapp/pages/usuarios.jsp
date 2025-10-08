@@ -10,7 +10,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="io.github.nutria.nutria.dao.UsuarioDAO" %>
 <%@ page import="io.github.nutria.nutria.model.Usuario" %>
-<%@page import="io.github.nutria.nutria.servlet.usuarioServlet.UsuarioServelet" %>
 
 
 <%
@@ -51,7 +50,7 @@
 
     <!-- Link para encerrar a sessão e voltar para a página de login -->
     <div id="logout">
-        <a href="../login.jsp">Encerrar sessão</a>
+        <a href="../index.jsp">Encerrar sessão</a>
         <img src="../assets/img/saida.svg" alt="Encerrar sessão">
     </div>
 </aside>
