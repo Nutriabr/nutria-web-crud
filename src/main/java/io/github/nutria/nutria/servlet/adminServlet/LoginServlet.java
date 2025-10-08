@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -29,15 +30,14 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        Admin admin = adminDAO.findByEmail(email);
+        Optional<Admin> admin = adminDAO.findByEmail(email);
 
-        if (admin != null && PasswordVerifier.checkPassword(password, admin.getSenha())) {
+        if (admin.isPresent() && PasswordVerifier.checkPassword(password, admin.get().getSenha())) {
             HttpSession session = req.getSession();
             session.setAttribute("adminLoggedIn", admin);
-            session.setAttribute("adminId", admin.getId());
-            session.setAttribute("adminName", admin.getNome());
-            System.out.println(admin.getNome());
-            session.setAttribute("adminEmail", admin.getEmail());
+            session.setAttribute("adminId", admin.get().getId());
+            session.setAttribute("adminName", admin.get().getNome());
+            session.setAttribute("adminEmail", admin.get().getEmail());
 
             resp.sendRedirect( req.getContextPath()+"/pages/administracao.jsp");
         } else {
