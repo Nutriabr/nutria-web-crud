@@ -13,7 +13,20 @@
     <img id="nutria" src="../assets/img/logo.svg" alt="">
     <div class="user">
         <i class="fa-solid fa-user-circle"></i>
-        <span><%=session.getAttribute("adminName")%></span>
+        <span><%
+            String nome = (String) session.getAttribute("adminName");
+            if (nome != null) {
+                int primeiroEspaco = nome.indexOf(" ");
+                int segundoEspaco = nome.indexOf(" ", primeiroEspaco + 1);
+
+                if (primeiroEspaco != -1 && segundoEspaco != -1 ) {
+                    out.print(nome.substring(0, segundoEspaco));
+                } else {
+                    out.print(nome);
+                }
+
+            }
+        %></span>
     </div>
 
     <ul class="menu">
