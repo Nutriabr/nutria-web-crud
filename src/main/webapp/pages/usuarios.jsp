@@ -10,7 +10,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="io.github.nutria.nutria.dao.UsuarioDAO" %>
 <%@ page import="io.github.nutria.nutria.model.Usuario" %>
-<%@page import="io.github.nutria.nutria.servlet.usuarioServlet.UsuarioServelet" %>
 
 
 <%
