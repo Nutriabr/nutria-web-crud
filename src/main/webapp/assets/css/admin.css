@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    background: #f9f9f9;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 230px;
+    background: #f2f2f2;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+#nutria{
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #333;
+    margin: 15px 0;
+}
+
+.user i {
+    font-size: 28px;
+    color: #555;
+}
+
+.menu {
+    list-style: none;
+    padding: 0 15px;
+}
+
+.menu li {
+    padding: 10px 15px;
+    border-radius: 6px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.menu li:hover,
+.menu li.active {
+    background: #ff6600;
+    color: white;
+}
+
+.logout {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #666;
+}
+
+.logout:hover {
+    color: #ff6600;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+    flex: 1;
+    padding: 20px 40px;
+}
+
+
+/* ===== DASHBOARD ===== */
+
+.dashboard h2 {
+    font-size: 25px;
+    color: #6C6C6C;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    margin-left: 100px;
+}
+
+.dashboard p {
+    color: #6C6C6C;
+    margin-bottom: 60px;
+    margin-left: 100px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: 300px 300px 300px;
+    gap: 60px;
+    justify-content: center;
+}
+
+.card {
+    background: white;
+    padding: 50px;
+    /* display: flex;
+    flex-direction: column; */
+    /* align-items: flex-start;  */
+    transition: transform 0.2s;
+}
+
+.card span{
+    color: #6C6C6C;
+    font-size: 20px;
+}
+
+.icon {
+    font-size: 24px;
+    color: #ff6600;
+}
+
+.card h3 {
+
+    font-size: 16px;
+    color: #6C6C6C;
+}
+
+.value {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin: 5px 0;
+}
+
+.card a {
+    margin-top: auto;
+    text-decoration: none;
+    color: #00a651;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.card a:hover {
+    color: #008f45;
+}
+
+.info {
+    margin-top: 50px;
+    text-align: center;
+    color: #777;
+    font-size: 15px;
+}
+
+.icon{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.icon img{
+    width: 30px;
+}
+.acess{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.acess img{
+    width: 30px;
+}
