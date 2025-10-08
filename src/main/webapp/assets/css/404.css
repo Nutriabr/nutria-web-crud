@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, sans-serif;
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+.container {
+    width: 100%;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+
+
+
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+}
+
+
+
+
+h1 {
+    color: #333;
+    margin: 0;
+}
