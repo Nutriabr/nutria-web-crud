@@ -124,4 +124,6 @@ public class ProdutoDAO implements GenericDAO<Produto, Long> {
         return totalProdutos;
     }
 
+
+
 }
