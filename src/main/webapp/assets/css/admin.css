@@ -23,7 +23,11 @@ body {
     justify-content: space-between;
     padding: 20px 0;
 }
-
+hr {
+    background: #ffffff;
+    width: 100%;
+    margin-top: 1.2rem;
+}
 #nutria{
     width: 50%;
     margin: 0 auto;
