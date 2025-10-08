@@ -16,6 +16,8 @@
         <span><%=session.getAttribute("adminName")%></span>
     </div>
 
+    <hr>
+
     <ul class="menu">
         <li class="active"><i class="fa-solid fa-house"></i> Início</li>
         <li><i class="fa-solid fa-users"></i> Usuários</li>
@@ -46,8 +48,8 @@
                 </div>
                 <span class="value">243</span>
                 <div class="acess">
-                    <a href="#">Acessar</a>
-                    <img src="../assets/img/setaVerde.png" alt="">
+                    <a href="usuarios.jsp">Acessar</a>
+                    <a href="usuarios.jsp"><img src="../assets/img/setaVerde.png" alt=""></a>
                 </div>
             </div>
 
