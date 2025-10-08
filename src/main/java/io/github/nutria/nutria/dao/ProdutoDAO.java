@@ -136,6 +136,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long> {
             psmt = connect.prepareStatement(sql);
             psmt.setString(1,produto.getNome());
             psmt.setLong(2,produto.getId());
+
             result = psmt.executeUpdate();
 
         } catch (SQLException sqle){
@@ -151,6 +152,34 @@ public class ProdutoDAO implements GenericDAO<Produto, Long> {
         }
         return (result > 0);
 
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        String sql = "DELETE FROM produto WHERE id = ?";
+
+        PreparedStatement ps = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
