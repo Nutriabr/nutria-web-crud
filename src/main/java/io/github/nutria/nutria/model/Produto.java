@@ -36,7 +36,7 @@ public class Produto {
     }
 
     // Métodos getters
-    public long getId() {
+    public Long getId() {
         return id;
     }
     public String getNome() {

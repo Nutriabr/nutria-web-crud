@@ -3,7 +3,7 @@ package io.github.nutria.nutria.model;
 import java.util.List;
 public class Receita {
     // Atributos
-    private long id;
+    private Long id;
     private String nome;
     private String porcao;
     private Produto produto;
@@ -14,7 +14,7 @@ public class Receita {
 
     }
 
-    public Receita(long id, String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
+    public Receita(Long id, String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
         this.id = id;
         this.porcao = porcao;
         this.produto = produto;
@@ -27,7 +27,7 @@ public class Receita {
         this.ingredientes = ingredientes;
     }
 
-    public Receita(long id, String porcao, Produto produto){
+    public Receita(Long id, String porcao, Produto produto){
         this.id = id;
         this.porcao = porcao;
         this.produto = produto;
@@ -42,7 +42,7 @@ public class Receita {
 
     // Métodos getters
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -63,7 +63,7 @@ public class Receita {
 
     // Método setters
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
