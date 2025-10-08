@@ -21,7 +21,7 @@ public class AuthFilter implements Filter {
         if (adminLoggedIn) {
             chain.doFilter(request, response);
         } else {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            resp.sendRedirect(req.getContextPath() + "/index.jsp");
         }
     }
 }
