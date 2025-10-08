@@ -1,7 +1,7 @@
 package io.github.nutria.nutria.model;
 
 public class Admin {
-    private long id;
+    private Long id;
     private String nome;
     private String email;
     private String senha;
@@ -11,7 +11,7 @@ public class Admin {
     }
 
     // Construtor com todos os argumentos
-    public Admin(long id, String nome, String email, String senha) {
+    public Admin(Long id, String nome, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -25,11 +25,11 @@ public class Admin {
     }
 
     // Métodos Getters e Setters
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
