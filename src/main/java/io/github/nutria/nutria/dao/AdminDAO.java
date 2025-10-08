@@ -10,6 +10,7 @@ import io.github.nutria.nutria.util.PasswordHasher;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**Classe para transferência de dados do Admin no banco de dados
  * @author Luis Henrique
@@ -53,6 +54,14 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             }
         }
         return result;
+    }
+
+    public Optional<List<Admin>> findByEmailDomain(String domain) {
+        String sql = "SELECT * FROM admin WHERE email LIKE %@?";
+        List<Admin> admins = new ArrayList<>();
+        return Optional.of(admins);
+        
+
     }
 
     public Admin findByEmail(String email) {
@@ -266,5 +275,6 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
         return totalAdmins;
     }
+
 
 }
