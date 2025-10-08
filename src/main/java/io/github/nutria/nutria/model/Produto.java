@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Produto {
     // Atributos
-    private long id;
+    private Long id;
     private String nome;
     private Usuario usuario;
     private List<Receita> receitas;
@@ -14,20 +14,20 @@ public class Produto {
 
     }
 
-    public Produto (long id, String nome,Usuario usuario, List<Receita> receitas){
+    public Produto (Long id, String nome,Usuario usuario, List<Receita> receitas){
         this.id = id;
         this.nome = nome;
         this.receitas = receitas;
         this.usuario = usuario;
     }
 
-    public Produto (long id, String nome, Usuario usuario){
+    public Produto (Long id, String nome, Usuario usuario){
         this.id = id;
         this.nome = nome;
         this.usuario = usuario;
     }
 
-    public Produto (long id, String nome){
+    public Produto (Long id, String nome){
         this.id = id;
         this.nome = nome;
     }
@@ -50,7 +50,7 @@ public class Produto {
     }
 
     // Métodos setters
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
