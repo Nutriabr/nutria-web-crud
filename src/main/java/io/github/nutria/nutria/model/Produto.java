@@ -6,6 +6,7 @@ public class Produto {
     // Atributos
     private long id;
     private String nome;
+    private Usuario usuario;
     private List<Receita> receitas;
 
     // Métodos construtores
@@ -13,17 +14,23 @@ public class Produto {
 
     }
 
-    public Produto (long id, String nome,List<Receita> receitas){
+    public Produto (long id, String nome,Usuario usuario, List<Receita> receitas){
         this.id = id;
         this.nome = nome;
         this.receitas = receitas;
+        this.usuario = usuario;
+    }
+
+    public Produto (long id, String nome, Usuario usuario){
+        this.id = id;
+        this.nome = nome;
+        this.usuario = usuario;
     }
 
     public Produto (long id, String nome){
         this.id = id;
         this.nome = nome;
     }
-
     public Produto (String nome){
         this.nome = nome;
     }
@@ -34,6 +41,9 @@ public class Produto {
     }
     public String getNome() {
         return nome;
+    }
+    public Usuario getUsuario(){
+        return usuario;
     }
     public List<Receita> getReceitas() {
         return receitas;

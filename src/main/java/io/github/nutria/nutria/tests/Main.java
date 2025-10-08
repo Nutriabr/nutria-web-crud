@@ -72,46 +72,46 @@ public class Main {
 
         // 3. Teste de CRUD para a entidade Receita
 
-        try  {
-            ReceitaDAO receitaDAOTest = new ReceitaDAO();
-            // TESTE DO MÉTODO insert
-            System.out.println("\nInserindo uma nova receita:");
-            // Aqui você pode criar um objeto Receita e chamar o método insert
-            Receita receita = new Receita();
-            receita.setNome("Bolo de Açúcar e Canela");
-            receita.setPorcao("148g");
-            receita.setId(1);
-            boolean insertResult = receitaDAOTest.insert(receita);
-            if (insertResult) {
-                System.out.println("Receita inserida com sucesso.");
-            } else {
-                System.out.println("Falha ao inserir a receita.");
-            }
-
-            // TESTE DO MÉTODO deleteById
-            System.out.println("\nDeletando uma receita por ID:");
-            long receitaIdToDelete = 1;
-            boolean deleteResult = receitaDAOTest.deleteById(receitaIdToDelete);
-            if (deleteResult) {
-                System.out.println("Receita deletada com sucesso.");
-            } else {
-                System.out.println("Falha ao deletar a receita.");
-            }
-
-            // Teste do método findAll
-//            System.out.println("\nListando todos as receitas:");
-//            List<Receita> receitas = receitaDAOTest.findAll();
-//            if (receitas.isEmpty()) {
-//                System.out.println("Nenhuma receita encontrada.");
+//        try  {
+//            ReceitaDAO receitaDAOTest = new ReceitaDAO();
+//            // TESTE DO MÉTODO insert
+//            System.out.println("\nInserindo uma nova receita:");
+//            // Aqui você pode criar um objeto Receita e chamar o método insert
+//            Receita receita = new Receita();
+//            receita.setNome("Bolo de Açúcar e Canela");
+//            receita.setPorcao("148g");
+//            receita.setId(1);
+//            boolean insertResult = receitaDAOTest.insert(receita);
+//            if (insertResult) {
+//                System.out.println("Receita inserida com sucesso.");
 //            } else {
-//                System.out.println("Receitas encontradas:");
-//                System.out.println(receitas);
-//
+//                System.out.println("Falha ao inserir a receita.");
 //            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//
+//            // TESTE DO MÉTODO deleteById
+//            System.out.println("\nDeletando uma receita por ID:");
+//            long receitaIdToDelete = 1;
+//            boolean deleteResult = receitaDAOTest.deleteById(receitaIdToDelete);
+//            if (deleteResult) {
+//                System.out.println("Receita deletada com sucesso.");
+//            } else {
+//                System.out.println("Falha ao deletar a receita.");
+//            }
+//
+//            // Teste do método findAll
+////            System.out.println("\nListando todos as receitas:");
+////            List<Receita> receitas = receitaDAOTest.findAll();
+////            if (receitas.isEmpty()) {
+////                System.out.println("Nenhuma receita encontrada.");
+////            } else {
+////                System.out.println("Receitas encontradas:");
+////                System.out.println(receitas);
+////
+////            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         // 4. Teste de CRUD para a entidade Ingrediente
 
