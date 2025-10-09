@@ -81,8 +81,8 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, IReceitaDAO {
             return false;
         } finally {
             try {
-                if(psmt != null) psmt.close();
                 if(connect != null) ConnectionFactory.disconnect(connect);
+                if(psmt != null) psmt.close();
             } catch (SQLException e){
                 e.printStackTrace();
             }
@@ -137,9 +137,9 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, IReceitaDAO {
         } finally {
             // 11. Fechar ResultSet, PreparedStatement e conexão
             try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -172,9 +172,9 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, IReceitaDAO {
             e.printStackTrace();
         } finally {
             try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -203,8 +203,8 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, IReceitaDAO {
             return false;
         } finally {
             try {
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -246,9 +246,9 @@ public class ReceitaDAO implements GenericDAO<Receita, Long>, IReceitaDAO {
             sqle.printStackTrace();
         } finally {
             try {
+                if(connect != null) ConnectionFactory.disconnect(connect);
                 if(psmt != null) psmt.close();
                 if(rs != null) rs.close();
-                if(connect != null) ConnectionFactory.disconnect(connect);
             } catch (SQLException sqle){
                 sqle.printStackTrace();
             }
