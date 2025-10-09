@@ -17,11 +17,11 @@ public class insertReceita {
         Receita receita1 = new Receita("100g", produto);
         testInsert(receitaDAO,receita1);
 
-        Receita receita2 = new Receita(21,"100g",produto);
+        Receita receita2 = new Receita(21L,"100g",produto);
         testInsert(receitaDAO,receita2);
 
         List<ReceitaIngrediente> receitaIngredienteList1 = new ArrayList<>();
-        Receita receita3 = new Receita(22,"100g", produto, receitaIngredienteList1);
+        Receita receita3 = new Receita(22L,"100g", produto, receitaIngredienteList1);
         testInsert(receitaDAO,receita3);
 
         List<ReceitaIngrediente> receitaIngredienteList2 = new ArrayList<>();
