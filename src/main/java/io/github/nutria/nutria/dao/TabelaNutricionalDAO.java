@@ -1,6 +1,7 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
+import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.model.FiltroNutricional;
 import io.github.nutria.nutria.model.TabelaNutricional;
 import io.github.nutria.nutria.util.ConnectionFactory;
@@ -53,14 +54,15 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
             result = ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            System.err.println("[DAO ERROR] Erro ao salvar tabela nutricional");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao salvar tabela nutricional", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
         return false;
@@ -77,8 +79,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         if (filtro.getOperador().equals("BETWEEN")) {
             sql = "SELECT * FROM tabela_nutricional WHERE " + filtro.getColuna() +
                     " BETWEEN ? AND ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
-        }
-        else {
+        } else {
             sql = "SELECT * FROM tabela_nutricional WHERE " + filtro.getColuna() + " " +
                     filtro.getOperador() + "  ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
         }
@@ -97,8 +98,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                 ps.setDouble(2, filtro.getValor2());
                 ps.setInt(3, limit);
                 ps.setInt(4, offset);
-            }
-            else {
+            } else {
                 ps.setDouble(1, filtro.getValor1());
                 ps.setInt(2, limit);
                 ps.setInt(3, offset);
@@ -130,17 +130,17 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
                 tabelaNutricionalArrayList.add(tabelaNutricional);
             }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao realizar a filtram da tabela nutricional");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao realizar a filtragem da tabela nutricional", e);
+        } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
 
@@ -193,14 +193,16 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                 tabelaNutricionalArrayList.add(tabelaNutricional);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DAO ERROR] Erro ao buscar por todas as tabelas nutricionais");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao realizar a busca das tabelas nutricionais", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
         return tabelaNutricionalArrayList;
@@ -244,18 +246,17 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                         rs.getDouble("potassio_mg")
                 );
             }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar a tabela nutricional com ID: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar tabela nutricional pelo seu ID: " + id, e);
+        } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
 
@@ -281,14 +282,16 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                 totalTabelas++;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DAO ERROR] Erro ao realizar a contagem total de tabelas nutricionais");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao realizar a contagem total de tabelas nutricionais", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
         return totalTabelas;
@@ -328,18 +331,16 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             ps.setLong(17, tabelaNutricional.getIdIngrediente());
 
             result = ps.executeUpdate();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        finally {
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao atualizar a tabela nutricional: " + tabelaNutricional.getIdIngrediente());
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao atualizar usuário", e);
+        } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
         return (result > 0);
@@ -352,7 +353,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         boolean result = false;
 
         PreparedStatement ps = null;
-        Connection connect = ConnectionFactory.connect();
+        Connection connect = null;
         try {
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
@@ -361,14 +362,15 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             result = (ps.executeUpdate() > 0);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            System.err.println("[DAO ERROR] Erro ao deletar a tabela nutricional: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao deletar a tabela nutricional com ID: " + id, e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
         return result;
