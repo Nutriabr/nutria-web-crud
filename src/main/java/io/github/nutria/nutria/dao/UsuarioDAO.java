@@ -198,9 +198,9 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             e.printStackTrace();
         } finally {
             try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

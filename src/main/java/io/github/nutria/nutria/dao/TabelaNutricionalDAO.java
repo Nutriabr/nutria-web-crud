@@ -56,8 +56,8 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             return false;
         } finally {
             try {
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -134,9 +134,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         }
         finally {
             try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -193,10 +193,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             e.printStackTrace();
         } finally {
             try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
-
-                if (connect != null) ConnectionFactory.disconnect(connect);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -247,9 +246,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         }
         finally {
             try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
             }
             catch (SQLException e) {
                 e.printStackTrace();
@@ -281,9 +280,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             e.printStackTrace();
         } finally {
             try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
-                if (connect != null) ConnectionFactory.disconnect(connect);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -332,8 +331,8 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         }
         finally {
             try {
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
             }
             catch (SQLException e) {
                 e.printStackTrace();
@@ -362,8 +361,8 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             return false;
         } finally {
             try {
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

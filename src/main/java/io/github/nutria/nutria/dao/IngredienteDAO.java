@@ -3,8 +3,6 @@ package io.github.nutria.nutria.dao;
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IIngredienteDAO;
 import io.github.nutria.nutria.model.Ingrediente;
-import io.github.nutria.nutria.model.Produto;
-import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 // Importações necessárias para operações com JDBC e manipulação de listas
@@ -82,9 +80,9 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             e.printStackTrace();
         } finally {
             try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -115,9 +113,9 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             e.printStackTrace();
         } finally {
             try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -145,8 +143,8 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             return false;
         } finally {
             try {
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -182,9 +180,9 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             sqle.printStackTrace();
         } finally {
             try {
+                if(connect != null) ConnectionFactory.disconnect(connect);
                 if(psmt != null) psmt.close();
                 if(rs != null) rs.close();
-                if(connect != null) ConnectionFactory.disconnect(connect);
             } catch (SQLException sqle){
                 sqle.printStackTrace();
             }
@@ -212,8 +210,8 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             return false;
         } finally {
             try {
-                if(psmt != null) psmt.close();
                 if(connect != null) ConnectionFactory.disconnect(connect);
+                if(psmt != null) psmt.close();
             } catch (SQLException e){
                 e.printStackTrace();
             }
