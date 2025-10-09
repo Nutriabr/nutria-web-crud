@@ -1,6 +1,8 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
+import io.github.nutria.nutria.dao.interfaces.IProdutoDAO;
+import io.github.nutria.nutria.dao.interfaces.IReceitaDAO;
 import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
@@ -14,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProdutoDAO implements GenericDAO<Produto, Long> {
+public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     @Override
     public boolean insert(Produto produto){
         String sql = "INSERT INTO produto (nome,id_usuario) VALUES (?,?)";
@@ -180,6 +182,45 @@ public class ProdutoDAO implements GenericDAO<Produto, Long> {
                 e.printStackTrace();
             }
         }
+    }
+
+    public List<Produto> findByNome(String nome){
+        String sql =
+                """
+                SELECT * FROM produto
+                WHERE LOWER(nome) LIKE LOWER(?)
+                """;
+
+        PreparedStatement psmt = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+
+        try{
+            connect = ConnectionFactory.connect();
+            psmt = connect.prepareStatement(sql);
+            psmt.setString(1,"%" + nome + "%");
+            rs = psmt.executeQuery();
+            while (rs.next()){
+                Produto produto = new Produto();
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+
+                produtos.add(produto);
+            }
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+        } finally {
+            try {
+                if(psmt != null) psmt.close();
+                if(rs != null) rs.close();
+                if(connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException sqle){
+                sqle.printStackTrace();
+            }
+        }
+        return produtos;
     }
 
 }

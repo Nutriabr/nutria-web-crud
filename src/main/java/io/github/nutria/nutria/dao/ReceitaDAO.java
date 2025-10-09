@@ -1,6 +1,7 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
+import io.github.nutria.nutria.dao.interfaces.IReceitaDAO;
 import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
@@ -20,7 +21,7 @@ import java.util.List;
  * @author marianamarrao
  * @version 1.1
  */
-public class ReceitaDAO implements GenericDAO<Receita, Long> {
+public class ReceitaDAO implements GenericDAO<Receita, Long>, IReceitaDAO {
     @Override
     public boolean insert(Receita receita) {
         if (receita == null) return false;
