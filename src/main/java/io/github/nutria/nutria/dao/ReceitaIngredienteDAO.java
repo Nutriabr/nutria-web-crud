@@ -1,6 +1,7 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
+import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.model.ReceitaIngrediente;
@@ -35,14 +36,15 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             return (result > 0);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            System.err.println("[DAO ERROR] Erro ao salvar relação Receita e Ingrediente: " + receitaIngrediente);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao salvar relação Receita e Ingrediente", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
     }
@@ -81,14 +83,16 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
                 receitasIngredienteArrayList.add(receita);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DAO ERROR] Erro ao buscar por todas as relações Receita e Ingrediente");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar por todas as relações Receita e Ingrediente", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
 
@@ -114,14 +118,16 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
                 totalReceitasIngredientes = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DAO ERROR] Erro ao contar as relações entre receita e ingrediente");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao contar as relações entre receita e ingrediente\"", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (stmt != null) stmt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
 
@@ -156,14 +162,16 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             }
 
         } catch (SQLException sqle){
-            sqle.printStackTrace();
+            System.err.println("[DAO ERROR] Erro ao buscar relação receita ingrediente por quantidade maior que: " + quantidade);
+            sqle.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar relação receita ingrediente por quantidade maior que: " + quantidade, sqle);
         } finally {
             try {
                 if(connect != null) ConnectionFactory.disconnect(connect);
                 if(psmt != null) psmt.close();
                 if(rs != null) rs.close();
             } catch (SQLException sqle){
-                sqle.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", sqle);
             }
         }
         return receitasIngredienteArrayList;
@@ -197,14 +205,16 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             }
 
         } catch (SQLException sqle){
-            sqle.printStackTrace();
+            System.err.println("[DAO ERROR] Erro ao buscar relação receita ingrediente por quantidade menor que: " + quantidade);
+            sqle.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar relação receita ingrediente por quantidade menor que: " + quantidade, sqle);
         } finally {
             try {
                 if(connect != null) ConnectionFactory.disconnect(connect);
                 if(psmt != null) psmt.close();
                 if(rs != null) rs.close();
             } catch (SQLException sqle){
-                sqle.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", sqle);
             }
         }
         return receitasIngredienteArrayList;
@@ -239,14 +249,16 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             }
 
         } catch (SQLException sqle){
-            sqle.printStackTrace();
+            System.err.println("[DAO ERROR] Erro ao buscar relação receita ingrediente por quantidade entre: " + quantidadeMin + " e " + quantidadeMax);
+            sqle.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar relação receita ingrediente por quantidade entre: " + quantidadeMin + " e " + quantidadeMax, sqle);
         } finally {
             try {
                 if(connect != null) ConnectionFactory.disconnect(connect);
                 if(psmt != null) psmt.close();
                 if(rs != null) rs.close();
             } catch (SQLException sqle){
-                sqle.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", sqle);
             }
         }
         return receitasIngredienteArrayList;
@@ -270,14 +282,15 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             result = psmt.executeUpdate();
 
         } catch (SQLException sqle){
-            sqle.printStackTrace();
-            return false;
+            System.err.println("[DAO ERROR] Erro ao atualizar a relação receita e ingrediente: " + receitaIngrediente.getId());
+            sqle.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao atualizar receita", sqle);
         } finally {
             try {
                 if(connect != null) ConnectionFactory.disconnect(connect);
                 if(psmt != null) psmt.close();
             } catch (SQLException e){
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
         return (result > 0);
@@ -298,14 +311,15 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            System.err.println("[DAO ERROR] Erro ao deletar a relação receita e ingrediente: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao deletar  a relação receita e ingrediente: " + id, e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
     }
