@@ -2,6 +2,7 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.model.Ingrediente;
+import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
@@ -41,6 +42,54 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long> {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public List<Ingrediente> findAll(int page) {
+
+        int limite = 4;
+        int offset = (page - 1) * limite;
+
+        String sql = "SELECT * FROM ingrediente LIMIT ? OFFSET ?";
+
+
+        List<Ingrediente> ingredientesArrayList = new ArrayList<>();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            ps = connect.prepareStatement(sql);
+            ps.setInt(1, limite);
+            ps.setInt(2, offset);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Ingrediente ingrediente = new Ingrediente();
+
+                ingrediente.setId(rs.getLong("id"));
+                ingrediente.setNome(rs.getString("nome"));
+
+
+                ingredientesArrayList.add(ingrediente);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ingredientesArrayList;
     }
 
 }
