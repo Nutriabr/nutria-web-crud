@@ -92,4 +92,36 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long> {
         return ingredientesArrayList;
     }
 
+    public int countAll() {
+        int totalIngredientes = 0;
+
+        String sql = "SELECT COUNT(*) FROM ingrediente";
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            stmt = connect.createStatement();
+            rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                totalIngredientes = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return totalIngredientes;
+    }
 }
