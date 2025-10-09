@@ -191,4 +191,33 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long> {
         return ingredientes;
     }
 
+    @Override
+    public boolean update(Ingrediente ingrediente){
+        String sql = "UPDATE ingrediente SET nome = ? WHERE id = ?";
+        PreparedStatement psmt = null;
+        Connection connect = null;
+        int result = 0;
+
+        try {
+            connect = ConnectionFactory.connect();
+            psmt = connect.prepareStatement(sql);
+            psmt.setString(1,ingrediente.getNome());
+            psmt.setLong(2,ingrediente.getId());
+
+            result = psmt.executeUpdate();
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if(psmt != null) psmt.close();
+                if(connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return (result > 0);
+    }
+
 }
