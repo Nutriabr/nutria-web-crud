@@ -1,21 +1,21 @@
 package io.github.nutria.nutria.model;
 public class Ingrediente {
     // Atributos
-    private long id;
+    private Long id;
     private String nome;
 
     // Métodos construtores
     public Ingrediente(){
     }
 
-    public Ingrediente(long id, String nome){
+    public Ingrediente(Long id, String nome){
         this.id = id;
         this.nome = nome;
     }
 
     // Métodos getters
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -28,7 +28,7 @@ public class Ingrediente {
         this.nome = nome;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
