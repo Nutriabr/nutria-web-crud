@@ -2,9 +2,9 @@ package io.github.nutria.nutria.model;
 
 public class ReceitaIngrediente {
     // Atributos
-    private long id;
+    private Long id;
     private Receita receita;
-    private long idIngrediente;
+    private Long idIngrediente;
     private double quantidade;
 
     // Métodos construtores
@@ -12,7 +12,7 @@ public class ReceitaIngrediente {
 
     }
 
-    public ReceitaIngrediente(long id, Receita receita, long idIngrediente, double quantidade){
+    public ReceitaIngrediente(Long id, Receita receita, Long idIngrediente, double quantidade){
         this.id = id;
         this.receita = receita;
         this.idIngrediente = idIngrediente;
@@ -20,14 +20,14 @@ public class ReceitaIngrediente {
     }
 
     // Métodos getters
-    public long getId(){
+    public Long getId(){
         return id;
     }
     public Receita getReceita() {
         return receita;
     }
 
-    public long getIdIngrediente() {
+    public Long getIdIngrediente() {
         return idIngrediente;
     }
 
@@ -36,7 +36,7 @@ public class ReceitaIngrediente {
     }
 
     // Métodos setters
-    public void setId(long id){
+    public void setId(Long id){
         this.id = id;
     }
 
@@ -44,7 +44,7 @@ public class ReceitaIngrediente {
         this.receita = receita;
     }
 
-    public void setIdIngrediente(long idIngrediente) {
+    public void setIdIngrediente(Long idIngrediente) {
         this.idIngrediente = idIngrediente;
     }
 

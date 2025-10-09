@@ -2,7 +2,7 @@ package io.github.nutria.nutria.model;
 
 public class Usuario {
     // Atributos
-    private long id;
+    private Long id;
     private String nome;
     private String email;
     private String senha;
@@ -23,7 +23,7 @@ public class Usuario {
         this.foto = foto;
     }
 
-    public Usuario (long id, String nome, String email, String senha, String telefone, String empresa, String foto){
+    public Usuario (Long id, String nome, String email, String senha, String telefone, String empresa, String foto){
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -33,7 +33,7 @@ public class Usuario {
         this.foto = foto;
     }
 
-    public Usuario(long id, String nome, String email, String senha, String telefone){
+    public Usuario(Long id, String nome, String email, String senha, String telefone){
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -42,7 +42,7 @@ public class Usuario {
     }
 
     // Métodos getters
-    public long getId(){
+    public Long getId(){
         return id;
     }
 
@@ -73,7 +73,7 @@ public class Usuario {
     // Métodos setters
 
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
