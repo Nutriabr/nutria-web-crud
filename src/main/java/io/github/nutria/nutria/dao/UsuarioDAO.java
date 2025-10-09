@@ -56,7 +56,63 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     }
 
     // Filtragem
+
     public List<Usuario> findAllFilterBy(String nomeFiltro, String valorBuscado, int page) {
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        int limit = 4;
+        int offset = (page - 1) * limit;
+
+        FiltroUsuario filtroUsuario = filtros.get(nomeFiltro);
+
+        FiltroUsuario.setValor(valorBuscado);
+
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            String sql = "SELECT * FROM usuario WHERE ? LIKE ? LIMIT ? OFFSET ?";
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, filtroUsuario.getColuna());
+            ps.setString(2, filtroUsuario.getValor());
+            ps.setInt(3, limit);
+            ps.setInt(4, offset);
+
+
+        rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Usuario usuario = new Usuario(
+                    rs.getLong("id"),
+                    rs.getString("nome"),
+                    rs.getString("email"),
+                    rs.getString("senha"),
+                    rs.getString("telefone"),
+                    rs.getString("empresa"),
+                    rs.getString("foto")
+            );
+
+            usuarios.add(usuario);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (connect != null) ConnectionFactory.disconnect(connect);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+        return usuarios;
+}
+
+    public List<Usuario> findByUsername(String nomeFiltro, String valorBuscado, int page) {
         Connection connect = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
