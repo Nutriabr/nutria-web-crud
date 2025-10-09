@@ -152,4 +152,43 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long> {
         }
     }
 
+    public List<Ingrediente> findByNome(String nome){
+        String sql =
+                """
+                SELECT * FROM ingrediente
+                WHERE LOWER(nome) LIKE LOWER(?)
+                """;
+
+        PreparedStatement psmt = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        List<Ingrediente> ingredientes = new ArrayList<>();
+
+        try{
+            connect = ConnectionFactory.connect();
+            psmt = connect.prepareStatement(sql);
+            psmt.setString(1,"%" + nome + "%");
+            rs = psmt.executeQuery();
+            while (rs.next()){
+                Ingrediente ingrediente = new Ingrediente();
+                ingrediente.setId(rs.getLong("id"));
+                ingrediente.setNome(rs.getString("nome"));
+
+                ingredientes.add(ingrediente);
+            }
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+        } finally {
+            try {
+                if(psmt != null) psmt.close();
+                if(rs != null) rs.close();
+                if(connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException sqle){
+                sqle.printStackTrace();
+            }
+        }
+        return ingredientes;
+    }
+
 }
