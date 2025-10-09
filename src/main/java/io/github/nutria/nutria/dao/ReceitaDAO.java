@@ -268,9 +268,9 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             throw new DataAccessException("Erro ao buscar a receita com porcao: " + porcao, sqle);
         } finally {
             try {
+                if(connect != null) ConnectionFactory.disconnect(connect);
                 if(psmt != null) psmt.close();
                 if(rs != null) rs.close();
-                if(connect != null) ConnectionFactory.disconnect(connect);
             } catch (SQLException sqle){
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", sqle);
             }
