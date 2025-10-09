@@ -182,4 +182,43 @@ public class ProdutoDAO implements GenericDAO<Produto, Long> {
         }
     }
 
+    public List<Produto> findByNome(String nome){
+        String sql =
+                """
+                SELECT * FROM produto
+                WHERE LOWER(nome) LIKE LOWER(?)
+                """;
+
+        PreparedStatement psmt = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+
+        try{
+            connect = ConnectionFactory.connect();
+            psmt = connect.prepareStatement(sql);
+            psmt.setString(1,"%" + nome + "%");
+            rs = psmt.executeQuery();
+            while (rs.next()){
+                Produto produto = new Produto();
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+
+                produtos.add(produto);
+            }
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+        } finally {
+            try {
+                if(psmt != null) psmt.close();
+                if(rs != null) rs.close();
+                if(connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException sqle){
+                sqle.printStackTrace();
+            }
+        }
+        return produtos;
+    }
+
 }
