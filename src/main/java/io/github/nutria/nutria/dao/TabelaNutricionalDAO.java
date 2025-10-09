@@ -147,6 +147,76 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return tabelaNutricionalArrayList;
     }
 
+    public List<TabelaNutricional> findByMinOrMax(String type, String column, double value, int page) {
+        int limit = 4;
+        int offset = (page - 1) * limit;
+
+        String sql;
+        if (type.equals("min")) {
+            sql = "SELECT * FROM tabela_nutricional WHERE " + column + " >= ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
+        }
+        else {
+            sql = "SELECT * FROM tabela_nutricional WHERE " + column + " <= ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
+        }
+
+        TabelaNutricional tabelaNutricional = null;
+        List<TabelaNutricional> tabelaNutricionalArrayList = new ArrayList<>();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+
+            ps.setDouble(1, value);
+            ps.setInt(2, limit);
+            ps.setInt(3, offset);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                tabelaNutricional = new TabelaNutricional(
+                        rs.getLong("id_ingrediente"),
+                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("carboidratos_g"),
+                        rs.getDouble("acucares_totais_g"),
+                        rs.getDouble("acucares_adicionados_g"),
+                        rs.getDouble("proteinas_g"),
+                        rs.getDouble("gorduras_totais_g"),
+                        rs.getDouble("gorduras_saturadas_g"),
+                        rs.getDouble("gorduras_trans_g"),
+                        rs.getDouble("fibra_alimentar_g"),
+                        rs.getDouble("sodio_mg"),
+                        rs.getDouble("colesterol_mg"),
+                        rs.getDouble("vitamina_a_mcg"),
+                        rs.getDouble("vitamina_c_mg"),
+                        rs.getDouble("vitamina_d_mcg"),
+                        rs.getDouble("calcio_mg"),
+                        rs.getDouble("ferro_mg"),
+                        rs.getDouble("potassio_mg")
+                );
+
+                tabelaNutricionalArrayList.add(tabelaNutricional);
+            }
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return tabelaNutricionalArrayList;
+    }
+
     @Override
     public List<TabelaNutricional> findAll(int page) {
         int limite = 4;
@@ -208,7 +278,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return tabelaNutricionalArrayList;
     }
 
-    public TabelaNutricional findById(long id) {
+    public TabelaNutricional findById(Long id) {
         String sql = "SELECT * FROM tabela_nutricional WHERE id_ingrediente = ?";
 
         TabelaNutricional tabelaNutricional = null;
