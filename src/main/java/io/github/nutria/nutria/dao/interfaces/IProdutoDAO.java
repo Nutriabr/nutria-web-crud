@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface IProdutoDAO {
     /**
-     * Método para achar  pela porção
+     * Método para achar pelo nome
      * @param nome Recebe como o parametro o nome que será usado na clausura where na query
      * @return List<Produto> Retorna a lista de todas os produtos achadas no banco com determinada nome
      */

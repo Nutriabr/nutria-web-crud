@@ -57,8 +57,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
-                System.err.println("[DATABASE ERROR] Erro ao encerrar conexões com o banco de dados");
-                e.printStackTrace(System.err);
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
     }
@@ -164,6 +163,10 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
         boolean result = false;
 
+        if (id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
         PreparedStatement ps = null;
         Connection connect = null;
         try {
@@ -255,9 +258,9 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
                 throw new EntityNotFoundException("Admin", id);
             }
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar usuário por ID: " + id);
+            System.err.println("[DAO ERROR] Erro ao buscar admin por ID: " + id);
             e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar usuário", e);
+            throw new DataAccessException("Erro ao buscar admin", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);

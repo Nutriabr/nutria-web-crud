@@ -2,6 +2,8 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IUsuarioDAO;
+import io.github.nutria.nutria.exceptions.*;
+import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.model.FiltroUsuario;
 import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
@@ -41,15 +43,16 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
                     result = rs.getInt(1) > 0;
                 }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            System.err.println("[DAO ERROR] Erro ao buscar os emails usados por usuario: " + email);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar emails usados", e);
         } finally {
             try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
-                if (connect != null) ConnectionFactory.disconnect(connect);
             } catch (SQLException e) {
-                e.fillInStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
         return result;
@@ -206,12 +209,17 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return usuarios;
     }
 
-
     public boolean insert(Usuario usuario) {
         String sql = "INSERT INTO usuario (nome, email, senha, telefone, empresa, foto) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
         boolean result = false;
+
+        validateUser(usuario);
+
+        if (findByEmailUsed(usuario.getEmail())) {
+            throw new DuplicateEmailException(usuario.getEmail());
+        }
 
         PreparedStatement ps = null;
         Connection connect = null;
@@ -227,11 +235,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
             ps.setString(1, usuario.getNome());
             ps.setString(2, usuario.getEmail());
-
-            if (findByEmailUsed(usuario.getEmail())) {
-                return false;
-            }
-
             ps.setString(3, hashedPassword);
             ps.setString(4, usuario.getTelefone());
             ps.setString(5, usuario.getEmpresa());
@@ -240,14 +243,15 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             result = (ps.executeUpdate() > 0);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            System.err.println("[DAO ERROR] Erro ao salvar usuário: " + usuario.getEmail());
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao salvar usuario", e);
         } finally {
             try {
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
 
@@ -256,9 +260,20 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
     @Override
     public boolean update(Usuario usuario) {
-        String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, empresa = ?, foto = ? WHERE id = ?";
+        String sql = "UPDATE usuario SET nome = ?, email = ?, telefone = ?, senha = ?, empresa = ?, foto = ? WHERE id = ?";
 
         int result = 0;
+
+        if (usuario.getId() == null || usuario.getId() <= 0) {
+            throw new ValidationException("ID é obrigatório para atualização");
+        }
+
+        findById(usuario.getId());
+
+        Optional<Usuario> existingUser = findByEmail(usuario.getEmail());
+        if (existingUser.isPresent() && !existingUser.get().getId().equals(usuario.getId())) {
+            throw new DuplicateEmailException(usuario.getEmail());
+        }
 
         PreparedStatement pstmt = null;
         Connection connect = null;
@@ -270,30 +285,74 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getEmail());
-            if (findByEmailUsed(usuario.getEmail())) {
-                return false;
-            }
-            pstmt.setString(3, hashedPassword);
-            pstmt.setString(4, usuario.getEmpresa());
-            pstmt.setString(5, usuario.getFoto());
-            pstmt.setLong(6, usuario.getId());
+            pstmt.setString(3, usuario.getTelefone());
+            pstmt.setString(4, hashedPassword);
+            pstmt.setString(5, usuario.getEmpresa());
+            pstmt.setString(6, usuario.getFoto());
+            pstmt.setLong(7, usuario.getId());
 
             result = pstmt.executeUpdate();
 
             pstmt.close();
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            return false;
+            System.err.println("[DAO ERROR] Erro ao atualizar o usuário: " + usuario.getId());
+            sqle.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao atualizar usuário", sqle);
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (pstmt != null) pstmt.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
         return (result > 0);
     }
+
+    public Optional<Usuario> findByEmail(String email) {
+        String sql = "SELECT * FROM usuario WHERE email = ?";
+
+        if (email == null || email.isBlank()) {
+            throw new RequiredFieldException("email");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, email);
+
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getLong("id"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setEmail(rs.getString("telefone"));
+                usuario.setSenha(rs.getString("senha"));
+                usuario.setSenha(rs.getString("empresa"));
+                usuario.setSenha(rs.getString("foto"));
+
+                return Optional.of(usuario);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar usuario por email: " + email);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar usuario", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return Optional.empty();
+    }
+
 
     public List<Usuario> findAll(int page) {
         int limite = 4;
@@ -320,8 +379,8 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
                             rs.getLong("id"),
                             rs.getString("nome"),
                             rs.getString("email"),
-                            rs.getString("senha"),
                             rs.getString("telefone"),
+                            rs.getString("senha"),
                             rs.getString("empresa"),
                             rs.getString("foto")
                     );
@@ -329,14 +388,16 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
                     usuarioArrayList.add(usuario);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DAO ERROR] Erro ao buscar por todos os usuarios");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar pelos usuarios", e);
         } finally {
             try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
-                if (connect != null) ConnectionFactory.disconnect(connect);
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
         return usuarioArrayList;
@@ -350,6 +411,11 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
         PreparedStatement ps = null;
         Connection connect = null;
+
+        if (id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
         try {
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
@@ -358,14 +424,15 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             result = (ps.executeUpdate() > 0);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            System.err.println("[DAO ERROR] Erro ao deletar o usuario: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao deletar usuario", e);
         } finally {
             try {
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
         return result;
@@ -391,17 +458,98 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
                 totalUsuarios = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DAO ERROR] Erro ao realizar a contagem total de usuarios");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao realizar a contagem total de usuarios", e);
         } finally {
             try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
 
         return totalUsuarios;
+    }
+
+    public Usuario findById(long id) {
+        if (id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
+        String sql = "SELECT * FROM usuario WHERE id = ?";
+
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getLong("id"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setSenha(rs.getString("senha"));
+                usuario.setEmpresa(rs.getString("empresa"));
+                usuario.setFoto(rs.getString("foto"));
+
+                return usuario;
+            } else {
+                throw new EntityNotFoundException("Usuario", id);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar usuário por ID: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar usuário", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+    }
+
+    private boolean isValidEmail(String email) {
+        return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    }
+
+    private void validateUser(Usuario usuario) {
+        if (usuario == null) {
+            throw new ValidationException("Usuario não pode ser nulo");
+        }
+
+        if (usuario.getNome() == null || usuario.getNome().isBlank()) {
+            throw new RequiredFieldException("nome");
+        }
+
+        if (usuario.getEmail() == null || usuario.getEmail().isBlank()) {
+            throw new RequiredFieldException("email");
+        }
+
+        if (usuario.getTelefone() == null || usuario.getTelefone().isBlank()) {
+            throw new RequiredFieldException("telefone");
+        }
+
+        if (!isValidEmail(usuario.getEmail())) {
+            throw new InvalidEmailException(usuario.getEmail());
+        }
+
+        if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
+            throw new RequiredFieldException("senha");
+        }
+
+        if (usuario.getSenha().length() < 8) {
+            throw new InvalidPasswordException();
+        }
     }
 }

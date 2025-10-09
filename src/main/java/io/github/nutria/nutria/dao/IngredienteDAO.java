@@ -1,8 +1,10 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
-import io.github.nutria.nutria.dao.interfaces.IProdutoDAO;
+import io.github.nutria.nutria.dao.interfaces.IIngredienteDAO;
+import io.github.nutria.nutria.model.Ingrediente;
 import io.github.nutria.nutria.model.Produto;
+import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 // Importações necessárias para operações com JDBC e manipulação de listas
@@ -14,10 +16,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
+public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredienteDAO {
     @Override
-    public boolean insert(Produto produto){
-        String sql = "INSERT INTO produto (nome,id_usuario) VALUES (?,?)";
+    public boolean insert(Ingrediente ingrediente){
+        String sql = "INSERT INTO ingrediente (id,nome) VALUES (?,?)";
 
         PreparedStatement ps = null;
         Connection connect = null;
@@ -25,8 +27,8 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         try {
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
-            ps.setString(1,produto.getNome());
-            ps.setLong(2,produto.getUsuario().getId());
+            ps.setLong(1,ingrediente.getId());
+            ps.setString(2,ingrediente.getNome());
 
             int result = ps.executeUpdate();
             return (result > 0);
@@ -44,15 +46,15 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public List<Produto> findAll(int page) {
+    public List<Ingrediente> findAll(int page) {
 
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM produto LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM ingrediente LIMIT ? OFFSET ?";
 
 
-        List<Produto> produtosArrayList = new ArrayList<>();
+        List<Ingrediente> ingredientesArrayList = new ArrayList<>();
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -68,13 +70,13 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                Produto produto = new Produto();
+                Ingrediente ingrediente = new Ingrediente();
 
-                produto.setId(rs.getLong("id"));
-                produto.setNome(rs.getString("nome"));
+                ingrediente.setId(rs.getLong("id"));
+                ingrediente.setNome(rs.getString("nome"));
 
 
-                produtosArrayList.add(produto);
+                ingredientesArrayList.add(ingrediente);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,13 +90,13 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             }
         }
 
-        return produtosArrayList;
+        return ingredientesArrayList;
     }
 
     public int countAll() {
-        int totalProdutos = 0;
+        int totalIngredientes = 0;
 
-        String sql = "SELECT COUNT(*) FROM produto";
+        String sql = "SELECT COUNT(*) FROM ingrediente";
 
         Statement stmt = null;
         ResultSet rs = null;
@@ -107,7 +109,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             rs = stmt.executeQuery(sql);
 
             if (rs.next()) {
-                totalProdutos = rs.getInt(1);
+                totalIngredientes = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -121,42 +123,11 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             }
         }
 
-        return totalProdutos;
+        return totalIngredientes;
     }
-
-    @Override
-    public boolean update(Produto produto){
-        String sql = "UPDATE produto SET nome = ? WHERE id = ?";
-        PreparedStatement psmt = null;
-        Connection connect = null;
-        int result = 0;
-
-        try {
-            connect = ConnectionFactory.connect();
-            psmt = connect.prepareStatement(sql);
-            psmt.setString(1,produto.getNome());
-            psmt.setLong(2,produto.getId());
-
-            result = psmt.executeUpdate();
-
-        } catch (SQLException sqle){
-            sqle.printStackTrace();
-            return false;
-        } finally {
-            try {
-                if(psmt != null) psmt.close();
-                if(connect != null) ConnectionFactory.disconnect(connect);
-            } catch (SQLException e){
-                e.printStackTrace();
-            }
-        }
-        return (result > 0);
-
-    }
-
     @Override
     public boolean deleteById(Long id) {
-        String sql = "DELETE FROM produto WHERE id = ?";
+        String sql = "DELETE FROM ingrediente WHERE id = ?";
 
         PreparedStatement ps = null;
         Connection connect = null;
@@ -182,17 +153,17 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         }
     }
 
-    public List<Produto> findByNome(String nome){
+    public List<Ingrediente> findByNome(String nome){
         String sql =
                 """
-                SELECT * FROM produto
+                SELECT * FROM ingrediente
                 WHERE LOWER(nome) LIKE LOWER(?)
                 """;
 
         PreparedStatement psmt = null;
         Connection connect = null;
         ResultSet rs = null;
-        List<Produto> produtos = new ArrayList<>();
+        List<Ingrediente> ingredientes = new ArrayList<>();
 
         try{
             connect = ConnectionFactory.connect();
@@ -200,11 +171,11 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             psmt.setString(1,"%" + nome + "%");
             rs = psmt.executeQuery();
             while (rs.next()){
-                Produto produto = new Produto();
-                produto.setId(rs.getLong("id"));
-                produto.setNome(rs.getString("nome"));
+                Ingrediente ingrediente = new Ingrediente();
+                ingrediente.setId(rs.getLong("id"));
+                ingrediente.setNome(rs.getString("nome"));
 
-                produtos.add(produto);
+                ingredientes.add(ingrediente);
             }
 
         } catch (SQLException sqle){
@@ -218,7 +189,36 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 sqle.printStackTrace();
             }
         }
-        return produtos;
+        return ingredientes;
+    }
+
+    @Override
+    public boolean update(Ingrediente ingrediente){
+        String sql = "UPDATE ingrediente SET nome = ? WHERE id = ?";
+        PreparedStatement psmt = null;
+        Connection connect = null;
+        int result = 0;
+
+        try {
+            connect = ConnectionFactory.connect();
+            psmt = connect.prepareStatement(sql);
+            psmt.setString(1,ingrediente.getNome());
+            psmt.setLong(2,ingrediente.getId());
+
+            result = psmt.executeUpdate();
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if(psmt != null) psmt.close();
+                if(connect != null) ConnectionFactory.disconnect(connect);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return (result > 0);
     }
 
 }

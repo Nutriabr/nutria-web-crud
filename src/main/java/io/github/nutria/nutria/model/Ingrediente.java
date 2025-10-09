@@ -28,9 +28,14 @@ public class Ingrediente {
         this.nome = nome;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     // Método toString
     public String toString() {
         return "ID: " + id +
                 "Nome: " + nome;
     }
+
 }
