@@ -181,7 +181,7 @@
                         <td><%= u.getId()%></td>
                         <td><%= u.getNome()%></td>
                         <td><%= u.getEmail()%></td>
-                        <td><%= u.getSenha()%></td>
+                        <td>******</td>
                         <td><%= u.getTelefone()%></td>
                         <td><%= u.getEmpresa()%></td>
                     </tr>
