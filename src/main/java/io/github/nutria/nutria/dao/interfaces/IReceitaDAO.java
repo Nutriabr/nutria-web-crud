@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface IReceitaDAO {
     /**
-     * Método para achar uma receita pela porção
+     * Método para achar receitas pela porção
      * @param porcao Recebe como o parametro a porção que será usado na clausura where na query
      * @return List<Receita> Retorna a lista de todas as receitas achadas no banco com determinada porção
      */
