@@ -28,33 +28,7 @@
 </head>
 <body>
 <!-- Menu lateral -->
-<aside id="sidebar">
-    <!-- Logo -->
-    <img src="../assets/img/logo.svg" alt="Logo" id="logo">
-
-    <!-- Perfil do usuário -->
-    <div id="user">
-        <img src="../assets/img/Foto usuario.svg" alt="Foto do usuário">
-        <p>Administrador</p>
-    </div>
-
-    <hr>
-
-    <!-- Menu de navegação -->
-    <nav id="nav-menu">
-        <ul>
-            <li id="home"><img src="../assets/img/home.svg" alt="Voltar para home"><a href="Página da giovanna">Inicio</a></li>
-            <li id="users"><img src="../assets/img/icone usuario lateral.svg" alt="Usuários"><a href="<!-- Página de usuários -->">Usuários</a></li>
-        </ul>
-    </nav>
-
-    <!-- Link para encerrar a sessão e voltar para a página de login -->
-    <div id="logout">
-        <a href="../index.jsp">Encerrar sessão</a>
-        <img src="../assets/img/saida.svg" alt="Encerrar sessão">
-    </div>
-</aside>
-
+<%@include file="aside.jsp"%>
 <!-- Conteúdo principal -->
 <main>
     <div class="hero-content">
