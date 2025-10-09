@@ -81,7 +81,6 @@
 
 
         <!-- Barra de pesquisa por usuários -->
-        <section class="find-user">
             <div class="find-elements">
                 <div class="find-bar">
                     <img src="../assets/img/find.svg" alt="Buscar usuários">
@@ -188,32 +187,31 @@
                     </tr>
                     <% }  %>
                 </table>
-
-                <!-- Paginação -->
-                <div class="pagination">
-                    <p>Página <%= page1 %> de <%= totalPaginas %></p>
-
-                    <div class="arrows">
-                        <!-- Seta para esquerda (voltar página) -->
-                        <%--                        <img src="../assets/img/setaEsquerda.svg" alt="Página anterior">--%>
-                        <% if (page1 > 1) { %>
-                        <a href="usuarios.jsp?page=<%= page1 - 1 %>">anterior</a>
-                        <% } %>
-
-                        <% for (int i = 1; i <= totalPaginas; i++) { %>
-                        <a href="usuarios.jsp?page=<%= i %>"><%= i %></a>
-                        <% } %>
-
-                        <!-- Seta para direita (avançar página) -->
-                        <% if (page1 < totalPaginas) { %>
-                        <a href="usuarios.jsp" id="proxima">proxima</a>
-                        <a style="color: red">Bom dia</a>
-                        <% } %>
-
-                    </div>
-                </div>
             </div>
-        </section>
+
+        <!-- Paginação -->
+        <div class="pagination">
+            <p>Página <%= page1 %> de <%= totalPaginas %></p>
+        </div>
+
+        <div class="arrows">
+            <!-- Seta para esquerda (voltar página) -->
+            <%--                        <img src="../assets/img/setaEsquerda.svg" alt="Página anterior">--%>
+            <% if (page1 > 1) { %>
+            <a href="usuarios.jsp?page=<%= page1 - 1 %>">anterior</a>
+            <% } %>
+
+            <% for (int i = 1; i <= totalPaginas; i++) { %>
+            <a href="usuarios.jsp?page=<%= i %>"><%= i %></a>
+            <% } %>
+
+            <!-- Seta para direita (avançar página) -->
+            <% if (page1 < totalPaginas) { %>
+            <a href="usuarios.jsp" id="proxima">proxima</a>
+            <a style="color: red">Bom dia</a>
+            <% } %>
+
+        </div>
     </div>
 </main>
 </body>
