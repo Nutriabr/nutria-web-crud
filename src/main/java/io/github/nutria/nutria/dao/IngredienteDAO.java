@@ -1,6 +1,7 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
+import io.github.nutria.nutria.dao.interfaces.IIngredienteDAO;
 import io.github.nutria.nutria.model.Ingrediente;
 import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredienteDAO implements GenericDAO<Ingrediente, Long> {
+public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredienteDAO {
     @Override
     public boolean insert(Ingrediente ingrediente){
         String sql = "INSERT INTO ingrediente (id,nome) VALUES (?,?)";
