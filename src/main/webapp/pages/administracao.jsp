@@ -25,6 +25,8 @@
                     out.print(nome);
                 }
 
+            } else {
+                out.print("Administrador");
             }
         %></span>
     </div>
