@@ -12,7 +12,7 @@ public class insertReceita {
     public static void main(String[] args) {
         ReceitaDAO receitaDAO = new ReceitaDAO();
 
-        Produto produto = new Produto(20,"Panetone com Açúcar e Canela");
+        Produto produto = new Produto(20L,"Panetone com Açúcar e Canela");
 
         Receita receita1 = new Receita("100g", produto);
         testInsert(receitaDAO,receita1);
