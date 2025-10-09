@@ -147,16 +147,20 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return tabelaNutricionalArrayList;
     }
 
-    public List<TabelaNutricional> findByMinOrMax(String type, String column, double value, int page) {
+    public List<TabelaNutricional> findByNutrientRange(String type, String column, double minValue, double maxValue, int page) {
         int limit = 4;
         int offset = (page - 1) * limit;
 
-        String sql;
+        String sql = "SELECT * FROM tabela_nutricional WHERE " + column;
+
         if (type.equals("min")) {
-            sql = "SELECT * FROM tabela_nutricional WHERE " + column + " >= ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
+            sql += " >= ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
+        }
+        else if (type.equals("max")){
+            sql += " <= ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
         }
         else {
-            sql = "SELECT * FROM tabela_nutricional WHERE " + column + " <= ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
+            sql += " BETWEEN ? AND ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
         }
 
         TabelaNutricional tabelaNutricional = null;
@@ -169,9 +173,22 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
 
-            ps.setDouble(1, value);
-            ps.setInt(2, limit);
-            ps.setInt(3, offset);
+            if (type.equals("min")) {
+                ps.setDouble(1, minValue);
+                ps.setInt(2, limit);
+                ps.setInt(3, offset);
+            }
+            else if (type.equals("max")) {
+                ps.setDouble(1, maxValue);
+                ps.setInt(2, limit);
+                ps.setInt(3, offset);
+            }
+            else {
+                ps.setDouble(1, minValue);
+                ps.setDouble(2, maxValue);
+                ps.setInt(3, limit);
+                ps.setInt(4, offset);
+            }
 
             rs = ps.executeQuery();
 
