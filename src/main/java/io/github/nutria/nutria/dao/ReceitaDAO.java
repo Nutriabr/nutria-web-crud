@@ -49,8 +49,8 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             return false;
         } finally {
             try {
-                if (ps != null) ps.close();
                 if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
 
             } catch (SQLException e) {
                 e.printStackTrace();
