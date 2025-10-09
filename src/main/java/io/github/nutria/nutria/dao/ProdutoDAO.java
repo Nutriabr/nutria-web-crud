@@ -2,9 +2,7 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IProdutoDAO;
-import io.github.nutria.nutria.dao.interfaces.IReceitaDAO;
 import io.github.nutria.nutria.model.Produto;
-import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 // Importações necessárias para operações com JDBC e manipulação de listas
