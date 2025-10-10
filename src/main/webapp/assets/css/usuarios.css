@@ -26,13 +26,15 @@ ul li {
 
 /*MAIN*/
 
-#hero-content {
+#main-content {
     display: flex;
     flex-direction: column;
+    width: 100%;
     margin-top: 3.5rem;
+    margin-left: 175px;
 }
 
-#hero-title {
+#main-title {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -49,7 +51,7 @@ ul li {
 #find-elements {
     display: flex;
     justify-content: space-between;
-    justify-content: flex-end;
+    justify-items: end;
     gap: 1.5rem;
     width: 60rem;
     margin-top: 2rem;
@@ -69,7 +71,7 @@ ul li {
     margin-left: 0.5rem;
 }
 
-#find-bar input {
+#find {
     background-color: transparent;
     border: none;
     outline: none;
@@ -115,7 +117,7 @@ ul li {
 }
 
 /*!* Estilo do conteúdo do popup *!*/
-.newUser-popup {
+#newUser-popup {
     background: white;
     padding: 30px;
     border-radius: 15px;
@@ -124,31 +126,31 @@ ul li {
     width: 100%;
 }
 
-.newUser-popup h1 {
+#newUser-popup h1 {
     color: #6c6c6c;
     font-size: 20px;
     margin-bottom: 20px;
 }
 
-.newUser-popup form {
+#newUser-popup form {
     display: flex;
     justify-content: end;
     flex-direction: column;
 }
 
-.newUser-popup form div {
+#newUser-popup form div {
     display: flex;
     flex-direction: column;
     margin-top: 15px;
     gap: 8px;
 }
 
-.newUser-popup form label {
+#newUser-popup form label {
     font-weight: 500;
     color: #6c6c6c;
 }
 
-.newUser-popup form input {
+#newUser-popup form input {
     padding: 10px;
     outline: none;
     border: none;
@@ -160,7 +162,7 @@ ul li {
 }
 
 /*!* Botão adicionar *!*/
-.newUser-popup form .submit-btn {
+#newUser-popup form .submit-btn {
     background-color: #ee7026;
     color: white;
     width: 200px;
