@@ -68,7 +68,7 @@
                     <div id="newUser-popup">
                         <h1>Adicionar novo usuário</h1>
 
-                        <form>
+                        <form action="/adiconarUsuario" method="post">
                             <div class="photo">
                                 <label for="photo">URL da foto (Opcional)</label>
                                 <input type="url" name="photo" class="photo" placeholder="https://...">
