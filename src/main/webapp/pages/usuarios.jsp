@@ -30,15 +30,8 @@
 <!-- Menu lateral -->
 <%@include file="aside.jsp"%>
 <!-- Conteúdo principal -->
-<main>
-    <div class="hero-content">
-        <div class="main-icons">
-            <img src="../assets/img/Foto usuario sem fundo.svg" alt="Usuário">
-        </div>
-
-        <hr>
-
-        <div class="hero-title">
+<main id="main-content">
+        <div class="main-title">
             <h1>Usuários</h1>
             <p>Gerencie os dados dos seus usuários.</p>
         </div>
@@ -47,9 +40,7 @@
             <p>Total</p>
             <p>
             <%
-                String totalUsuarios = (String)request.getAttribute("totalUsuarios");
-//               out.println(totalUsuarios);
-               System.out.println(totalUsuarios);
+
             %>
         </div>
 
@@ -74,7 +65,7 @@
 
                 <!-- Container do popup -->
                 <div class="popup-container">
-                    <div class="newUser-popup">
+                    <div id="newUser-popup">
                         <h1>Adicionar novo usuário</h1>
 
                         <form>
@@ -186,7 +177,6 @@
             <% } %>
 
         </div>
-    </div>
 </main>
 </body>
 </html>
