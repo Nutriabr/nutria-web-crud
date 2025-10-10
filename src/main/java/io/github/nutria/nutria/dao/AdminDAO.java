@@ -25,7 +25,7 @@ import java.util.Optional;
 public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
     public boolean insert(Admin admin) {
-        String sql = "INSERT INTO admin (nome, email, senha) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO admin (nome, email, senha, telefone, nascimento, cargo, foto) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         Connection connect = null;
         PreparedStatement ps = null;
@@ -45,6 +45,10 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             ps.setString(1, admin.getNome());
             ps.setString(2, admin.getEmail());
             ps.setString(3, hashedPassword);
+            ps.setString(4, admin.getTelefone());
+            ps.setDate(5, admin.getNascimento());
+            ps.setString(6, admin.getCargo());
+            ps.setString(7, admin.getFoto());
 
             return (ps.executeUpdate() > 0);
 
@@ -75,7 +79,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             throw new DuplicateEmailException(admin.getEmail());
         }
 
-        String sql = "UPDATE admin SET nome = ?, email = ?, senha = ? WHERE id = ?";
+        String sql = "UPDATE admin SET nome = ?, email = ?, senha = ?, telefone = ?, nascimento = ?, cargo = ?, foto = ? WHERE id = ?";
 
         int result = 0;
 
@@ -90,8 +94,10 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             pstmt.setString(1, admin.getNome());
             pstmt.setString(2, admin.getEmail());
             pstmt.setString(3, hashedPassword);
-            pstmt.setLong(4, admin.getId());
-
+            pstmt.setString(4, admin.getTelefone());
+            pstmt.setDate(5, admin.getNascimento());
+            pstmt.setString(6, admin.getCargo());
+            pstmt.setString(7, admin.getFoto());
             result = pstmt.executeUpdate();
 
             pstmt.close();
@@ -136,7 +142,11 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
                         rs.getLong("id"),
                         rs.getString("nome"),
                         rs.getString("email"),
-                        rs.getString("senha")
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getDate("nascimento"),
+                        rs.getString("cargo"),
+                        rs.getString("foto")
                 );
 
                 adminArrayList.add(admin);
@@ -247,11 +257,17 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                Admin admin = new Admin();
-                admin.setId(rs.getLong("id"));
-                admin.setNome(rs.getString("nome"));
-                admin.setEmail(rs.getString("email"));
-                admin.setSenha(rs.getString("senha"));
+                Admin admin = new Admin(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getDate("nascimento"),
+                        rs.getString("cargo"),
+                        rs.getString("foto")
+                );
+
 
                 return admin;
             } else {
@@ -291,11 +307,16 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
             rs = ps.executeQuery();
             while (rs.next()) {
-                Admin admin = new Admin();
-                admin.setId(rs.getLong("id"));
-                admin.setNome(rs.getString("nome"));
-                admin.setEmail(rs.getString("email"));
-                admin.setSenha(rs.getString("senha"));
+                Admin admin = new Admin(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getDate("nascimento"),
+                        rs.getString("cargo"),
+                        rs.getString("foto")
+                );
 
                 adminList.add(admin);
             }
@@ -333,11 +354,16 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
             rs = ps.executeQuery();
             while (rs.next()) {
-                Admin admin = new Admin();
-                admin.setId(rs.getLong("id"));
-                admin.setNome(rs.getString("nome"));
-                admin.setEmail(rs.getString("email"));
-                admin.setSenha(rs.getString("senha"));
+                Admin admin = new Admin(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getDate("nascimento"),
+                        rs.getString("cargo"),
+                        rs.getString("foto")
+                );
 
                 adminList.add(admin);
             }
@@ -374,11 +400,16 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
             rs = ps.executeQuery();
             if (rs.next()) {
-                Admin admin = new Admin();
-                admin.setId(rs.getLong("id"));
-                admin.setNome(rs.getString("nome"));
-                admin.setEmail(rs.getString("email"));
-                admin.setSenha(rs.getString("senha"));
+                Admin admin = new Admin(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getDate("nascimento"),
+                        rs.getString("cargo"),
+                        rs.getString("foto")
+                );
 
                 return Optional.of(admin);
             }
@@ -455,10 +486,21 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             throw new InvalidEmailException(admin.getEmail());
         }
 
-        if (admin.getSenha() == null || admin.getSenha().isBlank()) {
-            throw new RequiredFieldException("senha");
+        if (admin.getTelefone() == null || admin.getTelefone().isBlank()) {
+            throw new RequiredFieldException("telefone");
         }
 
+        if (admin.getTelefone().length() > 11) {
+            throw new InvalidPhoneException(admin.getTelefone());
+        }
+
+        if (admin.getNascimento() == null) {
+            throw new RequiredFieldException("nascimento");
+        }
+
+        if (admin.getCargo() == null || admin.getCargo().isBlank()) {
+            throw new RequiredFieldException("cargo");
+        }
         if (admin.getSenha().length() < 8) {
             throw new InvalidPasswordException();
         }
