@@ -33,7 +33,7 @@
 <main>
     <div class="hero-content">
         <div class="main-icons">
-            <img src="../assets/img/Foto usuario sem fundo.svg" alt="Usuário">  <%-- Essa opção pode ser removida se o nosso aside for estático, caso contrário deve ser mantida. --%>
+            <img src="../assets/img/Foto usuario sem fundo.svg" alt="Usuário">
         </div>
 
         <hr>
