@@ -142,10 +142,10 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                         rs.getDouble("potassio_mg")
                 );
 
-                tabelaNutricionalArrayList.add(tabelaNutricional);
+              g  tabelaNutricionalArrayList.add(tabelaNutricional);
             }
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao realizar a filtram da tabela nutricional");
+            System.err.println("[DAO ERROR] Erro ao realizar a filtragem da tabela nutricional");
             e.printStackTrace(System.err);
             throw new DataAccessException("Erro ao realizar a filtragem da tabela nutricional", e);
         } finally {
@@ -233,7 +233,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DAO ERROR] Erro ao realizar a filtram da tabela nutricional por mínimo e/ou máximo");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao realizar a filtragem da tabela nutricional por mínimo e/ou máximo", e);
         }
         finally {
             try {
@@ -241,7 +243,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
 
@@ -438,7 +440,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         } catch (SQLException e) {
             System.err.println("[DAO ERROR] Erro ao atualizar a tabela nutricional: " + tabelaNutricional.getIdIngrediente());
             e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao atualizar usuário", e);
+            throw new DataAccessException("Erro ao atualizar a tabela nutricional: " + tabelaNutricional.getIdIngrediente(), e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
