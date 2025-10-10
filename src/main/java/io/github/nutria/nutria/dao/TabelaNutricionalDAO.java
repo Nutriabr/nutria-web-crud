@@ -1,6 +1,7 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
+import io.github.nutria.nutria.dao.interfaces.ITabelaNutricionalDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.model.FiltroNutricional;
 import io.github.nutria.nutria.model.TabelaNutricional;
@@ -11,13 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long> {
+public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>, ITabelaNutricionalDAO {
 
     private static final Map<String, FiltroNutricional> FILTROS = FiltroNutricional.filtrosNutricionais();
 
     public TabelaNutricionalDAO() {
     }
 
+    @Override
     public boolean insert(TabelaNutricional tabelaNutricional) {
         String sql = "INSERT INTO tabela_nutricional (id_ingrediente, valor_energetico_kcal, carboidratos_g, acucares_totais_g, " +
                 "acucares_adicionados_g, proteinas_g, gorduras_totais_g, gorduras_saturadas_g, gorduras_trans_g, fibra_alimentar_g, " +
@@ -76,7 +78,6 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return result;
     }
 
-    //  Filtragem
     public List<TabelaNutricional> filterBy(String nomeFiltro, int page) {
         int limit = 4;
         int offset = (page - 1) * limit;
@@ -362,6 +363,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return tabelaNutricional;
     }
 
+    @Override
     public int countAll() {
         int totalTabelas = 0;
 
@@ -397,6 +399,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return totalTabelas;
     }
 
+    @Override
     public boolean update(TabelaNutricional tabelaNutricional) {
         String sql = "UPDATE tabela_nutricional SET valorEnergeticoKcal = ?, carboidratosG = ?, " +
                 "acucaresTotaisG = ?, acucaresAdicionadosG = ?, proteinasG = ?, gordurasTotaisG = ?, gordurasSaturadasG = ?, " +
