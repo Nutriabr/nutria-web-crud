@@ -14,6 +14,15 @@ import java.util.Map;
 
 public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>, ITabelaNutricionalDAO {
 
+    /**
+     * Constante contendo os filtros nutricionais pré-definidos.
+     * <p>
+     * Cada chave representa o nome de um filtro e o valor é um {@link FiltroNutricional}
+     * com as suas condições de filtragem (coluna, operador e valores) para serem adicionadas na query SQL.
+     * <p>
+     * Este mapa é utilizado pelo método {@link #filterBy(String, int)} para aplicar filtros.
+     * @author Giovanna Santos
+     */
     public static final Map<String, FiltroNutricional> FILTROS = Map.of(
             "muito_baixo_sodio", new FiltroNutricional("sodio_mg", "<=", 40.00, null),
             "baixo_sodio", new FiltroNutricional("sodio_mg", "BETWEEN", 41.00, 80.00),
