@@ -98,6 +98,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             pstmt.setDate(5, admin.getNascimento());
             pstmt.setString(6, admin.getCargo());
             pstmt.setString(7, admin.getFoto());
+            pstmt.setLong(8, admin.getId());
             result = pstmt.executeUpdate();
 
             pstmt.close();
