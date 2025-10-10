@@ -235,7 +235,7 @@
             <!-- Seta para esquerda (voltar página) -->
             <%--                        <img src="../assets/img/setaEsquerda.svg" alt="Página anterior">--%>
             <% if (page1 > 1) { %>
-            <a href="usuarios.jsp?page=<%= page1 - 1 %>">img</a>
+            <a href="usuarios.jsp?page=<%= page1 - 1 %>"><img src="../assets/img/setaEsquerda.svg"></a>
             <% } %>
 
             <% for (int i = 1; i <= totalPaginas; i++) { %>
@@ -244,8 +244,7 @@
 
             <!-- Seta para direita (avançar página) -->
             <% if (page1 < totalPaginas) { %>
-            <a href="usuarios.jsp" id="proxima">proxima</a>
-            <a style="color: red">Bom dia</a>
+            <a href="usuarios.jsp" id="proxima"><img src="../assets/img/setaDireita.svg"></a>
             <% } %>
 
         </div>
