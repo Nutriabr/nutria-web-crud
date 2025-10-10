@@ -91,6 +91,7 @@ ul li {
 /* Botão de adicionar usuários */
 .overlay > #add-user-btn {
     background-color: #ee7026;
+    width: 100%;
     display: flex;
     align-items: center;
     padding: 0.6rem;
