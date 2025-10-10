@@ -46,22 +46,16 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
             if (tabelaNutricional.getColesterolMg() != null) ps.setDouble(12, tabelaNutricional.getColesterolMg());
             else ps.setNull(12, Types.DOUBLE);
-
             if (tabelaNutricional.getVitaminaAMcg() != null) ps.setDouble(13, tabelaNutricional.getVitaminaAMcg());
             else ps.setNull(13, Types.DOUBLE);
-
             if (tabelaNutricional.getVitaminaCMg() != null) ps.setDouble(14, tabelaNutricional.getVitaminaCMg());
             else ps.setNull(14, Types.DOUBLE);
-
             if (tabelaNutricional.getVitaminaDMcg() != null) ps.setDouble(15, tabelaNutricional.getVitaminaDMcg());
             else ps.setNull(15, Types.DOUBLE);
-
             if (tabelaNutricional.getCalcioMg() != null) ps.setDouble(16, tabelaNutricional.getCalcioMg());
             else ps.setNull(16, Types.DOUBLE);
-
-            if (tabelaNutricional.getFerroMg() != null) ps.setDouble(17, tabelaNutricional.getFerroMg());
+            if (tabelaNutricional.getFerroMg()!= null) ps.setDouble(17, tabelaNutricional.getFerroMg());
             else ps.setNull(17, Types.DOUBLE);
-
             if (tabelaNutricional.getPotassioMg() != null) ps.setDouble(18, tabelaNutricional.getPotassioMg());
             else ps.setNull(18, Types.DOUBLE);
 
@@ -142,7 +136,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
                         rs.getDouble("potassio_mg")
                 );
 
-              g  tabelaNutricionalArrayList.add(tabelaNutricional);
+                tabelaNutricionalArrayList.add(tabelaNutricional);
             }
         } catch (SQLException e) {
             System.err.println("[DAO ERROR] Erro ao realizar a filtragem da tabela nutricional");
@@ -406,11 +400,10 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     public boolean update(TabelaNutricional tabelaNutricional) {
         String sql = "UPDATE tabela_nutricional SET valorEnergeticoKcal = ?, carboidratosG = ?, " +
                 "acucaresTotaisG = ?, acucaresAdicionadosG = ?, proteinasG = ?, gordurasTotaisG = ?, gordurasSaturadasG = ?, " +
-                "fibraAlimentarG = ?, sodioMg = ?, colesterolMg = ?, vitaminaAMcg = ?, vitaminaCMg = ?, vitaminaDMcg = ?, " +
+                "gorduras_trans_g = ?, fibraAlimentarG = ?, sodioMg = ?, colesterolMg = ?, vitaminaAMcg = ?, vitaminaCMg = ?, vitaminaDMcg = ?, " +
                 "calcioMg = ?, ferroMg = ?, potassioMg = ? WHERE id_ingrediente = ?";
 
         boolean result;
-
         PreparedStatement ps = null;
         Connection connect = null;
 
@@ -425,16 +418,26 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             ps.setDouble(5, tabelaNutricional.getProteinasG());
             ps.setDouble(6, tabelaNutricional.getGordurasTotaisG());
             ps.setDouble(7, tabelaNutricional.getGordurasSaturadasG());
-            ps.setDouble(8, tabelaNutricional.getFibraAlimentarG());
-            ps.setDouble(9, tabelaNutricional.getSodioMg());
-            ps.setDouble(10, tabelaNutricional.getColesterolMg());
-            ps.setDouble(11, tabelaNutricional.getVitaminaAMcg());
-            ps.setDouble(12, tabelaNutricional.getVitaminaCMg());
-            ps.setDouble(13, tabelaNutricional.getVitaminaDMcg());
-            ps.setDouble(14, tabelaNutricional.getCalcioMg());
-            ps.setDouble(15, tabelaNutricional.getFerroMg());
-            ps.setDouble(16, tabelaNutricional.getPotassioMg());
-            ps.setLong(17, tabelaNutricional.getIdIngrediente());
+            ps.setDouble(8, tabelaNutricional.getGordurasTransG());
+            ps.setDouble(9, tabelaNutricional.getFibraAlimentarG());
+            ps.setDouble(10, tabelaNutricional.getSodioMg());
+
+            if (tabelaNutricional.getColesterolMg() != null) ps.setDouble(11, tabelaNutricional.getColesterolMg());
+            else ps.setNull(11, Types.DOUBLE);
+            if (tabelaNutricional.getVitaminaAMcg() != null) ps.setDouble(12, tabelaNutricional.getVitaminaAMcg());
+            else ps.setNull(12, Types.DOUBLE);
+            if (tabelaNutricional.getVitaminaCMg() != null) ps.setDouble(13, tabelaNutricional.getVitaminaCMg());
+            else ps.setNull(13, Types.DOUBLE);
+            if (tabelaNutricional.getVitaminaDMcg() != null) ps.setDouble(14, tabelaNutricional.getVitaminaDMcg());
+            else ps.setNull(14, Types.DOUBLE);
+            if (tabelaNutricional.getCalcioMg() != null) ps.setDouble(15, tabelaNutricional.getCalcioMg());
+            else ps.setNull(15, Types.DOUBLE);
+            if (tabelaNutricional.getFerroMg()!= null) ps.setDouble(16, tabelaNutricional.getFerroMg());
+            else ps.setNull(16, Types.DOUBLE);
+            if (tabelaNutricional.getPotassioMg() != null) ps.setDouble(17, tabelaNutricional.getPotassioMg());
+            else ps.setNull(17, Types.DOUBLE);
+
+            ps.setLong(18, tabelaNutricional.getIdIngrediente());
 
             result = (ps.executeUpdate() > 0);
         } catch (SQLException e) {
