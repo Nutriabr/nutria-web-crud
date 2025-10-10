@@ -164,25 +164,25 @@
                                 <div class="editUser-popup">
                                     <h1>Editar usuário</h1>
 
-                                    <form>
+                                    <form action="/editarUsuario" method="post">
                                         <div class="photo">
                                             <label for="photo">URL da foto (Opcional)</label>
-                                            <input type="url" name="photo" id="photo" class="photo">
+                                            <input type="url" name="photo" id="photo" class="photo" value="<%= u.getFoto()%>">
                                         </div>
 
                                         <div class="user-name">
                                             <label for="name">Nome completo</label>
-                                            <input type="text" name="name" id="name">
+                                            <input type="text" name="name" id="name" class="name" value="<%= u.getNome() %>">
                                         </div>
 
                                         <div class="user-email">
                                             <label for="email">Endereço de e-mail</label>
-                                            <input type="email" name="email" id="email" class="email">
+                                            <input type="email" name="email" id="email" class="email" value="<%= u.getEmail() %>">
                                         </div>
 
                                         <div class="user-password">
                                             <label for="password">Senha</label>
-                                            <input type="password" name="password" id="password" class="password">
+                                            <input type="hidden" name="id" id="password" class="password" value="<%= u.getId() %>">
                                         </div>
 
                                         <div class="user-phone">
