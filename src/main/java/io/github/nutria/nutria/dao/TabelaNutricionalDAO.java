@@ -14,7 +14,17 @@ import java.util.Map;
 
 public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>, ITabelaNutricionalDAO {
 
-    private static final Map<String, FiltroNutricional> FILTROS = FiltroNutricional.filtrosNutricionais();
+    public static final Map<String, FiltroNutricional> FILTROS = Map.of(
+            "muito_baixo_sodio", new FiltroNutricional("sodio_mg", "<=", 40.00, null),
+            "baixo_sodio", new FiltroNutricional("sodio_mg", "BETWEEN", 41.00, 80.00),
+            "alto_sodio", new FiltroNutricional("sodio_mg", ">=", 600.00, null),
+            "alto_acucares_adicionados", new FiltroNutricional("acucares_adicionados_g", ">=", 15.00, null),
+            "alto_gorduras_saturadas", new FiltroNutricional("gorduras_saturadas_g", ">=", 6.00, null),
+            "fonte_proteinas", new FiltroNutricional("proteinas_g", "BETWEEN", 5.00, 9.99),
+            "rico_proteinas", new FiltroNutricional("proteinas_g", ">=", 10.00, null),
+            "fonte_fibras", new FiltroNutricional("fibra_alimentar_g", "BETWEEN", 2.50, 4.99),
+            "rico_fibras", new FiltroNutricional("fibra_alimentar_g", ">=", 5.00, null)
+    );
 
     public TabelaNutricionalDAO() {
     }
