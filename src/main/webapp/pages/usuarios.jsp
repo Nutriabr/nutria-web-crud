@@ -71,32 +71,32 @@
                         <form>
                             <div class="photo">
                                 <label for="photo">URL da foto (Opcional)</label>
-                                <input type="url" name="photo" id="photo" placeholder="https://...">
+                                <input type="url" name="photo" class="photo" placeholder="https://...">
                             </div>
 
                             <div class="user-name">
                                 <label for="name">Nome completo</label>
-                                <input type="text" name="name" id="name" placeholder="Insira o nome completo">
+                                <input type="text" name="name" class="name" placeholder="Insira o nome completo">
                             </div>
 
                             <div class="user-email">
                                 <label for="email">Endereço de e-mail</label>
-                                <input type="email" name="email" id="email" placeholder="Insira o endereço de e-mail">
+                                <input type="email" name="email" class="email" placeholder="Insira o endereço de e-mail">
                             </div>
 
                             <div class="user-password">
                                 <label for="password">Senha</label>
-                                <input type="password" name="password" id="password" placeholder="Insira a senha">
+                                <input type="password" name="password" class="password" placeholder="Insira a senha">
                             </div>
 
                             <div class="user-phone">
                                 <label for="phone">Telefone</label>
-                                <input type="tel" name="phone" id="phone" placeholder="Insira o telefone">
+                                <input type="tel" name="phone" class="phone" placeholder="Insira o telefone">
                             </div>
 
                             <div class="user-company">
                                 <label for="company">Empresa (Opcional)</label>
-                                <input type="text" name="company" id="company" placeholder="Insira a empresa">
+                                <input type="text" name="company" class="company" placeholder="Insira a empresa">
                             </div>
 
                             <button type="submit" class="submit-btn">Adicionar</button>
@@ -122,6 +122,7 @@
                         <th>Senha</th>
                         <th>Telefone</th>
                         <th>Empresa</th>
+                        <th>Ações</th>
                     </tr>
 
                     <!-- Criação de Usuários -->
@@ -149,6 +150,82 @@
                         <td>******</td>
                         <td><%= u.getTelefone()%></td>
                         <td><%= u.getEmpresa()%></td>
+                        <td>
+                            <a href=""><img src="../assets/img/edit.svg" alt="Editar usuário"></a>
+
+                            <input type="checkbox" id="editUser-popup" hidden>
+
+                            <!-- Overlay do popup, será exibida com CSS quando o checkbox estiver marcado -->
+                            <div class="overlay">
+                                <!-- //Botão que ativa o checkbox// -->
+                                <label for="editUser-popup" class="edit-user-btn"><img
+                                        src="../assets/img/editar usuario.svg" alt="Editar usuário"></label>
+                            </div>
+
+                            <div class="popupEdit-container">
+                                <div class="editUser-popup">
+                                    <h1>Editar usuário</h1>
+
+                                    <form>
+                                        <div class="photo">
+                                            <label for="photo">URL da foto (Opcional)</label>
+                                            <input type="url" name="photo" id="photo" class="photo">
+                                        </div>
+
+                                        <div class="user-name">
+                                            <label for="name">Nome completo</label>
+                                            <input type="text" name="name" id="name">
+                                        </div>
+
+                                        <div class="user-email">
+                                            <label for="email">Endereço de e-mail</label>
+                                            <input type="email" name="email" id="email" class="email">
+                                        </div>
+
+                                        <div class="user-password">
+                                            <label for="password">Senha</label>
+                                            <input type="password" name="password" id="password" class="password">
+                                        </div>
+
+                                        <div class="user-phone">
+                                            <label for="phone">Telefone</label>
+                                            <input type="tel" name="phone" id="phone" class="phone">
+                                        </div>
+
+                                        <div class="user-company">
+                                            <label for="company">Empresa (Opcional)</label>
+                                            <input type="text" name="company" id="company" class="company">
+                                        </div>
+
+                                        <button type="reset" id="cancelEdit-btn">Cancelar</button>
+
+                                        <button type="submit" class="submit-btn">Atualizar</button>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                            <a href=""><img src="../assets/img/delete.svg" alt="Deletar usuário"></a>
+
+                            <input type="checkbox" id="deleteUser-popup" hidden>
+
+                            <div class="overlay">
+                                <label for="deleteUser-popup" class="delete-user-btn"><img
+                                        src="../assets/img/lixeira.svg" alt="Excluir usuário"></label>
+                            </div>
+
+                            <div class="popupDelete-container">
+                                <div class="deleteUser-popup">
+                                    <h1>Você tem certeza que deseja excluir este registro?</h1>
+
+                                    <p>Você não poderá recuperar esse registro após excluir</p>
+
+                                    <label for="deleteUser-popup" class="cancelDelete-user-btn">Cancelar</label>
+
+                                    <label for="deleteUser-popup" class="delete-user-btn">Excluir</label>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     <% }  %>
                 </table>
@@ -163,7 +240,7 @@
             <!-- Seta para esquerda (voltar página) -->
             <%--                        <img src="../assets/img/setaEsquerda.svg" alt="Página anterior">--%>
             <% if (page1 > 1) { %>
-            <a href="usuarios.jsp?page=<%= page1 - 1 %>">anterior</a>
+            <a href="usuarios.jsp?page=<%= page1 - 1 %>">img</a>
             <% } %>
 
             <% for (int i = 1; i <= totalPaginas; i++) { %>
