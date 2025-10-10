@@ -151,8 +151,6 @@
                         <td><%= u.getTelefone()%></td>
                         <td><%= u.getEmpresa()%></td>
                         <td>
-                            <a href=""><img src="../assets/img/edit.svg" alt="Editar usuário"></a>
-
                             <input type="checkbox" id="editUser-popup" hidden>
 
                             <!-- Overlay do popup, será exibida com CSS quando o checkbox estiver marcado -->
@@ -203,9 +201,6 @@
                                     </form>
                                 </div>
                             </div>
-
-
-                            <a href=""><img src="../assets/img/delete.svg" alt="Deletar usuário"></a>
 
                             <input type="checkbox" id="deleteUser-popup" hidden>
 
