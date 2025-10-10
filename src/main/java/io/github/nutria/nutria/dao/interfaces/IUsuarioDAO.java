@@ -1,20 +1,24 @@
 package io.github.nutria.nutria.dao.interfaces;
 
+import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.model.Usuario;
 
 /**
- * Interface para operações de CRUD na entidade Usuario.
- * @author Luis Henrique
- * @version 1.1
+ * Interface para operações específicas de CRUD na entidade {@link Usuario}.
+ *
  * @see Usuario
+ * @author Luis Henrique
+ * @version 1.0
  */
 public interface IUsuarioDAO {
+
     /**
-     * Método para validar se o email já está cadastrado no Banco de Dados
-     * @param email Recebe como o parametro o email que será usado na clausura where na query
-     * @return boolean Retorna <i>true</i> caso a quantidade de linhas seja maior que 0 (já existe um email com
-     * o do parametro passado ou <i>false</i> caso a quantidade linha seja menor que 0 (Não existe um email como o do
-     * parametro passado).;
-     * */
+     * Verifica se um {@link Usuario} com o endereço de email informado está registrado.
+     *
+     * @param email o endereço de email que será utilizado na busca.
+     * @return {@code true} se o email já estiver registrado no banco; {@code false} caso contrário.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     * @author Luis Henrique
+     */
     boolean findByEmailUsed(String email);
 }

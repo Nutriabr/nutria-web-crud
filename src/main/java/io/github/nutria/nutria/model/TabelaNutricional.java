@@ -13,13 +13,13 @@ public class TabelaNutricional {
     private double gordurasTransG;
     private double fibraAlimentarG;
     private double sodioMg;
-    private double colesterolMg;
-    private double vitaminaAMcg;
-    private double vitaminaCMg;
-    private double vitaminaDMcg;
-    private double calcioMg;
-    private double ferroMg;
-    private double potassioMg;
+    private Double colesterolMg;
+    private Double vitaminaAMcg;
+    private Double vitaminaCMg;
+    private Double vitaminaDMcg;
+    private Double calcioMg;
+    private Double ferroMg;
+    private Double potassioMg;
 
     // Construtor vazio
     public TabelaNutricional() {
@@ -28,8 +28,8 @@ public class TabelaNutricional {
     // Construtor completo
     public TabelaNutricional(Long idIngrediente, double valorEnergeticoKcal, double carboidratosG, double acucaresTotaisG,
                              double acucaresAdicionadosG, double proteinasG, double gordurasTotaisG, double gordurasSaturadasG,
-                             double gordurasTransG, double fibraAlimentarG, double sodioMg, double colesterolMg, double vitaminaAMcg,
-                             double vitaminaCMg, double vitaminaDMcg, double calcioMg, double ferroMg, double potassioMg) {
+                             double gordurasTransG, double fibraAlimentarG, double sodioMg, Double colesterolMg, Double vitaminaAMcg,
+                             Double vitaminaCMg, Double vitaminaDMcg, Double calcioMg, Double ferroMg, Double potassioMg) {
         this.idIngrediente = idIngrediente;
         this.valorEnergeticoKcal = valorEnergeticoKcal;
         this.carboidratosG = carboidratosG;
@@ -65,29 +65,6 @@ public class TabelaNutricional {
         this.gordurasTransG = gordurasTransG;
         this.fibraAlimentarG = fibraAlimentarG;
         this.sodioMg = sodioMg;
-    }
-
-    public TabelaNutricional(double valorEnergeticoKcal, double carboidratosG, double acucaresTotaisG,
-                             double acucaresAdicionadosG, double proteinasG, double gordurasTotaisG, double gordurasSaturadasG,
-                             double gordurasTransG, double fibraAlimentarG, double sodioMg, double colesterolMg, double vitaminaAMcg,
-                             double vitaminaCMg, double vitaminaDMcg, double calcioMg, double ferroMg, double potassioMg) {
-        this.valorEnergeticoKcal = valorEnergeticoKcal;
-        this.carboidratosG = carboidratosG;
-        this.acucaresTotaisG = acucaresTotaisG;
-        this.acucaresAdicionadosG = acucaresAdicionadosG;
-        this.proteinasG = proteinasG;
-        this.gordurasTotaisG = gordurasTotaisG;
-        this.gordurasSaturadasG = gordurasSaturadasG;
-        this.gordurasTransG = gordurasTransG;
-        this.fibraAlimentarG = fibraAlimentarG;
-        this.sodioMg = sodioMg;
-        this.colesterolMg = colesterolMg;
-        this.vitaminaAMcg = vitaminaAMcg;
-        this.vitaminaCMg = vitaminaCMg;
-        this.vitaminaDMcg = vitaminaDMcg;
-        this.calcioMg = calcioMg;
-        this.ferroMg = ferroMg;
-        this.potassioMg = potassioMg;
     }
 
     // Getters e Setters
@@ -179,59 +156,59 @@ public class TabelaNutricional {
         this.sodioMg = sodioMg;
     }
 
-    public double getColesterolMg() {
+    public Double getColesterolMg() {
         return colesterolMg;
     }
 
-    public void setColesterolMg(double colesterolMg) {
+    public void setColesterolMg(Double colesterolMg) {
         this.colesterolMg = colesterolMg;
     }
 
-    public double getVitaminaAMcg() {
+    public Double getVitaminaAMcg() {
         return vitaminaAMcg;
     }
 
-    public void setVitaminaAMcg(double vitaminaAMcg) {
+    public void setVitaminaAMcg(Double vitaminaAMcg) {
         this.vitaminaAMcg = vitaminaAMcg;
     }
 
-    public double getVitaminaCMg() {
+    public Double getVitaminaCMg() {
         return vitaminaCMg;
     }
 
-    public void setVitaminaCMg(double vitaminaCMg) {
+    public void setVitaminaCMg(Double vitaminaCMg) {
         this.vitaminaCMg = vitaminaCMg;
     }
 
-    public double getVitaminaDMcg() {
+    public Double getVitaminaDMcg() {
         return vitaminaDMcg;
     }
 
-    public void setVitaminaDMcg(double vitaminaDMcg) {
+    public void setVitaminaDMcg(Double vitaminaDMcg) {
         this.vitaminaDMcg = vitaminaDMcg;
     }
 
-    public double getCalcioMg() {
+    public Double getCalcioMg() {
         return calcioMg;
     }
 
-    public void setCalcioMg(double calcioMg) {
+    public void setCalcioMg(Double calcioMg) {
         this.calcioMg = calcioMg;
     }
 
-    public double getFerroMg() {
+    public Double getFerroMg() {
         return ferroMg;
     }
 
-    public void setFerroMg(double ferroMg) {
+    public void setFerroMg(Double ferroMg) {
         this.ferroMg = ferroMg;
     }
 
-    public double getPotassioMg() {
+    public Double getPotassioMg() {
         return potassioMg;
     }
 
-    public void setPotassioMg(double potassioMg) {
+    public void setPotassioMg(Double potassioMg) {
         this.potassioMg = potassioMg;
     }
 

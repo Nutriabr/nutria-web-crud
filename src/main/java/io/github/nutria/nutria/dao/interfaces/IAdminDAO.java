@@ -1,22 +1,26 @@
 package io.github.nutria.nutria.dao.interfaces;
 
+import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.model.Admin;
-import io.github.nutria.nutria.model.Usuario;
 
-import java.sql.SQLException;
 import java.util.Optional;
 
 /**
- * Interface para operações de CRUD na entidade Admin.
+ * Interface para operações específicas de CRUD na entidade {@link Admin}.
+ *
+ * @see Admin
  * @author Luis Henrique
  * @version 1.0
- * @see Admin
  */
 public interface IAdminDAO {
-    /** Método para listar por email todos os admins cadastrados no banco de dados
-     * @return List<Admin> Retorna uma lista de objetos Admin
+
+    /**
+     * Busca um registro de {@link Admin} pelo email informado.
+     *
+     * @param email o endereço de email que será utilizado na busca.
+     * @return um {@link Optional} contendo o {@link Admin} correspondente, ou vazio se não encontrado.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      * @author Luis Henrique
-     * @throws SQLException Lança uma exceção SQL em caso de erro na consulta
-     * */
+     */
     Optional<Admin> findByEmail(String email);
 }
