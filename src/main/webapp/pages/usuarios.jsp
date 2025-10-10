@@ -60,7 +60,7 @@
                 <!-- Overlay do popup, será exibida com CSS quando o checkbox estiver marcado -->
                 <div class="overlay">
                     <!-- Botão que ativa o checkbox -->
-                    <label for="addUser-popup" class="add-user-btn">Adicionar novo usuário</label>
+                    <label for="addUser-popup" id="add-user-btn">Adicionar novo usuário</label>
                 </div>
 
                 <!-- Container do popup -->
