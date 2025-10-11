@@ -1,0 +1,83 @@
+:root {
+    --primary-color: #EE7026;
+    --primary-color-hover: #D66522;
+    --text-primary: #222222;
+    --text-secondary: #333333;
+    --text-tertiary: #555555;
+    --text-light: #FFFFFF;
+    --bg-light: #f8f8f8;
+    --overlay-bg: rgba(0, 0, 0, 0.6);
+    --font-family-base: 'Montserrat', sans-serif;
+    --font-size-lg: 1.5rem;
+    --font-size-md: 1rem;
+    --font-size-icon: 48px;
+    --spacing-sm: 8px;
+    --spacing-md: 10px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+    --spacing-xxl: 32px;
+    --border-radius-md: 5px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.overlay-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-bg);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.message-error {
+    background-color: var(--bg-light);
+    color: var(--text-secondary);
+    padding: var(--spacing-xxl) 40px;
+    border-radius: var(--border-radius-md);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.message-error i {
+    font-size: var(--font-size-icon);
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.message-error h2 {
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-lg);
+    color: var(--text-primary);
+}
+
+.message-error p {
+    font-size: var(--font-size-md);
+    color: var(--text-tertiary);
+    margin-bottom: var(--spacing-xl);
+}
+
+.message-error button {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    font-size: var(--font-size-md);
+    font-weight: bold;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.message-error button:hover {
+    background-color: var(--primary-color-hover);
+}
