@@ -1,8 +1,9 @@
 package io.github.nutria.nutria.servlet.usuarioServlet;
 
 import io.github.nutria.nutria.dao.UsuarioDAO;
-import io.github.nutria.nutria.exceptions.DataAccessException;
+import io.github.nutria.nutria.exceptions.*;
 import io.github.nutria.nutria.model.Usuario;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,32 +15,51 @@ import java.util.Date;
 
 @WebServlet(name = "UsuarioInsertServlet", value = "/usuario/adicionar")
 public class UsuarioInsertServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Pega os parâmetros do formulário
-        String nome = request.getParameter("name");
-        String email = request.getParameter("email");
-        String senha = request.getParameter("password");
-        String telefone = request.getParameter("phone");
-        String empresa = request.getParameter("company");
-        String foto = request.getParameter("picture");
-
-        // Cria um objeto Usuario, seta os atributos do objeto e cria um objeto UsuarioDAO
-        Usuario user = new Usuario(
-                nome,
-                email,
-                senha,
-                telefone,
-                empresa,
-                foto
-        );
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UsuarioDAO dao = new UsuarioDAO();
+        Usuario usuario = new Usuario();
 
-        // Redireciona para a página de listagem de usuários
-        if (dao.insert(user)) {
-            response.sendRedirect("/pages/usuarios.jsp");
-        } else {
-            throw new DataAccessException("Erro ao inserir usuário no banco de dados.");
+        try {
+            usuario.setNome(req.getParameter("name"));
+            usuario.setEmail(req.getParameter("email"));
+            usuario.setSenha(req.getParameter("password"));
+            usuario.setTelefone(req.getParameter("phone"));
+            usuario.setEmpresa(req.getParameter("company"));
+            usuario.setFoto(req.getParameter("picture"));
+
+            if (dao.insert(usuario)) {
+                RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/usuario/usuarios.jsp");
+                dispatcher.forward(req, resp);
+            } else {
+                throw new DataAccessException("Erro ao inserir usuário no banco de dados.");
+            }
+
+        }  catch (DuplicateEmailException dee) {
+            System.err.println("[ERRO DE DUPLICIDADE]: " + dee);
+            req.setAttribute("errorMessage", "Ops! Esse e-mail já está em uso!");
+            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+        } catch (DuplicatePhoneException dpe) {
+            System.err.println("[ERRO DE DUPLICIDADE]: " + dpe);
+            req.setAttribute("errorMessage", "Ops! Esse telefone já está em uso!");
+            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+        } catch (RequiredFieldException rfe) {
+            System.err.println("[ERRO DE CAMPO OBRIGATÓRIO]: " + rfe);
+            req.setAttribute("errorMessage", "Ops! " + rfe.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+        } catch (InvalidEmailException iee) {
+            System.err.println("[ERRO DE EMAIL INVÁLIDO]: " + iee);
+            req.setAttribute("errorMessage", "Ops! " + iee.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+        } catch (InvalidPhoneException ipe) {
+            System.err.println("[ERRO DE TELEFONE INVÁLIDO]: " + ipe);
+            req.setAttribute("errorMessage", "Ops! " + ipe.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+        } catch (InvalidPasswordException ipwe) {
+            System.err.println("[ERRO DE SENHA INVÁLIDO]: " + ipwe);
+            req.setAttribute("errorMessage", "Ops! " + ipwe.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+        } catch (DataAccessException dae) {
+            throw new DataAccessException("Erro ao acessar o banco de dados", dae);
         }
-
     }
 }

@@ -3,7 +3,6 @@ package io.github.nutria.nutria.dao;
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IUsuarioDAO;
 import io.github.nutria.nutria.exceptions.*;
-import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.model.FiltroUsuario;
 import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
@@ -17,6 +16,7 @@ import java.util.*;
  * @version 1.1
  * @see IUsuarioDAO
  */
+@SuppressWarnings("ALL")
 public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     private final static Map<String, FiltroUsuario> filtros = FiltroUsuario.filtrosUsuarios();
 
@@ -58,7 +58,88 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return result;
     }
 
-    // Filtragem
+    public Optional<Usuario> findByPhone(String phone) {
+        String sql = "SELECT * FROM usuario WHERE telefone = ?";
+
+        if (phone == null || phone.isBlank()) {
+            throw new RequiredFieldException("telefone");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, phone);
+
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Usuario usuario = new Usuario(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getString("empresa"),
+                        rs.getString("foto")
+                );
+
+                return Optional.of(usuario);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar usuário pelo telefone: " + phone);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar usuário pelo telefone", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public boolean findByPhoneUsed(String phone) {
+        String sql = "SELECT COUNT(*) FROM usuario WHERE telefone = ?";
+
+        boolean result = false;
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, phone);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                /* 4. Se o resultado da função COUNT for maior que 0, significa que
+                 *  o telefone já está cadastrado
+                 * */
+                result = rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar os telefones usados por usuario: " + phone);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar telefones usados", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return result;
+    }
 
     public List<Usuario> findAllFilterBy(String nomeFiltro, String valorBuscado, int page) {
         Connection connect = null;
@@ -217,13 +298,18 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
         validateUser(usuario);
 
-        if (findByEmailUsed(usuario.getEmail())) {
-            throw new DuplicateEmailException(usuario.getEmail());
-        }
 
         PreparedStatement ps = null;
         Connection connect = null;
         try  {
+            if (findByEmailUsed(usuario.getEmail())) {
+                throw new DuplicateEmailException(usuario.getEmail());
+            }
+
+            if (findByPhoneUsed(usuario.getTelefone())) {
+                throw new DuplicatePhoneException(usuario.getTelefone());
+            }
+
             connect = ConnectionFactory.connect();
 
             ps = connect.prepareStatement(sql);
