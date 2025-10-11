@@ -14,7 +14,7 @@
             <img src="${pageContext.request.contextPath}/assets/img/icon-info.png" alt="Icone de informação">
         </div>
         <h1>Ops! Algo deu errado</h1>
-        <p>Ocorreu um erro inesperado.</p>
+        <p><strong> Ocorreu um erro inesperado no servidor. Tente novamente mais tarde.</strong></p>
     </main>
 </div>
 </body>

@@ -11,12 +11,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Controle - Nutria</title>
-    <link rel="stylesheet" href="../assets/css/aside.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/aside.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 <div class="sidebar">
-    <img id="nutria" src="../assets/img/logo.svg" alt="">
+    <img id="nutria" src="${pageContext.request.contextPath}/assets/img/logo.svg" alt="">
     <div class="user">
         <i class="fa-solid fa-user-circle"></i>
         <span><%
