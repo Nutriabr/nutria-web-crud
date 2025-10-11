@@ -6,6 +6,7 @@ import io.github.nutria.nutria.util.PasswordHasher;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class updateAdminPw {
@@ -16,7 +17,7 @@ public class updateAdminPw {
 
         AdminDAO dao = new AdminDAO();
 
-        List<Admin> admins = null;
+        List<Admin> admins = new ArrayList<Admin>();
 
         for (int i = 0; i < dao.countAll(); i++) {
             Admin admin = new Admin(
@@ -29,6 +30,7 @@ public class updateAdminPw {
                     dao.findAll((i < Math.ceil(dao.countAll()) / 4) ? (i + 1) : i).get(i).getCargo(),
                     dao.findAll((i < Math.ceil(dao.countAll()) / 4) ? (i + 1) : i).get(i).getFoto()
             );
+            admins.add(admin);
         }
 
         for (int i = 0; i < admins.size(); i++) {
