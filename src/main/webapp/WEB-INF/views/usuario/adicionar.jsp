@@ -9,6 +9,10 @@
 <html>
 <head>
     <title>Menu de Adicionar Usuários</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/adicionar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 <main>
@@ -18,7 +22,7 @@
             <h1>Adicionar administrador</h1>
             <p>Preencha as informações de novo administrador.</p>
         </div>
-        <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/usuario/insert/"
+        <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/usuario/adicionar"
               method="post">
             <h2>Informações do usuário</h2>
             <label for="name-input">Nome</label>

@@ -17,7 +17,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Controle - Nutria</title>
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -33,84 +33,84 @@
             <div class="card">
                 <div class="icon">
                     <h3>Usuários</h3>
-                    <img src="../assets/img/UserLaranja.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/UserLaranja.png" alt="">
                 </div>
                 <span class="value"><%= usuarioDao.countAll()%></span>
                 <div class="acess">
-                    <a href="usuarios.jsp">Acessar</a>
-                    <a href="usuarios.jsp"><img src="../assets/img/setaVerde.png" alt=""></a>
+                    <a href="${pageContext.request.contextPath}/usuario/listar">Acessar</a>
+                    <a href="${pageContext.request.contextPath}/usuario/listar"><img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt=""></a>
                 </div>
             </div>
 
             <div class="card">
                 <div class="icon">
                     <h3>Produtos</h3>
-                    <img src="../assets/img/IconeDeProdutos.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/IconeDeProdutos.png" alt="">
                 </div>
                 <span class="value"><%= produtoDAO.countAll()%></span>
                 <div class="acess">
                     <a href="#">Acessar</a>
-                    <img src="../assets/img/setaVerde.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
                 </div>
             </div>
 
             <div class="card">
                 <div class="icon">
                     <h3>Administradores</h3>
-                    <img src="../assets/img/UserEngre.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/UserEngre.png" alt="">
                 </div>
                 <span class="value"><%= adminDao.countAll()%></span>
                 <div class="acess">
-                    <a href="#">Acessar</a>
-                    <img src="../assets/img/setaVerde.png" alt="">
+                    <a href="${pageContext.request.contextPath}/admin/listar">Acessar</a>
+                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
                 </div>
             </div>
 
             <div class="card">
                 <div class="icon">
                     <h3>Ingredientes</h3>
-                    <img src="../assets/img/IconeIngredientes.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/IconeIngredientes.png" alt="">
                 </div>
                 <span class="value"><%= ingredienteDAO.countAll()%></span>
                 <div class="acess">
                     <a href="#">Acessar</a>
-                    <img src="../assets/img/setaVerde.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
                 </div>
             </div>
 
             <div class="card">
                 <div class="icon">
                     <h3>Receitas</h3>
-                    <img src="../assets/img/UserLaranja.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/UserLaranja.png" alt="">
                 </div>
                 <span class="value"><%= receitaDAO.countAll()%></span>
                 <div class="acess">
                     <a href="#">Acessar</a>
-                    <img src="../assets/img/setaVerde.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
                 </div>
             </div>
 
             <div class="card">
                 <div class="icon">
                     <h3>Receita Ingrediente</h3>
-                    <img src="../assets/img/UserLaranja.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/UserLaranja.png" alt="">
                 </div>
                 <span class="value"><%= receitaIngredienteDAO.countAll()%></span>
                 <div class="acess">
                     <a href="#">Acessar</a>
-                    <img src="../assets/img/setaVerde.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
                 </div>
             </div>
 
             <div class="card">
                 <div class="icon">
                     <h3>Tabela Nutricional</h3>
-                    <img src="../assets/img/UserLaranja.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/UserLaranja.png" alt="">
                 </div>
                 <span class="value"><%= tabelaNutricionalDAO.countAll()%></span>
                 <div class="acess">
                     <a href="#">Acessar</a>
-                    <img src="../assets/img/setaVerde.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
                 </div>
             </div>
         </div>
