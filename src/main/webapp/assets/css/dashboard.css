@@ -1,0 +1,118 @@
+:root {
+    --primary-color: #ff6600;
+    --success-color: #00a651;
+    --success-color-hover: #008f45;
+    --text-primary: #333;
+    --text-secondary: #6C6C6C;
+    --text-tertiary: #777;
+    --bg-main: #f9f9f9;
+    --bg-card: #ffffff;
+    --font-family-base: 'Inter', sans-serif;
+    --sidebar-width: 320px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family-base), serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--bg-main);
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px 40px;
+    margin-left: var(--sidebar-width);
+}
+
+.dashboard h2 {
+    font-size: 25px;
+    color: var(--text-secondary);
+    margin: 15px 0 5px 100px;
+}
+
+.dashboard p {
+    color: var(--text-secondary);
+    margin: 0 0 60px 100px;
+}
+
+.cards {
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+    gap: 60px;
+    justify-content: center;
+}
+
+.card {
+    background-color: var(--bg-card);
+    padding: 50px;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.card span {
+    color: var(--text-secondary);
+    font-size: 20px;
+}
+
+.card h3 {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.value {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 5px 0;
+}
+
+.card a {
+    margin-top: auto;
+    text-decoration: none;
+    color: var(--success-color);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.card a:hover {
+    color: var(--success-color-hover);
+}
+
+.info {
+    margin-top: 50px;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: 15px;
+}
+
+.icon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+.icon img {
+    width: 30px;
+}
+
+.acess {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.acess img {
+    width: 30px;
+}
