@@ -227,7 +227,6 @@
 
         <div class="arrows">
             <!-- Seta para esquerda (voltar página) -->
-            <%--                        <img src="../assets/img/setaEsquerda.svg" alt="Página anterior">--%>
             <% if (page1 > 1) { %>
             <a href="usuarios.jsp?page=<%= page1 - 1 %>"><img src="${pageContext.request.contextPath}../assets/img/setaEsquerda.svg"></a>
             <% } %>
