@@ -324,7 +324,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                totalTabelas++;
+                totalTabelas = rs.getInt(1);
             }
         } catch (SQLException e) {
             System.err.println("[DAO ERROR] Erro ao realizar a contagem total de tabelas nutricionais");
