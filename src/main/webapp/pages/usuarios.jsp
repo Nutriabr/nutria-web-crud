@@ -39,19 +39,19 @@
         <div class="users-counter">
             <p>Total</p>
             <p>
-            <%
-
+            <%=
+                    dao.countAll()
             %>
         </div>
 
 
         <!-- Barra de pesquisa por usuários -->
-            <div class="find-elements">
-                <div class="find-bar">
-                    <img src="../assets/img/find.svg" alt="Buscar usuários">
+            <div id="find-elements">
+                <div id="find-bar">
+                    <img src="../assets/img/search.svg" alt="Buscar usuários">
                     <input type="search" name="find" id="find" placeholder="Buscar">
                 </div>
-                <a href=""><img src="../assets/img/filtro.svg.png" alt=""></a>
+                <a href=""><img src="../assets/img/filtro.svg" alt=""></a>
 
                 <!-- Botão para adicionar um novo usuário -->
                 <!-- Checkbox escondido -->
@@ -126,12 +126,6 @@
                     </tr>
 
                     <!-- Criação de Usuários -->
-<%--                    <%--%>
-<%--                        Integer pageObj = (Integer) request.getAttribute("page");--%>
-<%--                        Integer totalPaginasObj = (Integer) request.getAttribute("totalPaginas");--%>
-<%--                        int page1 = (pageObj != null) ? pageObj.intValue() : 1;--%>
-<%--                        int totalPaginas = (totalPaginasObj != null) ? totalPaginasObj.intValue() : 1;--%>
-<%--                    %>--%>
 
                     <%
                         Integer page1 = (Integer) request.getAttribute("page");
@@ -150,7 +144,7 @@
                         <td>******</td>
                         <td><%= u.getTelefone()%></td>
                         <td><%= u.getEmpresa()%></td>
-                        <td>
+                        <td id="actions">
                             <input type="checkbox" id="editUser-popup" hidden>
 
                             <!-- Overlay do popup, será exibida com CSS quando o checkbox estiver marcado -->
@@ -235,7 +229,7 @@
             <!-- Seta para esquerda (voltar página) -->
             <%--                        <img src="../assets/img/setaEsquerda.svg" alt="Página anterior">--%>
             <% if (page1 > 1) { %>
-            <a href="usuarios.jsp?page=<%= page1 - 1 %>"><img src="../assets/img/setaEsquerda.svg"></a>
+            <a href="usuarios.jsp?page=<%= page1 - 1 %>"><img src="${pageContext.request.contextPath}../assets/img/setaEsquerda.svg"></a>
             <% } %>
 
             <% for (int i = 1; i <= totalPaginas; i++) { %>
@@ -244,7 +238,7 @@
 
             <!-- Seta para direita (avançar página) -->
             <% if (page1 < totalPaginas) { %>
-            <a href="usuarios.jsp" id="proxima"><img src="../assets/img/setaDireita.svg"></a>
+            <a href="usuarios.jsp" id="proxima"><img src="${pageContext.request.contextPath}../assets/img/setaDireita.svg"></a>
             <% } %>
 
         </div>
