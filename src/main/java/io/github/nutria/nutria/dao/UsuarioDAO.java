@@ -379,8 +379,8 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
                             rs.getLong("id"),
                             rs.getString("nome"),
                             rs.getString("email"),
-                            rs.getString("telefone"),
                             rs.getString("senha"),
+                            rs.getString("telefone"),
                             rs.getString("empresa"),
                             rs.getString("foto")
                     );

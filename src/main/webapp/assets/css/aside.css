@@ -64,6 +64,12 @@ hr {
     color: #666;
 }
 
+.logout button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
 .logout:hover {
     color: #ff6600;
 }

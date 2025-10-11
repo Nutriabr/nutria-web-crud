@@ -39,19 +39,19 @@
         <div class="users-counter">
             <p>Total</p>
             <p>
-            <%
-
+            <%=
+                    dao.countAll()
             %>
         </div>
 
 
         <!-- Barra de pesquisa por usuários -->
-            <div class="find-elements">
-                <div class="find-bar">
-                    <img src="../assets/img/find.svg" alt="Buscar usuários">
+            <div id="find-elements">
+                <div id="find-bar">
+                    <img src="../assets/img/search.svg" alt="Buscar usuários">
                     <input type="search" name="find" id="find" placeholder="Buscar">
                 </div>
-                <a href=""><img src="../assets/img/filtro.svg.png" alt=""></a>
+                <a href=""><img src="../assets/img/filtro.svg" alt=""></a>
 
                 <!-- Botão para adicionar um novo usuário -->
                 <!-- Checkbox escondido -->
@@ -60,7 +60,7 @@
                 <!-- Overlay do popup, será exibida com CSS quando o checkbox estiver marcado -->
                 <div class="overlay">
                     <!-- Botão que ativa o checkbox -->
-                    <label for="addUser-popup" class="add-user-btn">Adicionar novo usuário</label>
+                    <label for="addUser-popup" id="add-user-btn">Adicionar novo usuário</label>
                 </div>
 
                 <!-- Container do popup -->
@@ -68,7 +68,7 @@
                     <div id="newUser-popup">
                         <h1>Adicionar novo usuário</h1>
 
-                        <form>
+                        <form action="/adiconarUsuario" method="post">
                             <div class="photo">
                                 <label for="photo">URL da foto (Opcional)</label>
                                 <input type="url" name="photo" class="photo" placeholder="https://...">
@@ -126,12 +126,6 @@
                     </tr>
 
                     <!-- Criação de Usuários -->
-<%--                    <%--%>
-<%--                        Integer pageObj = (Integer) request.getAttribute("page");--%>
-<%--                        Integer totalPaginasObj = (Integer) request.getAttribute("totalPaginas");--%>
-<%--                        int page1 = (pageObj != null) ? pageObj.intValue() : 1;--%>
-<%--                        int totalPaginas = (totalPaginasObj != null) ? totalPaginasObj.intValue() : 1;--%>
-<%--                    %>--%>
 
                     <%
                         Integer page1 = (Integer) request.getAttribute("page");
@@ -150,7 +144,7 @@
                         <td>******</td>
                         <td><%= u.getTelefone()%></td>
                         <td><%= u.getEmpresa()%></td>
-                        <td>
+                        <td id="actions">
                             <input type="checkbox" id="editUser-popup" hidden>
 
                             <!-- Overlay do popup, será exibida com CSS quando o checkbox estiver marcado -->
@@ -164,25 +158,25 @@
                                 <div class="editUser-popup">
                                     <h1>Editar usuário</h1>
 
-                                    <form>
+                                    <form action="/editarUsuario" method="post">
                                         <div class="photo">
                                             <label for="photo">URL da foto (Opcional)</label>
-                                            <input type="url" name="photo" id="photo" class="photo">
+                                            <input type="url" name="photo" id="photo" class="photo" value="<%= u.getFoto()%>">
                                         </div>
 
                                         <div class="user-name">
                                             <label for="name">Nome completo</label>
-                                            <input type="text" name="name" id="name">
+                                            <input type="text" name="name" id="name" class="name" value="<%= u.getNome() %>">
                                         </div>
 
                                         <div class="user-email">
                                             <label for="email">Endereço de e-mail</label>
-                                            <input type="email" name="email" id="email" class="email">
+                                            <input type="email" name="email" id="email" class="email" value="<%= u.getEmail() %>">
                                         </div>
 
                                         <div class="user-password">
                                             <label for="password">Senha</label>
-                                            <input type="password" name="password" id="password" class="password">
+                                            <input type="hidden" name="id" id="password" class="password" value="<%= u.getId() %>">
                                         </div>
 
                                         <div class="user-phone">
@@ -235,7 +229,7 @@
             <!-- Seta para esquerda (voltar página) -->
             <%--                        <img src="../assets/img/setaEsquerda.svg" alt="Página anterior">--%>
             <% if (page1 > 1) { %>
-            <a href="usuarios.jsp?page=<%= page1 - 1 %>">img</a>
+            <a href="usuarios.jsp?page=<%= page1 - 1 %>"><img src="${pageContext.request.contextPath}../assets/img/setaEsquerda.svg"></a>
             <% } %>
 
             <% for (int i = 1; i <= totalPaginas; i++) { %>
@@ -244,8 +238,7 @@
 
             <!-- Seta para direita (avançar página) -->
             <% if (page1 < totalPaginas) { %>
-            <a href="usuarios.jsp" id="proxima">proxima</a>
-            <a style="color: red">Bom dia</a>
+            <a href="usuarios.jsp" id="proxima"><img src="${pageContext.request.contextPath}../assets/img/setaDireita.svg"></a>
             <% } %>
 
         </div>
