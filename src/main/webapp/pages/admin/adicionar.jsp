@@ -16,7 +16,7 @@
 </head>
 <body>
 <main>
-    <%@include file="../aside.jsp" %>
+    <%@include file="../components/aside.jsp" %>
     <div class="container">
         <div class="main-content">
             <h1>Adicionar administrador</h1>
