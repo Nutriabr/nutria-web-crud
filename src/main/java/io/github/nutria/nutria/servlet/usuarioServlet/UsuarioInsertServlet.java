@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
-@WebServlet(name = "UsuarioInsertServlet", value = "/usuario/insert")
+@WebServlet(name = "UsuarioInsertServlet", value = "/usuario/adicionar")
 public class UsuarioInsertServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Pega os parâmetros do formulário
