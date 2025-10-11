@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Controle - Nutria</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/aside.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/sidebar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -40,14 +40,14 @@
     <hr>
 
     <ul class="menu">
-        <li class="active"><i class="fa-solid fa-house"></i> Início</li>
-        <li><i class="fa-solid fa-users"></i> Usuários</li>
-        <li><i class="fa-solid fa-box"></i> Produtos</li>
-        <li><i class="fa-solid fa-user-gear"></i> Administradores</li>
-        <li><i class="fa-solid fa-carrot"></i> Ingredientes</li>
-        <li><i class="fa-solid fa-list"></i> Tabela Nutricional</li>
-        <li><i class="fa-solid fa-utensils"></i> Receitas</li>
-        <li><i class="fa-solid fa-clipboard-list"></i> Ingredientes da Receita</li>
+        <li class="active"><i class="fa-solid fa-house"></i><a href="${pageContext.request.contextPath}/administracao">Início</a></li>
+        <li><i class="fa-solid fa-users"></i> <a href="${pageContext.request.contextPath}/usuario/listar">Usuários</a></li>
+        <li><i class="fa-solid fa-box"></i><a href="${pageContext.request.contextPath}/produto/listar"> Produtos</a></li>
+        <li><i class="fa-solid fa-user-gear"></i><a href="${pageContext.request.contextPath}/admin/listar"> Administradores</a></li>
+        <li><i class="fa-solid fa-carrot"></i><a href="${pageContext.request.contextPath}/ingrediente/listar"> Ingredientes</a></li>
+        <li><i class="fa-solid fa-list"></i><a href="${pageContext.request.contextPath}/tabela_nutricional/listar"> Tabela Nutricional</a></li>
+        <li><i class="fa-solid fa-utensils"></i><a href="${pageContext.request.contextPath}/receita/listar"> Receitas</a></li>
+        <li><i class="fa-solid fa-clipboard-list"></i><a href="${pageContext.request.contextPath}/ingrediente_receita/listar"> Ingredientes da Receita</a></li>
     </ul>
 
     <form class="logout" action="${pageContext.request.contextPath}/logout" method="post">
