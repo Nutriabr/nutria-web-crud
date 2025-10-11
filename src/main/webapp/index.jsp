@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login - Área secreta</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -23,8 +23,6 @@
         <form class="login-form" method="post"  action="${pageContext.request.contextPath}/login">
             <input type="email" placeholder="Endereço de email" name="email" class="login-input" required>
             <input type="password" placeholder="Senha" name="password" class="login-input" required>
-
-            <a href="#" id="login-forget">Esqueci minha senha</a>
 
             <button type="submit" class="login-button">Login</button>
         </form>
