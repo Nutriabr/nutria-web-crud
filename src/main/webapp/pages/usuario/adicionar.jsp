@@ -1,21 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
-  User: luismedeiros-ieg
-  Date: 10/10/2025
-  Time: 18:49
+  User: enzomota-ieg
+  Date: 11/10/2025
+  Time: 02:03
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Adicionar novo adminstrador</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/adicionar.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Menu de Adicionar Usuários</title>
 </head>
 <body>
-<%@include file="../components/messagemErro.jsp"%>
 <main>
     <%@include file="../components/aside.jsp" %>
     <div class="container">
@@ -23,9 +18,9 @@
             <h1>Adicionar administrador</h1>
             <p>Preencha as informações de novo administrador.</p>
         </div>
-        <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/admin/adicionar"
+        <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/usuario/insert/"
               method="post">
-            <h2>Informações do administrador</h2>
+            <h2>Informações do usuário</h2>
             <label for="name-input">Nome</label>
             <input class="parameter-input" type="text" id="name-input" name="name" placeholder="Insira o nome">
 
@@ -42,9 +37,9 @@
             <label for="phone-input">Telefone</label>
             <input class="parameter-input" type="text" id="phone-input" name="phone" placeholder="XX XXXXX-XXXX">
 
-            <label for="birth-input">Data de nascimento</label>
-            <input class="parameter-input" type="date" id="birth-input" name="birth"
-                   placeholder="Insira sua data de nascimento">
+            <label for="company-input">Empresa</label>
+            <input class="parameter-input" type="text" id="company-input" name="company"
+                   placeholder="Insira sua data de nascimenot">
 
             <label for="role-input">Cargo</label>
             <input class="parameter-input" type="text" id="role-input" name="role" placeholder="Insira seu cargo">
@@ -55,6 +50,20 @@
 
             <input id="submit-btn" type="submit" value="Adicionar">
         </form>
+
+        <%
+            String errorFeedback = (String) request.getAttribute("errorMessage");
+
+            if (errorFeedback != null && !errorFeedback.isEmpty()) {
+        %>
+
+        <div class="message-error">
+            <p><strong>Erro: </strong> <%= errorFeedback %>
+            </p>
+        </div>
+        <%
+            }
+        %>
     </div>
 </main>
 <script src="${pageContext.request.contextPath}/assets/js/validator.js"></script>
