@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+<%@include file="../components/messagemErro.jsp"%>
 <main>
     <%@include file="../components/aside.jsp" %>
     <div class="container">
@@ -43,7 +44,7 @@
 
             <label for="birth-input">Data de nascimento</label>
             <input class="parameter-input" type="date" id="birth-input" name="birth"
-                   placeholder="Insira sua data de nascimenot">
+                   placeholder="Insira sua data de nascimento">
 
             <label for="role-input">Cargo</label>
             <input class="parameter-input" type="text" id="role-input" name="role" placeholder="Insira seu cargo">
@@ -54,20 +55,6 @@
 
             <input id="submit-btn" type="submit" value="Adicionar">
         </form>
-
-        <%
-            String errorFeedback = (String) request.getAttribute("errorMessage");
-
-            if (errorFeedback != null && !errorFeedback.isEmpty()) {
-        %>
-
-        <div class="message-error">
-            <p><strong>Erro: </strong> <%= errorFeedback %>
-            </p>
-        </div>
-        <%
-            }
-        %>
     </div>
 </main>
 <script src="${pageContext.request.contextPath}/assets/js/validator.js"></script>
