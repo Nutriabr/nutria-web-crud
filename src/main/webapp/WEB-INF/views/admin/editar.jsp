@@ -11,13 +11,13 @@
     <title>Editar adminstrador</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/adicionar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/forms.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 <%@include file="../components/messagemErro.jsp" %>
 <main>
-    <%@include file="../components/aside.jsp" %>
+    <%@include file="../components/sidebar.jsp" %>
     <div class="container">
         <div class="main-content">
             <h1>Editar administrador</h1>
