@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("adminName", admin.get().getNome());
             session.setAttribute("adminEmail", admin.get().getEmail());
 
-            resp.sendRedirect( req.getContextPath()+"/pages/administracao.jsp");
+            resp.sendRedirect( req.getContextPath()+"/administracao");
         } else {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             req.setAttribute("error", "Email ou senha inválidos");
