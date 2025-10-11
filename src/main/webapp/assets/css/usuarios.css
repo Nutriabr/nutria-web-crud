@@ -38,7 +38,7 @@ ul li {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .users-counter {
@@ -50,11 +50,10 @@ ul li {
 
 #find-elements {
     display: flex;
-    justify-content: space-between;
-    justify-items: end;
+    justify-content: flex-end;
     gap: 1.5rem;
     width: 60rem;
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     margin-bottom: 2.5rem;
 }
 
@@ -62,6 +61,7 @@ ul li {
     background-color: #F2F2F2;
     border-radius: 3px;
     display: flex;
+    align-items: center;
     align-items: center;
     gap: 0.5rem;
 }
@@ -71,7 +71,7 @@ ul li {
     margin-left: 0.5rem;
 }
 
-#find {
+#find-bar input {
     background-color: transparent;
     border: none;
     outline: none;
@@ -84,17 +84,17 @@ ul li {
     width: 90%;
     gap: 1.5rem;
     cursor: pointer;
-    margin-top: 40%;
+    margin-top: 50%;
 }
 
 
 /* Botão de adicionar usuários */
 .overlay > #add-user-btn {
     background-color: #ee7026;
-    width: 100%;
+    width: 200px;
+    padding: 0.6rem;
     display: flex;
     align-items: center;
-    padding: 0.6rem;
     color: white;
     border-radius: 3px;
     cursor: pointer;
@@ -181,8 +181,7 @@ table {
     display: flex;
     flex-direction: column;
     border-collapse: collapse;
-    width: 60rem;
-    margin: 0 auto;
+    width: 50rem;
 }
 
 table .user-photo img {
@@ -209,6 +208,18 @@ table td {
     width: 60rem;
     padding: 0.5rem;
     text-align: center;
+}
+
+#actions {
+    width: 6rem;
+    display: flex;
+    flex-direction: row;
+}
+
+#actions img {
+    width: 15px;
+    gap: 0.5rem;
+    cursor: pointer;
 }
 
 .actions {
