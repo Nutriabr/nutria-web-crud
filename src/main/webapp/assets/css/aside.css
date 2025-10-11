@@ -8,6 +8,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 20px 0;
+    position: fixed;
 }
 hr {
     background: #ffffff;
@@ -16,8 +17,7 @@ hr {
 }
 #nutria{
     width: 50%;
-    margin: 0 auto;
-    margin-top: 20px;
+    margin: 20px auto 0;
 }
 
 .user {

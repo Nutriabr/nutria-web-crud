@@ -28,7 +28,7 @@
 </head>
 <body>
 <!-- Menu lateral -->
-<%@include file="aside.jsp"%>
+<%@include file="components/aside.jsp"%>
 <!-- Conteúdo principal -->
 <main id="main-content">
         <div class="main-title">
