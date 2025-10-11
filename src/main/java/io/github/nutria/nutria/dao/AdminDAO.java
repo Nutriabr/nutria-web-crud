@@ -52,10 +52,10 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
             return (ps.executeUpdate() > 0);
 
-        } catch (SQLException e) {
+        } catch (SQLException se) {
             System.err.println("[DAO ERROR] Erro ao salvar admin: " + admin.getEmail());
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao salvar admin", e);
+            se.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao salvar admin", se);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
@@ -472,7 +472,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
     private void validateAdmin(Admin admin) {
         if (admin == null) {
-            throw new ValidationException("Admin não pode ser nulo");
+            throw new ValidationException("Preencha os campos obrigatórios");
         }
 
         if (admin.getNome() == null || admin.getNome().isBlank()) {
@@ -496,7 +496,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         }
 
         if (admin.getNascimento() == null) {
-            throw new RequiredFieldException("nascimento");
+            throw new RequiredFieldException("Data de nascimento");
         }
 
         if (admin.getCargo() == null || admin.getCargo().isBlank()) {
