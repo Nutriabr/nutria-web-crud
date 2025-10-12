@@ -17,8 +17,6 @@ import java.io.IOException;
 
 @WebServlet("/receitas/adicionar")
 public class ReceitaInsertServlet extends HttpServlet {
-    private final ReceitaDAO dao = new ReceitaDAO();
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/views/receita/adicionar.jsp").forward(req,resp);
@@ -32,6 +30,8 @@ public class ReceitaInsertServlet extends HttpServlet {
         boolean success;
         Produto produto;
         Receita receita;
+        ReceitaDAO receitaDAO = new ReceitaDAO();
+
 
         porcao = req.getParameter("porcao");
         idProdutoStr = req.getParameter("idProduto");
@@ -49,7 +49,7 @@ public class ReceitaInsertServlet extends HttpServlet {
 
 
         try {
-            success = dao.insert(receita);
+            success = receitaDAO.insert(receita);
             if (!success) throw new DataAccessException("Erro ao inserir receita no banco de dados.");
 
             req.setAttribute("message", "Receita inserida com sucesso!");
