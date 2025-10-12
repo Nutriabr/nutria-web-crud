@@ -18,6 +18,13 @@ import java.io.IOException;
 @WebServlet("/receitas/adicionar")
 public class ReceitaInsertServlet extends HttpServlet {
     private final ReceitaDAO dao = new ReceitaDAO();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/views/receita/adicionar.jsp").forward(req,resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String porcao;
         String idProdutoStr;
