@@ -27,6 +27,11 @@ public class Produto {
         this.usuario = usuario;
     }
 
+    public Produto (String nome, Usuario usuario){
+        this.nome = nome;
+        this.usuario = usuario;
+    }
+
     public Produto (Long id, String nome){
         this.id = id;
         this.nome = nome;

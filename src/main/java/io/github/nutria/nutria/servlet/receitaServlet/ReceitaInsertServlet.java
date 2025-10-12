@@ -6,7 +6,6 @@ import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.exceptions.ValidationException;
 import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/receitas/adicionar")
+@WebServlet("/receita/adicionar")
 public class ReceitaInsertServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -52,8 +51,8 @@ public class ReceitaInsertServlet extends HttpServlet {
             success = receitaDAO.insert(receita);
             if (!success) throw new DataAccessException("Erro ao inserir receita no banco de dados.");
 
-            req.setAttribute("message", "Receita inserida com sucesso!");
-            resp.sendRedirect(req.getContextPath() + "/receitas/listar");
+            req.getSession().setAttribute("message", "Receita inserida com sucesso!");
+            resp.sendRedirect(req.getContextPath() + "/receita/listar");
 
         } catch (RequiredFieldException rfe){
             System.err.println("[ERRO DE CAMPOS OBRIGATÓRIOS AUSENTES]");

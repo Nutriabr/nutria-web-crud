@@ -2,9 +2,7 @@ package io.github.nutria.nutria.servlet.receitaServlet;
 
 import io.github.nutria.nutria.dao.ReceitaDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
-import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.model.Receita;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/receitas/listar")
+@WebServlet("/receita/listar")
 public class ReceitaSelectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
