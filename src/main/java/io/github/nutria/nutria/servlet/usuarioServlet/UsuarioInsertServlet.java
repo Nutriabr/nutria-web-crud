@@ -15,9 +15,15 @@ import java.util.Date;
 
 @WebServlet(name = "UsuarioInsertServlet", value = "/usuario/adicionar")
 public class UsuarioInsertServlet extends HttpServlet {
+
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        final String viewPath = "/WEB-INF/views/usuario/adicionar.jsp";
+        req.getRequestDispatcher(viewPath).forward(req, resp);
+    }
+
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UsuarioDAO dao = new UsuarioDAO();
         Usuario usuario = new Usuario();
+        UsuarioDAO dao = new UsuarioDAO();
 
         try {
             usuario.setNome(req.getParameter("name"));
@@ -28,8 +34,7 @@ public class UsuarioInsertServlet extends HttpServlet {
             usuario.setFoto(req.getParameter("picture"));
 
             if (dao.insert(usuario)) {
-                RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/usuario/usuarios.jsp");
-                dispatcher.forward(req, resp);
+                resp.sendRedirect(req.getContextPath() + "/admin/listar");
             } else {
                 throw new DataAccessException("Erro ao inserir usuário no banco de dados.");
             }
