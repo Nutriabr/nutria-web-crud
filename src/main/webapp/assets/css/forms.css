@@ -2,13 +2,14 @@
 :root {
     --primary-color: #EE7026;
     --primary-color-hover: #D66522;
-    --text-primary: #333333;
-    --text-light: #ffffff;
+    --text-primary: #2D3748;
+    --text-secondary: #718096;
+    --text-light: #FFFFFF;
     --bg-light: #F3F3F3;
     --border-color: #E6E6E6;
     --border-color-alt: #e7e7e7;
 
-    --font-family-base: "Montserrat", sans-serif;;
+    --font-family-base: 'Montserrat', sans-serif;
     --font-size-base: 1rem;
     --line-height-base: 1.6;
 
@@ -42,9 +43,10 @@ main {
 }
 
 .container {
-    padding: var(--spacing-xl) 100px;
+    padding: 20px 40px;
     width: 100%;
     margin-left: var(--sidebar-width);
+    margin-top: var(--spacing-xl);
 }
 
 .main-content {
