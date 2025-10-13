@@ -30,9 +30,12 @@
 </head>
 <body>
 <div class="page-container">
-    <%@include file="../components/sidebar.jsp"%>
+    <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
+        <jsp:param name="activePage" value="usuario"/>
+    </jsp:include>
 
-    <%-- Conteúdo principal da página --%>
+
+
     <main class="main-content">
         <header class="page-header">
             <h1>Usuários</h1>

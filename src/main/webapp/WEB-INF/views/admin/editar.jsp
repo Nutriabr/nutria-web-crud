@@ -6,61 +6,78 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
+
+<%
+    Object id = request.getAttribute("id");
+    String nome = (String) request.getAttribute("nome");
+    String email = (String) request.getAttribute("email");
+    String telefone = (String) request.getAttribute("telefone");
+    Object nascimento = request.getAttribute("nascimento");
+    String cargo = (String) request.getAttribute("cargo");
+    String foto = (String) request.getAttribute("foto");
+    String errorMessage = (String) request.getAttribute("errorMessage");
+
+    String contextPath = request.getContextPath();
+%>
+
 <html>
 <head>
-    <title>Editar adminstrador</title>
+    <title>Editar Administrador</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/forms.css">
+    <link rel="stylesheet" href="<%= contextPath %>/assets/css/forms.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<%@include file="../components/messagemErro.jsp" %>
+<%@include file="../components/messagemErro.jsp"%>
 <main>
-    <%@include file="../components/sidebar.jsp" %>
+    <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
+        <jsp:param name="activePage" value="admin"/>
+    </jsp:include>
     <div class="container">
         <div class="main-content">
-            <h1>Editar administrador</h1>
+            <h1>Editar Administrador</h1>
             <p>Preencha as novas informações do administrador.</p>
         </div>
-        <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/admin/adicionar"
-              method="post">
-            <h2>Informações do administrador</h2>
+
+<%--        <% if (id != null) { %>--%>
+
+        <form class="form-content" name="forms-add-admin" action="<%= contextPath %>/admin/editar" method="post">
+            <h2>Informações do Administrador</h2>
+
+            <input type="hidden" name="id" value="<%= id %>">
+
             <label for="name-input">Nome</label>
-            <input class="parameter-input" type="text" id="name-input" name="name" placeholder="Insira o nome">
+            <input class="parameter-input" type="text" id="name-input" name="name" value="<%= nome %>">
 
             <label for="email-input">E-mail</label>
-            <input class="parameter-input" type="email" id="email-input" oninput="validateForm()" name="email"
-                   placeholder="Insira o endereço de email">
-            <span id="errorFeedback"></span>
+            <input class="parameter-input" type="email" id="email-input" name="email" oninput="validateForm()" value="<%= email %>">
 
-
-            <label for="password-input">Senha</label>
-            <input class="parameter-input" type="password" id="password-input" name="password"
-                   placeholder="Insira a senha">
+            <label for="password-input">Nova Senha</label>
+            <input class="parameter-input" type="password" id="password-input" name="password" placeholder="Deixe em branco para não alterar">
 
             <label for="phone-input">Telefone</label>
-            <input class="parameter-input" type="text" id="phone-input" name="phone" placeholder="XX XXXXX-XXXX">
+            <input class="parameter-input" type="text" id="phone-input" name="phone" value="<%= telefone %>">
 
             <label for="birth-input">Data de nascimento</label>
-            <input class="parameter-input" type="date" id="birth-input" name="birth"
-                   placeholder="Insira sua data de nascimento">
+            <input class="parameter-input" type="date" id="birth-input" name="birth" value="<%= nascimento %>">
 
             <label for="role-input">Cargo</label>
-            <input class="parameter-input" type="text" id="role-input" name="role" placeholder="Insira seu cargo">
+            <input class="parameter-input" type="text" id="role-input" name="role" value="<%= cargo %>">
 
-            <label for="picture-input">Foto</label>
-            <input class="parameter-input" type="text" id="picture-input" name="picture"
-                   placeholder="Insira a URL da foto">
+            <label for="picture-input">Foto (URL)</label>
+            <input class="parameter-input" type="text" id="picture-input" name="picture" value="<%= foto %>">
 
             <div class="submit-content">
-                <a href="#" ><button id="btn-cancel">Cancelar</button></a>
-                <input id="submit-btn" type="submit" value="Adicionar">
+                <a href="<%= contextPath %>/admin/listar" id="btn-cancel">Cancelar</a>
+                <input id="submit-btn" type="submit" value="Salvar Alterações">
             </div>
-
         </form>
+
+<%--        <% } %>--%>
     </div>
 </main>
 <script src="${pageContext.request.contextPath}/assets/js/validator.js"></script>
+
 </body>
 </html>
