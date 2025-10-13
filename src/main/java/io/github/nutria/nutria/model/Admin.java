@@ -123,11 +123,15 @@ public class Admin {
 
     @Override
     public String toString() {
-        return "Admin { " +
-                "id: " + id +
-                ", nome: '" + nome + '\'' +
-                ", email: '" + email + '\'' +
-                ", senha: '" + senha + '\'' + " " +
+        return "Admin{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", senha='" + senha + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", nascimento=" + nascimento +
+                ", cargo='" + cargo + '\'' +
+                ", foto='" + foto + '\'' +
                 '}';
     }
 }
