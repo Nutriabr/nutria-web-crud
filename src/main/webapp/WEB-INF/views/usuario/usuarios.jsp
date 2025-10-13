@@ -86,7 +86,7 @@
                         <td><%= usuario.getEmpresa() %></td>
                         <td><img src="<%= usuario.getFoto() %>" alt="Foto de <%= usuario.getNome() %>" class="table-photo"></td>
                         <td class="action-buttons">
-                            <a href="${pageContext.request.contextPath}/usuario/editar?id=<%= usuario.getId() %>" class="btn-action btn-edit">
+                            <a href="${pageContext.request.contextPath}/usuario/atualizar?id=<%= usuario.getId() %>" class="btn-action btn-edit">
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
                             <button class="btn-action btn-delete" data-id="<%= usuario.getId() %>" data-name="<%= usuario.getNome() %>">
