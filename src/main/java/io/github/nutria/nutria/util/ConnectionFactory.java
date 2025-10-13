@@ -1,6 +1,5 @@
 package io.github.nutria.nutria.util;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import io.github.nutria.nutria.exceptions.ConfigurationException;
 import io.github.nutria.nutria.exceptions.DatabaseConnectionException;
 
@@ -15,10 +14,7 @@ import java.sql.SQLException;
 public class ConnectionFactory {
 
     private static final String DRIVER = "org.postgresql.Driver";
-    private static Dotenv dotenv = Dotenv.configure()
-            .directory("C:\\Users\\enzomota-ieg\\OneDrive - Instituto J&F\\servlet\\NUTRIA\\Correção web-crud\\nutria-web-crud")
-            .ignoreIfMissing()
-            .load();
+
     /**
      * Método para estabelecer conexão com o banco de dados com base no Driver e informações de
      * Host do banco
@@ -31,9 +27,9 @@ public class ConnectionFactory {
     public static Connection connect() {
         try {
             // Utilizando as variáveis de ambiente configuradas no .env com as informações sensíveis do banco de dados
-            final String URL =  dotenv.get("DB_URL");
-            final String USER = dotenv.get("DB_USER");
-            final String PASSWORD = dotenv.get("DB_PASSWORD");
+            final String URL =  System.getenv("DB_URL");
+            final String USER = System.getenv("DB_USER");
+            final String PASSWORD = System.getenv("DB_PASSWORD");
 
             if (URL == null || URL.isBlank()) {
                 throw new ConfigurationException(
