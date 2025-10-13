@@ -78,6 +78,9 @@ public class AdminInsertServlet extends HttpServlet {
             System.err.println("Formato de data inválido: " + req.getParameter("birth"));
             req.setAttribute("errorMessage", "O formato da data de nascimento é inválido. Use YYYY-MM-DD.");
             req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+        } catch (DataAccessException dae) {
+            System.err.println("[ERRO INTERNO]: " + dae);
+            req.getRequestDispatcher("/WEB-INF/views/erro.jsp");
         }
     }
 }
