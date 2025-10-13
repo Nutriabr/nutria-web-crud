@@ -2,11 +2,12 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IAdminDAO;
-import io.github.nutria.nutria.dao.interfaces.IUsuarioDAO;
 
 import io.github.nutria.nutria.exceptions.*;
 import io.github.nutria.nutria.model.Admin;
+
 import io.github.nutria.nutria.util.ConnectionFactory;
+import io.github.nutria.nutria.util.FieldUsedValidator;
 import io.github.nutria.nutria.util.PasswordHasher;
 
 import java.sql.*;
@@ -33,13 +34,8 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         validateAdmin(admin);
 
         try {
-            if (findByEmailUsed(admin.getEmail())) {
-                throw new DuplicateEmailException(admin.getEmail());
-            }
-
-            if (findByPhoneUsed(admin.getTelefone())) {
-                throw new DuplicatePhoneException(admin.getTelefone());
-            }
+            if (FieldUsedValidator.isFieldUsed("admin","email", admin.getEmail())) throw new DuplicateEmailException(admin.getEmail());
+            if (FieldUsedValidator.isFieldUsed("admin","telefone", admin.getTelefone())) throw new DuplicatePhoneException(admin.getTelefone());
 
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
@@ -64,6 +60,53 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+    }
+
+    public Admin findById(long id) {
+        if (id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
+        String sql = "SELECT * FROM admin WHERE id = ?";
+
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Admin admin = new Admin();
+                admin.setId(rs.getLong("id"));
+                admin.setNome(rs.getString("nome"));
+                admin.setEmail(rs.getString("email"));
+                admin.setSenha(rs.getString("senha"));
+                admin.setTelefone(rs.getString("telefone"));
+                admin.setNascimento(rs.getDate("nascimento"));
+                admin.setCargo(rs.getString("cargo"));
+                admin.setFoto(rs.getString("foto"));
+
+                return admin;
+            } else {
+                throw new EntityNotFoundException("Admin", id);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar usuário por ID: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar usuário", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
@@ -209,131 +252,6 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             }
         }
         return result;
-    }
-
-    public boolean findByEmailUsed(String email) {
-        String sql = "SELECT COUNT(*) FROM admin WHERE email = ?";
-
-        boolean result = false;
-
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection connect = null;
-
-        try {
-            connect = ConnectionFactory.connect();
-            ps = connect.prepareStatement(sql);
-            ps.setString(1, email);
-
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                /* 4. Se o resultado da função COUNT for maior que 0, significa que
-                 *  o e-mail já está cadastrado
-                 * */
-                result = rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar os emails usados por admin: " + email);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar emails usados", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return result;
-    }
-
-    public boolean findByPhoneUsed(String phone) {
-        String sql = "SELECT COUNT(*) FROM admin WHERE telefone = ?";
-
-        boolean result = false;
-
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection connect = null;
-
-        try {
-            connect = ConnectionFactory.connect();
-            ps = connect.prepareStatement(sql);
-            ps.setString(1, phone);
-
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                /* 4. Se o resultado da função COUNT for maior que 0, significa que
-                 *  o telefone já está cadastrado
-                 * */
-                result = rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar os telefones usados por admin: " + phone);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar telefones usados", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return result;
-    }
-
-    public Admin findById(long id) {
-        if (id <= 0) {
-            throw new InvalidNumberException("id", "ID deve ser maior que zero");
-        }
-
-        String sql = "SELECT * FROM admin WHERE id = ?";
-
-        Connection connect = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            connect = ConnectionFactory.connect();
-            ps = connect.prepareStatement(sql);
-            ps.setLong(1, id);
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                Admin admin = new Admin(
-                        rs.getLong("id"),
-                        rs.getString("nome"),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getString("telefone"),
-                        rs.getDate("nascimento"),
-                        rs.getString("cargo"),
-                        rs.getString("foto")
-                );
-
-
-                return admin;
-            } else {
-                throw new EntityNotFoundException("Admin", id);
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar admin por ID: " + id);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar admin", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
     }
 
     public Optional<List<Admin>> findByEmailDomain(String domain) {
