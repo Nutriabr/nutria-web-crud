@@ -30,9 +30,10 @@
 </head>
 <body>
 <div class="page-container">
-    <%@include file="../components/sidebar.jsp"%>
+    <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
+        <jsp:param name="activePage" value="admin"/>
+    </jsp:include>
 
-    <%-- Conteúdo principal da página --%>
     <main class="main-content">
         <header class="page-header">
             <h1>Administradores</h1>
@@ -88,7 +89,7 @@
                         <td><%= admin.getCargo() %></td>
                         <td><img src="<%= admin.getFoto() %>" alt="Foto de <%= admin.getNome() %>" class="table-photo"></td>
                         <td class="action-buttons">
-                            <a href="${pageContext.request.contextPath}/admin/editar-pagina?id=<%= admin.getId() %>" class="btn-action btn-edit">
+                            <a href="${pageContext.request.contextPath}/admin/editar?id=<%= admin.getId()%>" class="btn-action btn-edit">
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
                             <button class="btn-action btn-delete" data-id="<%= admin.getId() %>" data-name="<%= admin.getNome() %>">
@@ -117,8 +118,6 @@
     </main>
 </div>
 
-<%-- O pop-up de exclusão será mantido. Ele fica aqui, escondido,
-     e será ativado e populado via JavaScript. --%>
 <div class="overlay" id="delete-popup-overlay" style="display: none;">
     <div class="popup-container">
         <h1>Você tem certeza que deseja excluir este registro?</h1>
@@ -133,7 +132,7 @@
     </div>
 </div>
 
-<%-- Script para controlar o pop-up (a ser criado) --%>
+
 <script src="${pageContext.request.contextPath}/assets/js/popup.js"></script>
 
 </body>

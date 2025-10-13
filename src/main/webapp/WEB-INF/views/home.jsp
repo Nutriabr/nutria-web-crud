@@ -21,8 +21,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<%@include file="components/sidebar.jsp"%>
-
+<jsp:include page="/WEB-INF/views/components/sidebar.jsp">
+    <jsp:param name="activePage" value="home"/>
+</jsp:include>
 <div class="main-content">
 
     <div class="dashboard">

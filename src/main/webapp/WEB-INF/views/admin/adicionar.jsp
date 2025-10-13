@@ -17,7 +17,9 @@
 <body>
 <%@include file="../components/messagemErro.jsp"%>
 <main>
-    <%@include file="../components/sidebar.jsp" %>
+    <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
+        <jsp:param name="activePage" value="admin"/>
+    </jsp:include>
     <div class="container">
         <div class="main-content">
             <h1>Adicionar administrador</h1>
@@ -27,33 +29,36 @@
               method="post">
             <h2>Informações do administrador</h2>
             <label for="name-input">Nome</label>
-            <input class="parameter-input" type="text" id="name-input" name="name" placeholder="Insira o nome">
+            <input class="parameter-input" type="text" id="name-input" name="name" placeholder="Insira o nome" required>
 
             <label for="email-input">E-mail</label>
             <input class="parameter-input" type="email" id="email-input" oninput="validateForm()" name="email"
-                   placeholder="Insira o endereço de email">
+                   placeholder="Insira o endereço de email" required>
             <span id="errorFeedback"></span>
 
 
             <label for="password-input">Senha</label>
             <input class="parameter-input" type="password" id="password-input" name="password"
-                   placeholder="Insira a senha">
+                   placeholder="Insira a senha" required>
 
             <label for="phone-input">Telefone</label>
-            <input class="parameter-input" type="text" id="phone-input" name="phone" placeholder="XX XXXXX-XXXX">
+            <input class="parameter-input" type="text" id="phone-input" name="phone" placeholder="XX XXXXX-XXXX" required>
 
             <label for="birth-input">Data de nascimento</label>
             <input class="parameter-input" type="date" id="birth-input" name="birth"
-                   placeholder="Insira sua data de nascimento">
+                   placeholder="Insira sua data de nascimento" required>
 
             <label for="role-input">Cargo</label>
-            <input class="parameter-input" type="text" id="role-input" name="role" placeholder="Insira seu cargo">
+            <input class="parameter-input" type="text" id="role-input" name="role" placeholder="Insira seu cargo" required>
 
             <label for="picture-input">Foto</label>
             <input class="parameter-input" type="text" id="picture-input" name="picture"
                    placeholder="Insira a URL da foto">
 
-            <input id="submit-btn" type="submit" value="Adicionar">
+            <div class="submit-content">
+                <a href="${pageContext.request.contextPath}/admin/listar" id="btn-cancel">Cancelar</a>
+                <input id="submit-btn" type="submit" value="Adicionar">
+            </div>
         </form>
     </div>
 </main>
