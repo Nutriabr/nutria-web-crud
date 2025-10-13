@@ -4,7 +4,6 @@ import java.util.List;
 public class Receita {
     // Atributos
     private Long id;
-    private String nome;
     private String porcao;
     private Produto produto;
     private List<ReceitaIngrediente> ingredientes;
@@ -45,11 +44,6 @@ public class Receita {
     public Long getId() {
         return id;
     }
-
-    public String getNome() {
-        return nome;
-    }
-
     public String getPorcao() {
         return porcao;
     }
@@ -65,10 +59,6 @@ public class Receita {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public void setPorcao(String porcao) {
