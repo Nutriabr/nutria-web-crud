@@ -15,6 +15,13 @@ import java.util.Date;
 
 @WebServlet(name = "UsuarioInsertServlet", value = "/usuario/adicionar")
 public class UsuarioInsertServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        final String viewPath = "/WEB-INF/views/usuario/adicionar.jsp";
+        req.getRequestDispatcher(viewPath).forward(req, resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UsuarioDAO dao = new UsuarioDAO();
         Usuario usuario = new Usuario();
@@ -27,13 +34,9 @@ public class UsuarioInsertServlet extends HttpServlet {
             usuario.setEmpresa(req.getParameter("company"));
             usuario.setFoto(req.getParameter("picture"));
 
-            if (dao.insert(usuario)) {
-                RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/usuario/usuarios.jsp");
-                dispatcher.forward(req, resp);
-            } else {
-                throw new DataAccessException("Erro ao inserir usuário no banco de dados.");
-            }
+            dao.insert(usuario);
 
+            resp.sendRedirect(req.getContextPath() + "/usuario/listar");
         }  catch (DuplicateEmailException dee) {
             System.err.println("[ERRO DE DUPLICIDADE]: " + dee);
             req.setAttribute("errorMessage", "Ops! Esse e-mail já está em uso!");
