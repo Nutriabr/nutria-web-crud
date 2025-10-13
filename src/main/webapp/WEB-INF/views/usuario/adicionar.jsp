@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+<%@include file="../components/messagemErro.jsp" %>
 <main>
     <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
         <jsp:param name="activePage" value="usuario"/>
@@ -56,20 +57,6 @@
                 <input id="submit-btn" type="submit" value="Adicionar">
             </div>
         </form>
-
-        <%
-            String errorFeedback = (String) request.getAttribute("errorMessage");
-
-            if (errorFeedback != null && !errorFeedback.isEmpty()) {
-        %>
-
-        <div class="message-error">
-            <p><strong>Erro: </strong> <%= errorFeedback %>
-            </p>
-        </div>
-        <%
-            }
-        %>
     </div>
 </main>
 <script src="${pageContext.request.contextPath}/assets/js/validator.js"></script>
