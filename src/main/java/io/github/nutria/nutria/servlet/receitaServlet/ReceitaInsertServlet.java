@@ -1,6 +1,9 @@
 package io.github.nutria.nutria.servlet.receitaServlet;
 
 import io.github.nutria.nutria.dao.ReceitaDAO;
+import io.github.nutria.nutria.exceptions.DataAccessException;
+import io.github.nutria.nutria.exceptions.RequiredFieldException;
+import io.github.nutria.nutria.exceptions.ValidationException;
 import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
 import jakarta.servlet.ServletException;
@@ -11,49 +14,58 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/receitas/inserir")
+@WebServlet("/receita/adicionar")
 public class ReceitaInsertServlet extends HttpServlet {
-    private final ReceitaDAO dao = new ReceitaDAO();
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/views/receita/adicionar.jsp").forward(req,resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String porcao;
         String idProdutoStr;
         Long idProduto;
         boolean success;
         Produto produto;
         Receita receita;
+        ReceitaDAO receitaDAO = new ReceitaDAO();
 
-        porcao = request.getParameter("porcao");
-        idProdutoStr = request.getParameter("idProduto");
 
-        if (porcao == null || porcao.isBlank() || idProdutoStr == null || idProdutoStr.isBlank()) {
-            response.setStatus(400);
-            response.getWriter().write("Os campos de porção e id do produto são obrigatórios.");
+        porcao = req.getParameter("porcao");
+        idProdutoStr = req.getParameter("idProduto");
+        try {
+            idProduto = Long.parseLong(idProdutoStr);
+        } catch (NumberFormatException e) {
+            req.setAttribute("errorMessage", "O ID do produto deve ser um número válido.");
+            req.getRequestDispatcher("/WEB-INF/views/receita/adicionar.jsp").forward(req, resp);
             return;
         }
 
+        produto = new Produto();
+        produto.setId(idProduto);
+        receita = new Receita(porcao, produto);
+
+
         try {
-            idProduto = Long.parseLong(idProdutoStr);
+            success = receitaDAO.insert(receita);
+            if (!success) throw new DataAccessException("Erro ao inserir receita no banco de dados.");
 
-            produto = new Produto();
-            produto.setId(idProduto);
+            req.getSession().setAttribute("message", "Receita inserida com sucesso!");
+            resp.sendRedirect(req.getContextPath() + "/receita/listar");
 
-            receita = new Receita(porcao, produto);
-
-            success = dao.insert(receita);
-
-            if (success) {
-                response.setStatus(201);
-                request.setAttribute("message","Receita inserida com sucesso!");
-            } else {
-                response.setStatus(500);
-                request.setAttribute("message","Erro ao inserir receita.");
-                request.getRequestDispatcher("/erro.jsp").forward(request,response);
-            }
-        } catch (NumberFormatException e) {
-            response.setStatus(400);
-            response.getWriter().write("O ID do produto deve ser um número válido.");
-        } catch (ServletException se){
-            se.printStackTrace();
+        } catch (RequiredFieldException rfe){
+            System.err.println("[ERRO DE CAMPOS OBRIGATÓRIOS AUSENTES]");
+            req.setAttribute("errorMessage", "Ops! " + rfe.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/receita/adicionar.jsp").forward(req,resp);
+        } catch (ValidationException ve){
+            System.err.println("[ERRO DE VALIDAÇÃO]" + ve);
+            req.setAttribute("errorMessage", "Ops! " + ve.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/receita/adicionar.jsp").forward(req,resp);
+        }  catch (DataAccessException dae){
+            System.err.println("[ERRO NO BANCO]");
+            req.setAttribute("errorMessage","Ops! Não foi possível salvar a receita!");
+            req.getRequestDispatcher("/WEB-INF/views/receita/adicionar.jsp").forward(req,resp);
         }
     }
 }
