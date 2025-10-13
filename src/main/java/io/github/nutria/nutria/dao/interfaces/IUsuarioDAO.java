@@ -12,13 +12,5 @@ import io.github.nutria.nutria.model.Usuario;
  */
 public interface IUsuarioDAO {
 
-    /**
-     * Verifica se um {@link Usuario} com o endereço de email informado está registrado.
-     *
-     * @param email o endereço de email que será utilizado na busca.
-     * @return {@code true} se o email já estiver registrado no banco; {@code false} caso contrário.
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     * @author Luis Henrique
-     */
-    boolean findByEmailUsed(String email);
+
 }
