@@ -17,7 +17,7 @@ import java.util.List;
 
 @WebServlet("/usuario/listar")
 public class UsuarioSelectServlet extends HttpServlet {
-    private static final int TOTAL_ADMINS_PAGE = 4;
+    private static final int TOTAL_USUARIOS_PAGE = 4;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,7 +35,7 @@ public class UsuarioSelectServlet extends HttpServlet {
 
         try {
             int totalUsuarios = usuarioDAO.countAll();
-            int totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_ADMINS_PAGE);
+            int totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGE);
 
             if (currentPage < 1) {
                 currentPage = 1;
