@@ -2,7 +2,9 @@ package io.github.nutria.nutria.servlet.usuarioServlet;
 
 import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.exceptions.*;
+import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.model.Usuario;
+import io.github.nutria.nutria.util.PasswordHasher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,20 +13,60 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "UsuarioMostraFormEdicaoServlet", value = "/usuario/editar")
-public class UsuarioSalvarUpdateServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+@WebServlet(name = "UsuarioUpdateServlet", value = "/usuario/editar")
+public class UsuarioUpdateServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Usuario usuario = new Usuario();
         UsuarioDAO usuarioDAO = new UsuarioDAO();
 
+        try {
+            String idStr = req.getParameter("id");
+            if (idStr == null || idStr.isEmpty()) {
+                throw new InvalidNumberException("ID", idStr);
+            }
+            Long id = Long.parseLong(idStr);
+
+            usuario = usuarioDAO.findById(id);
+
+            req.setAttribute("id", usuario.getId());
+            req.setAttribute("nome", usuario.getNome());
+            req.setAttribute("email", usuario.getEmail());
+            req.setAttribute("telefone", usuario.getTelefone());
+            req.setAttribute("empresa", usuario.getEmpresa());
+            req.setAttribute("foto", usuario.getFoto());
+
+            usuarioDAO.update(usuario);
+
+            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
+        } catch (NumberFormatException e) {
+            req.setAttribute("errorMessage", "O ID informado é inválido.");
+            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
+        } catch (InvalidNumberException | EntityNotFoundException e) {
+            req.setAttribute("errorMessage", e.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
+        } catch (DataAccessException e) {
+            System.err.println("[ERRO INTERNO]: " + e);
+            req.setAttribute("errorMessage", "Erro ao acessar os dados. Tente novamente mais tarde.");
+            req.getRequestDispatcher("/WEB-INF/views/erro.jsp").forward(req, resp);
+        }
+    }
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        final String viewPath = "/WEB-INF/views/usuario/editar.jsp";
+
 
         try {
-            usuario.setId(Long.parseLong(req.getParameter("id")));
-            usuario.setNome(req.getParameter("nome"));
+            System.out.println(req.getParameter("id"));
+            Long id = Long.valueOf(req.getParameter("id"));
+            Usuario usuario = usuarioDAO.findById(id);
+
+            usuario.setNome(req.getParameter("name"));
             usuario.setEmail(req.getParameter("email"));
             usuario.setSenha(req.getParameter("password"));
             usuario.setTelefone(req.getParameter("phone"));
-            usuario.setEmpresa(req.getParameter("role"));
+            usuario.setEmpresa(req.getParameter("company"));
             usuario.setFoto(req.getParameter("picture"));
 
             if (usuarioDAO.update(usuario)) {
