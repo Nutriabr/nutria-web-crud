@@ -1,7 +1,8 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.exceptions.DataAccessException;
-import io.github.nutria.nutria.model.Receita;
+import io.github.nutria.nutria.exceptions.EntityNotFoundException;
+import io.github.nutria.nutria.exceptions.InvalidNumberException;
 import io.github.nutria.nutria.model.ReceitaIngrediente;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
@@ -95,6 +96,50 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
         }
 
         return receitasIngredienteArrayList;
+    }
+
+    public ReceitaIngrediente findById(long id) {
+        if (id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
+        String sql = "SELECT * FROM receita_ingrediente WHERE id = ?";
+
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
+                receitaIngrediente.setId(rs.getLong("id"));
+                receitaIngrediente.setIdReceita(rs.getLong("idReceita"));
+                receitaIngrediente.setIdIngrediente(rs.getLong("idIngrediente"));
+                receitaIngrediente.setQuantidade(rs.getDouble("quantidade"));
+
+
+                return receitaIngrediente;
+            } else {
+                throw new EntityNotFoundException("ReceitaIngrediente", id);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar receita ingrediente por ID: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar receita ingrediente", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
     }
 
     public int countAll() {
