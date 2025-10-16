@@ -42,9 +42,7 @@ public class ReceitaInsertServlet extends HttpServlet {
             return;
         }
 
-        produto = new Produto();
-        produto.setId(idProduto);
-        receita = new Receita(porcao, produto);
+        receita = new Receita(porcao, idProduto);
 
 
         try {
