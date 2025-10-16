@@ -25,7 +25,7 @@
             <h1>Adicionar Receita Ingrediente</h1>
             <p>Preencha as informações da nova Receita.</p>
         </div>
-        <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/usuario/adicionar"
+        <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/receitasIngredientes/adicionar"
               method="post">
             <h2>Informações da receita</h2>
             <label for="id-receita-input">ID Receita</label>
