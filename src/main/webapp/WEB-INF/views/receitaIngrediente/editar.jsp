@@ -1,5 +1,5 @@
-<%@ page import="io.github.nutria.nutria.model.Usuario" %>
-<%@ page import="java.util.concurrent.Semaphore" %><%--
+<%@ page import="io.github.nutria.nutria.model.ReceitaIngrediente" %>
+<%--
   Created by IntelliJ IDEA.
   User: enzomota-ieg
   Date: 11/10/2025
@@ -10,11 +10,9 @@
 
 <%
     Object id = request.getAttribute("id");
-    String name = (String) request.getAttribute("nome");
-    String email = (String) request.getAttribute("email");
-    String telefone = (String) request.getAttribute("telefone");
-    String empresa = (String) request.getAttribute("empresa");
-    String foto = (String) request.getAttribute("foto");
+    Object idReceita = request.getAttribute("idReceita");
+    Object idIngrediente = request.getAttribute("idIngrediente");
+    Double quantidade = (Double) request.getAttribute("quantidade");
     String errorMessage = (String) request.getAttribute("errorMessage");
 %>
 
@@ -32,38 +30,25 @@
     <%@include file="../components/sidebar.jsp" %>
     <div class="container">
         <div class="main-content">
-            <h1>Editar usuário</h1>
-            <p>Preencha as novas informações do usuário.</p>
+            <h1>Editar receita ingrediente</h1>
+            <p>Preencha as novas informações da receita ingrediente.</p>
         </div>
-        <form class="form-content" name="forms-edit-usuario" action="${pageContext.request.contextPath}/usuario/editar"
+        <form class="form-content" name="forms-edit-usuario" action="${pageContext.request.contextPath}/receitasIngredientes/editar"
               method="post">
-            <h2>Informações do usuário</h2>
+            <h2>Informações da receita ingrediente</h2>
             <input type="hidden" name="id" value="<%= id %>">
 
-            <label for="name-input">Nome</label>
-            <input class="parameter-input" type="text" id="name-input" name="name" value="<%= name%>" placeholder="Insira o nome">
+            <label for="id-receita-input">ID Receita</label>
+            <input class="parameter-input" type="text" id="id-receita-input" name="idReceita" value="<%= idReceita%>" placeholder="Insira o nome">
 
-            <label for="email-input">E-mail</label>
+            <label for="email-input">ID Ingrediente</label>
             <input class="parameter-input" type="email" id="email-input" oninput="validateForm()" name="email"
-                   value="<%= email%>" placeholder="Insira o endereço de email">
+                   value="<%= idIngrediente%>" placeholder="Insira o endereço de email">
             <span id="errorFeedback"></span>
 
-
-            <label for="password-input">Nova Senha</label>
-            <input class="parameter-input" type="password" id="password-input" name="password"
-                   placeholder="Deixe em branco para não alterar">
-
-            <label for="phone-input">Telefone</label>
-            <input class="parameter-input" type="text" id="phone-input" name="phone"
-                   value="<%= telefone%>" placeholder="XX XXXXX-XXXX">
-
-            <label for="company-input">Empresa</label>
-            <input class="parameter-input" type="text" id="company-input" name="company"
-                   value="<%= empresa%>" placeholder="Insira seu cargo">
-
-            <label for="picture-input">Foto</label>
-            <input class="parameter-input" type="text" id="picture-input" name="picture"
-                   value="<%= foto%>" placeholder="Insira a URL da foto">
+            <label for="quantity-input">Quantidade</label>
+            <input class="parameter-input" type="number" id="quantity-input" name="quantity"
+                   value="<%= quantidade%>" placeholder="Insira a quantidade">
 
             <div class="submit-content">
                 <a href="${pageContext.request.contextPath}/usuario/listar" ><button id="btn-cancel">Cancelar</button></a>
