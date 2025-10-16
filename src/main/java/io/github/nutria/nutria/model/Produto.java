@@ -1,41 +1,28 @@
 package io.github.nutria.nutria.model;
 
-import java.util.List;
 
 public class Produto {
     // Atributos
     private Long id;
     private String nome;
-    private Usuario usuario;
-    private List<Receita> receitas;
+    private Long idUsuario;
 
     // Métodos construtores
     public Produto (){
 
     }
 
-    public Produto (Long id, String nome,Usuario usuario, List<Receita> receitas){
+    public Produto (Long id, String nome,Long idUsuario){
         this.id = id;
         this.nome = nome;
-        this.receitas = receitas;
-        this.usuario = usuario;
+        this.idUsuario = idUsuario;
     }
 
-    public Produto (Long id, String nome, Usuario usuario){
-        this.id = id;
+    public Produto (String nome, Long idUsuario){
         this.nome = nome;
-        this.usuario = usuario;
+        this.idUsuario = idUsuario;
     }
 
-    public Produto (String nome, Usuario usuario){
-        this.nome = nome;
-        this.usuario = usuario;
-    }
-
-    public Produto (Long id, String nome){
-        this.id = id;
-        this.nome = nome;
-    }
     public Produto (String nome){
         this.nome = nome;
     }
@@ -47,11 +34,8 @@ public class Produto {
     public String getNome() {
         return nome;
     }
-    public Usuario getUsuario(){
-        return usuario;
-    }
-    public List<Receita> getReceitas() {
-        return receitas;
+    public Long getIdUsuario(){
+        return idUsuario;
     }
 
     // Métodos setters
@@ -62,23 +46,15 @@ public class Produto {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public void setReceitas(List<Receita> receitas){
-        this.receitas = receitas;
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     // Método toString
-
     public String toString() {
-        String receitasInfo = "Nenhuma receita cadastrada";
-        if (receitas != null && !receitas.isEmpty()) {
-            receitasInfo = "";
-            for (Receita r : receitas) {
-                receitasInfo += "\n  - " + r.getPorcao();
-            }
-        }
-
         return "ID: " + id +
                 "\nNome: " + nome +
-                "\nReceitas:" + receitasInfo;
+                "\nID-Usuário:" + idUsuario;
     }
 }
