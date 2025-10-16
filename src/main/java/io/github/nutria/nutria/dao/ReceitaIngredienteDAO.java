@@ -1,8 +1,6 @@
 package io.github.nutria.nutria.dao;
 
-import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
-import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.model.ReceitaIngrediente;
 import io.github.nutria.nutria.util.ConnectionFactory;
@@ -27,7 +25,7 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
 
             ps = connect.prepareStatement(sql);
 
-            ps.setLong(1, receitaIngrediente.getReceita().getId());
+            ps.setLong(1, receitaIngrediente.getIdReceita());
             ps.setLong(2, receitaIngrediente.getIdIngrediente());
             ps.setDouble(3, receitaIngrediente.getQuantidade());
 
@@ -75,7 +73,7 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             while (rs.next()) {
                 ReceitaIngrediente receita = new ReceitaIngrediente(
                         rs.getLong("id"),
-                        (Receita) rs.getObject("receita"),
+                        rs.getLong("idReceita"),
                         rs.getLong("idIngrediente"),
                         rs.getDouble("quantidade")
                 );
@@ -153,7 +151,7 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             while (rs.next()){
                 ReceitaIngrediente receita = new ReceitaIngrediente(
                         rs.getLong("id"),
-                        (Receita) rs.getObject("receita"),
+                        rs.getLong("receita"),
                         rs.getLong("idIngrediente"),
                         rs.getDouble("quantidade")
                 );
@@ -196,7 +194,7 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             while (rs.next()){
                 ReceitaIngrediente receita = new ReceitaIngrediente(
                         rs.getLong("id"),
-                        (Receita) rs.getObject("receita"),
+                        rs.getLong("idReceita"),
                         rs.getLong("idIngrediente"),
                         rs.getDouble("quantidade")
                 );
@@ -240,7 +238,7 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             while (rs.next()){
                 ReceitaIngrediente receita = new ReceitaIngrediente(
                         rs.getLong("id"),
-                        (Receita) rs.getObject("receita"),
+                        rs.getLong("idReceita"),
                         rs.getLong("idIngrediente"),
                         rs.getDouble("quantidade")
                 );
@@ -274,7 +272,7 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             connect = ConnectionFactory.connect();
             psmt = connect.prepareStatement(sql);
             psmt.setLong(1, receitaIngrediente.getId());
-            psmt.setObject(2, receitaIngrediente.getReceita());
+            psmt.setLong(2, receitaIngrediente.getIdReceita());
             psmt.setLong(3, receitaIngrediente.getIdIngrediente());
             psmt.setDouble(4, receitaIngrediente.getQuantidade());
             psmt.setLong(5, receitaIngrediente.getId());
