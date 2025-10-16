@@ -14,17 +14,36 @@ import java.util.List;
 
 @WebServlet("/receita/listar")
 public class ReceitaSelectServlet extends HttpServlet {
+    private final int TOTAL_RECEITA_PAGES = 4;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ReceitaDAO receitaDAO = new ReceitaDAO();
+        int currentPage = 1;
+        String pageParam = req.getParameter("page");
+
+
+        if(pageParam != null){
+            try{
+                currentPage = Integer.parseInt(pageParam);
+            } catch (NumberFormatException nfe){
+                System.err.println("Parâmetro de página inválida: " + pageParam);
+            }
+        }
 
         try {
             int totalReceitas = receitaDAO.countAll();
-            List<Receita> receitasList = receitaDAO.findAll(1);
-
+            int totalPages = (int) Math.ceil((double) totalReceitas / TOTAL_RECEITA_PAGES);
+            if (totalPages == 0) totalPages = 1;
+            if(currentPage < 1){
+                currentPage = 1;
+            } else if (currentPage > totalPages && totalPages > 0) {
+                currentPage = totalPages;
+            }
+            List<Receita> receitasList = receitaDAO.findAll(currentPage);
             req.setAttribute("totalReceitas",totalReceitas);
             req.setAttribute("receitasList", receitasList);
-
+            req.setAttribute("currentPage", currentPage);
+            req.setAttribute("totalPages",totalPages);
             req.getRequestDispatcher("/WEB-INF/views/receita/receitas.jsp").forward(req, resp);
 
         } catch (DataAccessException e) {
