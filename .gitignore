@@ -5,7 +5,7 @@ target/
 
 ### IntelliJ IDEA ###
 .idea
-.env
+src/main/resources/.env
 .idea/modules.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml

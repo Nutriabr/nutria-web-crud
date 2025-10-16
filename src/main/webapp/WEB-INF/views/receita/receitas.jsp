@@ -75,7 +75,7 @@
                     <tr>
                         <td><%= receita.getId() %></td>
                         <td><%= receita.getPorcao() %></td>
-                        <td><%= receita.getProduto().getId() %></td>
+                        <td><%= receita.getIdProduto() %></td>
                         <td class="action-buttons">
                             <a href="${pageContext.request.contextPath}/receita/editar?id=<%= receita.getId() %>" class="btn-action btn-edit">
                                 <i class="fa-solid fa-pencil"></i>
