@@ -67,6 +67,7 @@
                         <th>ID</th>
                         <th>Porção</th>
                         <th>ID-Produto</th>
+                        <th>Ações</th>
                     </tr>
                     </thead>
                     <tbody>
