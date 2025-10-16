@@ -31,7 +31,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
             ps.setString(1, produto.getNome());
-            ps.setLong(2, produto.getUsuario().getId());
+            ps.setLong(2, produto.getIdUsuario());
 
             return (ps.executeUpdate() > 0);
         } catch (SQLException e) {
@@ -73,6 +73,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 Produto produto = new Produto();
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
+                produto.setIdUsuario(rs.getLong("id_usuario"));
                 produtosArrayList.add(produto);
             }
         } catch (SQLException e) {
@@ -242,7 +243,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         if (produto.getNome() == null || produto.getNome().isBlank()) {
             throw new RequiredFieldException("nome");
         }
-        if (produto.getUsuario() == null || produto.getUsuario().getId() == null) {
+        if (produto.getIdUsuario() == null || produto.getIdUsuario() == null) {
             throw new RequiredFieldException("usuario");
         }
     }

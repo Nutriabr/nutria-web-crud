@@ -29,8 +29,8 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
     public boolean insert(Receita receita) {
         if (receita == null) throw new ValidationException("Receita não pode ser nulo");
         if (receita.getPorcao() == null || receita.getPorcao().isEmpty()) throw new RequiredFieldException("porcao");
-        if (receita.getProduto() == null || receita.getProduto().getId() == null || receita.getProduto().getId() <= 0)
-            throw new RequiredFieldException("produto");
+        if (receita.getIdProduto() == null || receita.getIdProduto() == null || receita.getIdProduto() <= 0)
+            throw new RequiredFieldException("id_produto");
 
 
 
@@ -44,7 +44,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             ps = connect.prepareStatement(sql);
 
             ps.setString(1, receita.getPorcao());
-            ps.setLong(2, receita.getProduto().getId());
+            ps.setLong(2, receita.getIdProduto());
 
             int result = ps.executeUpdate();
 
@@ -81,7 +81,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             connect = ConnectionFactory.connect();
             psmt = connect.prepareStatement(sql);
             psmt.setString(1,receita.getPorcao());
-            psmt.setLong(2,receita.getProduto().getId());
+            psmt.setLong(2,receita.getIdProduto());
             psmt.setLong(3,receita.getId());
 
             result = psmt.executeUpdate();
@@ -133,12 +133,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
 
                 receita.setId(rs.getLong("id"));
                 receita.setPorcao(rs.getString("porcao"));
-
-                Produto produto = new Produto();
-                produto.setId(rs.getLong("id_produto"));
-                produto.setNome(rs.getString("nome_produto"));
-
-                receita.setProduto(produto);
+                receita.setIdProduto(rs.getLong("id_produto"));
 
                 receitasArrayList.add(receita);
             }
@@ -254,10 +249,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
                 Receita receita = new Receita();
                 receita.setId(rs.getLong("id"));
                 receita.setPorcao(rs.getString("porcao"));
-                Produto produto = new Produto();
-                produto.setId(rs.getLong("id_produto"));
-                produto.setNome(rs.getString("nome_produto"));
-                receita.setProduto(produto);
+                receita.setIdProduto(rs.getLong("id_produto"));
 
                 receitas.add(receita);
             }

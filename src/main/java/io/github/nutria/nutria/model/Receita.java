@@ -5,38 +5,22 @@ public class Receita {
     // Atributos
     private Long id;
     private String porcao;
-    private Produto produto;
-    private List<ReceitaIngrediente> ingredientes;
+    private Long idProduto;
 
     // Métodos construtores
     public Receita(){
 
     }
 
-    public Receita(Long id, String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
+    public Receita(Long id, String porcao, Long idProduto){
         this.id = id;
         this.porcao = porcao;
-        this.produto = produto;
-        this.ingredientes = ingredientes;
+        this.idProduto = idProduto;
     }
 
-    public Receita(String porcao, Produto produto, List<ReceitaIngrediente> ingredientes){
+    public Receita(String porcao, Long idProduto){
         this.porcao = porcao;
-        this.produto = produto;
-        this.ingredientes = ingredientes;
-    }
-
-    public Receita(Long id, String porcao, Produto produto){
-        this.id = id;
-        this.porcao = porcao;
-        this.produto = produto;
-    }
-
-    public Receita(String porcao, Produto produto){
-        this.id = id;
-        this.porcao = porcao;
-        this.produto = produto;
-        this.ingredientes = ingredientes;
+        this.idProduto = idProduto;
     }
 
     // Métodos getters
@@ -47,12 +31,9 @@ public class Receita {
     public String getPorcao() {
         return porcao;
     }
-    public List<ReceitaIngrediente> getIngredientes(){
-        return this.ingredientes;
-    }
 
-    public Produto getProduto() {
-        return produto;
+    public Long getIdProduto() {
+        return idProduto;
     }
 
     // Método setters
@@ -65,11 +46,8 @@ public class Receita {
         this.porcao = porcao;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-    public void setIngredientes(List<ReceitaIngrediente> ingredientes){
-        this.ingredientes = ingredientes;
+    public void setIdProduto(Long idProduto) {
+        this.idProduto = idProduto;
     }
 
     // Método toString
@@ -77,7 +55,6 @@ public class Receita {
     public String toString() {
         return "ID: " + id +
                 "\nPorção: " + porcao +
-                "\nProduto: " + (produto != null ? produto.getNome() : "sem produto") +
-                "\nIngredientes: " + (ingredientes != null ? ingredientes.size() + " itens" : "nenhum");
+                "\nID-Produto: " +  idProduto;
     }
 }
