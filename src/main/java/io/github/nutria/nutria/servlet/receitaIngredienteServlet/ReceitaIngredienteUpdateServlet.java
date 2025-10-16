@@ -1,7 +1,9 @@
 package io.github.nutria.nutria.servlet.receitaIngredienteServlet;
 
+import io.github.nutria.nutria.dao.ReceitaIngredienteDAO;
 import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.exceptions.*;
+import io.github.nutria.nutria.model.ReceitaIngrediente;
 import io.github.nutria.nutria.model.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,12 +13,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "UsuarioUpdateServlet", value = "/usuario/editar")
+@WebServlet("/receitasIngredientes/editar")
 public class ReceitaIngredienteUpdateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Usuario usuario = new Usuario();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        ReceitaIngredienteDAO receitaIngredienteDAO = new ReceitaIngredienteDAO();
+        ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
 
         try {
             String idStr = req.getParameter("id");
@@ -25,14 +27,10 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
             }
             Long id = Long.parseLong(idStr);
 
-            usuario = usuarioDAO.findById(id);
-
-            req.setAttribute("id", usuario.getId());
-            req.setAttribute("nome", usuario.getNome());
-            req.setAttribute("email", usuario.getEmail());
-            req.setAttribute("telefone", usuario.getTelefone());
-
-            usuarioDAO.update(usuario);
+            req.setAttribute("id", id);
+            req.setAttribute("idReceita", receitaIngrediente.getIdReceita());
+            req.setAttribute("idIngrediente", receitaIngrediente.getIdIngrediente());
+            req.setAttribute("quantidade", receitaIngrediente.getQuantidade());
 
             req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
         } catch (NumberFormatException e) {
@@ -49,23 +47,21 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        final String viewPath = "/WEB-INF/views/usuario/editar.jsp";
+        ReceitaIngredienteDAO receitaIngredienteDAO = new ReceitaIngredienteDAO();
+        final String viewPath = "/WEB-INF/views/receitasIngredientes/receitasIngrediente.jsp";
 
 
         try {
             System.out.println(req.getParameter("id"));
             Long id = Long.valueOf(req.getParameter("id"));
-            Usuario usuario = usuarioDAO.findById(id);
+            ReceitaIngrediente receitaIngrediente = receitaIngredienteDAO.findById(id);
 
-            usuario.setNome(req.getParameter("name"));
-            usuario.setEmail(req.getParameter("email"));
-            usuario.setSenha(req.getParameter("password"));
-            usuario.setTelefone(req.getParameter("phone"));
-            usuario.setEmpresa(req.getParameter("company"));
-            usuario.setFoto(req.getParameter("picture"));
+            receitaIngrediente.setId(Long.parseLong(req.getParameter("id")));
+            receitaIngrediente.setIdReceita(Long.parseLong(req.getParameter("idReceita")));
+            receitaIngrediente.setIdIngrediente(Long.parseLong(req.getParameter("idIngrediente")));
+            receitaIngrediente.setQuantidade(Double.parseDouble(req.getParameter("quantidade")));
 
-            if (usuarioDAO.update(usuario)) {
+            if (receitaIngredienteDAO.update(receitaIngrediente)) {
                 resp.sendRedirect(req.getContextPath() + "/usuario/listar");
             }
         } catch (DuplicateEmailException dee) {
