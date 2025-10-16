@@ -1,4 +1,5 @@
-<%@ page import="io.github.nutria.nutria.model.Usuario" %><%--
+<%@ page import="io.github.nutria.nutria.model.Usuario" %>
+<%@ page import="java.util.concurrent.Semaphore" %><%--
   Created by IntelliJ IDEA.
   User: enzomota-ieg
   Date: 11/10/2025
@@ -6,6 +7,17 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%
+    Object id = request.getAttribute("id");
+    String name = (String) request.getAttribute("nome");
+    String email = (String) request.getAttribute("email");
+    String telefone = (String) request.getAttribute("telefone");
+    String empresa = (String) request.getAttribute("empresa");
+    String foto = (String) request.getAttribute("foto");
+    String errorMessage = (String) request.getAttribute("errorMessage");
+%>
+
 <html>
 <head>
     <title>Editar usuário</title>
@@ -16,10 +28,6 @@
 </head>
 <body>
 <%@include file="../components/messagemErro.jsp" %>
-
-<%
-    Usuario usuario = (Usuario) request.getAttribute("usuario");
-%>
 <main>
     <%@include file="../components/sidebar.jsp" %>
     <div class="container">
@@ -27,33 +35,35 @@
             <h1>Editar usuário</h1>
             <p>Preencha as novas informações do usuário.</p>
         </div>
-        <form class="form-content" name="forms-edit-usuario" action="${pageContext.request.contextPath}/usuario/atualizar"
+        <form class="form-content" name="forms-edit-usuario" action="${pageContext.request.contextPath}/usuario/editar"
               method="post">
             <h2>Informações do usuário</h2>
+            <input type="hidden" name="id" value="<%= id %>">
+
             <label for="name-input">Nome</label>
-            <input class="parameter-input" type="text" id="name-input" name="name" value="<%= usuario.getNome()%>>" placeholder="Insira o nome">
+            <input class="parameter-input" type="text" id="name-input" name="name" value="<%= name%>" placeholder="Insira o nome">
 
             <label for="email-input">E-mail</label>
             <input class="parameter-input" type="email" id="email-input" oninput="validateForm()" name="email"
-                   value="<%= usuario.getEmail()%>" placeholder="Insira o endereço de email">
+                   value="<%= email%>" placeholder="Insira o endereço de email">
             <span id="errorFeedback"></span>
 
 
-            <label for="password-input">Senha</label>
+            <label for="password-input">Nova Senha</label>
             <input class="parameter-input" type="password" id="password-input" name="password"
-                   value="<%= usuario.getSenha()%>" placeholder="Insira a senha">
+                   placeholder="Deixe em branco para não alterar">
 
             <label for="phone-input">Telefone</label>
             <input class="parameter-input" type="text" id="phone-input" name="phone"
-                   value="<%= usuario.getTelefone()%>" placeholder="XX XXXXX-XXXX">
+                   value="<%= telefone%>" placeholder="XX XXXXX-XXXX">
 
             <label for="company-input">Empresa</label>
             <input class="parameter-input" type="text" id="company-input" name="company"
-                   value="<%= usuario.getEmpresa()%>" placeholder="Insira seu cargo">
+                   value="<%= empresa%>" placeholder="Insira seu cargo">
 
             <label for="picture-input">Foto</label>
             <input class="parameter-input" type="text" id="picture-input" name="picture"
-                   value="<%= usuario.getFoto()%>" placeholder="Insira a URL da foto">
+                   value="<%= foto%>" placeholder="Insira a URL da foto">
 
             <div class="submit-content">
                 <a href="${pageContext.request.contextPath}/usuario/listar" ><button id="btn-cancel">Cancelar</button></a>
@@ -61,6 +71,7 @@
             </div>
 
         </form>
+
     </div>
 </main>
 <script src="${pageContext.request.contextPath}/assets/js/validator.js"></script>

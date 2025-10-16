@@ -40,7 +40,6 @@
             <p>Preencha as novas informações do administrador.</p>
         </div>
 
-<%--        <% if (id != null) { %>--%>
 
         <form class="form-content" name="forms-add-admin" action="<%= contextPath %>/admin/editar" method="post">
             <h2>Informações do Administrador</h2>
