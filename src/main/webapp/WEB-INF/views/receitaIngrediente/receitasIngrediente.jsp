@@ -51,15 +51,15 @@
 
         <section class="table-section">
             <header class="table-header">
-                <h2>Usuário</h2>
+                <h2>Receita Ingrediente</h2>
                 <div class="table-actions">
                     <div class="search-bar">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="search" placeholder="Buscar">
                     </div>
-                    <a href="${pageContext.request.contextPath}/usuario/adicionar" class="btn btn-primary">
+                    <a href="${pageContext.request.contextPath}/receitasIngredientes/adicionar" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i>
-                        Adicionar novo usuário
+                        Adicionar nova Receita Ingrediente
                     </a>
                 </div>
             </header>
