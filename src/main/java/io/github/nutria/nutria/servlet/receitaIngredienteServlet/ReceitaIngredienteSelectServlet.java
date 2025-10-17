@@ -50,7 +50,7 @@ public class ReceitaIngredienteSelectServlet extends HttpServlet {
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("currentPage", currentPage);
 
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/usuario/receitasIngrediente.jsp");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/receitaIngrediente/receitasIngrediente.jsp");
             dispatcher.forward(req, resp);
 
         } catch (DataAccessException e) {
