@@ -1,4 +1,4 @@
-<%@ page import="io.github.nutria.nutria.model.ReceitaIngrediente" %>
+<%@page import="io.github.nutria.nutria.model.ReceitaIngrediente" %>
 <%--
   Created by IntelliJ IDEA.
   User: enzomota-ieg
@@ -9,16 +9,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    Object id = request.getAttribute("id");
-    Object idReceita = request.getAttribute("idReceita");
-    Object idIngrediente = request.getAttribute("idIngrediente");
     Double quantidade = (Double) request.getAttribute("quantidade");
     String errorMessage = (String) request.getAttribute("errorMessage");
 %>
 
 <html>
 <head>
-    <title>Editar usuário</title>
+    <title>Editar Receita Ingrediente</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/forms.css">
@@ -33,25 +30,16 @@
             <h1>Editar receita ingrediente</h1>
             <p>Preencha as novas informações da receita ingrediente.</p>
         </div>
-        <form class="form-content" name="forms-edit-usuario" action="${pageContext.request.contextPath}/receitasIngredientes/editar"
+        <form class="form-content" name="forms-edit-receitaIngrediente" action="${pageContext.request.contextPath}/receitasIngredientes/editar"
               method="post">
             <h2>Informações da receita ingrediente</h2>
-            <input type="hidden" name="id" value="<%= id %>">
-
-            <label for="id-receita-input">ID Receita</label>
-            <input class="parameter-input" type="text" id="id-receita-input" name="idReceita" value="<%= idReceita%>" placeholder="Insira o nome">
-
-            <label for="email-input">ID Ingrediente</label>
-            <input class="parameter-input" type="email" id="email-input" oninput="validateForm()" name="email"
-                   value="<%= idIngrediente%>" placeholder="Insira o endereço de email">
-            <span id="errorFeedback"></span>
-
             <label for="quantity-input">Quantidade</label>
             <input class="parameter-input" type="number" id="quantity-input" name="quantity"
                    value="<%= quantidade%>" placeholder="Insira a quantidade">
+            <span id="errorFeedback"></span>
 
             <div class="submit-content">
-                <a href="${pageContext.request.contextPath}/usuario/listar" ><button id="btn-cancel">Cancelar</button></a>
+                <a href="${pageContext.request.contextPath}/receitasIngredientes/listar" ><button id="btn-cancel">Cancelar</button></a>
                 <input id="submit-btn" type="submit" value="Editar">
             </div>
 
