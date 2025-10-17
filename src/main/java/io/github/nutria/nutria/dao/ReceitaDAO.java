@@ -298,6 +298,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
+                if(rs != null) rs.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }

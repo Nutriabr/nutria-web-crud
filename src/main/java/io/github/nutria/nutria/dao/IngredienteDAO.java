@@ -4,6 +4,7 @@ import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IIngredienteDAO;
 import io.github.nutria.nutria.exceptions.*;
 import io.github.nutria.nutria.model.Ingrediente;
+import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 import java.sql.*;
@@ -225,6 +226,46 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             }
         }
         return ingredientes;
+    }
+
+    public Ingrediente findById(Long id){
+        String sql = "SELECT * FROM ingrediente WHERE id = ?";
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        Ingrediente ingrediente = null;
+
+        if (id == null || id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            rs=  ps.executeQuery();
+            if(rs.next()){
+                ingrediente = new Ingrediente();
+                ingrediente.setId(rs.getLong("id"));
+                ingrediente.setNome(rs.getString("nome"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar o ingrediente: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar o ingrediente com ID: " + id, e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return ingrediente;
     }
 
     /**
