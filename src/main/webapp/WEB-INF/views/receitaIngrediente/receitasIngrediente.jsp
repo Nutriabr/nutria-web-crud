@@ -68,9 +68,8 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Receita</th>
-                        <th>ID Ingrediente/th>
+                        <th>ID Receita</th>
+                        <th>ID Ingrediente</th>
                         <th>quantidade</th>
                         <th>Ações</th>
                     </tr>
@@ -78,15 +77,14 @@
                     <tbody>
                     <% for (ReceitaIngrediente receitaIngrediente : receitaIngredienteList) { %>
                     <tr>
-                        <td><%= receitaIngrediente.getId() %></td>
                         <td><%= receitaIngrediente.getIdReceita() %></td>
                         <td><%= receitaIngrediente.getIdIngrediente() %></td>
                         <td><%= receitaIngrediente.getQuantidade() %></td>
                         <td class="action-buttons">
-                            <a href="${pageContext.request.contextPath}/receitasIngredientes/editar?id=<%= receitaIngrediente.getId() %>" class="btn-action btn-edit">
+                            <a href="${pageContext.request.contextPath}/receitasIngredientes/editar?idReceita=<%= receitaIngrediente.getIdReceita() %>&idIngrediente=<%= receitaIngrediente.getIdIngrediente() %>" class="btn-action btn-edit">
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
-                            <button class="btn-action btn-delete" data-id="<%= receitaIngrediente.getId() %>" data-name="<%%>">
+                            <button class="btn-action btn-delete" data-id="<%%>" data-name="<%%>">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </td>
