@@ -28,9 +28,9 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
         try {
             connect = ConnectionFactory.connect();
 
-//            if (receitaDAO.findById(receitaIngrediente.getIdReceita()) == null && ingredienteDAO.findById(receitaIngrediente.getIdIngrediente() == null)) {
-//                throw new DataAccessException("Erro ao salvar relação Receita e Ingrediente");
-//            }
+            if (receitaDAO.findById(receitaIngrediente.getIdReceita()) == null && ingredienteDAO.findById(receitaIngrediente.getIdIngrediente()) == null) {
+                throw new DataAccessException("Erro ao salvar relação Receita e Ingrediente");
+            }
 
             ps = connect.prepareStatement(sql);
 
