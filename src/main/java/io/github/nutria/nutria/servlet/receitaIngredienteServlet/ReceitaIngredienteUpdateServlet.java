@@ -1,10 +1,8 @@
 package io.github.nutria.nutria.servlet.receitaIngredienteServlet;
 
 import io.github.nutria.nutria.dao.ReceitaIngredienteDAO;
-import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.exceptions.*;
 import io.github.nutria.nutria.model.ReceitaIngrediente;
-import io.github.nutria.nutria.model.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,24 +19,21 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
         ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
 
         try {
-            String idStr = req.getParameter("id");
-            if (idStr == null || idStr.isEmpty()) {
+            String idStr = req.getParameter("idReceita");
+            String id2Str = req.getParameter("idReceita");
+            if (idStr == null || idStr.isEmpty() && id2Str == null || id2Str.isEmpty()) {
                 throw new InvalidNumberException("ID", idStr);
             }
-            Long id = Long.parseLong(idStr);
 
-            req.setAttribute("id", id);
-            req.setAttribute("idReceita", receitaIngrediente.getIdReceita());
-            req.setAttribute("idIngrediente", receitaIngrediente.getIdIngrediente());
             req.setAttribute("quantidade", receitaIngrediente.getQuantidade());
 
-            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/receitaIngrediente/editar.jsp").forward(req, resp);
         } catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");
-            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/editar.jsp").forward(req, resp);
         } catch (InvalidNumberException | EntityNotFoundException e) {
             req.setAttribute("errorMessage", e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/editar.jsp").forward(req, resp);
         } catch (DataAccessException e) {
             System.err.println("[ERRO INTERNO]: " + e);
             req.setAttribute("errorMessage", "Erro ao acessar os dados. Tente novamente mais tarde.");
@@ -52,42 +47,25 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
 
 
         try {
-            System.out.println(req.getParameter("id"));
-            Long id = Long.valueOf(req.getParameter("id"));
-            ReceitaIngrediente receitaIngrediente = receitaIngredienteDAO.findById(id);
+            System.out.println(req.getParameter("idReceita"));
+            Long idReceita = Long.parseLong(req.getParameter("idReceita"));
+            Long idIngrediente = Long.parseLong(req.getParameter("idIngrediente"));
 
-            receitaIngrediente.setId(Long.parseLong(req.getParameter("id")));
-            receitaIngrediente.setIdReceita(Long.parseLong(req.getParameter("idReceita")));
-            receitaIngrediente.setIdIngrediente(Long.parseLong(req.getParameter("idIngrediente")));
+            ReceitaIngrediente receitaIngrediente = receitaIngredienteDAO.findById(idReceita, idIngrediente);
+
             receitaIngrediente.setQuantidade(Double.parseDouble(req.getParameter("quantidade")));
 
             if (receitaIngredienteDAO.update(receitaIngrediente)) {
-                resp.sendRedirect(req.getContextPath() + "/usuario/listar");
+                resp.sendRedirect(req.getContextPath() + "/receitaIngrediente/listar");
             }
-        } catch (DuplicateEmailException dee) {
-            System.err.println("[ERRO DE DUPLICIDADE]: " + dee);
-            req.setAttribute("errorMessage", "Ops! Esse e-mail já está em uso!");
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
-        } catch (DuplicatePhoneException dpe) {
-            System.err.println("[ERRO DE DUPLICIDADE]: " + dpe);
-            req.setAttribute("errorMessage", "Ops! Esse telefone já está em uso!");
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
         } catch (RequiredFieldException rfe) {
             System.err.println("[ERRO DE CAMPO OBRIGATÓRIO]: " + rfe);
             req.setAttribute("errorMessage", "Ops! " + rfe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
-        } catch (InvalidEmailException iee) {
-            System.err.println("[ERRO DE EMAIL INVÁLIDO]: " + iee);
-            req.setAttribute("errorMessage", "Ops! " + iee.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
-        } catch (InvalidPhoneException ipe) {
-            System.err.println("[ERRO DE TELEFONE INVÁLIDO]: " + ipe);
-            req.setAttribute("errorMessage", "Ops! " + ipe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
-        } catch (InvalidPasswordException ipwe) {
-            System.err.println("[ERRO DE SENHA INVÁLIDO]: " + ipwe);
-            req.setAttribute("errorMessage", "Ops! " + ipwe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/editar").forward(req, resp);
+        } catch (NumberFormatException nfe) {
+            System.err.println("[FORMATO DE CAMPO INVÁLIDO");
+            req.setAttribute("errorMessage", "Ops! " + nfe.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/editar").forward(req, resp);
         } catch (DataAccessException dae) {
             throw new DataAccessException("Erro ao acessar o banco de dados", dae);
         }
