@@ -3,6 +3,7 @@ package io.github.nutria.nutria.dao;
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.exceptions.EntityNotFoundException;
 import io.github.nutria.nutria.exceptions.InvalidNumberException;
+import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.model.ReceitaIngrediente;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
@@ -12,9 +13,12 @@ import java.util.List;
 
 public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, Long>*/ {
     public boolean insert(ReceitaIngrediente receitaIngrediente) {
-        if (receitaIngrediente.getId() == 0) return false;
+        ReceitaDAO receitaDAO = new ReceitaDAO();
+        IngredienteDAO ingredienteDAO = new IngredienteDAO();
+        if (receitaIngrediente.getIdReceita() == 0) return false;
         if (receitaIngrediente.getIdIngrediente() == 0) return false;
         if (receitaIngrediente.getQuantidade() == 0) return false;
+
 
 
         String sql = "INSERT INTO receita (id_receita, id_ingrediente, quantidade) VALUES (?, ?, ?)";
@@ -23,6 +27,10 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
         Connection connect = null;
         try {
             connect = ConnectionFactory.connect();
+
+//            if (receitaDAO.findById(receitaIngrediente.getIdReceita()) == null && ingredienteDAO.findById(receitaIngrediente.getIdIngrediente() == null)) {
+//                throw new DataAccessException("Erro ao salvar relação Receita e Ingrediente");
+//            }
 
             ps = connect.prepareStatement(sql);
 
@@ -73,9 +81,8 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
 
             while (rs.next()) {
                 ReceitaIngrediente receita = new ReceitaIngrediente(
-                        rs.getLong("id"),
-                        rs.getLong("idReceita"),
-                        rs.getLong("idIngrediente"),
+                        rs.getLong("id_receita"),
+                        rs.getLong("id_ingrediente"),
                         rs.getDouble("quantidade")
                 );
 
@@ -98,12 +105,12 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
         return receitasIngredienteArrayList;
     }
 
-    public ReceitaIngrediente findById(long id) {
+    public ReceitaIngrediente findById(Long id, Long id2) {
         if (id <= 0) {
             throw new InvalidNumberException("id", "ID deve ser maior que zero");
         }
 
-        String sql = "SELECT * FROM receita_ingrediente WHERE id = ?";
+        String sql = "SELECT * FROM receita_ingrediente WHERE id_receita = ? and id_ingrediente = ?";
 
         Connection connect = null;
         PreparedStatement ps = null;
@@ -113,11 +120,11 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
+            ps.setLong(2, id2);
             rs = ps.executeQuery();
 
             if (rs.next()) {
                 ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
-                receitaIngrediente.setId(rs.getLong("id"));
                 receitaIngrediente.setIdReceita(rs.getLong("idReceita"));
                 receitaIngrediente.setIdIngrediente(rs.getLong("idIngrediente"));
                 receitaIngrediente.setQuantidade(rs.getDouble("quantidade"));
@@ -195,7 +202,6 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             rs = psmt.executeQuery();
             while (rs.next()){
                 ReceitaIngrediente receita = new ReceitaIngrediente(
-                        rs.getLong("id"),
                         rs.getLong("receita"),
                         rs.getLong("idIngrediente"),
                         rs.getDouble("quantidade")
@@ -238,7 +244,6 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             rs = psmt.executeQuery();
             while (rs.next()){
                 ReceitaIngrediente receita = new ReceitaIngrediente(
-                        rs.getLong("id"),
                         rs.getLong("idReceita"),
                         rs.getLong("idIngrediente"),
                         rs.getDouble("quantidade")
@@ -282,7 +287,6 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             rs = psmt.executeQuery();
             while (rs.next()){
                 ReceitaIngrediente receita = new ReceitaIngrediente(
-                        rs.getLong("id"),
                         rs.getLong("idReceita"),
                         rs.getLong("idIngrediente"),
                         rs.getDouble("quantidade")
@@ -308,7 +312,7 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
     }
 
     public boolean update(ReceitaIngrediente receitaIngrediente){
-        String sql = "UPDATE receita_ingrediente SET id = ?, receita = ?, idIngrediente = ?, quantidade = ? WHERE id = ?";
+        String sql = "UPDATE receita_ingrediente id_receita = ?, id_ingrediente = ?, quantidade = ? WHERE id_receita = ? and id_ingrediente = ?";
         PreparedStatement psmt = null;
         Connection connect = null;
         int result = 0;
@@ -316,16 +320,17 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
         try {
             connect = ConnectionFactory.connect();
             psmt = connect.prepareStatement(sql);
-            psmt.setLong(1, receitaIngrediente.getId());
-            psmt.setLong(2, receitaIngrediente.getIdReceita());
-            psmt.setLong(3, receitaIngrediente.getIdIngrediente());
-            psmt.setDouble(4, receitaIngrediente.getQuantidade());
-            psmt.setLong(5, receitaIngrediente.getId());
+            psmt.setLong(1, receitaIngrediente.getIdReceita());
+            psmt.setLong(2, receitaIngrediente.getIdIngrediente());
+            psmt.setDouble(3, receitaIngrediente.getQuantidade());
+            psmt.setLong(4, receitaIngrediente.getIdReceita());
+            psmt.setLong(4, receitaIngrediente.getIdReceita());
+
 
             result = psmt.executeUpdate();
 
         } catch (SQLException sqle){
-            System.err.println("[DAO ERROR] Erro ao atualizar a relação receita e ingrediente: " + receitaIngrediente.getId());
+            System.err.println("[DAO ERROR] Erro ao atualizar a relação receita e ingrediente: " + receitaIngrediente.getIdReceita() + ", " + receitaIngrediente.getIdIngrediente());
             sqle.printStackTrace(System.err);
             throw new DataAccessException("Erro ao atualizar receita", sqle);
         } finally {
