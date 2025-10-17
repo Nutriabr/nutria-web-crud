@@ -108,10 +108,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT r.*, p.nome AS nome_produto " +
-                       "FROM receita r " +
-                       "JOIN produto p ON r.id_produto = p.id " +
-                       "LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM receita LIMIT ? OFFSET ?";
 
         List<Receita> receitasArrayList = new ArrayList<>();
 
@@ -229,10 +226,8 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
     public List<Receita> findByPorcao(String porcao){
         String sql =
                 """
-                SELECT r.*, p.nome AS nome_produto
-                FROM receita r
-                JOIN produto p ON r.id_produto = p.id
-                WHERE LOWER(r.porcao) LIKE LOWER(?)
+                SELECT * FROM receita
+                WHERE LOWER(porcao) LIKE LOWER(?)
                 """;
 
         PreparedStatement psmt = null;
@@ -269,4 +264,45 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         }
         return receitas;
     }
+
+    public Receita findById(Long id){
+        String sql = "SELECT * FROM receita WHERE id = ?";
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        Receita receita = null;
+
+        if (id == null || id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            rs=  ps.executeQuery();
+            if(rs.next()){
+                receita = new Receita();
+                receita.setId(rs.getLong("id"));
+                receita.setPorcao(rs.getString("porcao"));
+                receita.setIdProduto(rs.getLong("id_produto"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar a receita: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar a receita com ID: " + id, e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return receita;
+    }
+
 }
