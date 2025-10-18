@@ -26,6 +26,8 @@ public class UsuarioInsertServlet extends HttpServlet {
         UsuarioDAO dao = new UsuarioDAO();
         Usuario usuario = new Usuario();
 
+        int lastPage = (int) Math.ceil((double) dao.countAll() / 4);
+
         try {
             usuario.setNome(req.getParameter("name"));
             usuario.setEmail(req.getParameter("email"));
@@ -36,31 +38,68 @@ public class UsuarioInsertServlet extends HttpServlet {
 
             dao.insert(usuario);
 
-            resp.sendRedirect(req.getContextPath() + "/usuario/listar");
+            resp.sendRedirect(req.getContextPath() + "/usuario/listar?page=" + (lastPage + 1));
         }  catch (DuplicateEmailException dee) {
             System.err.println("[ERRO DE DUPLICIDADE]: " + dee);
+            req.setAttribute("name", req.getParameter("name"));
+            req.setAttribute("email", req.getParameter("email"));
+            req.setAttribute("password", req.getParameter("password"));
+            req.setAttribute("phone", req.getParameter("phone"));
+            req.setAttribute("company", req.getParameter("company"));
+            req.setAttribute("picture", req.getParameter("picture"));
             req.setAttribute("errorMessage", "Ops! Esse e-mail já está em uso!");
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/adicionar.jsp").forward(req, resp);
         } catch (DuplicatePhoneException dpe) {
             System.err.println("[ERRO DE DUPLICIDADE]: " + dpe);
+            req.setAttribute("name", req.getParameter("name"));
+            req.setAttribute("email", req.getParameter("email"));
+            req.setAttribute("password", req.getParameter("password"));
+            req.setAttribute("phone", req.getParameter("phone"));
+            req.setAttribute("company", req.getParameter("company"));
+            req.setAttribute("picture", req.getParameter("picture"));
             req.setAttribute("errorMessage", "Ops! Esse telefone já está em uso!");
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/adicionar.jsp").forward(req, resp);
         } catch (RequiredFieldException rfe) {
             System.err.println("[ERRO DE CAMPO OBRIGATÓRIO]: " + rfe);
+            req.setAttribute("name", req.getParameter("name"));
+            req.setAttribute("email", req.getParameter("email"));
+            req.setAttribute("password", req.getParameter("password"));
+            req.setAttribute("phone", req.getParameter("phone"));
+            req.setAttribute("company", req.getParameter("company"));
+            req.setAttribute("picture", req.getParameter("picture"));
             req.setAttribute("errorMessage", "Ops! " + rfe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/adicionar.jsp").forward(req, resp);
         } catch (InvalidEmailException iee) {
             System.err.println("[ERRO DE EMAIL INVÁLIDO]: " + iee);
+            req.setAttribute("name", req.getParameter("name"));
+            req.setAttribute("email", req.getParameter("email"));
+            req.setAttribute("password", req.getParameter("password"));
+            req.setAttribute("phone", req.getParameter("phone"));
+            req.setAttribute("company", req.getParameter("company"));
+            req.setAttribute("picture", req.getParameter("picture"));
             req.setAttribute("errorMessage", "Ops! " + iee.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/adicionar.jsp").forward(req, resp);
         } catch (InvalidPhoneException ipe) {
             System.err.println("[ERRO DE TELEFONE INVÁLIDO]: " + ipe);
+            req.setAttribute("name", req.getParameter("name"));
+            req.setAttribute("email", req.getParameter("email"));
+            req.setAttribute("password", req.getParameter("password"));
+            req.setAttribute("phone", req.getParameter("phone"));
+            req.setAttribute("company", req.getParameter("company"));
+            req.setAttribute("picture", req.getParameter("picture"));
             req.setAttribute("errorMessage", "Ops! " + ipe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/adicionar.jsp").forward(req, resp);
         } catch (InvalidPasswordException ipwe) {
             System.err.println("[ERRO DE SENHA INVÁLIDO]: " + ipwe);
+            req.setAttribute("name", req.getParameter("name"));
+            req.setAttribute("email", req.getParameter("email"));
+            req.setAttribute("password", req.getParameter("password"));
+            req.setAttribute("phone", req.getParameter("phone"));
+            req.setAttribute("company", req.getParameter("company"));
+            req.setAttribute("picture", req.getParameter("picture"));
+            req.setAttribute("totalPages", req.getParameter("totalPages"));
             req.setAttribute("errorMessage", "Ops! " + ipwe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/adicionar.jsp").forward(req, resp);
         } catch (DataAccessException dae) {
             throw new DataAccessException("Erro ao acessar o banco de dados", dae);
         }
