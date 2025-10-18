@@ -25,7 +25,13 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
                 throw new InvalidNumberException("ID", idStr);
             }
 
-            req.setAttribute("quantidade", receitaIngrediente.getQuantidade());
+            Long idReceita = Long.parseLong(idStr);
+            Long idIngrediente = Long.parseLong(id2Str);
+
+            receitaIngrediente = receitaIngredienteDAO.findById(idReceita, idIngrediente);
+
+            Double quantidade = receitaIngrediente.getQuantidade();
+            req.setAttribute("quantidade", quantidade);
 
             req.getRequestDispatcher("/WEB-INF/views/receitaIngrediente/editar.jsp").forward(req, resp);
         } catch (NumberFormatException e) {
