@@ -249,7 +249,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM tabela_nutricional LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM tabela_nutricional ORDER BY id_ingrediente LIMIT ? OFFSET ? ";
 
         List<TabelaNutricional> tabelaNutricionalArrayList = new ArrayList<TabelaNutricional>();
 
