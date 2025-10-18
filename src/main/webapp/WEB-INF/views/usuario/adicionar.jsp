@@ -22,35 +22,37 @@
     </jsp:include>
     <div class="container">
         <div class="main-content">
-            <h1>Adicionar administrador</h1>
-            <p>Preencha as informações de novo administrador.</p>
+            <h1>Adicionar usuário</h1>
+            <p>Preencha as informações do novo usuário.</p>
         </div>
         <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/usuario/adicionar"
               method="post">
             <h2>Informações do usuário</h2>
             <label for="name-input">Nome</label>
-            <input class="parameter-input" type="text" id="name-input" name="name" placeholder="Insira o nome" required>
+            <input class="parameter-input" type="text" id="name-input" name="name" value="${name}"
+                   placeholder="Insira o nome" required>
 
             <label for="email-input">E-mail</label>
             <input class="parameter-input" type="email" id="email-input" oninput="validateForm()" name="email"
-                   placeholder="Insira o endereço de email" required>
+                   value="${email}" placeholder="Insira o endereço de email" required>
             <span id="errorFeedback"></span>
 
 
             <label for="password-input">Senha</label>
             <input class="parameter-input" type="password" id="password-input" name="password"
-                   placeholder="Insira a senha" required>
+                   value="${password}" placeholder="Insira a senha" required>
 
             <label for="phone-input">Telefone</label>
-            <input class="parameter-input" type="text" id="phone-input" name="phone" placeholder="XX XXXXX-XXXX" required>
+            <input class="parameter-input" type="text" id="phone-input" name="phone"
+                   value="${phone}" placeholder="XX XXXXX-XXXX" required>
 
             <label for="company-input">Empresa</label>
             <input class="parameter-input" type="text" id="company-input" name="company"
-                   placeholder="Insira sua empresa">
+                   value="${company}" placeholder="Insira sua empresa">
 
             <label for="picture-input">Foto</label>
             <input class="parameter-input" type="text" id="picture-input" name="picture"
-                   placeholder="Insira a URL da foto">
+                   value="${picture}" placeholder="Insira a URL da foto">
 
             <div class="submit-content">
                 <a href="${pageContext.request.contextPath}/usuario/listar" id="btn-cancel">Cancelar</a>
