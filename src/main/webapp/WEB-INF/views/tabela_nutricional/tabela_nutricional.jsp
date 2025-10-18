@@ -66,24 +66,24 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>ID Ingrediente</th>
-                        <th>Valor Energético (KCAL)</th>
-                        <th>Carboidratos (G)</th>
-                        <th>Açúcares Totais (G)</th>
-                        <th>Açúcares Adicionados (G)</th>
-                        <th>Proteínas (G)</th>
-                        <th>Gorduras Totais (G)</th>
-                        <th>Gorduras Saturadas (G)</th>
-                        <th>Gorduras Trans (G)</th>
-                        <th>Fibra Alimentar (G)</th>
-                        <th>Sódio (MG)</th>
-                        <th>Colesterol (MG)</th>
-                        <th>Vitamina A (MCG)</th>
-                        <th>Vitamina C (MG)</th>
-                        <th>Vitamina D (MCG)</th>
-                        <th>Cálcio (MG)</th>
-                        <th>Ferro (MG)</th>
-                        <th>Potássio (MG)</th>
+                        <th>ID do ingrediente</th>
+                        <th>Valor energético (kcal)</th>
+                        <th>Carboidratos (g)</th>
+                        <th>Açúcares totais (g)</th>
+                        <th>Açúcares Adicionados (g)</th>
+                        <th>Proteínas (g)</th>
+                        <th>Gorduras totais (g)</th>
+                        <th>Gorduras saturadas (g)</th>
+                        <th>Gorduras trans (g)</th>
+                        <th>Fibras alimentares (G)</th>
+                        <th>Sódio (mg)</th>
+                        <th>Colesterol (mg)</th>
+                        <th>Vitamina A (µg)</th>
+                        <th>Vitamina C (mg)</th>
+                        <th>Vitamina D (µg)</th>
+                        <th>Cálcio (mg)</th>
+                        <th>Ferro (mg)</th>
+                        <th>Potássio (mg)</th>
                     </tr>
                     </thead>
                     <tbody>
