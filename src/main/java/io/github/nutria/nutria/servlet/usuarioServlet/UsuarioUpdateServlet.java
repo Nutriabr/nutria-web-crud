@@ -2,9 +2,7 @@ package io.github.nutria.nutria.servlet.usuarioServlet;
 
 import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.exceptions.*;
-import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.model.Usuario;
-import io.github.nutria.nutria.util.PasswordHasher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -56,6 +54,7 @@ public class UsuarioUpdateServlet extends HttpServlet {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         final String viewPath = "/WEB-INF/views/usuario/editar.jsp";
 
+        int lastPage = (int) Math.ceil((double) usuarioDAO.countAll() / 4);
 
         try {
             System.out.println(req.getParameter("id"));
@@ -69,33 +68,33 @@ public class UsuarioUpdateServlet extends HttpServlet {
             usuario.setEmpresa(req.getParameter("company"));
             usuario.setFoto(req.getParameter("picture"));
 
-            if (usuarioDAO.update(usuario)) {
-                resp.sendRedirect(req.getContextPath() + "/usuario/listar");
-            }
+            usuarioDAO.update(usuario);
+
+            resp.sendRedirect(req.getContextPath() + "/usuario/listar?page=" + (lastPage + 1));
         } catch (DuplicateEmailException dee) {
             System.err.println("[ERRO DE DUPLICIDADE]: " + dee);
             req.setAttribute("errorMessage", "Ops! Esse e-mail já está em uso!");
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
         } catch (DuplicatePhoneException dpe) {
             System.err.println("[ERRO DE DUPLICIDADE]: " + dpe);
             req.setAttribute("errorMessage", "Ops! Esse telefone já está em uso!");
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
         } catch (RequiredFieldException rfe) {
             System.err.println("[ERRO DE CAMPO OBRIGATÓRIO]: " + rfe);
             req.setAttribute("errorMessage", "Ops! " + rfe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
         } catch (InvalidEmailException iee) {
             System.err.println("[ERRO DE EMAIL INVÁLIDO]: " + iee);
             req.setAttribute("errorMessage", "Ops! " + iee.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
         } catch (InvalidPhoneException ipe) {
             System.err.println("[ERRO DE TELEFONE INVÁLIDO]: " + ipe);
             req.setAttribute("errorMessage", "Ops! " + ipe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
         } catch (InvalidPasswordException ipwe) {
             System.err.println("[ERRO DE SENHA INVÁLIDO]: " + ipwe);
             req.setAttribute("errorMessage", "Ops! " + ipwe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
         } catch (DataAccessException dae) {
             throw new DataAccessException("Erro ao acessar o banco de dados", dae);
         }
