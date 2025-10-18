@@ -99,10 +99,10 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
     @Override
     public boolean update(TabelaNutricional tabelaNutricional) {
-        String sql = "UPDATE tabela_nutricional SET valorEnergeticoKcal = ?, carboidratosG = ?, " +
-                "acucaresTotaisG = ?, acucaresAdicionadosG = ?, proteinasG = ?, gordurasTotaisG = ?, gordurasSaturadasG = ?, " +
-                "gorduras_trans_g = ?, fibraAlimentarG = ?, sodioMg = ?, colesterolMg = ?, vitaminaAMcg = ?, vitaminaCMg = ?, vitaminaDMcg = ?, " +
-                "calcioMg = ?, ferroMg = ?, potassioMg = ? WHERE id_ingrediente = ?";
+        String sql = "UPDATE tabela_nutricional SET valor_energetico_kcal = ?, carboidratos_g = ?, " +
+                "acucares_totais_g = ?, acucares_adicionados_g = ?, proteinas_g = ?, gorduras_totais_g = ?, gorduras_saturadas_g = ?, " +
+                "gorduras_trans_g = ?, fibra_alimentar_g = ?, sodio_mg = ?, colesterol_mg = ?, vitamina_a_mcg = ?, vitamina_c_mg = ?, vitamina_d_mcg = ?, " +
+                "calcio_mg = ?, ferro_mg = ?, potassio_mg = ? WHERE id_ingrediente = ?";
 
         boolean result;
         PreparedStatement ps = null;
@@ -208,7 +208,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             if (rs.next()) {
                 tabelaNutricional = new TabelaNutricional(
                         rs.getLong("id_ingrediente"),
-                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("valor_energetico_kcal"),
                         rs.getDouble("carboidratos_g"),
                         rs.getDouble("acucares_totais_g"),
                         rs.getDouble("acucares_adicionados_g"),
@@ -269,7 +269,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             while (rs.next()) {
                 TabelaNutricional tabelaNutricional = new TabelaNutricional(
                         rs.getLong("id_ingrediente"),
-                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("valor_energetico_kcal"),
                         rs.getDouble("carboidratos_g"),
                         rs.getDouble("acucares_totais_g"),
                         rs.getDouble("acucares_adicionados_g"),
@@ -422,7 +422,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             while (rs.next()) {
                 TabelaNutricional tabelaNutricional = new TabelaNutricional(
                         rs.getLong("id_ingrediente"),
-                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("valor_energetico_kcal"),
                         rs.getDouble("carboidratos_g"),
                         rs.getDouble("acucares_totais_g"),
                         rs.getDouble("acucares_adicionados_g"),
@@ -509,7 +509,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             while (rs.next()) {
                 tabelaNutricional = new TabelaNutricional(
                         rs.getLong("id_ingrediente"),
-                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("valor_energetico_kcal"),
                         rs.getDouble("carboidratos_g"),
                         rs.getDouble("acucares_totais_g"),
                         rs.getDouble("acucares_adicionados_g"),

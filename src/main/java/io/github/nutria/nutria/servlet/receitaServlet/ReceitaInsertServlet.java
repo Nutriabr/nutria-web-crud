@@ -33,7 +33,7 @@ public class ReceitaInsertServlet extends HttpServlet {
 
 
         porcao = req.getParameter("porcao");
-        idProdutoStr = req.getParameter("idProduto");
+        idProdutoStr = req.getParameter("id-produto");
         try {
             idProduto = Long.parseLong(idProdutoStr);
         } catch (NumberFormatException e) {
