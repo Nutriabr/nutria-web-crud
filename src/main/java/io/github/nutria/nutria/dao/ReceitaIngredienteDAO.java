@@ -125,8 +125,8 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
 
             if (rs.next()) {
                 ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
-                receitaIngrediente.setIdReceita(rs.getLong("idReceita"));
-                receitaIngrediente.setIdIngrediente(rs.getLong("idIngrediente"));
+                receitaIngrediente.setIdReceita(rs.getLong("id_receita"));
+                receitaIngrediente.setIdIngrediente(rs.getLong("id_ingrediente"));
                 receitaIngrediente.setQuantidade(rs.getDouble("quantidade"));
 
 
