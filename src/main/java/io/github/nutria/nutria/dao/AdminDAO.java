@@ -238,6 +238,10 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             ps.setLong(1, id);
 
             result = (ps.executeUpdate() > 0);
+            if (!result) {
+                throw new EntityNotFoundException("Admin", id);
+            }
+
 
         } catch (SQLException e) {
             System.err.println("[DAO ERROR] Erro ao deletar o admin: " + id);
