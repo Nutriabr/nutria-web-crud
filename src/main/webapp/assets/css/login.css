@@ -2,7 +2,8 @@
 :root {
     --primary-color: #EE7026;
     --secondary-color: #21B558;
-    --text-primary: #000000;
+    --danger-color: #ff1500;
+    --text-primary: #2C3036;
     --text-secondary: #555555;
     --text-placeholder: #999999;
     --text-light: #FFFFFF;
@@ -34,14 +35,24 @@
 
 body {
     font-family: var(--font-family-base), serif;
+
 }
 
-main {
+.main-content {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     flex-direction: column;
+}
+
+main {
+    position: relative;
+    background-image: url('../img/bg_grid.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    min-height: 90vh;
 }
 
 .logo-image {
@@ -105,4 +116,10 @@ main {
     padding: var(--spacing-lg);
     cursor: pointer;
     font-size: var(--font-size-xs);
+}
+
+.error {
+    color: var(--danger-color);
+    text-align: center;
+    margin: 10px;
 }
