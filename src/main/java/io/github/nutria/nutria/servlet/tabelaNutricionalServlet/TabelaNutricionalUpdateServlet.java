@@ -35,7 +35,7 @@ public class TabelaNutricionalUpdateServlet extends HttpServlet {
             req.setAttribute("carboidratos", tabelaNutricional.getCarboidratosG());
             req.setAttribute("acucares-totais", tabelaNutricional.getAcucaresTotaisG());
             req.setAttribute("acucares-adicionados", tabelaNutricional.getAcucaresAdicionadosG());
-            req.setAttribute("proteinas", tabelaNutricional.getValorEnergeticoKcal());
+            req.setAttribute("proteinas", tabelaNutricional.getProteinasG());
             req.setAttribute("gorduras-totais", tabelaNutricional.getGordurasTotaisG());
             req.setAttribute("gorduras_saturadas", tabelaNutricional.getGordurasSaturadasG());
             req.setAttribute("gorduras_trans", tabelaNutricional.getGordurasTransG());
