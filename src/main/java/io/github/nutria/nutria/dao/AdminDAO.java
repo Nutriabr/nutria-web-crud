@@ -222,7 +222,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public boolean deleteById(Long id) throws SQLException {
+    public boolean deleteById(Long id) {
         String sql = "DELETE FROM admin WHERE id = ?";
 
         boolean result = false;
