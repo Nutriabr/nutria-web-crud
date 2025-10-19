@@ -20,7 +20,7 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
 
         try {
             String idStr = req.getParameter("idReceita");
-            String id2Str = req.getParameter("idReceita");
+            String id2Str = req.getParameter("idIngrediente");
             if (idStr == null || idStr.isEmpty() && id2Str == null || id2Str.isEmpty()) {
                 throw new InvalidNumberException("ID", idStr);
             }
@@ -34,14 +34,16 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
             req.setAttribute("quantidade", quantidade);
 
             req.getRequestDispatcher("/WEB-INF/views/receitaIngrediente/editar.jsp").forward(req, resp);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException nfe) {
+            System.out.println(nfe.getMessage());
             req.setAttribute("errorMessage", "O ID informado é inválido.");
             req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/editar.jsp").forward(req, resp);
         } catch (InvalidNumberException | EntityNotFoundException e) {
+            System.out.println(e.getMessage());
             req.setAttribute("errorMessage", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/editar.jsp").forward(req, resp);
-        } catch (DataAccessException e) {
-            System.err.println("[ERRO INTERNO]: " + e);
+        } catch (DataAccessException dae) {
+            System.err.println("[ERRO INTERNO]: " + dae);
             req.setAttribute("errorMessage", "Erro ao acessar os dados. Tente novamente mais tarde.");
             req.getRequestDispatcher("/WEB-INF/views/erro.jsp").forward(req, resp);
         }
@@ -49,30 +51,35 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ReceitaIngredienteDAO receitaIngredienteDAO = new ReceitaIngredienteDAO();
-        final String viewPath = "/WEB-INF/views/receitasIngredientes/receitasIngrediente.jsp";
+
+        int lastPage = (int) Math.ceil((double) receitaIngredienteDAO.countAll() / 4);
 
 
         try {
-            System.out.println(req.getParameter("idReceita"));
-            Long idReceita = Long.parseLong(req.getParameter("idReceita"));
-            Long idIngrediente = Long.parseLong(req.getParameter("idIngrediente"));
+            String id1 = req.getParameter("idReceita");
+            Long idReceita = Long.parseLong(String.valueOf(id1));
+            String id2 = req.getParameter("idIngrediente");
+            Long idIngrediente = Long.parseLong(String.valueOf(id2));
 
             ReceitaIngrediente receitaIngrediente = receitaIngredienteDAO.findById(idReceita, idIngrediente);
 
-            receitaIngrediente.setQuantidade(Double.parseDouble(req.getParameter("quantidade")));
+            receitaIngrediente.setQuantidade(Double.parseDouble(req.getParameter("quantity")));
 
-            if (receitaIngredienteDAO.update(receitaIngrediente)) {
-                resp.sendRedirect(req.getContextPath() + "/receitaIngrediente/listar");
-            }
+            receitaIngredienteDAO.update(receitaIngrediente);
+
+            resp.sendRedirect(req.getContextPath() + "/receitaIngrediente/listar?page=" + (lastPage + 1));
         } catch (RequiredFieldException rfe) {
+            System.out.println(rfe.getMessage());
             System.err.println("[ERRO DE CAMPO OBRIGATÓRIO]: " + rfe);
             req.setAttribute("errorMessage", "Ops! " + rfe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/editar").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/editar.jsp").forward(req, resp);
         } catch (NumberFormatException nfe) {
+            System.out.println(nfe.getMessage());
             System.err.println("[FORMATO DE CAMPO INVÁLIDO");
             req.setAttribute("errorMessage", "Ops! " + nfe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/editar").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/editar.jsp").forward(req, resp);
         } catch (DataAccessException dae) {
+            System.out.println(dae.getMessage());
             throw new DataAccessException("Erro ao acessar o banco de dados", dae);
         }
     }
