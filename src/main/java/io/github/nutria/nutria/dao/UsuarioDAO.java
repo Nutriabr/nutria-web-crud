@@ -10,12 +10,23 @@ import io.github.nutria.nutria.util.FieldUsedValidator;
 import io.github.nutria.nutria.util.PasswordHasher;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-/**Classe para transferência de dados do Usuario no banco de dados
- * @author Mariana Marrão, Luis Henrique e Enzo Mota
- * @version 1.1
+/**
+ * Classe de acesso a dados (DAO) para a entidade {@link Usuario}.
+ * <p>
+ * Implementa as operações de CRUD e métodos personalizados.
+ *
+ * @see GenericDAO
  * @see IUsuarioDAO
+ * @see Usuario
+ * @author Enzo Mota
+ * @author Luis Henrique
+ * @author Mariana Marrão
+ * @version 1.0
  */
 @SuppressWarnings("ALL")
 public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
@@ -568,6 +579,15 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 
+    /**
+     * Valida campos obrigatórios de um {@link Usuario}.
+     *
+     * @param usuario o objeto {@link Usuario} que será validado.
+     * @throws ValidationException se o objeto for {@code null}.
+     * @throws RequiredFieldException se determinado campo obrigatório for {@code null} ou vazio.
+     * @throws InvalidEmailException se o email do {@link Usuario} for inválido.
+     * @throws InvalidPasswordException se a senha do {@link Usuario} tiver menos de 8 caracteres.
+     */
     private void validateUser(Usuario usuario) {
         if (usuario == null) {
             throw new ValidationException("Usuario não pode ser nulo");

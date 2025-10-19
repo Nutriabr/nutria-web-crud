@@ -12,6 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Classe de acesso a dados (DAO) para a entidade {@link TabelaNutricional}.
+ * <p>
+ * Implementa as operações de CRUD e métodos personalizados.
+ *
+ * @see GenericDAO
+ * @see ITabelaNutricionalDAO
+ * @see TabelaNutricional
+ * @see FiltroNutricional
+ * @author Giovanna Santos
+ * @version 1.0
+ */
 public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>, ITabelaNutricionalDAO {
 
     /**
@@ -381,6 +393,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TabelaNutricional> filterBy(String nomeFiltro, int page) {
         int limit = 4;
@@ -460,6 +475,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return tabelaNutricionalArrayList;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TabelaNutricional> findByNutrientRange(String type, String column, double minValue, double maxValue, int page) {
         int limit = 4;
