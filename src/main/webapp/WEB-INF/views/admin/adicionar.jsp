@@ -36,7 +36,6 @@
                    placeholder="Insira o endereço de email" required>
             <span id="errorFeedback"></span>
 
-
             <label for="password-input">Senha</label>
             <input class="parameter-input" type="password" id="password-input" name="password"
                    placeholder="Insira a senha" required>

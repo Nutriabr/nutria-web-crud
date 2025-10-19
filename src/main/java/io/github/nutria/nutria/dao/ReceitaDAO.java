@@ -1,28 +1,28 @@
 package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
+import io.github.nutria.nutria.dao.interfaces.IReceitaDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.exceptions.InvalidNumberException;
 import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.exceptions.ValidationException;
-import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
-// Importações necessárias para operações com JDBC e manipulação de listas
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe de acesso a dados (DAO) para a entidade Receita.
- * Implementa as operações CRUD (Create, Read, Update, Delete) para a tabela "receitas" no banco de dados.
- * @author marianamarrao
- * @version 1.1
+ * Classe de acesso a dados (DAO) para a entidade {@link Receita}.
+ * <p>
+ * Implementa as operações de CRUD e métodos personalizados.
+ *
+ * @see GenericDAO
+ * @see IReceitaDAO
+ * @see Receita
+ * @author Mariana Marrão
+ * @version 1.0
  */
 public class ReceitaDAO implements GenericDAO<Receita, Long> {
     @Override

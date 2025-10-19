@@ -2,9 +2,11 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IIngredienteDAO;
-import io.github.nutria.nutria.exceptions.*;
+import io.github.nutria.nutria.exceptions.DataAccessException;
+import io.github.nutria.nutria.exceptions.InvalidNumberException;
+import io.github.nutria.nutria.exceptions.RequiredFieldException;
+import io.github.nutria.nutria.exceptions.ValidationException;
 import io.github.nutria.nutria.model.Ingrediente;
-import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 import java.sql.*;
@@ -12,10 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe de acesso a dados (DAO) para a entidade Receita.
- * Implementa as operações CRUD (Create, Read, Update, Delete) para a tabela "Ingrediente" no banco de dados.
- * @author marianamarrao
- * @version 1.1
+ * Classe de acesso a dados (DAO) para a entidade {@link Ingrediente}.
+ * <p>
+ * Implementa as operações de CRUD e métodos personalizados.
+ *
+ * @see GenericDAO
+ * @see IIngredienteDAO
+ * @see Ingrediente
+ * @author Mariana Marrão
+ * @version 1.0
  */
 public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredienteDAO {
 
@@ -269,8 +276,11 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
     }
 
     /**
-     * Validação de campos obrigatórios do ingrediente.
-     * @param ingrediente objeto Ingrediente a ser validado.
+     * Valida campos obrigatórios de um {@link Ingrediente}.
+     *
+     * @param ingrediente o objeto {@link Ingrediente} que será validado.
+     * @throws ValidationException se o objeto for {@code null}.
+     * @throws RequiredFieldException se o nome do {@link Ingrediente} for {@code null} ou vazio.
      */
     private void validateIngrediente(Ingrediente ingrediente) {
         if (ingrediente == null) {

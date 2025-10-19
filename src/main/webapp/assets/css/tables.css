@@ -3,12 +3,10 @@
 :root {
     --primary-color: #EE7026;
     --primary-color-hover: #D66522;
-    --danger-color: #E53E3E;
-    --danger-color-hover: #C53030;
 
     --secondary-color: #21B558;
 
-    --text-primary: #2D3748;
+    --text-primary: #2C3036;
     --text-secondary: #718096;
     --text-light: #FFFFFF;
 
@@ -164,12 +162,12 @@ ul {
 }
 
 .btn-danger {
-    background-color: var(--danger-color);
+    background-color: var(--primary-color);
     color: var(--text-light);
 }
 
 .btn-danger:hover {
-    background-color: var(--danger-color-hover);
+    background-color: var(--primary-color-hover);
 }
 
 .table-container {

@@ -12,6 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Classe de acesso a dados (DAO) para a entidade {@link TabelaNutricional}.
+ * <p>
+ * Implementa as operações de CRUD e métodos personalizados.
+ *
+ * @see GenericDAO
+ * @see ITabelaNutricionalDAO
+ * @see TabelaNutricional
+ * @see FiltroNutricional
+ * @author Giovanna Santos
+ * @version 1.0
+ */
 public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>, ITabelaNutricionalDAO {
 
     /**
@@ -82,9 +94,23 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
             result = (ps.executeUpdate() > 0);
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao salvar tabela nutricional");
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao salvar tabela nutricional", e);
+            String message = "";
+            if ("23503".equals(e.getSQLState())) {
+                System.err.println("[DAO FOREIGN KEY VIOLATION] O ID do ingrediente informado não existe no banco de dados");
+                e.printStackTrace(System.err);
+                message = "O ID do ingrediente informado não existe!";
+            }
+            else if ("23505".equals(e.getSQLState())) {
+                System.err.println("[DAO DUPLICATE KEY] O ID do ingrediente informado já está registrado no banco de dados");
+                e.printStackTrace(System.err);
+                message = "O ID do ingrediente informado já está registrado!";
+            }
+            else {
+                System.err.println("[DAO ERROR] Erro ao salvar tabela nutricional");
+                e.printStackTrace(System.err);
+                message = "Erro ao salvar tabela nutricional!" + e;
+            }
+            throw new DataAccessException(message);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
@@ -158,7 +184,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     }
 
     @Override
-    public boolean deleteById(Long id) throws SQLException {
+    public boolean deleteById(Long id) {
         String sql = "DELETE FROM tabela_nutricional WHERE id = ?";
 
         boolean result;
@@ -249,7 +275,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM tabela_nutricional LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM tabela_nutricional ORDER BY id_ingrediente LIMIT ? OFFSET ? ";
 
         List<TabelaNutricional> tabelaNutricionalArrayList = new ArrayList<TabelaNutricional>();
 
@@ -381,6 +407,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TabelaNutricional> filterBy(String nomeFiltro, int page) {
         int limit = 4;
@@ -460,6 +489,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return tabelaNutricionalArrayList;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TabelaNutricional> findByNutrientRange(String type, String column, double minValue, double maxValue, int page) {
         int limit = 4;
