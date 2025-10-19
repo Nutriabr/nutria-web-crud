@@ -2,10 +2,8 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IAdminDAO;
-
 import io.github.nutria.nutria.exceptions.*;
 import io.github.nutria.nutria.model.Admin;
-
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.FieldUsedValidator;
 import io.github.nutria.nutria.util.PasswordHasher;
@@ -16,12 +14,15 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Classe para transferência de dados do Admin no banco de dados
+ * Classe de acesso a dados (DAO) para a entidade {@link Admin}.
+ * <p>
+ * Implementa as operações de CRUD e métodos personalizados.
  *
+ * @see GenericDAO
+ * @see IAdminDAO
+ * @see Admin
  * @author Luis Henrique
  * @version 1.0
- * @see IAdminDAO
- * @see GenericDAO
  */
 public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
@@ -221,7 +222,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public boolean deleteById(Long id) throws SQLException {
+    public boolean deleteById(Long id) {
         String sql = "DELETE FROM admin WHERE id = ?";
 
         boolean result = false;
@@ -485,6 +486,16 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 
+    /**
+     * Valida campos obrigatórios de um {@link Admin}.
+     *
+     * @param admin o objeto {@link Admin} que será validado.
+     * @throws ValidationException se o objeto for {@code null}.
+     * @throws RequiredFieldException se determinado campo obrigatório for {@code null} ou vazio.
+     * @throws InvalidEmailException se o email do {@link Admin} for inválido.
+     * @throws InvalidPhoneException se o telefone do {@link Admin} tiver mais de 11 dígitos.
+     * @throws InvalidPasswordException se a senha do {@link Admin} tiver menos de 8 caracteres.
+     */
     private void validateAdmin(Admin admin) {
         if (admin == null) {
             throw new ValidationException("Preencha os campos obrigatórios");

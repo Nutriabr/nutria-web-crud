@@ -1,8 +1,8 @@
-package io.github.nutria.nutria.servlet.receitaServlet;
+package io.github.nutria.nutria.servlet.produtoServlet;
 
-import io.github.nutria.nutria.dao.ReceitaDAO;
+import io.github.nutria.nutria.dao.ProdutoDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
-import io.github.nutria.nutria.model.Receita;
+import io.github.nutria.nutria.model.Produto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,12 +12,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/receita/listar")
-public class ReceitaSelectServlet extends HttpServlet {
-    private final int TOTAL_RECEITA_PAGE = 4;
+@WebServlet("/produto/listar")
+public class ProdutoSelectServlet extends HttpServlet {
+    private final int TOTAL_PRODUTO_PAGE = 4;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ReceitaDAO receitaDAO = new ReceitaDAO();
+        ProdutoDAO produtoDAO = new ProdutoDAO();
         int currentPage = 1;
         String pageParam = req.getParameter("page");
 
@@ -31,20 +31,20 @@ public class ReceitaSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalReceitas = receitaDAO.countAll();
-            int totalPages = (int) Math.ceil((double) totalReceitas / TOTAL_RECEITA_PAGE);
+            int totalProdutos = produtoDAO.countAll();
+            int totalPages = (int) Math.ceil((double) totalProdutos / TOTAL_PRODUTO_PAGE);
             if (totalPages == 0) totalPages = 1;
             if(currentPage < 1){
                 currentPage = 1;
             } else if (currentPage > totalPages && totalPages > 0) {
                 currentPage = totalPages;
             }
-            List<Receita> receitasList = receitaDAO.findAll(currentPage);
-            req.setAttribute("totalReceitas",totalReceitas);
-            req.setAttribute("receitasList", receitasList);
+            List<Produto> produtoList = produtoDAO.findAll(currentPage);
+            req.setAttribute("totalProdutos",totalProdutos);
+            req.setAttribute("produtosList", produtoList);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("totalPages",totalPages);
-            req.getRequestDispatcher("/WEB-INF/views/receita/receitas.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/produto/produto.jsp").forward(req, resp);
 
         } catch (DataAccessException e) {
             throw new DataAccessException("Erro ao acessar o banco de dados", e);

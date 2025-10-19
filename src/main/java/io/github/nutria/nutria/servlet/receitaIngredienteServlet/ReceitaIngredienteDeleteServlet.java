@@ -1,4 +1,4 @@
-package io.github.nutria.nutria.servlet.tabelaNutricionalServlet;
+package io.github.nutria.nutria.servlet.receitaIngredienteServlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,15 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "TabelaNutricional", urlPatterns = {"/tabela_nutricional", "/tabela_nutricional/inserir"})
-public class TabelaNutricionalServlet extends HttpServlet {
+@WebServlet("/receitasIngredientes/deletar")
+public class ReceitaIngredienteDeleteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
 }

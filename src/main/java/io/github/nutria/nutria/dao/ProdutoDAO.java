@@ -2,7 +2,10 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IProdutoDAO;
-import io.github.nutria.nutria.exceptions.*;
+import io.github.nutria.nutria.exceptions.DataAccessException;
+import io.github.nutria.nutria.exceptions.InvalidNumberException;
+import io.github.nutria.nutria.exceptions.RequiredFieldException;
+import io.github.nutria.nutria.exceptions.ValidationException;
 import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
@@ -11,10 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe de acesso a dados (DAO) para a entidade Produto.
- * Implementa as operações CRUD (Create, Read, Update, Delete) para a tabela "produtos" no banco de dados.
- * @author marianamarrao
- * @version 1.1
+ * Classe de acesso a dados (DAO) para a entidade {@link Produto}.
+ * <p>
+ * Implementa as operações de CRUD e métodos personalizados.
+ *
+ * @see GenericDAO
+ * @see IProdutoDAO
+ * @see Produto
+ * @author Mariana Marrão
+ * @version 1.0
  */
 public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
 
@@ -31,7 +39,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
             ps.setString(1, produto.getNome());
-            ps.setLong(2, produto.getUsuario().getId());
+            ps.setLong(2, produto.getIdUsuario());
 
             return (ps.executeUpdate() > 0);
         } catch (SQLException e) {
@@ -73,6 +81,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 Produto produto = new Produto();
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
+                produto.setIdUsuario(rs.getLong("id_usuario"));
                 produtosArrayList.add(produto);
             }
         } catch (SQLException e) {
@@ -233,7 +242,11 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     /**
-     * Validação de campos obrigatórios do produto
+     * Valida campos obrigatórios de um {@link Produto}.
+     *
+     * @param produto o objeto {@link Produto} que será validado.
+     * @throws ValidationException se o objeto for {@code null}.
+     * @throws RequiredFieldException se determinado campo obrigatório for {@code null} ou vazio.
      */
     private void validateProduto(Produto produto) {
         if (produto == null) {
@@ -242,7 +255,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         if (produto.getNome() == null || produto.getNome().isBlank()) {
             throw new RequiredFieldException("nome");
         }
-        if (produto.getUsuario() == null || produto.getUsuario().getId() == null) {
+        if (produto.getIdUsuario() == null || produto.getIdUsuario() == null) {
             throw new RequiredFieldException("usuario");
         }
     }

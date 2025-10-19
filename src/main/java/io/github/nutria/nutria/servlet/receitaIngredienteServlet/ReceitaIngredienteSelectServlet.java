@@ -1,9 +1,9 @@
-package io.github.nutria.nutria.servlet.usuarioServlet;
+package io.github.nutria.nutria.servlet.receitaIngredienteServlet;
 
-import io.github.nutria.nutria.dao.AdminDAO;
+import io.github.nutria.nutria.dao.ReceitaIngredienteDAO;
 import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
-import io.github.nutria.nutria.model.Admin;
+import io.github.nutria.nutria.model.ReceitaIngrediente;
 import io.github.nutria.nutria.model.Usuario;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -15,13 +15,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/usuario/listar")
-public class UsuarioSelectServlet extends HttpServlet {
-    private static final int TOTAL_USUARIOS_PAGE = 4;
+@WebServlet("/receitasIngredientes/listar")
+public class ReceitaIngredienteSelectServlet extends HttpServlet {
+    private static final int TOTAL_RECEITA_INGREDIENTE_PAGE = 4;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        ReceitaIngredienteDAO receitaIngredienteDAO = new ReceitaIngredienteDAO();
         int currentPage = 1;
 
         String pageParam = req.getParameter("page");
@@ -34,8 +34,8 @@ public class UsuarioSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalUsuarios = usuarioDAO.countAll();
-            int totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGE);
+            int totalReceitasIngrediente = receitaIngredienteDAO.countAll();
+            int totalPages = (int) Math.ceil((double) totalReceitasIngrediente / TOTAL_RECEITA_INGREDIENTE_PAGE);
 
             if (currentPage < 1) {
                 currentPage = 1;
@@ -43,14 +43,14 @@ public class UsuarioSelectServlet extends HttpServlet {
                 currentPage = totalPages;
             }
 
-            List<Usuario> usuarioList = usuarioDAO.findAll(currentPage);
+            List<ReceitaIngrediente> receitaIngredienteList = receitaIngredienteDAO.findAll(currentPage);
 
-            req.setAttribute("usuarioList", usuarioList);
-            req.setAttribute("totalUsuarios", totalUsuarios);
+            req.setAttribute("receitaIngredienteList", receitaIngredienteList);
+            req.setAttribute("totalReceitasIngrediente", totalReceitasIngrediente);
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("currentPage", currentPage);
 
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/usuario/usuarios.jsp");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/receitaIngrediente/receitasIngrediente.jsp");
             dispatcher.forward(req, resp);
 
         } catch (DataAccessException e) {

@@ -50,23 +50,6 @@ public class TabelaNutricional {
         this.potassioMg = potassioMg;
     }
 
-    // Construtor reduzido
-    public TabelaNutricional(Long idIngrediente, double valorEnergeticoKcal, double carboidratosG, double acucaresTotaisG,
-                             double acucaresAdicionadosG, double proteinasG, double gordurasTotaisG, double gordurasSaturadasG,
-                             double gordurasTransG, double fibraAlimentarG, double sodioMg) {
-        this.idIngrediente = idIngrediente;
-        this.valorEnergeticoKcal = valorEnergeticoKcal;
-        this.carboidratosG = carboidratosG;
-        this.acucaresTotaisG = acucaresTotaisG;
-        this.acucaresAdicionadosG = acucaresAdicionadosG;
-        this.proteinasG = proteinasG;
-        this.gordurasTotaisG = gordurasTotaisG;
-        this.gordurasSaturadasG = gordurasSaturadasG;
-        this.gordurasTransG = gordurasTransG;
-        this.fibraAlimentarG = fibraAlimentarG;
-        this.sodioMg = sodioMg;
-    }
-
     // Getters e Setters
     public Long getIdIngrediente() {
         return idIngrediente;

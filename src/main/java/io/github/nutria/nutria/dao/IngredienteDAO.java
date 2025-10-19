@@ -2,7 +2,10 @@ package io.github.nutria.nutria.dao;
 
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IIngredienteDAO;
-import io.github.nutria.nutria.exceptions.*;
+import io.github.nutria.nutria.exceptions.DataAccessException;
+import io.github.nutria.nutria.exceptions.InvalidNumberException;
+import io.github.nutria.nutria.exceptions.RequiredFieldException;
+import io.github.nutria.nutria.exceptions.ValidationException;
 import io.github.nutria.nutria.model.Ingrediente;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
@@ -11,10 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe de acesso a dados (DAO) para a entidade Receita.
- * Implementa as operações CRUD (Create, Read, Update, Delete) para a tabela "Ingrediente" no banco de dados.
- * @author marianamarrao
- * @version 1.1
+ * Classe de acesso a dados (DAO) para a entidade {@link Ingrediente}.
+ * <p>
+ * Implementa as operações de CRUD e métodos personalizados.
+ *
+ * @see GenericDAO
+ * @see IIngredienteDAO
+ * @see Ingrediente
+ * @author Mariana Marrão
+ * @version 1.0
  */
 public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredienteDAO {
 
@@ -227,9 +235,52 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         return ingredientes;
     }
 
+    public Ingrediente findById(Long id){
+        String sql = "SELECT * FROM ingrediente WHERE id = ?";
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        Ingrediente ingrediente = null;
+
+        if (id == null || id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            rs=  ps.executeQuery();
+            if(rs.next()){
+                ingrediente = new Ingrediente();
+                ingrediente.setId(rs.getLong("id"));
+                ingrediente.setNome(rs.getString("nome"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar o ingrediente: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar o ingrediente com ID: " + id, e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return ingrediente;
+    }
+
     /**
-     * Validação de campos obrigatórios do ingrediente.
-     * @param ingrediente objeto Ingrediente a ser validado.
+     * Valida campos obrigatórios de um {@link Ingrediente}.
+     *
+     * @param ingrediente o objeto {@link Ingrediente} que será validado.
+     * @throws ValidationException se o objeto for {@code null}.
+     * @throws RequiredFieldException se o nome do {@link Ingrediente} for {@code null} ou vazio.
      */
     private void validateIngrediente(Ingrediente ingrediente) {
         if (ingrediente == null) {

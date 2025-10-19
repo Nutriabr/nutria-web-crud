@@ -2,7 +2,6 @@ package io.github.nutria.nutria.dao.interfaces;
 
 import io.github.nutria.nutria.exceptions.DataAccessException;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -18,14 +17,12 @@ public interface GenericDAO<T, ID> {
     /**
      * Insere um novo objeto {@link T}.
      *
-     * @param entity o objeto a ser inserido.
+     * @param entity o objeto que será inserido.
      * @return {@code true} se for inserido com sucesso; {@code false} caso contrário.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      * @author Mariana Marrão
      */
     boolean insert(T entity);
-
-    boolean update(T entity);
 
     /**
      * Lista todos os registros de {@link T}.
@@ -38,14 +35,24 @@ public interface GenericDAO<T, ID> {
     List<T> findAll(int page);
 
     /**
-     * Deleta um objeto {@link T} pelo ID.
+     * Atualiza os valores de um objeto {@link T}.
      *
-     * @param id o ID do objeto que será deletado.
-     * @return {@code true} se deletar o objeto; {@code false} caso contrário.
+     * @param entity o objeto que será atualizado.
+     * @return {@code true} se for atualizado com sucesso; {@code false} caso contrário.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      * @author Luis Henrique
      */
-    boolean deleteById(Long id) throws SQLException;
+    boolean update(T entity);
+
+    /**
+     * Deleta um objeto {@link T} pelo ID.
+     *
+     * @param id o ID do objeto que será deletado.
+     * @return {@code true} se for deletado com sucesso; {@code false} caso contrário.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     * @author Luis Henrique
+     */
+    boolean deleteById(Long id);
 
     /**
      * Conta a quantidade total de registros de {@link T}.

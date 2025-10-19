@@ -12,6 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Classe de acesso a dados (DAO) para a entidade {@link TabelaNutricional}.
+ * <p>
+ * Implementa as operações de CRUD e métodos personalizados.
+ *
+ * @see GenericDAO
+ * @see ITabelaNutricionalDAO
+ * @see TabelaNutricional
+ * @see FiltroNutricional
+ * @author Giovanna Santos
+ * @version 1.0
+ */
 public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>, ITabelaNutricionalDAO {
 
     /**
@@ -99,10 +111,10 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
     @Override
     public boolean update(TabelaNutricional tabelaNutricional) {
-        String sql = "UPDATE tabela_nutricional SET valorEnergeticoKcal = ?, carboidratosG = ?, " +
-                "acucaresTotaisG = ?, acucaresAdicionadosG = ?, proteinasG = ?, gordurasTotaisG = ?, gordurasSaturadasG = ?, " +
-                "gorduras_trans_g = ?, fibraAlimentarG = ?, sodioMg = ?, colesterolMg = ?, vitaminaAMcg = ?, vitaminaCMg = ?, vitaminaDMcg = ?, " +
-                "calcioMg = ?, ferroMg = ?, potassioMg = ? WHERE id_ingrediente = ?";
+        String sql = "UPDATE tabela_nutricional SET valor_energetico_kcal = ?, carboidratos_g = ?, " +
+                "acucares_totais_g = ?, acucares_adicionados_g = ?, proteinas_g = ?, gorduras_totais_g = ?, gorduras_saturadas_g = ?, " +
+                "gorduras_trans_g = ?, fibra_alimentar_g = ?, sodio_mg = ?, colesterol_mg = ?, vitamina_a_mcg = ?, vitamina_c_mg = ?, vitamina_d_mcg = ?, " +
+                "calcio_mg = ?, ferro_mg = ?, potassio_mg = ? WHERE id_ingrediente = ?";
 
         boolean result;
         PreparedStatement ps = null;
@@ -158,7 +170,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     }
 
     @Override
-    public boolean deleteById(Long id) throws SQLException {
+    public boolean deleteById(Long id) {
         String sql = "DELETE FROM tabela_nutricional WHERE id = ?";
 
         boolean result;
@@ -208,7 +220,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             if (rs.next()) {
                 tabelaNutricional = new TabelaNutricional(
                         rs.getLong("id_ingrediente"),
-                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("valor_energetico_kcal"),
                         rs.getDouble("carboidratos_g"),
                         rs.getDouble("acucares_totais_g"),
                         rs.getDouble("acucares_adicionados_g"),
@@ -249,7 +261,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM tabela_nutricional LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM tabela_nutricional ORDER BY id_ingrediente LIMIT ? OFFSET ? ";
 
         List<TabelaNutricional> tabelaNutricionalArrayList = new ArrayList<TabelaNutricional>();
 
@@ -269,7 +281,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             while (rs.next()) {
                 TabelaNutricional tabelaNutricional = new TabelaNutricional(
                         rs.getLong("id_ingrediente"),
-                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("valor_energetico_kcal"),
                         rs.getDouble("carboidratos_g"),
                         rs.getDouble("acucares_totais_g"),
                         rs.getDouble("acucares_adicionados_g"),
@@ -381,6 +393,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TabelaNutricional> filterBy(String nomeFiltro, int page) {
         int limit = 4;
@@ -422,7 +437,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             while (rs.next()) {
                 TabelaNutricional tabelaNutricional = new TabelaNutricional(
                         rs.getLong("id_ingrediente"),
-                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("valor_energetico_kcal"),
                         rs.getDouble("carboidratos_g"),
                         rs.getDouble("acucares_totais_g"),
                         rs.getDouble("acucares_adicionados_g"),
@@ -460,6 +475,9 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         return tabelaNutricionalArrayList;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TabelaNutricional> findByNutrientRange(String type, String column, double minValue, double maxValue, int page) {
         int limit = 4;
@@ -509,7 +527,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
             while (rs.next()) {
                 tabelaNutricional = new TabelaNutricional(
                         rs.getLong("id_ingrediente"),
-                        rs.getDouble("valor_energetivo_kcal"),
+                        rs.getDouble("valor_energetico_kcal"),
                         rs.getDouble("carboidratos_g"),
                         rs.getDouble("acucares_totais_g"),
                         rs.getDouble("acucares_adicionados_g"),

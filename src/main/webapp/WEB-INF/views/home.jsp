@@ -50,7 +50,7 @@
                 </div>
                 <span class="value"><%= produtoDAO.countAll()%></span>
                 <div class="acess">
-                    <a href="#">Acessar</a>
+                    <a href="${pageContext.request.contextPath}/produto/listar">Acessar</a>
                     <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
                 </div>
             </div>
@@ -86,7 +86,7 @@
                 </div>
                 <span class="value"><%= receitaDAO.countAll()%></span>
                 <div class="acess">
-                    <a href="#">Acessar</a>
+                    <a href="${pageContext.request.contextPath}/receita/listar">Acessar</a>
                     <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
                 </div>
             </div>
@@ -98,8 +98,10 @@
                 </div>
                 <span class="value"><%= receitaIngredienteDAO.countAll()%></span>
                 <div class="acess">
-                    <a href="#">Acessar</a>
-                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
+                    <a href="${pageContext.request.contextPath}/receitasIngredientes/listar">Acessar</a>
+                    <a href="${pageContext.request.contextPath}/receitasIngredientes/listar">
+                        <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
+                    </a>
                 </div>
             </div>
 

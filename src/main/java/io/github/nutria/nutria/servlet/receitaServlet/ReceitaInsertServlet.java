@@ -33,7 +33,7 @@ public class ReceitaInsertServlet extends HttpServlet {
 
 
         porcao = req.getParameter("porcao");
-        idProdutoStr = req.getParameter("idProduto");
+        idProdutoStr = req.getParameter("id-produto");
         try {
             idProduto = Long.parseLong(idProdutoStr);
         } catch (NumberFormatException e) {
@@ -42,9 +42,7 @@ public class ReceitaInsertServlet extends HttpServlet {
             return;
         }
 
-        produto = new Produto();
-        produto.setId(idProduto);
-        receita = new Receita(porcao, produto);
+        receita = new Receita(porcao, idProduto);
 
 
         try {
