@@ -94,9 +94,23 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
             result = (ps.executeUpdate() > 0);
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao salvar tabela nutricional");
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao salvar tabela nutricional", e);
+            String message = "";
+            if ("23503".equals(e.getSQLState())) {
+                System.err.println("[DAO FOREIGN KEY VIOLATION] O ID do ingrediente informado não existe no banco de dados");
+                e.printStackTrace(System.err);
+                message = "O ID do ingrediente informado não existe!";
+            }
+            else if ("23505".equals(e.getSQLState())) {
+                System.err.println("[DAO DUPLICATE KEY] O ID do ingrediente informado já está registrado no banco de dados");
+                e.printStackTrace(System.err);
+                message = "O ID do ingrediente informado já está registrado!";
+            }
+            else {
+                System.err.println("[DAO ERROR] Erro ao salvar tabela nutricional");
+                e.printStackTrace(System.err);
+                message = "Erro ao salvar tabela nutricional!" + e;
+            }
+            throw new DataAccessException(message);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
