@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
-    --primary-color: #ff6600;
-    --success-color: #00a651;
-    --success-color-hover: #008f45;
-    --text-primary: #2D3748;
+    --primary-color: #EE7026;
+    --secondary-color: #00a651;
+    --secondary-hover-color: #008f45;
+    --text-primary: #2C3036;
     --text-secondary: #718096;
     --text-light: #FFFFFF;
 
@@ -84,13 +84,13 @@ body {
 .card a {
     margin-top: auto;
     text-decoration: none;
-    color: var(--success-color);
+    color: var(--secondary-color);
     font-weight: 500;
     transition: color 0.2s;
 }
 
 .card a:hover {
-    color: var(--success-color-hover);
+    color: var(--secondary-hover-color);
 }
 
 .info {
