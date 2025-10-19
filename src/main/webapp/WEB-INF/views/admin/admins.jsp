@@ -106,7 +106,7 @@
                 <span>Página <%= currentPage %> de <%= totalPages %></span>
                 <nav class="pagination">
                     <a href="?page=<%= currentPage - 1 %>" class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
-                        <i class="fa-solid fa-chevron-left"></i>
+                        <i class="fa-solid fa-chevron-left"></i>'
                     </a>
                     <span class="current-page"><%= currentPage %></span>
                     <a href="?page=<%= currentPage + 1 %>" class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
@@ -118,7 +118,7 @@
     </main>
 </div>
 
-<div class="overlay" id="delete-popup-overlay" style="display: none;">
+<div class="overlay" id="delete-popup-overlay" style="display: none">
     <div class="popup-container">
         <h1>Você tem certeza que deseja excluir este registro?</h1>
         <p>Você não poderá recuperar o registro de <strong id="delete-admin-name"></strong> após excluir.</p>
