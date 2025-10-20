@@ -31,7 +31,7 @@ public class ReceitaUpdateServlet extends HttpServlet {
 
             req.setAttribute("id", receita.getId());
             req.setAttribute("porcao", receita.getPorcao());
-            req.setAttribute("id_produto", receita.getIdProduto());
+            req.setAttribute("idProduto", receita.getIdProduto());
 
             req.getRequestDispatcher("/WEB-INF/views/receita/editar.jsp").forward(req, resp);
         } catch (NumberFormatException e) {
@@ -53,20 +53,28 @@ public class ReceitaUpdateServlet extends HttpServlet {
         String viewPath = "/WEB-INF/views/receita/editar.jsp";
 
         try {
-            Long id = Long.valueOf(req.getParameter("id"));
+            String idStr = req.getParameter("id");
+            String idProdutoStr = req.getParameter("idProduto");
+
+            if (idStr == null || idStr.isBlank()) {
+                throw new ValidationException("ID da receita não foi informado.");
+            }
+            if (idProdutoStr == null || idProdutoStr.isBlank()) {
+                throw new ValidationException("ID do produto não foi informado.");
+            }
+
+            Long id = Long.parseLong(idStr);
+            Long idProduto = Long.parseLong(idProdutoStr);
             Receita receita = receitaDAO.findById(id);
 
             receita.setPorcao(req.getParameter("porcao"));
 
-            receita.setIdProduto(Long.valueOf(req.getParameter("id_produto")));
+            receita.setIdProduto(idProduto);
 
             receitaDAO.update(receita);
 
             resp.sendRedirect(req.getContextPath() + "/receita/listar");
 
-        } catch (DuplicateEmailException | DuplicatePhoneException e) {
-            req.setAttribute("errorMessage", "Ops! " + e.getMessage());
-            req.getRequestDispatcher(viewPath).forward(req, resp);
         } catch (EntityNotFoundException e) {
             req.setAttribute("errorMessage", "Receita não encontrado para atualização.");
             req.getRequestDispatcher(viewPath).forward(req, resp);

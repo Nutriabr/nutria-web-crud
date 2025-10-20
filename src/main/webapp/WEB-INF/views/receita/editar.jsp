@@ -10,7 +10,7 @@
 <%
   Object id = request.getAttribute("id");
   String porcao = (String) request.getAttribute("porcao");
-  Object id_produto = request.getAttribute("id_produto");
+  Object idProduto = request.getAttribute("idProduto");
   String contextPath = request.getContextPath();
 %>
 
@@ -43,11 +43,11 @@
       <label for="porcao-input">Porção</label>
       <input class="parameter-input" type="text" id="porcao-input" name="porcao" value="<%= porcao %>">
 
-      <label for="id-produto-input">ID-Produto</label>
-      <input class="parameter-input" type="text" id="id-produto-input" name="id-produto" value="<%= id_produto %>">
+      <label for="idProduto-input">ID-Produto</label>
+      <input class="parameter-input" type="text" id="idProduto-input" name="idProduto" value="<%= idProduto %>">
 
       <div class="submit-content">
-        <a href="<%= contextPath %>/produto/listar" id="btn-cancel">Cancelar</a>
+        <a href="<%= contextPath %>/receita/listar" id="btn-cancel">Cancelar</a>
         <input id="submit-btn" type="submit" value="Salvar Alterações">
       </div>
     </form>
