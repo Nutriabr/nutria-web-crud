@@ -264,7 +264,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto = new Produto();
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
-                produto.setIdUsuario(rs.getLong("id_produto"));
+                produto.setIdUsuario(rs.getLong("id_usuario"));
             }
 
         } catch (SQLException e) {
