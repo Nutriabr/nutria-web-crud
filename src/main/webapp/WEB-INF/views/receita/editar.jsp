@@ -43,8 +43,7 @@
       <label for="porcao-input">Porção</label>
       <input class="parameter-input" type="text" id="porcao-input" name="porcao" value="<%= porcao %>">
 
-      <label for="idProduto-input">ID-Produto</label>
-      <input class="parameter-input" type="text" id="idProduto-input" name="idProduto" value="<%= idProduto %>">
+      <input type="hidden" name="idProduto" value="<%= idProduto %>">
 
       <div class="submit-content">
         <a href="<%= contextPath %>/receita/listar" id="btn-cancel">Cancelar</a>

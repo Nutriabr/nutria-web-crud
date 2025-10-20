@@ -53,22 +53,15 @@ public class ReceitaUpdateServlet extends HttpServlet {
 
         try {
             String idStr = req.getParameter("id");
-            String idProdutoStr = req.getParameter("idProduto");
 
             if (idStr == null || idStr.isBlank()) {
                 throw new ValidationException("ID da receita não foi informado.");
             }
-            if (idProdutoStr == null || idProdutoStr.isBlank()) {
-                throw new ValidationException("ID do produto não foi informado.");
-            }
 
             Long id = Long.parseLong(idStr);
-            Long idProduto = Long.parseLong(idProdutoStr);
             Receita receita = receitaDAO.findById(id);
 
             receita.setPorcao(req.getParameter("porcao"));
-
-            receita.setIdProduto(idProduto);
 
             receitaDAO.update(receita);
 
