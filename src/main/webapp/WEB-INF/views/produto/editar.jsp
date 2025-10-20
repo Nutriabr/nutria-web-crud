@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luismedeiros-ieg
-  Date: 10/10/2025
-  Time: 18:49
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 
 <%
@@ -35,7 +28,7 @@
         </div>
 
 
-        <form class="form-content" name="forms-add-admin" action="<%= contextPath %>/produto/editar" method="post">
+        <form class="form-content" name="forms-add-produto" action="<%= contextPath %>/produto/editar" method="post">
             <h2>Informações do Produto</h2>
 
             <input type="hidden" name="id" value="<%= id %>">

@@ -1,8 +1,8 @@
-package io.github.nutria.nutria.servlet.produtoServlet;
+package io.github.nutria.nutria.servlet.ingredienteServlet;
 
-import io.github.nutria.nutria.dao.ProdutoDAO;
+import io.github.nutria.nutria.dao.IngredienteDAO;
 import io.github.nutria.nutria.exceptions.*;
-import io.github.nutria.nutria.model.Produto;
+import io.github.nutria.nutria.model.Ingrediente;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,12 +11,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/produto/editar")
-public class ProdutoUpdateServlet extends HttpServlet {
+@WebServlet("/ingrediente/editar")
+public class IngredienteUpdateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProdutoDAO produtoDAO = new ProdutoDAO();
+        IngredienteDAO ingredienteDAO = new IngredienteDAO();
         String idStr = req.getParameter("id");
 
         try {
@@ -25,19 +25,18 @@ public class ProdutoUpdateServlet extends HttpServlet {
             }
             Long id = Long.parseLong(idStr);
 
-            Produto produto = produtoDAO.findById(id);
+            Ingrediente ingrediente = ingredienteDAO.findById(id);
 
-            req.setAttribute("id", produto.getId());
-            req.setAttribute("nome", produto.getNome());
-            req.setAttribute("idProduto", produto.getIdUsuario());
+            req.setAttribute("id", ingrediente.getId());
+            req.setAttribute("nome", ingrediente.getNome());
 
-            req.getRequestDispatcher("/WEB-INF/views/produto/editar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/ingrediente/editar.jsp").forward(req, resp);
         } catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");
-            req.getRequestDispatcher("/WEB-INF/views/produto/editar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/ingrediente/editar.jsp").forward(req, resp);
         } catch (InvalidNumberException | EntityNotFoundException e) {
             req.setAttribute("errorMessage", e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/produto/editar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/ingrediente/editar.jsp").forward(req, resp);
         } catch (DataAccessException e) {
             System.err.println("[ERRO INTERNO]: " + e);
             req.setAttribute("errorMessage", "Erro ao acessar os dados. Tente novamente mais tarde.");
@@ -47,28 +46,27 @@ public class ProdutoUpdateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProdutoDAO produtoDAO = new ProdutoDAO();
-        String viewPath = "/WEB-INF/views/produto/editar.jsp";
+        IngredienteDAO ingredienteDAO = new IngredienteDAO();
+        String viewPath = "/WEB-INF/views/ingrediente/editar.jsp";
 
         try {
             String idStr = req.getParameter("id");
-            String idUsuarioStr = req.getParameter("idUsuario");
 
             if (idStr == null || idStr.isBlank()) {
-                throw new ValidationException("ID do produto não foi informado.");
+                throw new ValidationException("ID do ingrediente não foi informado.");
             }
 
             Long id = Long.parseLong(idStr);
-            Produto produto = produtoDAO.findById(id);
+            Ingrediente ingrediente = ingredienteDAO.findById(id);
 
-            produto.setNome(req.getParameter("nome"));
+            ingrediente.setNome(req.getParameter("nome"));
 
-            produtoDAO.update(produto);
+            ingredienteDAO.update(ingrediente);
 
-            resp.sendRedirect(req.getContextPath() + "/produto/listar");
+            resp.sendRedirect(req.getContextPath() + "/ingrediente/listar");
 
         } catch (EntityNotFoundException e) {
-            req.setAttribute("errorMessage", "Produto não encontrado para atualização.");
+            req.setAttribute("errorMessage", "Ingrediente não encontrado para atualização.");
             req.getRequestDispatcher(viewPath).forward(req, resp);
         } catch (Exception e) {
             req.setAttribute("errorMessage", "Ocorreu um erro inesperado: " + e.getMessage());
