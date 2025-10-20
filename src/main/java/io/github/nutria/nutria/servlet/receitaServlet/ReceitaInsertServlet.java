@@ -27,7 +27,6 @@ public class ReceitaInsertServlet extends HttpServlet {
         String idProdutoStr;
         Long idProduto;
         boolean success;
-        Produto produto;
         Receita receita;
         ReceitaDAO receitaDAO = new ReceitaDAO();
 

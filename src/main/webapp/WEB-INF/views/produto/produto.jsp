@@ -53,7 +53,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="search" placeholder="Buscar">
           </div>
-          <a href="${pageContext.request.contextPath}/receita/adicionar" class="btn btn-primary">
+          <a href="${pageContext.request.contextPath}/produto/adicionar" class="btn btn-primary">
             <i class="fa-solid fa-plus"></i>
             Adicionar novo produto
           </a>
