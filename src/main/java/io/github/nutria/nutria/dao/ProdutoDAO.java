@@ -7,6 +7,7 @@ import io.github.nutria.nutria.exceptions.InvalidNumberException;
 import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.exceptions.ValidationException;
 import io.github.nutria.nutria.model.Produto;
+import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 import java.sql.*;
@@ -239,6 +240,47 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         }
 
         return produtos;
+    }
+
+    public Produto findById(Long id){
+        String sql = "SELECT * FROM produto WHERE id = ?";
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        Produto produto = null;
+
+        if (id == null || id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            rs=  ps.executeQuery();
+            if(rs.next()){
+                produto = new Produto();
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setIdUsuario(rs.getLong("id_produto"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar o produto: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar a produto com ID: " + id, e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return produto;
     }
 
     /**

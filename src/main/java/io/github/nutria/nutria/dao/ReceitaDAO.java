@@ -305,5 +305,4 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         }
         return receita;
     }
-
 }

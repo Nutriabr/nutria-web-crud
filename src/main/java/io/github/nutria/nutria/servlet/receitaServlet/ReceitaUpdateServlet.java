@@ -3,7 +3,6 @@ package io.github.nutria.nutria.servlet.receitaServlet;
 import io.github.nutria.nutria.dao.ReceitaDAO;
 import io.github.nutria.nutria.exceptions.*;
 import io.github.nutria.nutria.model.Receita;
-import io.github.nutria.nutria.util.PasswordHasher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
