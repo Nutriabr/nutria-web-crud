@@ -32,7 +32,7 @@ public class AdminDeleteServlet extends HttpServlet {
         } catch (InvalidNumberException | EntityNotFoundException e) {
             req.setAttribute("errorMessage", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/admin/editar.jsp").forward(req, resp);
-        } catch (DataAccessException | SQLException e) {
+        } catch (DataAccessException e) {
             System.err.println("[ERRO INTERNO]: " + e);
             req.setAttribute("errorMessage", "Erro ao acessar os dados. Tente novamente mais tarde.");
             req.getRequestDispatcher("/WEB-INF/views/erro.jsp").forward(req, resp);
