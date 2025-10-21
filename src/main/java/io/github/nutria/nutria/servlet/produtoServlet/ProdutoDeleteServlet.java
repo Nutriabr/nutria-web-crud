@@ -21,7 +21,7 @@ public class ProdutoDeleteServlet extends HttpServlet {
         try {
             ProdutoDAO produtoDAO = new ProdutoDAO();
 
-            produtoDAO.deleteById(id);
+            produtoDAO.deletarPorId(id);
 
             resp.sendRedirect(req.getContextPath() + "/produto/listar");
         }  catch (NumberFormatException e) {

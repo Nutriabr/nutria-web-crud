@@ -77,7 +77,7 @@ public class AdminUpdateServlet extends HttpServlet {
                 admin.setSenha(newHash);
             }
 
-            adminDAO.update(admin);
+            adminDAO.alterar(admin);
 
             resp.sendRedirect(req.getContextPath() + "/admin/listar");
 

@@ -32,7 +32,7 @@ ProdutoSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalProdutos = produtoDAO.countAll();
+            int totalProdutos = produtoDAO.contarTodos();
             int totalPages = (int) Math.ceil((double) totalProdutos / TOTAL_PRODUTO_PAGE);
             if (totalPages == 0) totalPages = 1;
             if(currentPage < 1){
@@ -40,7 +40,7 @@ ProdutoSelectServlet extends HttpServlet {
             } else if (currentPage > totalPages && totalPages > 0) {
                 currentPage = totalPages;
             }
-            List<Produto> produtoList = produtoDAO.findAll(currentPage);
+            List<Produto> produtoList = produtoDAO.buscarTodos(currentPage);
             req.setAttribute("totalProdutos",totalProdutos);
             req.setAttribute("produtosList", produtoList);
             req.setAttribute("currentPage", currentPage);

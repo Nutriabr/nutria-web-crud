@@ -32,7 +32,7 @@ public class AdminSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalAdmins = adminDAO.countAll();
+            int totalAdmins = adminDAO.contarTodos();
             int totalPages = (int) Math.ceil((double) totalAdmins / TOTAL_ADMINS_PAGE);
 
             if (currentPage < 1) {
@@ -41,7 +41,7 @@ public class AdminSelectServlet extends HttpServlet {
                 currentPage = totalPages;
             }
 
-            List<Admin> adminList = adminDAO.findAll(currentPage);
+            List<Admin> adminList = adminDAO.buscarTodos(currentPage);
 
             req.setAttribute("adminList", adminList);
             req.setAttribute("totalAdmins", totalAdmins);

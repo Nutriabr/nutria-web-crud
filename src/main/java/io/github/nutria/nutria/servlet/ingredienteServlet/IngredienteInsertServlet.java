@@ -34,7 +34,7 @@ public class IngredienteInsertServlet extends HttpServlet {
 
 
         try {
-            success = ingredienteDAO.insert(ingrediente);
+            success = ingredienteDAO.inserir(ingrediente);
             if (!success) throw new DataAccessException("Erro ao inserir ingrediente no banco de dados.");
 
             req.getSession().setAttribute("message", "Ingrediente inserido com sucesso!");

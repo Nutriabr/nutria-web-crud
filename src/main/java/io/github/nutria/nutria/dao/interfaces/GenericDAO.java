@@ -22,7 +22,7 @@ public interface GenericDAO<T, ID> {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      * @author Mariana Marrão
      */
-    boolean insert(T entity);
+    boolean inserir(T entity);
 
     /**
      * Lista todos os registros de {@link T}.
@@ -32,7 +32,7 @@ public interface GenericDAO<T, ID> {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      * @author Mariana Marrão
      */
-    List<T> findAll(int page);
+    List<T> buscarTodos(int page);
 
     /**
      * Atualiza os valores de um objeto {@link T}.
@@ -42,7 +42,7 @@ public interface GenericDAO<T, ID> {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      * @author Luis Henrique
      */
-    boolean update(T entity);
+    boolean alterar(T entity);
 
     /**
      * Deleta um objeto {@link T} pelo ID.
@@ -52,7 +52,7 @@ public interface GenericDAO<T, ID> {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      * @author Luis Henrique
      */
-    boolean deleteById(Long id);
+    boolean deletarPorId(Long id);
 
     /**
      * Conta a quantidade total de registros de {@link T}.
@@ -61,5 +61,5 @@ public interface GenericDAO<T, ID> {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      * @author Enzo Mota
      */
-    int countAll();
+    int contarTodos();
 }

@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/receita/excluir")
 public class ReceitaDeleteServlet extends HttpServlet {
@@ -23,7 +22,7 @@ public class ReceitaDeleteServlet extends HttpServlet {
         try {
             ReceitaDAO receitaDAO = new ReceitaDAO();
 
-            receitaDAO.deleteById(id);
+            receitaDAO.deletarPorId(id);
 
             resp.sendRedirect(req.getContextPath() + "/receita/listar");
         }  catch (NumberFormatException e) {

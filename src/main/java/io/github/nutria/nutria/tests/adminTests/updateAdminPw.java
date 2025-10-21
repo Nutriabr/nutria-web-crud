@@ -2,10 +2,7 @@ package io.github.nutria.nutria.tests.adminTests;
 
 import io.github.nutria.nutria.dao.AdminDAO;
 import io.github.nutria.nutria.model.Admin;
-import io.github.nutria.nutria.util.PasswordHasher;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,16 +16,16 @@ public class updateAdminPw {
 
         List<Admin> admins = new ArrayList<Admin>();
 
-        for (int i = 0; i < dao.countAll(); i++) {
+        for (int i = 0; i < dao.contarTodos(); i++) {
             Admin admin = new Admin(
-                    dao.findAll((i < Math.ceil(dao.countAll()) / 4) ? (i + 1) : i).get(i).getId(),
-                    dao.findAll((i < Math.ceil(dao.countAll()) / 4) ? (i + 1) : i).get(i).getNome(),
-                    dao.findAll((i < Math.ceil(dao.countAll()) / 4) ? (i + 1) : i).get(i).getEmail(),
-                    dao.findAll((i < Math.ceil(dao.countAll()) / 4) ? (i + 1) : i).get(i).getSenha(),
-                    dao.findAll((i < Math.ceil(dao.countAll()) / 4) ? (i + 1) : i).get(i).getTelefone(),
-                    dao.findAll((i < Math.ceil(dao.countAll()) / 4) ? (i + 1) : i).get(i).getNascimento(),
-                    dao.findAll((i < Math.ceil(dao.countAll()) / 4) ? (i + 1) : i).get(i).getCargo(),
-                    dao.findAll((i < Math.ceil(dao.countAll()) / 4) ? (i + 1) : i).get(i).getFoto()
+                    dao.buscarTodos((i < Math.ceil(dao.contarTodos()) / 4) ? (i + 1) : i).get(i).getId(),
+                    dao.buscarTodos((i < Math.ceil(dao.contarTodos()) / 4) ? (i + 1) : i).get(i).getNome(),
+                    dao.buscarTodos((i < Math.ceil(dao.contarTodos()) / 4) ? (i + 1) : i).get(i).getEmail(),
+                    dao.buscarTodos((i < Math.ceil(dao.contarTodos()) / 4) ? (i + 1) : i).get(i).getSenha(),
+                    dao.buscarTodos((i < Math.ceil(dao.contarTodos()) / 4) ? (i + 1) : i).get(i).getTelefone(),
+                    dao.buscarTodos((i < Math.ceil(dao.contarTodos()) / 4) ? (i + 1) : i).get(i).getNascimento(),
+                    dao.buscarTodos((i < Math.ceil(dao.contarTodos()) / 4) ? (i + 1) : i).get(i).getCargo(),
+                    dao.buscarTodos((i < Math.ceil(dao.contarTodos()) / 4) ? (i + 1) : i).get(i).getFoto()
             );
             admins.add(admin);
         }
@@ -38,14 +35,14 @@ public class updateAdminPw {
 
 //            System.out.println("Senha antes da atualização: " + admin1.getSenha());
 
-            dao.update(admin);
+            dao.alterar(admin);
 
 //            System.out.println("Senha após a atualização: " + dao.findAll(4).get(2).getSenha());
         }
 
-        System.out.println(dao.findAll(1));
-        System.out.println(dao.findAll(2));
-        System.out.println(dao.findAll(3));
-        System.out.println(dao.findAll(4));
+        System.out.println(dao.buscarTodos(1));
+        System.out.println(dao.buscarTodos(2));
+        System.out.println(dao.buscarTodos(3));
+        System.out.println(dao.buscarTodos(4));
     }
 }

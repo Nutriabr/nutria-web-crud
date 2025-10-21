@@ -26,7 +26,7 @@ import java.util.Optional;
  */
 public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
-    public boolean insert(Admin admin) {
+    public boolean inserir(Admin admin) {
         String sql = "INSERT INTO admin (nome, email, senha, telefone, nascimento, cargo, foto) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         Connection connect = null;
@@ -115,7 +115,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public boolean update(Admin admin) {
+    public boolean alterar(Admin admin) {
         if (admin.getId() == null || admin.getId() <= 0) {
             throw new ValidationException("ID é obrigatório para atualização");
         }
@@ -171,7 +171,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public List<Admin> findAll(int page) {
+    public List<Admin> buscarTodos(int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
 
@@ -222,7 +222,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deletarPorId(Long id) {
         String sql = "DELETE FROM admin WHERE id = ?";
 
         boolean result = false;
@@ -447,7 +447,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public int countAll() {
+    public int contarTodos() {
         int totalAdmins = 0;
 
         String sql = "SELECT COUNT(*) FROM admin";

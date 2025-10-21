@@ -31,7 +31,7 @@ public class ReceitaSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalReceitas = receitaDAO.countAll();
+            int totalReceitas = receitaDAO.contarTodos();
             int totalPages = (int) Math.ceil((double) totalReceitas / TOTAL_RECEITA_PAGE);
             if (totalPages == 0) totalPages = 1;
             if(currentPage < 1){
@@ -39,7 +39,7 @@ public class ReceitaSelectServlet extends HttpServlet {
             } else if (currentPage > totalPages && totalPages > 0) {
                 currentPage = totalPages;
             }
-            List<Receita> receitasList = receitaDAO.findAll(currentPage);
+            List<Receita> receitasList = receitaDAO.buscarTodos(currentPage);
             req.setAttribute("totalReceitas",totalReceitas);
             req.setAttribute("receitasList", receitasList);
             req.setAttribute("currentPage", currentPage);

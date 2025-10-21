@@ -61,7 +61,7 @@ public class IngredienteUpdateServlet extends HttpServlet {
 
             ingrediente.setNome(req.getParameter("nome"));
 
-            ingredienteDAO.update(ingrediente);
+            ingredienteDAO.alterar(ingrediente);
 
             resp.sendRedirect(req.getContextPath() + "/ingrediente/listar");
 

@@ -21,7 +21,7 @@ public class IngredienteDeleteServlet extends HttpServlet {
         try {
             IngredienteDAO ingredienteDAO = new IngredienteDAO();
 
-            ingredienteDAO.deleteById(id);
+            ingredienteDAO.deletarPorId(id);
 
             resp.sendRedirect(req.getContextPath() + "/ingrediente/listar");
         }  catch (NumberFormatException e) {

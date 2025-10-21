@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/admin/excluir")
 public class AdminDeleteServlet extends HttpServlet {
@@ -23,7 +22,7 @@ public class AdminDeleteServlet extends HttpServlet {
         try {
             AdminDAO adminDAO = new AdminDAO();
 
-            adminDAO.deleteById(id);
+            adminDAO.deletarPorId(id);
 
             resp.sendRedirect(req.getContextPath() + "/admin/listar");
         }  catch (NumberFormatException e) {

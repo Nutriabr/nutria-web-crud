@@ -4,7 +4,6 @@ import io.github.nutria.nutria.dao.ReceitaDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.exceptions.ValidationException;
-import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -45,7 +44,7 @@ public class ReceitaInsertServlet extends HttpServlet {
 
 
         try {
-            success = receitaDAO.insert(receita);
+            success = receitaDAO.inserir(receita);
             if (!success) throw new DataAccessException("Erro ao inserir receita no banco de dados.");
 
             req.getSession().setAttribute("message", "Receita inserida com sucesso!");

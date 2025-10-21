@@ -10,7 +10,7 @@ public class insertUsuario {
         UsuarioDAO UsuarioDaoTest = new UsuarioDAO();
 
         try {
-            if (UsuarioDaoTest.insert(usuario)) {
+            if (UsuarioDaoTest.inserir(usuario)) {
                 System.out.println("Usuario inserido com sucesso!");
             } else {
                 System.out.println("Erro ao inserir usuario!");

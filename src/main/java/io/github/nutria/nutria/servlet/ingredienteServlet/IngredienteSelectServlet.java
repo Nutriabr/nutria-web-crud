@@ -31,7 +31,7 @@ public class IngredienteSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalIngredientes = ingredienteDAO.countAll();
+            int totalIngredientes = ingredienteDAO.contarTodos();
             int totalPages = (int) Math.ceil((double) totalIngredientes / TOTAL_INGREDIENTE_PAGE);
             if (totalPages == 0) totalPages = 1;
             if(currentPage < 1){
@@ -39,7 +39,7 @@ public class IngredienteSelectServlet extends HttpServlet {
             } else if (currentPage > totalPages && totalPages > 0) {
                 currentPage = totalPages;
             }
-            List<Ingrediente> ingredienteList = ingredienteDAO.findAll(currentPage);
+            List<Ingrediente> ingredienteList = ingredienteDAO.buscarTodos(currentPage);
             req.setAttribute("totalIngredientes",totalIngredientes);
             req.setAttribute("ingredientesList", ingredienteList);
             req.setAttribute("currentPage", currentPage);

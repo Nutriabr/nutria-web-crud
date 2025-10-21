@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Date;
 
 @WebServlet("/receita/editar")
 public class ReceitaUpdateServlet extends HttpServlet {
@@ -26,7 +25,7 @@ public class ReceitaUpdateServlet extends HttpServlet {
             }
             Long id = Long.parseLong(idStr);
 
-            Receita receita = receitaDAO.findById(id);
+            Receita receita = receitaDAO.buscarPorId(id);
 
             req.setAttribute("id", receita.getId());
             req.setAttribute("porcao", receita.getPorcao());
@@ -59,11 +58,11 @@ public class ReceitaUpdateServlet extends HttpServlet {
             }
 
             Long id = Long.parseLong(idStr);
-            Receita receita = receitaDAO.findById(id);
+            Receita receita = receitaDAO.buscarPorId(id);
 
             receita.setPorcao(req.getParameter("porcao"));
 
-            receitaDAO.update(receita);
+            receitaDAO.alterar(receita);
 
             resp.sendRedirect(req.getContextPath() + "/receita/listar");
 

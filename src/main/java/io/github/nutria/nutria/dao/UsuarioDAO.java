@@ -264,7 +264,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return usuarios;
     }
 
-    public boolean insert(Usuario usuario) {
+    public boolean inserir(Usuario usuario) {
         String sql = "INSERT INTO usuario (nome, email, senha, telefone, empresa, foto) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -314,7 +314,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     }
 
     @Override
-    public boolean update(Usuario usuario) {
+    public boolean alterar(Usuario usuario) {
         String sql = "UPDATE usuario SET nome = ?, email = ?, telefone = ?, senha = ?, empresa = ?, foto = ? WHERE id = ?";
 
         int result = 0;
@@ -409,7 +409,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     }
 
 
-    public List<Usuario> findAll(int page) {
+    public List<Usuario> buscarTodos(int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
 
@@ -459,7 +459,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     }
 
 
-    public boolean deleteById(Long id) {
+    public boolean deletarPorId(Long id) {
         String sql = "DELETE FROM usuario WHERE id = ?";
 
         boolean result = false;
@@ -494,7 +494,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     }
 
     @Override
-    public int countAll() {
+    public int contarTodos() {
         int totalUsuarios = 0;
 
         String sql = "SELECT COUNT(*) FROM usuario";

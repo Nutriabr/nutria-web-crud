@@ -63,7 +63,7 @@ public class ProdutoUpdateServlet extends HttpServlet {
 
             produto.setNome(req.getParameter("nome"));
 
-            produtoDAO.update(produto);
+            produtoDAO.alterar(produto);
 
             resp.sendRedirect(req.getContextPath() + "/produto/listar");
 

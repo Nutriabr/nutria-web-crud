@@ -28,7 +28,7 @@ import java.util.List;
 public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
 
     @Override
-    public boolean insert(Produto produto) {
+    public boolean inserir(Produto produto) {
         String sql = "INSERT INTO produto (nome, id_usuario) VALUES (?, ?)";
 
         PreparedStatement ps = null;
@@ -58,7 +58,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public List<Produto> findAll(int page) {
+    public List<Produto> buscarTodos(int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
 
@@ -103,7 +103,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public int countAll() {
+    public int contarTodos() {
         int totalProdutos = 0;
         String sql = "SELECT COUNT(*) FROM produto";
 
@@ -137,7 +137,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public boolean update(Produto produto) {
+    public boolean alterar(Produto produto) {
         if (produto.getId() == null || produto.getId() <= 0) {
             throw new ValidationException("ID é obrigatório para atualização");
         }
@@ -172,7 +172,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deletarPorId(Long id) {
         if (id == null || id <= 0) {
             throw new InvalidNumberException("id", "ID deve ser maior que zero");
         }

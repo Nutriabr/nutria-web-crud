@@ -3,7 +3,6 @@ package io.github.nutria.nutria.dao;
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.exceptions.EntityNotFoundException;
 import io.github.nutria.nutria.exceptions.InvalidNumberException;
-import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.model.ReceitaIngrediente;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
@@ -28,7 +27,7 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
         try {
             connect = ConnectionFactory.connect();
 
-            if (receitaDAO.findById(receitaIngrediente.getIdReceita()) == null && ingredienteDAO.findById(receitaIngrediente.getIdIngrediente()) == null) {
+            if (receitaDAO.buscarPorId(receitaIngrediente.getIdReceita()) == null && ingredienteDAO.findById(receitaIngrediente.getIdIngrediente()) == null) {
                 throw new DataAccessException("Erro ao salvar relação Receita e Ingrediente");
             }
 

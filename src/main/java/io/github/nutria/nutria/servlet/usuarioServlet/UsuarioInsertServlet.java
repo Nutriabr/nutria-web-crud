@@ -3,7 +3,6 @@ package io.github.nutria.nutria.servlet.usuarioServlet;
 import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.exceptions.*;
 import io.github.nutria.nutria.model.Usuario;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Date;
 
 @WebServlet(name = "UsuarioInsertServlet", value = "/usuario/adicionar")
 public class UsuarioInsertServlet extends HttpServlet {
@@ -26,7 +24,7 @@ public class UsuarioInsertServlet extends HttpServlet {
         UsuarioDAO dao = new UsuarioDAO();
         Usuario usuario = new Usuario();
 
-        int lastPage = (int) Math.ceil((double) dao.countAll() / 4);
+        int lastPage = (int) Math.ceil((double) dao.contarTodos() / 4);
 
         try {
             usuario.setNome(req.getParameter("name"));
@@ -36,7 +34,7 @@ public class UsuarioInsertServlet extends HttpServlet {
             usuario.setEmpresa(req.getParameter("company"));
             usuario.setFoto(req.getParameter("picture"));
 
-            dao.insert(usuario);
+            dao.inserir(usuario);
 
             resp.sendRedirect(req.getContextPath() + "/usuario/listar?page=" + (lastPage + 1));
         }  catch (DuplicateEmailException dee) {

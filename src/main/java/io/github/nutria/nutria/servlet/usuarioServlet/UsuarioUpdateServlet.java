@@ -34,7 +34,7 @@ public class UsuarioUpdateServlet extends HttpServlet {
             req.setAttribute("empresa", usuario.getEmpresa());
             req.setAttribute("foto", usuario.getFoto());
 
-            usuarioDAO.update(usuario);
+            usuarioDAO.alterar(usuario);
 
             req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
         } catch (NumberFormatException e) {
@@ -54,7 +54,7 @@ public class UsuarioUpdateServlet extends HttpServlet {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         final String viewPath = "/WEB-INF/views/usuario/editar.jsp";
 
-        int lastPage = (int) Math.ceil((double) usuarioDAO.countAll() / 4);
+        int lastPage = (int) Math.ceil((double) usuarioDAO.contarTodos() / 4);
 
         try {
             System.out.println(req.getParameter("id"));
@@ -68,7 +68,7 @@ public class UsuarioUpdateServlet extends HttpServlet {
             usuario.setEmpresa(req.getParameter("company"));
             usuario.setFoto(req.getParameter("picture"));
 
-            usuarioDAO.update(usuario);
+            usuarioDAO.alterar(usuario);
 
             resp.sendRedirect(req.getContextPath() + "/usuario/listar?page=" + (lastPage + 1));
         } catch (DuplicateEmailException dee) {

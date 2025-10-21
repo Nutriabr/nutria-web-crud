@@ -34,7 +34,7 @@ public class ProdutoInsertServlet extends HttpServlet {
 
 
         try {
-            success = produtoDAO.insert(produto);
+            success = produtoDAO.inserir(produto);
             if (!success) throw new DataAccessException("Erro ao inserir produto no banco de dados.");
 
             req.getSession().setAttribute("message", "Produto inserido com sucesso!");

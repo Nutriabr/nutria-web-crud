@@ -46,7 +46,7 @@ public class TabelaNutricionalInsertServlet extends HttpServlet {
             tabelaNutricional.setFerroMg(parseNullableDouble(req, "ferro"));
             tabelaNutricional.setPotassioMg(parseNullableDouble(req, "potassio"));
 
-            tabelaNutricionalDAO.insert(tabelaNutricional);
+            tabelaNutricionalDAO.inserir(tabelaNutricional);
 
             resp.sendRedirect(req.getContextPath() + "/tabela_nutricional/listar");
         } catch (DataAccessException dae) {
