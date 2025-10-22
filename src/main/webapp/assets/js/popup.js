@@ -1,14 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("JS Carregou");
-    const deleteButtons = document.querySelectorAll(".btn-delete");
-    console.log("Botões com a classe btn-delete: ", deleteButtons.length);
     const deletePopupOverlay = document.getElementById("delete-popup-overlay");
     const cancelBtn = document.getElementById("cancel-delete-btn");
     const inputId = document.getElementById("input-id")
     const idForm = document.getElementById("delete-id");
     const deleteForm = document.getElementById("delete-form");
 
-    // const deleteButtons = document.querySelectorAll(".btn-delete");
+    const deleteButtons = document.querySelectorAll(".btn-delete");
 
     deleteButtons.forEach(button => {
         button.addEventListener("click", function () {
