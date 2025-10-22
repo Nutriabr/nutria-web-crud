@@ -18,9 +18,8 @@ public interface IAdminDAO {
      * Busca um registro de {@link Admin} pelo email informado.
      *
      * @param email o endereço de email que será utilizado na busca.
-     * @return um {@link Optional} contendo o {@link Admin} correspondente, ou vazio se não encontrado.
+     * @return um {@link Optional} contendo o {@link Admin} correspondente ao email informado, ou vazio se não encontrado.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     * @author Luis Henrique
      */
     Optional<Admin> findByEmail(String email);
 }
