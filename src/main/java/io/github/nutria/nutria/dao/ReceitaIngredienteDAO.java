@@ -81,6 +81,7 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
 
             while (rs.next()) {
                 ReceitaIngrediente receita = new ReceitaIngrediente(
+                        rs.getLong("id"),
                         rs.getLong("id_receita"),
                         rs.getLong("id_ingrediente"),
                         rs.getDouble("quantidade")
@@ -105,12 +106,12 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
         return receitasIngredienteArrayList;
     }
 
-    public ReceitaIngrediente findById(Long id, Long id2) {
+    public ReceitaIngrediente findById(Long id) {
         if (id <= 0) {
             throw new InvalidNumberException("id", "ID deve ser maior que zero");
         }
 
-        String sql = "SELECT * FROM receita_ingrediente WHERE id_receita = ? and id_ingrediente = ?";
+        String sql = "SELECT * FROM receita_ingrediente WHERE id = ?";
 
         Connection connect = null;
         PreparedStatement ps = null;
@@ -120,11 +121,11 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
-            ps.setLong(2, id2);
             rs = ps.executeQuery();
 
             if (rs.next()) {
                 ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
+                receitaIngrediente.setId(rs.getLong("id"));
                 receitaIngrediente.setIdReceita(rs.getLong("id_receita"));
                 receitaIngrediente.setIdIngrediente(rs.getLong("id_ingrediente"));
                 receitaIngrediente.setQuantidade(rs.getDouble("quantidade"));
@@ -202,8 +203,9 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             rs = psmt.executeQuery();
             while (rs.next()){
                 ReceitaIngrediente receita = new ReceitaIngrediente(
-                        rs.getLong("receita"),
-                        rs.getLong("idIngrediente"),
+                        rs.getLong("id"),
+                        rs.getLong("id_receita"),
+                        rs.getLong("id_ingrediente"),
                         rs.getDouble("quantidade")
                 );
 
@@ -244,8 +246,9 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             rs = psmt.executeQuery();
             while (rs.next()){
                 ReceitaIngrediente receita = new ReceitaIngrediente(
-                        rs.getLong("idReceita"),
-                        rs.getLong("idIngrediente"),
+                        rs.getLong("id"),
+                        rs.getLong("id_receita"),
+                        rs.getLong("id_ingrediente"),
                         rs.getDouble("quantidade")
                 );
 
@@ -287,8 +290,9 @@ public class ReceitaIngredienteDAO /*implements GenericDAO<ReceitaIngrediente, L
             rs = psmt.executeQuery();
             while (rs.next()){
                 ReceitaIngrediente receita = new ReceitaIngrediente(
-                        rs.getLong("idReceita"),
-                        rs.getLong("idIngrediente"),
+                        rs.getLong("id"),
+                        rs.getLong("id_receita"),
+                        rs.getLong("id_ingrediente"),
                         rs.getDouble("quantidade")
                 );
 
