@@ -121,12 +121,12 @@
 <div class="overlay" id="delete-popup-overlay" style="display: none">
     <div class="popup-container">
         <h1>Você tem certeza que deseja excluir este registro?</h1>
-        <p>Você não poderá recuperar o registro de <strong id="delete-admin-name"></strong> após excluir.</p>
+        <p>Você não poderá recuperar o registro de ID <strong id="delete-id"></strong> após excluir.</p>
         <div class="popup-actions">
             <button class="btn btn-secondary" id="cancel-delete-btn">Cancelar</button>
             <form id="delete-form" action="${pageContext.request.contextPath}/admin/excluir" method="post">
-                <input type="hidden" name="id" id="delete-admin-id">
-                <button type="submit" class="btn btn-danger">Excluir</button>
+                <input type="hidden" name="input-id" id="input-id">
+                <input type="submit" class="btn btn-danger" value="Excluir">
             </form>
         </div>
     </div>
