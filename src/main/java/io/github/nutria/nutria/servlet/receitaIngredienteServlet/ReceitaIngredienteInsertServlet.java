@@ -29,6 +29,7 @@ public class ReceitaIngredienteInsertServlet extends HttpServlet {
         int lastPage = (int) Math.ceil((double) receitaIngredienteDAO.countAll() / 4);
 
         try {
+            receitaIngrediente.setIdReceita(Long.parseLong(req.getParameter("id")));
             receitaIngrediente.setIdReceita(Long.parseLong(req.getParameter("idReceita")));
             receitaIngrediente.setIdIngrediente(Long.parseLong(req.getParameter("idIngrediente")));
             receitaIngrediente.setQuantidade(Integer.parseInt(req.getParameter("quantity")));
@@ -40,7 +41,12 @@ public class ReceitaIngredienteInsertServlet extends HttpServlet {
             System.err.println("[ERRO DE CAMPO OBRIGATÓRIO]: " + rfe);
             req.setAttribute("quantidade", req.getParameter("quantity"));
             req.setAttribute("errorMessage", "Ops! " + rfe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/adicionar.jsp").forward(req, resp);
+        } catch (NumberFormatException nfe) {
+            System.err.println("[ERRO DE NÚMERO INCORRETO]: " + nfe);
+            req.setAttribute("quantidade", req.getParameter("quantity"));
+            req.setAttribute("errorMessage", "Ops! " + nfe.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/adicionar.jsp").forward(req, resp);
         } catch (DataAccessException dae) {
             throw new DataAccessException("Erro ao acessar o banco de dados", dae);
         }
