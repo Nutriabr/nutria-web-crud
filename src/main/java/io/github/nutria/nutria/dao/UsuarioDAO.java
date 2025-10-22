@@ -32,7 +32,7 @@ import java.util.Optional;
 public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     private final static Map<String, FiltroUsuario> filtros = FiltroUsuario.filtrosUsuarios();
 
-    public Optional<Usuario> findByPhone(String phone) {
+    public Optional<Usuario> buscarPorTelefone(String phone) {
         String sql = "SELECT * FROM usuario WHERE telefone = ?";
 
         if (phone == null || phone.isBlank()) {
@@ -77,7 +77,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return Optional.empty();
     }
 
-    public boolean findByPhoneUsed(String phone) {
+    public boolean buscarPorTelefoneUsado(String phone) {
         String sql = "SELECT COUNT(*) FROM usuario WHERE telefone = ?";
 
         boolean result = false;
@@ -115,7 +115,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return result;
     }
 
-    public List<Usuario> findAllFilterBy(String nomeFiltro, String valorBuscado, int page) {
+    public List<Usuario> buscarTodosFiltrado(String nomeFiltro, String valorBuscado, int page) {
         Connection connect = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -170,7 +170,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return usuarios;
 }
 
-    public List<Usuario> findByUsername(String nomeFiltro, String valorBuscado, int page) {
+    public List<Usuario> buscarPorNomeDeUsuario(String nomeFiltro, String valorBuscado, int page) {
         Connection connect = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -323,9 +323,9 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             throw new ValidationException("ID é obrigatório para atualização");
         }
 
-        findById(usuario.getId());
+        buscarPorId(usuario.getId());
 
-        Optional<Usuario> existingUser = findByEmail(usuario.getEmail());
+        Optional<Usuario> existingUser = buscarPorEmail(usuario.getEmail());
         if (existingUser.isPresent() && !existingUser.get().getId().equals(usuario.getId())) {
             throw new DuplicateEmailException(usuario.getEmail());
         }
@@ -364,7 +364,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return (result > 0);
     }
 
-    public Optional<Usuario> findByEmail(String email) {
+    public Optional<Usuario> buscarPorEmail(String email) {
         String sql = "SELECT * FROM usuario WHERE email = ?";
 
         if (email == null || email.isBlank()) {
@@ -529,7 +529,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return totalUsuarios;
     }
 
-    public Usuario findById(long id) {
+    public Usuario buscarPorId(long id) {
         if (id <= 0) {
             throw new InvalidNumberException("id", "ID deve ser maior que zero");
         }
@@ -575,7 +575,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         }
     }
 
-    private boolean isValidEmail(String email) {
+    private boolean emailEhValido(String email) {
         return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 
@@ -605,7 +605,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             throw new RequiredFieldException("telefone");
         }
 
-        if (!isValidEmail(usuario.getEmail())) {
+        if (!emailEhValido(usuario.getEmail())) {
             throw new InvalidEmailException(usuario.getEmail());
         }
 
