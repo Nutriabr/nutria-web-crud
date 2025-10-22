@@ -23,7 +23,7 @@ public class UsuarioDeleteServlet extends HttpServlet {
         try {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-            usuarioDAO.deleteById(id);
+            usuarioDAO.deletarPorId(id);
 
             resp.sendRedirect(req.getContextPath() + "/usuario/listar");
         }  catch (NumberFormatException e) {
