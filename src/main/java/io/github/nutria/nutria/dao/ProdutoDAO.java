@@ -7,6 +7,7 @@ import io.github.nutria.nutria.exceptions.InvalidNumberException;
 import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.exceptions.ValidationException;
 import io.github.nutria.nutria.model.Produto;
+import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 import java.sql.*;
@@ -27,7 +28,7 @@ import java.util.List;
 public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
 
     @Override
-    public boolean insert(Produto produto) {
+    public boolean inserir(Produto produto) {
         String sql = "INSERT INTO produto (nome, id_usuario) VALUES (?, ?)";
 
         PreparedStatement ps = null;
@@ -57,7 +58,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public List<Produto> findAll(int page) {
+    public List<Produto> buscarTodos(int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
 
@@ -102,7 +103,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public int countAll() {
+    public int contarTodos() {
         int totalProdutos = 0;
         String sql = "SELECT COUNT(*) FROM produto";
 
@@ -136,7 +137,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public boolean update(Produto produto) {
+    public boolean alterar(Produto produto) {
         if (produto.getId() == null || produto.getId() <= 0) {
             throw new ValidationException("ID é obrigatório para atualização");
         }
@@ -171,7 +172,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deletarPorId(Long id) {
         if (id == null || id <= 0) {
             throw new InvalidNumberException("id", "ID deve ser maior que zero");
         }
@@ -239,6 +240,47 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         }
 
         return produtos;
+    }
+
+    public Produto findById(Long id){
+        String sql = "SELECT * FROM produto WHERE id = ?";
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        Produto produto = null;
+
+        if (id == null || id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            rs=  ps.executeQuery();
+            if(rs.next()){
+                produto = new Produto();
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setIdUsuario(rs.getLong("id_usuario"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar o produto: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar a produto com ID: " + id, e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return produto;
     }
 
     /**

@@ -27,7 +27,7 @@ import java.util.List;
 public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredienteDAO {
 
     @Override
-    public boolean insert(Ingrediente ingrediente) {
+    public boolean inserir(Ingrediente ingrediente) {
         String sql = "INSERT INTO ingrediente (nome) VALUES (?)";
 
         PreparedStatement ps = null;
@@ -56,7 +56,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
     }
 
     @Override
-    public boolean update(Ingrediente ingrediente) {
+    public boolean alterar(Ingrediente ingrediente) {
         if (ingrediente.getId() == null || ingrediente.getId() <= 0) {
             throw new ValidationException("ID é obrigatório para atualização");
         }
@@ -89,7 +89,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deletarPorId(Long id) {
         if (id == null || id <= 0) {
             throw new InvalidNumberException("id", "ID deve ser maior que zero");
         }
@@ -119,7 +119,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
     }
 
     @Override
-    public List<Ingrediente> findAll(int page) {
+    public List<Ingrediente> buscarTodos(int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
 
@@ -162,7 +162,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
     }
 
     @Override
-    public int countAll() {
+    public int contarTodos() {
         int totalIngredientes = 0;
         String sql = "SELECT COUNT(*) FROM ingrediente";
 

@@ -13,6 +13,10 @@ public class Ingrediente {
         this.nome = nome;
     }
 
+    public Ingrediente(String nome){
+        this.nome = nome;
+    }
+
     // Métodos getters
 
     public Long getId() {

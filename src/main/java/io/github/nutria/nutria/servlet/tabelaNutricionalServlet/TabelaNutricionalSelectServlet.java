@@ -32,7 +32,7 @@ public class TabelaNutricionalSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalTabelasNutricionais = tabelaNutricionalDAO.countAll();
+            int totalTabelasNutricionais = tabelaNutricionalDAO.contarTodos();
             int totalPages = (int) Math.ceil((double) totalTabelasNutricionais / TOTAL_TABELAS_NUTRICIONAIS_PAGE);
 
             if (currentPage < 1) {
@@ -41,7 +41,7 @@ public class TabelaNutricionalSelectServlet extends HttpServlet {
                 currentPage = totalPages;
             }
 
-            List<TabelaNutricional> tabelaNutricionalList = tabelaNutricionalDAO.findAll(currentPage);
+            List<TabelaNutricional> tabelaNutricionalList = tabelaNutricionalDAO.buscarTodos(currentPage);
 
             req.setAttribute("tabelaNutricionalList", tabelaNutricionalList);
             req.setAttribute("totalTabelasNutricionais", totalTabelasNutricionais);

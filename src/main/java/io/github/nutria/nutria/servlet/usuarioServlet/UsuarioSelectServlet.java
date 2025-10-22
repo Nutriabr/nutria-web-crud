@@ -1,9 +1,7 @@
 package io.github.nutria.nutria.servlet.usuarioServlet;
 
-import io.github.nutria.nutria.dao.AdminDAO;
 import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
-import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.model.Usuario;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -34,7 +32,7 @@ public class UsuarioSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalUsuarios = usuarioDAO.countAll();
+            int totalUsuarios = usuarioDAO.contarTodos();
             int totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGE);
 
             if (currentPage < 1) {
@@ -43,7 +41,7 @@ public class UsuarioSelectServlet extends HttpServlet {
                 currentPage = totalPages;
             }
 
-            List<Usuario> usuarioList = usuarioDAO.findAll(currentPage);
+            List<Usuario> usuarioList = usuarioDAO.buscarTodos(currentPage);
 
             req.setAttribute("usuarioList", usuarioList);
             req.setAttribute("totalUsuarios", totalUsuarios);

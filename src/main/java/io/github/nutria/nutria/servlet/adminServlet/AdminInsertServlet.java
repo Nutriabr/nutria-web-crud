@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 
 @WebServlet("/admin/adicionar")
 public class AdminInsertServlet extends HttpServlet {
@@ -47,7 +46,7 @@ public class AdminInsertServlet extends HttpServlet {
             admin.setCargo(req.getParameter("role"));
             admin.setFoto(req.getParameter("picture"));
 
-            adminDAO.insert(admin);
+            adminDAO.inserir(admin);
 
             resp.sendRedirect(req.getContextPath() + "/admin/listar");
         } catch (DuplicateEmailException dee) {

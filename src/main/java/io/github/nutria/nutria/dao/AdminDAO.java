@@ -7,6 +7,7 @@ import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.FieldUsedValidator;
 import io.github.nutria.nutria.util.PasswordHasher;
+import io.github.nutria.nutria.util.ValidadorRegex;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.Optional;
  */
 public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
-    public boolean insert(Admin admin) {
+    public boolean inserir(Admin admin) {
         String sql = "INSERT INTO admin (nome, email, senha, telefone, nascimento, cargo, foto) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         Connection connect = null;
@@ -115,7 +116,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public boolean update(Admin admin) {
+    public boolean alterar(Admin admin) {
         if (admin.getId() == null || admin.getId() <= 0) {
             throw new ValidationException("ID é obrigatório para atualização");
         }
@@ -171,7 +172,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public List<Admin> findAll(int page) {
+    public List<Admin> buscarTodos(int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
 
@@ -222,7 +223,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deletarPorId(Long id) {
         String sql = "DELETE FROM admin WHERE id = ?";
 
         boolean result = false;
@@ -447,7 +448,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public int countAll() {
+    public int contarTodos() {
         int totalAdmins = 0;
 
         String sql = "SELECT COUNT(*) FROM admin";
@@ -482,9 +483,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return totalAdmins;
     }
 
-    private boolean isValidEmail(String email) {
-        return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    }
+
 
     /**
      * Valida campos obrigatórios de um {@link Admin}.
@@ -509,9 +508,9 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             throw new RequiredFieldException("email");
         }
 
-        if (!isValidEmail(admin.getEmail())) {
-            throw new InvalidEmailException(admin.getEmail());
-        }
+        if (!ValidadorRegex.ehEmailValido(admin.getEmail())) throw new InvalidEmailException(admin.getEmail());
+
+        if (!ValidadorRegex.ehTelefoneValido(admin.getTelefone())) throw new InvalidPhoneException(admin.getTelefone());
 
         if (admin.getTelefone() == null || admin.getTelefone().isBlank()) {
             throw new RequiredFieldException("telefone");
