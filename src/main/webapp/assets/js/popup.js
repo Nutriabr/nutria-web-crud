@@ -1,19 +1,21 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const deletePopupOverlay = document.getElementById('delete-popup-overlay');
-    const cancelBtn = document.getElementById('cancel-delete-btn');
-    const adminNameElement = document.getElementById('delete-admin-name');
-    const adminIdInput = document.getElementById('delete-admin-id');
-    const deleteForm = document.getElementById('delete-form');
-
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("JS Carregou");
     const deleteButtons = document.querySelectorAll(".btn-delete");
+    console.log("Botões com a classe btn-delete: ", deleteButtons.length);
+    const deletePopupOverlay = document.getElementById("delete-popup-overlay");
+    const cancelBtn = document.getElementById("cancel-delete-btn");
+    const inputId = document.getElementById("input-id")
+    const idForm = document.getElementById("delete-id");
+    const deleteForm = document.getElementById("delete-form");
+
+    // const deleteButtons = document.querySelectorAll(".btn-delete");
 
     deleteButtons.forEach(button => {
         button.addEventListener("click", function () {
-            const adminId = this.getAttribute("data-id");
-            const adminName = this.getAttribute("data-name");
+            const dataId = this.getAttribute("data-id");
 
-            adminIdInput.value = adminId;
-            adminNameElement.textContent = adminName;
+            idForm.textContent = dataId;
+            inputId.value = dataId;
 
             deletePopupOverlay.style.display = "flex";
         });
