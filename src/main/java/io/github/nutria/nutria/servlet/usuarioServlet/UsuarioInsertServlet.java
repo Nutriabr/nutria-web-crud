@@ -21,10 +21,10 @@ public class UsuarioInsertServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UsuarioDAO dao = new UsuarioDAO();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         Usuario usuario = new Usuario();
 
-        int lastPage = (int) Math.ceil((double) dao.contarTodos() / 4);
+        int lastPage = (int) Math.ceil((double) usuarioDAO.contarTodos() / 4);
 
         try {
             usuario.setNome(req.getParameter("name"));
@@ -34,7 +34,7 @@ public class UsuarioInsertServlet extends HttpServlet {
             usuario.setEmpresa(req.getParameter("company"));
             usuario.setFoto(req.getParameter("picture"));
 
-            dao.inserir(usuario);
+            usuarioDAO.inserir(usuario);
 
             resp.sendRedirect(req.getContextPath() + "/usuario/listar?page=" + (lastPage + 1));
         }  catch (DuplicateEmailException dee) {
