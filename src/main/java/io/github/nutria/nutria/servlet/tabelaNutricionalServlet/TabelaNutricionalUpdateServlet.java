@@ -106,7 +106,7 @@ public class TabelaNutricionalUpdateServlet extends HttpServlet {
             tabelaNutricional.setFerroMg(ferro);
             tabelaNutricional.setPotassioMg(potassio);
 
-            tabelaNutricionalDAO.update(tabelaNutricional);
+            tabelaNutricionalDAO.alterar(tabelaNutricional);
 
             resp.sendRedirect(req.getContextPath() + "/tabela_nutricional/listar");
         } catch (EntityNotFoundException e) {

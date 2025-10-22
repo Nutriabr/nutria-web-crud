@@ -22,5 +22,5 @@ public interface IReceitaDAO {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      * @author Mariana Marrão
      */
-    List<Receita> findByPorcao(String porcao);
+    List<Receita> buscarPorPorcao(String porcao);
 }

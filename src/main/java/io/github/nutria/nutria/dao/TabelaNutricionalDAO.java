@@ -51,7 +51,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     }
 
     @Override
-    public boolean insert(TabelaNutricional tabelaNutricional) {
+    public boolean inserir(TabelaNutricional tabelaNutricional) {
         String sql = "INSERT INTO tabela_nutricional (id_ingrediente, valor_energetico_kcal, carboidratos_g, acucares_totais_g, " +
                 "acucares_adicionados_g, proteinas_g, gorduras_totais_g, gorduras_saturadas_g, gorduras_trans_g, fibra_alimentar_g, " +
                 "sodio_mg, colesterol_mg, vitamina_a_mcg, vitamina_c_mg, vitamina_d_mcg, calcio_mg, ferro_mg, potassio_mg) " +
@@ -94,9 +94,23 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
             result = (ps.executeUpdate() > 0);
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao salvar tabela nutricional");
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao salvar tabela nutricional", e);
+            String message = "";
+            if ("23503".equals(e.getSQLState())) {
+                System.err.println("[DAO FOREIGN KEY VIOLATION] O ID do ingrediente informado não existe no banco de dados");
+                e.printStackTrace(System.err);
+                message = "O ID do ingrediente informado não existe!";
+            }
+            else if ("23505".equals(e.getSQLState())) {
+                System.err.println("[DAO DUPLICATE KEY] O ID do ingrediente informado já está registrado no banco de dados");
+                e.printStackTrace(System.err);
+                message = "O ID do ingrediente informado já está registrado!";
+            }
+            else {
+                System.err.println("[DAO ERROR] Erro ao salvar tabela nutricional");
+                e.printStackTrace(System.err);
+                message = "Erro ao salvar tabela nutricional!" + e;
+            }
+            throw new DataAccessException(message);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
@@ -110,7 +124,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     }
 
     @Override
-    public boolean update(TabelaNutricional tabelaNutricional) {
+    public boolean alterar(TabelaNutricional tabelaNutricional) {
         String sql = "UPDATE tabela_nutricional SET valor_energetico_kcal = ?, carboidratos_g = ?, " +
                 "acucares_totais_g = ?, acucares_adicionados_g = ?, proteinas_g = ?, gorduras_totais_g = ?, gorduras_saturadas_g = ?, " +
                 "gorduras_trans_g = ?, fibra_alimentar_g = ?, sodio_mg = ?, colesterol_mg = ?, vitamina_a_mcg = ?, vitamina_c_mg = ?, vitamina_d_mcg = ?, " +
@@ -170,7 +184,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deletarPorId(Long id) {
         String sql = "DELETE FROM tabela_nutricional WHERE id = ?";
 
         boolean result;
@@ -257,7 +271,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     }
 
     @Override
-    public List<TabelaNutricional> findAll(int page) {
+    public List<TabelaNutricional> buscarTodos(int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
 
@@ -320,7 +334,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
     }
 
     @Override
-    public int countAll() {
+    public int contarTodos() {
         int totalTabelas = 0;
 
         String sql = "SELECT COUNT(*) FROM tabela_nutricional";

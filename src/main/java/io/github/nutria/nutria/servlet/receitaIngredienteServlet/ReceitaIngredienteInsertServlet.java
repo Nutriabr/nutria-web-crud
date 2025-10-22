@@ -23,19 +23,22 @@ public class ReceitaIngredienteInsertServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ReceitaIngredienteDAO dao = new ReceitaIngredienteDAO();
+        ReceitaIngredienteDAO receitaIngredienteDAO = new ReceitaIngredienteDAO();
         ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
+
+        int lastPage = (int) Math.ceil((double) receitaIngredienteDAO.countAll() / 4);
 
         try {
             receitaIngrediente.setIdReceita(Long.parseLong(req.getParameter("idReceita")));
             receitaIngrediente.setIdIngrediente(Long.parseLong(req.getParameter("idIngrediente")));
             receitaIngrediente.setQuantidade(Integer.parseInt(req.getParameter("quantity")));
 
-            dao.insert(receitaIngrediente);
+            receitaIngredienteDAO.insert(receitaIngrediente);
 
-            resp.sendRedirect(req.getContextPath() + "/receitaIngrediente/listar");
+            resp.sendRedirect(req.getContextPath() + "/receitaIngrediente/listar?page=" + (lastPage + 1));
         } catch (RequiredFieldException rfe) {
             System.err.println("[ERRO DE CAMPO OBRIGATÓRIO]: " + rfe);
+            req.setAttribute("quantidade", req.getParameter("quantity"));
             req.setAttribute("errorMessage", "Ops! " + rfe.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/admin/adicionar.jsp").forward(req, resp);
         } catch (DataAccessException dae) {

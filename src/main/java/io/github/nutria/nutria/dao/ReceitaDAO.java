@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class ReceitaDAO implements GenericDAO<Receita, Long> {
     @Override
-    public boolean insert(Receita receita) {
+    public boolean inserir(Receita receita) {
         if (receita == null) throw new ValidationException("Receita não pode ser nulo");
         if (receita.getPorcao() == null || receita.getPorcao().isEmpty()) throw new RequiredFieldException("porcao");
         if (receita.getIdProduto() == null || receita.getIdProduto() == null || receita.getIdProduto() <= 0)
@@ -66,7 +66,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
     }
 
     @Override
-    public boolean update(Receita receita){
+    public boolean alterar(Receita receita){
         String sql = "UPDATE receita SET porcao = ?, id_produto = ? WHERE id = ?";
         PreparedStatement psmt = null;
         Connection connect = null;
@@ -103,7 +103,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
     }
 
     @Override
-    public List<Receita> findAll(int page) {
+    public List<Receita> buscarTodos(int page) {
 
         int limite = 4;
         int offset = (page - 1) * limite;
@@ -155,7 +155,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
     }
 
 
-    public int countAll() {
+    public int contarTodos() {
         int totalReceitas = 0;
 
         String sql = "SELECT COUNT(*) FROM receita";
@@ -191,7 +191,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deletarPorId(Long id) {
         String sql = "DELETE FROM receita WHERE id = ?";
 
         PreparedStatement ps = null;
@@ -223,7 +223,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         }
     }
 
-    public List<Receita> findByPorcao(String porcao){
+    public List<Receita> buscarPorPorcao(String porcao){
         String sql =
                 """
                 SELECT * FROM receita
@@ -265,7 +265,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         return receitas;
     }
 
-    public Receita findById(Long id){
+    public Receita buscarPorId(Long id){
         String sql = "SELECT * FROM receita WHERE id = ?";
         PreparedStatement ps = null;
         Connection connect = null;
@@ -305,5 +305,4 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         }
         return receita;
     }
-
 }

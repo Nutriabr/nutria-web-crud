@@ -30,16 +30,16 @@
             <h2>Informações da receita</h2>
             <label for="id-receita-input">ID Receita</label>
             <input class="parameter-input" type="number" id="id-receita-input" name="idReceita"
-                   placeholder="Insira o ID da receita" required>
+                   value="${idReceita}" placeholder="Insira o ID da receita" required>
 
             <label for="id-ingrediente-input">ID Ingrediente</label>
             <input class="parameter-input" type="number" id="id-ingrediente-input"  name="idIngrediente"
-                   placeholder="Insira o ID do Ingrediente" required>
+                   value="${idIngrediente}" placeholder="Insira o ID do Ingrediente" required>
 
 
             <label for="quantity-input">Quantidade</label>
             <input class="parameter-input" type="number" id="quantity-input" name="quantity"
-                   placeholder="Insira a quantidade" required>
+                   value="${quantidade}" placeholder="Insira a quantidade" required>
 
             <div class="submit-content">
                 <a href="${pageContext.request.contextPath}/usuario/listar" id="btn-cancel">Cancelar</a>

@@ -53,7 +53,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="search" placeholder="Buscar">
           </div>
-          <a href="${pageContext.request.contextPath}/receita/adicionar" class="btn btn-primary">
+          <a href="${pageContext.request.contextPath}/produto/adicionar" class="btn btn-primary">
             <i class="fa-solid fa-plus"></i>
             Adicionar novo produto
           </a>
@@ -110,11 +110,11 @@
 <div class="overlay" id="delete-popup-overlay" style="display: none;">
   <div class="popup-container">
     <h1>Você tem certeza que deseja excluir este registro?</h1>
-    <p>Você não poderá recuperar o registro de <strong id="delete-usuario-name"></strong>após excluir.</p>
+    <p>Você não poderá recuperar o registro de <strong id="delete-produto-name"></strong>após excluir.</p>
     <div class="popup-actions">
       <button class="btn btn-secondary" id="cancel-delete-btn">Cancelar</button>
-      <form id="delete-form" action="${pageContext.request.contextPath}/receita/excluir" method="post">
-        <input type="hidden" name="id" id="receita-id">
+      <form id="delete-form" action="${pageContext.request.contextPath}/produto/excluir" method="post">
+        <input type="hidden" name="id" id="produto-id">
         <button type="submit" class="btn btn-danger">Excluir</button>
       </form>
     </div>

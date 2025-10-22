@@ -2,7 +2,6 @@ package io.github.nutria.nutria.servlet.tabelaNutricionalServlet;
 
 import io.github.nutria.nutria.dao.TabelaNutricionalDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
-import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.model.TabelaNutricional;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,21 +22,21 @@ public class TabelaNutricionalInsertServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        TabelaNutricional tabelaNutricional = new TabelaNutricional();
-        TabelaNutricionalDAO tabelaNutricionalDAO = new TabelaNutricionalDAO();
-
         try {
+            TabelaNutricional tabelaNutricional = new TabelaNutricional();
+            TabelaNutricionalDAO tabelaNutricionalDAO = new TabelaNutricionalDAO();
+
             tabelaNutricional.setIdIngrediente(Long.parseLong(req.getParameter("id-ingrediente")));
             tabelaNutricional.setValorEnergeticoKcal(Double.parseDouble(req.getParameter("valor-energetico")));
-            tabelaNutricional.setCarboidratosG(Long.parseLong(req.getParameter("carboidratos")));
+            tabelaNutricional.setCarboidratosG(Double.parseDouble(req.getParameter("carboidratos")));
             tabelaNutricional.setAcucaresTotaisG(Double.parseDouble(req.getParameter("acucares-totais")));
             tabelaNutricional.setAcucaresAdicionadosG(Double.parseDouble(req.getParameter("acucares-adicionados")));
-            tabelaNutricional.setProteinasG(Long.parseLong(req.getParameter("proteinas")));
+            tabelaNutricional.setProteinasG(Double.parseDouble(req.getParameter("proteinas")));
             tabelaNutricional.setGordurasTotaisG(Double.parseDouble(req.getParameter("gorduras-totais")));
-            tabelaNutricional.setGordurasSaturadasG(Long.parseLong(req.getParameter("gorduras-saturadas")));
+            tabelaNutricional.setGordurasSaturadasG(Double.parseDouble(req.getParameter("gorduras-saturadas")));
             tabelaNutricional.setGordurasTransG(Double.parseDouble(req.getParameter("gorduras-trans")));
-            tabelaNutricional.setFibraAlimentarG(Double.parseDouble(req.getParameter("fibras-alimentares")));
-            tabelaNutricional.setSodioMg(Long.parseLong(req.getParameter("sodio")));
+            tabelaNutricional.setFibraAlimentarG(Double.parseDouble(req.getParameter("fibra-alimentar")));
+            tabelaNutricional.setSodioMg(Double.parseDouble(req.getParameter("sodio")));
 
             tabelaNutricional.setColesterolMg(parseNullableDouble(req, "colesterol"));
             tabelaNutricional.setVitaminaAMcg(parseNullableDouble(req, "vitamina-a"));
@@ -47,22 +46,12 @@ public class TabelaNutricionalInsertServlet extends HttpServlet {
             tabelaNutricional.setFerroMg(parseNullableDouble(req, "ferro"));
             tabelaNutricional.setPotassioMg(parseNullableDouble(req, "potassio"));
 
-            tabelaNutricionalDAO.insert(tabelaNutricional);
+            tabelaNutricionalDAO.inserir(tabelaNutricional);
 
             resp.sendRedirect(req.getContextPath() + "/tabela_nutricional/listar");
-        }
-        catch (NumberFormatException nfe) {
-            System.err.println("[ERRO DE FORMATO]: " + nfe);
-            req.setAttribute("errorMessage", "Ops! Algum campo numérico está inválido.");
-            req.getRequestDispatcher("/WEB-INF/views/tabela_nutricional/adicionar.jsp").forward(req, resp);
-        }
-        catch (RequiredFieldException rfe) {
-            System.err.println("[ERRO DE CAMPO OBRIGATÓRIO]: " + rfe);
-            req.setAttribute("errorMessage", "Ops! " + rfe.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/tabela_nutricional/adicionar.jsp").forward(req, resp);
         } catch (DataAccessException dae) {
-            System.err.println("[ERRO INTERNO]: " + dae);
-            req.getRequestDispatcher("/WEB-INF/views/erro.jsp");
+            req.setAttribute("errorMessage", "Ops! " + dae.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/tabela_nutricional/adicionar.jsp").forward(req, resp);
         }
     }
 
