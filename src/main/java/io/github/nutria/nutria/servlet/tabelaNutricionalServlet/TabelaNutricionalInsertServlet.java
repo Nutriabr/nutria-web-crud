@@ -13,11 +13,11 @@ import java.io.IOException;
 
 @WebServlet("/tabela_nutricional/adicionar")
 public class TabelaNutricionalInsertServlet extends HttpServlet {
+    private static final String VIEW_PATH = "/WEB-INF/views/tabela_nutricional/adicionar.jsp";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final String viewPath = "/WEB-INF/views/tabela_nutricional/adicionar.jsp";
-        req.getRequestDispatcher(viewPath).forward(req, resp);
+        req.getRequestDispatcher(VIEW_PATH).forward(req, resp);
     }
 
     @Override
@@ -51,15 +51,13 @@ public class TabelaNutricionalInsertServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/tabela_nutricional/listar");
         } catch (DataAccessException dae) {
             req.setAttribute("errorMessage", "Ops! " + dae.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/tabela_nutricional/adicionar.jsp").forward(req, resp);
+            req.getRequestDispatcher(VIEW_PATH).forward(req, resp);
         }
     }
 
     private Double parseNullableDouble(HttpServletRequest req, String paramName) {
         String value = req.getParameter(paramName);
-        if (value == null || value.isBlank()) {
-            return null;
-        }
-        else return Double.parseDouble(value);
+        if (value == null || value.isBlank()) return null;
+        return Double.parseDouble(value);
     }
 }
