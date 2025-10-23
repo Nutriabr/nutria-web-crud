@@ -36,6 +36,14 @@ public interface GenericDAO<T, ID> {
     List<T> buscarTodos(int page);
 
     /**
+     * Busca um registro de {@link T} pelo ID informado.
+     *
+     * @param id o ID que será utilizado na busca.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    T buscarPorId(Long id);
+
+    /**
      * Atualiza os valores de um objeto {@link T}.
      *
      * @param entity o objeto que será atualizado.
