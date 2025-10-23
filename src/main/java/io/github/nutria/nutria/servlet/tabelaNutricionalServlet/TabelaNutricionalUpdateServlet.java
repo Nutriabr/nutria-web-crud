@@ -27,7 +27,7 @@ public class TabelaNutricionalUpdateServlet extends HttpServlet {
             Long id = Long.parseLong(idStr);
 
             TabelaNutricionalDAO tabelaNutricionalDAO = new TabelaNutricionalDAO();
-            TabelaNutricional tabelaNutricional = tabelaNutricionalDAO.findById(id);
+            TabelaNutricional tabelaNutricional = tabelaNutricionalDAO.buscarPorId(id);
 
             req.setAttribute("id", tabelaNutricional.getIdIngrediente());
             req.setAttribute("valor-energetico", tabelaNutricional.getValorEnergeticoKcal());
@@ -68,7 +68,7 @@ public class TabelaNutricionalUpdateServlet extends HttpServlet {
             Long id = Long.parseLong(req.getParameter("id"));
 
             TabelaNutricionalDAO tabelaNutricionalDAO = new TabelaNutricionalDAO();
-            TabelaNutricional tabelaNutricional = tabelaNutricionalDAO.findById(id);
+            TabelaNutricional tabelaNutricional = tabelaNutricionalDAO.buscarPorId(id);
 
             double valor_energetico = Double.parseDouble(req.getParameter("valor-energetico"));
             double carboidratos = Double.parseDouble(req.getParameter("carboidratos"));
