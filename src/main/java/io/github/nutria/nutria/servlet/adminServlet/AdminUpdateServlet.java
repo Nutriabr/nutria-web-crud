@@ -27,7 +27,7 @@ public class AdminUpdateServlet extends HttpServlet {
             }
             Long id = Long.parseLong(idStr);
 
-            Admin admin = adminDAO.findById(id);
+            Admin admin = adminDAO.buscarPorId(id);
 
             req.setAttribute("id", admin.getId());
             req.setAttribute("nome", admin.getNome());
@@ -58,7 +58,7 @@ public class AdminUpdateServlet extends HttpServlet {
 
         try {
             Long id = Long.valueOf(req.getParameter("id"));
-            Admin admin = adminDAO.findById(id);
+            Admin admin = adminDAO.buscarPorId(id);
 
             admin.setNome(req.getParameter("name"));
             admin.setEmail(req.getParameter("email"));

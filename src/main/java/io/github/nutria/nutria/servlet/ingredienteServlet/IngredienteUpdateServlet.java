@@ -25,7 +25,7 @@ public class IngredienteUpdateServlet extends HttpServlet {
             }
             Long id = Long.parseLong(idStr);
 
-            Ingrediente ingrediente = ingredienteDAO.findById(id);
+            Ingrediente ingrediente = ingredienteDAO.buscarPorId(id);
 
             req.setAttribute("id", ingrediente.getId());
             req.setAttribute("nome", ingrediente.getNome());
@@ -57,7 +57,7 @@ public class IngredienteUpdateServlet extends HttpServlet {
             }
 
             Long id = Long.parseLong(idStr);
-            Ingrediente ingrediente = ingredienteDAO.findById(id);
+            Ingrediente ingrediente = ingredienteDAO.buscarPorId(id);
 
             ingrediente.setNome(req.getParameter("nome"));
 
