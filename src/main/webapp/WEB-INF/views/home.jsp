@@ -51,7 +51,8 @@
                 <span class="value"><%= produtoDAO.contarTodos()%></span>
                 <div class="acess">
                     <a href="${pageContext.request.contextPath}/produto/listar">Acessar</a>
-                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
+                    <a href="${pageContext.request.contextPath}/produto/listar">
+                        <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt=""></a>
                 </div>
             </div>
 
@@ -63,7 +64,7 @@
                 <span class="value"><%= adminDao.contarTodos()%></span>
                 <div class="acess">
                     <a href="${pageContext.request.contextPath}/admin/listar">Acessar</a>
-                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
+                    <a href="${pageContext.request.contextPath}/admin/listar"><img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt=""></a>
                 </div>
             </div>
 
@@ -73,9 +74,10 @@
                     <img src="${pageContext.request.contextPath}/assets/img/IconeIngredientes.png" alt="">
                 </div>
                 <span class="value"><%= ingredienteDAO.contarTodos()%></span>
-                <div class="acess">
+                < class="acess">
                     <a href="${pageContext.request.contextPath}/ingrediente/listar">Acessar</a>
-                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
+                <a href="${pageContext.request.contextPath}/ingrediente/listar">
+                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt=""></a>
                 </div>
             </div>
 
@@ -87,7 +89,8 @@
                 <span class="value"><%= receitaDAO.contarTodos()%></span>
                 <div class="acess">
                     <a href="${pageContext.request.contextPath}/receita/listar">Acessar</a>
-                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
+                    <a href="${pageContext.request.contextPath}/receita/listar">
+                        <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt=""></a>
                 </div>
             </div>
 
@@ -112,8 +115,9 @@
                 </div>
                 <span class="value"><%= tabelaNutricionalDAO.contarTodos()%></span>
                 <div class="acess">
-                    <a href="#">Acessar</a>
-                    <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
+                    <a href="${pageContext.request.contextPath}/tabela_nutricional/listar">Acessar</a>
+                    <a href="${pageContext.request.contextPath}/tabela_nutricional/listar">
+                        <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt=""></a>
                 </div>
             </div>
         </div>
