@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        Optional<Admin> admin = adminDAO.findByEmail(email);
+        Optional<Admin> admin = adminDAO.buscarPorEmail(email);
 
         if (admin.isPresent() && PasswordVerifier.checkPassword(password, admin.get().getSenha())) {
             HttpSession session = req.getSession();
