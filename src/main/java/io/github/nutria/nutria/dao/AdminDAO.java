@@ -7,6 +7,7 @@ import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.FieldUsedValidator;
 import io.github.nutria.nutria.util.PasswordHasher;
+import io.github.nutria.nutria.util.ValidadorRegex;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -482,9 +483,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return totalAdmins;
     }
 
-    private boolean isValidEmail(String email) {
-        return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    }
+
 
     /**
      * Valida campos obrigatórios de um {@link Admin}.
@@ -509,9 +508,9 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             throw new RequiredFieldException("email");
         }
 
-        if (!isValidEmail(admin.getEmail())) {
-            throw new InvalidEmailException(admin.getEmail());
-        }
+        if (!ValidadorRegex.ehEmailValido(admin.getEmail())) throw new InvalidEmailException(admin.getEmail());
+
+        if (!ValidadorRegex.ehTelefoneValido(admin.getTelefone())) throw new InvalidPhoneException(admin.getTelefone());
 
         if (admin.getTelefone() == null || admin.getTelefone().isBlank()) {
             throw new RequiredFieldException("telefone");

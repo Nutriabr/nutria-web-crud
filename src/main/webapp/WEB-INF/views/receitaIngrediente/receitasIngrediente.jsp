@@ -68,6 +68,7 @@
                 <table>
                     <thead>
                     <tr>
+                        <th>ID</th>
                         <th>ID Receita</th>
                         <th>ID Ingrediente</th>
                         <th>quantidade</th>
@@ -77,6 +78,7 @@
                     <tbody>
                     <% for (ReceitaIngrediente receitaIngrediente : receitaIngredienteList) { %>
                     <tr>
+                        <td><%= receitaIngrediente.getId()%></td>
                         <td><%= receitaIngrediente.getIdReceita() %></td>
                         <td><%= receitaIngrediente.getIdIngrediente() %></td>
                         <td><%= receitaIngrediente.getQuantidade() %></td>
@@ -84,7 +86,7 @@
                             <a href="${pageContext.request.contextPath}/receitasIngredientes/editar?idReceita=<%= receitaIngrediente.getIdReceita() %>&idIngrediente=<%= receitaIngrediente.getIdIngrediente() %>" class="btn-action btn-edit">
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
-                            <button class="btn-action btn-delete" data-id="<%%>" data-name="<%%>">
+                            <button class="btn-action btn-delete" data-id="<%= receitaIngrediente.getId()%>">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </td>
@@ -114,7 +116,7 @@
 <div class="overlay" id="delete-popup-overlay" style="display: none;">
     <div class="popup-container">
         <h1>Você tem certeza que deseja excluir este registro?</h1>
-        <p>Você não poderá recuperar o registro de <strong id="delete-receitaIngrediente-name"></strong>após excluir.</p>
+        <p>Você não poderá recuperar o registro de ID <strong id="delete-id"></strong> após excluir.</p>
         <div class="popup-actions">
             <button class="btn btn-secondary" id="cancel-delete-btn">Cancelar</button>
             <form id="delete-form" action="${pageContext.request.contextPath}/receitasIngredientes/excluir" method="post">
