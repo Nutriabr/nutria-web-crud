@@ -24,8 +24,7 @@ import java.util.List;
  * @author Mariana Marrão
  * @version 1.0
  */
-public class ReceitaDAO implements GenericDAO<Receita, Long> {
-    @Override
+public class ReceitaDAO  {
     public boolean inserir(Receita receita) {
         if (receita == null) throw new ValidationException("Receita não pode ser nulo");
         if (receita.getPorcao() == null || receita.getPorcao().isEmpty()) throw new RequiredFieldException("porcao");
@@ -65,7 +64,6 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         }
     }
 
-    @Override
     public boolean alterar(Receita receita){
         String sql = "UPDATE receita SET porcao = ?, id_produto = ? WHERE id = ?";
         PreparedStatement psmt = null;
@@ -101,14 +99,12 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         return (result > 0);
 
     }
-
-    @Override
-    public List<Receita> buscarTodos(int page) {
+    public List<Receita> buscarTodos(int page, String ordem) {
 
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM receita LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM receita ORDER BY " + ordem + " LIMIT " + limite + " OFFSET " + offset;
 
         List<Receita> receitasArrayList = new ArrayList<>();
 
@@ -120,8 +116,6 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             connect = ConnectionFactory.connect();
 
             ps = connect.prepareStatement(sql);
-            ps.setInt(1, limite);
-            ps.setInt(2, offset);
 
             rs = ps.executeQuery();
 
@@ -189,8 +183,6 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
 
         return totalReceitas;
     }
-
-    @Override
     public boolean deletarPorId(Long id) {
         String sql = "DELETE FROM receita WHERE id = ?";
 

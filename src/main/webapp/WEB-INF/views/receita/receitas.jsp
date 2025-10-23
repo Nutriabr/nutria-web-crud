@@ -15,6 +15,7 @@
     int totalReceitas = (int) request.getAttribute("totalReceitas");
     int totalPages = (int) request.getAttribute("totalPages");
     int currentPage = (int) request.getAttribute("currentPage");
+    String ordem = (String) request.getAttribute("ordem");
 %>
 
 <!DOCTYPE html>
@@ -64,9 +65,9 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Porção</th>
-                        <th>ID-Produto</th>
+                        <th><a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage %>&ordem=id">ID</a></th>
+                        <th><a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage %>&ordem=porcao">Porção</a></th>
+                        <th><a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage %>&ordem=id_produto">ID-Produto</a></th>
                         <th>Ações</th>
                     </tr>
                     </thead>
@@ -93,11 +94,13 @@
             <footer class="table-footer">
                 <span>Página <%= currentPage %> de <%= totalPages %></span>
                 <nav class="pagination">
-                    <a href="?page=<%= currentPage - 1 %>" class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
+                    <a href="?page=<%= currentPage - 1 %>&ordem=<%= ordem %>"
+                       class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
                     <span class="current-page"><%= currentPage %></span>
-                    <a href="?page=<%= currentPage + 1 %>" class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
+                    <a href="?page=<%= currentPage + 1 %>&ordem=<%= ordem %>"
+                       class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
                 </nav>
@@ -110,12 +113,12 @@
 <div class="overlay" id="delete-popup-overlay" style="display: none;">
     <div class="popup-container">
         <h1>Você tem certeza que deseja excluir este registro?</h1>
-        <p>Você não poderá recuperar o registro de <strong id="delete-usuario-name"></strong>após excluir.</p>
+        <p>Você não poderá recuperar o registro de ID <strong id="delete-id"></strong> após excluir.</p>
         <div class="popup-actions">
             <button class="btn btn-secondary" id="cancel-delete-btn">Cancelar</button>
             <form id="delete-form" action="${pageContext.request.contextPath}/receita/excluir" method="post">
-                <input type="hidden" name="id" id="receita-id">
-                <button type="submit" class="btn btn-danger">Excluir</button>
+                <input type="hidden" name="input-id" id="input-id">
+                <input type="submit" class="btn btn-danger" value="Excluir">
             </form>
         </div>
     </div>
