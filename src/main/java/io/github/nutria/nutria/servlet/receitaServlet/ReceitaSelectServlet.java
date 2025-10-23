@@ -30,6 +30,11 @@ public class ReceitaSelectServlet extends HttpServlet {
             }
         }
 
+        String ordem = req.getParameter("ordem");
+        if (ordem == null || ordem.isEmpty()){
+            ordem = "id";
+        }
+
         try {
             int totalReceitas = receitaDAO.contarTodos();
             int totalPages = (int) Math.ceil((double) totalReceitas / TOTAL_RECEITA_PAGE);
@@ -39,11 +44,12 @@ public class ReceitaSelectServlet extends HttpServlet {
             } else if (currentPage > totalPages && totalPages > 0) {
                 currentPage = totalPages;
             }
-            List<Receita> receitasList = receitaDAO.buscarTodos(currentPage);
+            List<Receita> receitasList = receitaDAO.buscarTodos(currentPage,ordem);
             req.setAttribute("totalReceitas",totalReceitas);
             req.setAttribute("receitasList", receitasList);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("totalPages",totalPages);
+            req.setAttribute("ordem",ordem);
             req.getRequestDispatcher("/WEB-INF/views/receita/receitas.jsp").forward(req, resp);
 
         } catch (DataAccessException e) {

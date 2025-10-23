@@ -15,6 +15,7 @@
     int totalReceitas = (int) request.getAttribute("totalReceitas");
     int totalPages = (int) request.getAttribute("totalPages");
     int currentPage = (int) request.getAttribute("currentPage");
+    String ordem = (String) request.getAttribute("ordem");
 %>
 
 <!DOCTYPE html>
@@ -64,9 +65,9 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Porção</th>
-                        <th>ID-Produto</th>
+                        <th><a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage %>&ordem=id">ID</a></th>
+                        <th><a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage %>&ordem=porcao">Porção</a></th>
+                        <th><a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage %>&ordem=id_produto">ID-Produto</a></th>
                         <th>Ações</th>
                     </tr>
                     </thead>
@@ -93,11 +94,13 @@
             <footer class="table-footer">
                 <span>Página <%= currentPage %> de <%= totalPages %></span>
                 <nav class="pagination">
-                    <a href="?page=<%= currentPage - 1 %>" class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
+                    <a href="?page=<%= currentPage - 1 %>&ordem=<%= ordem %>"
+                       class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
                     <span class="current-page"><%= currentPage %></span>
-                    <a href="?page=<%= currentPage + 1 %>" class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
+                    <a href="?page=<%= currentPage + 1 %>&ordem=<%= ordem %>"
+                       class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
                 </nav>
