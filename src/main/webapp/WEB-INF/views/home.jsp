@@ -74,7 +74,7 @@
                     <img src="${pageContext.request.contextPath}/assets/img/IconeIngredientes.png" alt="">
                 </div>
                 <span class="value"><%= ingredienteDAO.contarTodos()%></span>
-                < class="acess">
+                <div class="acess">
                     <a href="${pageContext.request.contextPath}/ingrediente/listar">Acessar</a>
                 <a href="${pageContext.request.contextPath}/ingrediente/listar">
                     <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt=""></a>
