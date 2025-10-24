@@ -144,6 +144,47 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
+    public List<Produto> buscarPorNome(String nome) {
+        String sql = """
+                SELECT * FROM produto
+                WHERE LOWER(nome) LIKE LOWER(?)
+                """;
+
+        PreparedStatement psmt = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.connect();
+            psmt = connect.prepareStatement(sql);
+            psmt.setString(1, "%" + nome + "%");
+            rs = psmt.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+                produtos.add(produto);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar produto pelo nome: " + nome);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar produto pelo nome", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (psmt != null) psmt.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+
+        return produtos;
+    }
+
+    @Override
     public boolean alterar(Produto produto) {
         if (produto.getId() == null || produto.getId() <= 0) {
             throw new ValidationException("ID é obrigatório para atualização");
@@ -241,47 +282,6 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         }
 
         return totalProdutos;
-    }
-
-    @Override
-    public List<Produto> buscarPorNome(String nome) {
-        String sql = """
-                SELECT * FROM produto
-                WHERE LOWER(nome) LIKE LOWER(?)
-                """;
-
-        PreparedStatement psmt = null;
-        Connection connect = null;
-        ResultSet rs = null;
-        List<Produto> produtos = new ArrayList<>();
-
-        try {
-            connect = ConnectionFactory.connect();
-            psmt = connect.prepareStatement(sql);
-            psmt.setString(1, "%" + nome + "%");
-            rs = psmt.executeQuery();
-
-            while (rs.next()) {
-                Produto produto = new Produto();
-                produto.setId(rs.getLong("id"));
-                produto.setNome(rs.getString("nome"));
-                produtos.add(produto);
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar produto pelo nome: " + nome);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar produto pelo nome", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (psmt != null) psmt.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-
-        return produtos;
     }
 
     /**

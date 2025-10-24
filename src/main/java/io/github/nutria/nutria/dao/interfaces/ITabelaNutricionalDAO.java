@@ -27,7 +27,7 @@ public interface ITabelaNutricionalDAO {
      * @return uma lista de objetos {@link TabelaNutricional} que atendem aos critérios do filtro.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
-    List<TabelaNutricional> filtrarPor(String nomeFiltro, int page);
+    List<TabelaNutricional> buscarPor(String nomeFiltro, int page);
 
     /**
      * Filtra os registros de {@link TabelaNutricional} por valor mínimo, máximo ou intervalo de quantidade de determinado nutriente.
@@ -40,5 +40,5 @@ public interface ITabelaNutricionalDAO {
      * @return uma lista de objetos {@link TabelaNutricional} que atendem aos critérios do filtro.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
-    List<TabelaNutricional> filtrarPorIntervaloNutriente(String tipo, String coluna, double quantMin, double quantMax, int page);
+    List<TabelaNutricional> buscarPorIntervaloNutriente(String tipo, String coluna, double quantMin, double quantMax, int page);
 }

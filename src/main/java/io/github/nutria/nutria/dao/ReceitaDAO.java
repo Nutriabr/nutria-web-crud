@@ -24,7 +24,8 @@ import java.util.List;
  * @author Mariana Marrão
  * @version 1.0
  */
-public class ReceitaDAO  {
+public class ReceitaDAO implements IReceitaDAO {
+
     public boolean inserir(Receita receita) {
         if (receita == null) throw new ValidationException("Receita não pode ser nulo");
         if (receita.getPorcao() == null || receita.getPorcao().isEmpty()) throw new RequiredFieldException("porcao");
@@ -64,41 +65,6 @@ public class ReceitaDAO  {
         }
     }
 
-    public boolean alterar(Receita receita){
-        String sql = "UPDATE receita SET porcao = ?, id_produto = ? WHERE id = ?";
-        PreparedStatement psmt = null;
-        Connection connect = null;
-
-        if (receita.getId() == null || receita.getId() <= 0) {
-            throw new ValidationException("ID é obrigatório para atualização");
-        }
-
-        int result = 0;
-
-        try {
-            connect = ConnectionFactory.connect();
-            psmt = connect.prepareStatement(sql);
-            psmt.setString(1,receita.getPorcao());
-            psmt.setLong(2,receita.getIdProduto());
-            psmt.setLong(3,receita.getId());
-
-            result = psmt.executeUpdate();
-
-        } catch (SQLException sqle){
-            System.err.println("[DAO ERROR] Erro ao atualizar a receita: " + receita.getId());
-            sqle.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao atualizar receita", sqle);
-        } finally {
-            try {
-                if(connect != null) ConnectionFactory.disconnect(connect);
-                if(psmt != null) psmt.close();
-            } catch (SQLException e){
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return (result > 0);
-
-    }
     public List<Receita> buscarTodos(int page, String ordem) {
 
         int limite = 4;
@@ -148,46 +114,12 @@ public class ReceitaDAO  {
         return receitasArrayList;
     }
 
-
-    public int contarTodos() {
-        int totalReceitas = 0;
-
-        String sql = "SELECT COUNT(*) FROM receita";
-
-        Statement stmt = null;
-        ResultSet rs = null;
-        Connection connect = null;
-
-        try {
-            connect = ConnectionFactory.connect();
-
-            stmt = connect.createStatement();
-            rs = stmt.executeQuery(sql);
-
-            if (rs.next()) {
-                totalReceitas = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao contar as receitas");
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao contar as receitas", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (stmt != null) stmt.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-
-        return totalReceitas;
-    }
-    public boolean deletarPorId(Long id) {
-        String sql = "DELETE FROM receita WHERE id = ?";
-
+    public Receita buscarPorId(Long id){
+        String sql = "SELECT * FROM receita WHERE id = ?";
         PreparedStatement ps = null;
         Connection connect = null;
+        ResultSet rs = null;
+        Receita receita = null;
 
         if (id == null || id <= 0) {
             throw new InvalidNumberException("id", "ID deve ser maior que zero");
@@ -199,20 +131,28 @@ public class ReceitaDAO  {
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
 
-            return ps.executeUpdate() > 0;
+            rs=  ps.executeQuery();
+            if(rs.next()){
+                receita = new Receita();
+                receita.setId(rs.getLong("id"));
+                receita.setPorcao(rs.getString("porcao"));
+                receita.setIdProduto(rs.getLong("id_produto"));
+            }
 
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao deletar a receita: " + id);
+            System.err.println("[DAO ERROR] Erro ao buscar a receita: " + id);
             e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao deletar a receita com ID: " + id, e);
+            throw new DataAccessException("Erro ao buscar a receita com ID: " + id, e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
+                if(rs != null) rs.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
+        return receita;
     }
 
     public List<Receita> buscarPorPorcao(String porcao){
@@ -257,12 +197,47 @@ public class ReceitaDAO  {
         return receitas;
     }
 
-    public Receita buscarPorId(Long id){
-        String sql = "SELECT * FROM receita WHERE id = ?";
+    public boolean alterar(Receita receita){
+        String sql = "UPDATE receita SET porcao = ?, id_produto = ? WHERE id = ?";
+        PreparedStatement psmt = null;
+        Connection connect = null;
+
+        if (receita.getId() == null || receita.getId() <= 0) {
+            throw new ValidationException("ID é obrigatório para atualização");
+        }
+
+        int result = 0;
+
+        try {
+            connect = ConnectionFactory.connect();
+            psmt = connect.prepareStatement(sql);
+            psmt.setString(1,receita.getPorcao());
+            psmt.setLong(2,receita.getIdProduto());
+            psmt.setLong(3,receita.getId());
+
+            result = psmt.executeUpdate();
+
+        } catch (SQLException sqle){
+            System.err.println("[DAO ERROR] Erro ao atualizar a receita: " + receita.getId());
+            sqle.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao atualizar receita", sqle);
+        } finally {
+            try {
+                if(connect != null) ConnectionFactory.disconnect(connect);
+                if(psmt != null) psmt.close();
+            } catch (SQLException e){
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return (result > 0);
+
+    }
+
+    public boolean deletarPorId(Long id) {
+        String sql = "DELETE FROM receita WHERE id = ?";
+
         PreparedStatement ps = null;
         Connection connect = null;
-        ResultSet rs = null;
-        Receita receita = null;
 
         if (id == null || id <= 0) {
             throw new InvalidNumberException("id", "ID deve ser maior que zero");
@@ -274,27 +249,54 @@ public class ReceitaDAO  {
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
 
-            rs=  ps.executeQuery();
-            if(rs.next()){
-                receita = new Receita();
-                receita.setId(rs.getLong("id"));
-                receita.setPorcao(rs.getString("porcao"));
-                receita.setIdProduto(rs.getLong("id_produto"));
-            }
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar a receita: " + id);
+            System.err.println("[DAO ERROR] Erro ao deletar a receita: " + id);
             e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar a receita com ID: " + id, e);
+            throw new DataAccessException("Erro ao deletar a receita com ID: " + id, e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
-                if(rs != null) rs.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
-        return receita;
+    }
+
+    public int contarTodos() {
+        int totalReceitas = 0;
+
+        String sql = "SELECT COUNT(*) FROM receita";
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            stmt = connect.createStatement();
+            rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                totalReceitas = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao contar as receitas");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao contar as receitas", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+
+        return totalReceitas;
     }
 }

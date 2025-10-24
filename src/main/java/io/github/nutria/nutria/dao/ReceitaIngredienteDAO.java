@@ -153,105 +153,6 @@ public class ReceitaIngredienteDAO implements GenericDAO<ReceitaIngrediente, Lon
     }
 
     @Override
-    public boolean alterar(ReceitaIngrediente receitaIngrediente){
-        String sql = "UPDATE receita_ingrediente id_receita = ?, id_ingrediente = ?, quantidade = ? WHERE id_receita = ? and id_ingrediente = ?";
-        PreparedStatement psmt = null;
-        Connection connect = null;
-        int result = 0;
-
-        try {
-            connect = ConnectionFactory.connect();
-            psmt = connect.prepareStatement(sql);
-            psmt.setLong(1, receitaIngrediente.getIdReceita());
-            psmt.setLong(2, receitaIngrediente.getIdIngrediente());
-            psmt.setDouble(3, receitaIngrediente.getQuantidade());
-            psmt.setLong(4, receitaIngrediente.getIdReceita());
-            psmt.setLong(4, receitaIngrediente.getIdReceita());
-
-
-            result = psmt.executeUpdate();
-
-        } catch (SQLException sqle){
-            System.err.println("[DAO ERROR] Erro ao atualizar a relação receita e ingrediente: " + receitaIngrediente.getIdReceita() + ", " + receitaIngrediente.getIdIngrediente());
-            sqle.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao atualizar receita", sqle);
-        } finally {
-            try {
-                if(connect != null) ConnectionFactory.disconnect(connect);
-                if(psmt != null) psmt.close();
-            } catch (SQLException e){
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return (result > 0);
-    }
-
-    @Override
-    public boolean deletarPorId(Long id) {
-        String sql = "DELETE FROM receita_ingrediente WHERE id = ?";
-
-        PreparedStatement ps = null;
-        Connection connect = null;
-
-        try {
-            connect = ConnectionFactory.connect();
-
-            ps = connect.prepareStatement(sql);
-            ps.setLong(1, id);
-
-            return ps.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao deletar a relação receita e ingrediente: " + id);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao deletar  a relação receita e ingrediente: " + id, e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (ps != null) ps.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-    }
-
-    @Override
-    public int contarTodos() {
-        int totalReceitasIngredientes = 0;
-
-        String sql = "SELECT COUNT(*) FROM receita_ingrediente";
-
-        Statement stmt = null;
-        ResultSet rs = null;
-        Connection connect = null;
-
-        try {
-            connect = ConnectionFactory.connect();
-
-            stmt = connect.createStatement();
-            rs = stmt.executeQuery(sql);
-
-            if (rs.next()) {
-                totalReceitasIngredientes = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao contar as relações entre receita e ingrediente");
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao contar as relações entre receita e ingrediente\"", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (stmt != null) stmt.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-
-        return totalReceitasIngredientes;
-    }
-
-    @Override
     public List<ReceitaIngrediente> buscarPorMaiorQuant(int page, Double quant) {
         int limit = 4;
         int offset = (page - 1) * limit;
@@ -382,5 +283,104 @@ public class ReceitaIngredienteDAO implements GenericDAO<ReceitaIngrediente, Lon
             }
         }
         return receitasIngredienteArrayList;
+    }
+
+    @Override
+    public boolean alterar(ReceitaIngrediente receitaIngrediente){
+        String sql = "UPDATE receita_ingrediente id_receita = ?, id_ingrediente = ?, quantidade = ? WHERE id_receita = ? and id_ingrediente = ?";
+        PreparedStatement psmt = null;
+        Connection connect = null;
+        int result = 0;
+
+        try {
+            connect = ConnectionFactory.connect();
+            psmt = connect.prepareStatement(sql);
+            psmt.setLong(1, receitaIngrediente.getIdReceita());
+            psmt.setLong(2, receitaIngrediente.getIdIngrediente());
+            psmt.setDouble(3, receitaIngrediente.getQuantidade());
+            psmt.setLong(4, receitaIngrediente.getIdReceita());
+            psmt.setLong(4, receitaIngrediente.getIdReceita());
+
+
+            result = psmt.executeUpdate();
+
+        } catch (SQLException sqle){
+            System.err.println("[DAO ERROR] Erro ao atualizar a relação receita e ingrediente: " + receitaIngrediente.getIdReceita() + ", " + receitaIngrediente.getIdIngrediente());
+            sqle.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao atualizar receita", sqle);
+        } finally {
+            try {
+                if(connect != null) ConnectionFactory.disconnect(connect);
+                if(psmt != null) psmt.close();
+            } catch (SQLException e){
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return (result > 0);
+    }
+
+    @Override
+    public boolean deletarPorId(Long id) {
+        String sql = "DELETE FROM receita_ingrediente WHERE id = ?";
+
+        PreparedStatement ps = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao deletar a relação receita e ingrediente: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao deletar  a relação receita e ingrediente: " + id, e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+    }
+
+    @Override
+    public int contarTodos() {
+        int totalReceitasIngredientes = 0;
+
+        String sql = "SELECT COUNT(*) FROM receita_ingrediente";
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            stmt = connect.createStatement();
+            rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                totalReceitasIngredientes = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao contar as relações entre receita e ingrediente");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao contar as relações entre receita e ingrediente\"", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+
+        return totalReceitasIngredientes;
     }
 }

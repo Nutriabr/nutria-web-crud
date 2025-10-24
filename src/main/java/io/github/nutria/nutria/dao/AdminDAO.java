@@ -168,136 +168,6 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public boolean alterar(Admin admin) {
-        if (admin.getId() == null || admin.getId() <= 0) {
-            throw new ValidationException("ID é obrigatório para atualização");
-        }
-
-        deletarPorId(admin.getId());
-
-        Optional<Admin> existingAdminByEmail = buscarPorEmail(admin.getEmail());
-        if (existingAdminByEmail.isPresent() && !existingAdminByEmail.get().getId().equals(admin.getId())) {
-            throw new DuplicateEmailException(admin.getEmail());
-        }
-
-        Optional<Admin> existingAdminByPhone = buscarPorTelefone(admin.getTelefone());
-        if (existingAdminByPhone.isPresent() && !existingAdminByPhone.get().getId().equals(admin.getId())) {
-            throw new DuplicatePhoneException(admin.getTelefone());
-        }
-
-        String sql = "UPDATE admin SET nome = ?, email = ?, senha = ?, telefone = ?, nascimento = ?, cargo = ?, foto = ? WHERE id = ?";
-
-        int result = 0;
-
-        PreparedStatement pstmt = null;
-        Connection connect = null;
-        try {
-            connect = ConnectionFactory.connect();
-            pstmt = connect.prepareStatement(sql);
-
-            String hashedPassword = PasswordHasher.hashPassword(admin.getSenha());
-
-            pstmt.setString(1, admin.getNome());
-            pstmt.setString(2, admin.getEmail());
-            pstmt.setString(3, hashedPassword);
-            pstmt.setString(4, admin.getTelefone());
-            pstmt.setDate(5, admin.getNascimento());
-            pstmt.setString(6, admin.getCargo());
-            pstmt.setString(7, admin.getFoto());
-            pstmt.setLong(8, admin.getId());
-            result = pstmt.executeUpdate();
-
-            pstmt.close();
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao atualizar o admin: " + admin.getId());
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao atualizar admin", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (pstmt != null) pstmt.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return (result > 0);
-    }
-
-    @Override
-    public boolean deletarPorId(Long id) {
-        String sql = "DELETE FROM admin WHERE id = ?";
-
-        boolean result = false;
-
-        if (id <= 0) {
-            throw new InvalidNumberException("id", "ID deve ser maior que zero");
-        }
-
-        PreparedStatement ps = null;
-        Connection connect = null;
-        try {
-            connect = ConnectionFactory.connect();
-            ps = connect.prepareStatement(sql);
-            ps.setLong(1, id);
-
-            result = (ps.executeUpdate() > 0);
-            if (!result) {
-                throw new EntityNotFoundException("Admin", id);
-            }
-
-
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao deletar o admin: " + id);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao deletar admin", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (ps != null) ps.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public int contarTodos() {
-        int totalAdmins = 0;
-
-        String sql = "SELECT COUNT(*) FROM admin";
-
-        Statement stmt = null;
-        ResultSet rs = null;
-        Connection connect = null;
-
-        try {
-            connect = ConnectionFactory.connect();
-
-            stmt = connect.createStatement();
-            rs = stmt.executeQuery(sql);
-
-            if (rs.next()) {
-                totalAdmins = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao realizar a contagem total de admins");
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao realizar a contagem total de admins", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (stmt != null) stmt.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-
-        return totalAdmins;
-    }
-
-    @Override
     public Optional<Admin> buscarPorEmail(String email) {
         String sql = "SELECT * FROM admin WHERE email = ?";
 
@@ -486,6 +356,136 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    public boolean alterar(Admin admin) {
+        if (admin.getId() == null || admin.getId() <= 0) {
+            throw new ValidationException("ID é obrigatório para atualização");
+        }
+
+        deletarPorId(admin.getId());
+
+        Optional<Admin> existingAdminByEmail = buscarPorEmail(admin.getEmail());
+        if (existingAdminByEmail.isPresent() && !existingAdminByEmail.get().getId().equals(admin.getId())) {
+            throw new DuplicateEmailException(admin.getEmail());
+        }
+
+        Optional<Admin> existingAdminByPhone = buscarPorTelefone(admin.getTelefone());
+        if (existingAdminByPhone.isPresent() && !existingAdminByPhone.get().getId().equals(admin.getId())) {
+            throw new DuplicatePhoneException(admin.getTelefone());
+        }
+
+        String sql = "UPDATE admin SET nome = ?, email = ?, senha = ?, telefone = ?, nascimento = ?, cargo = ?, foto = ? WHERE id = ?";
+
+        int result = 0;
+
+        PreparedStatement pstmt = null;
+        Connection connect = null;
+        try {
+            connect = ConnectionFactory.connect();
+            pstmt = connect.prepareStatement(sql);
+
+            String hashedPassword = PasswordHasher.hashPassword(admin.getSenha());
+
+            pstmt.setString(1, admin.getNome());
+            pstmt.setString(2, admin.getEmail());
+            pstmt.setString(3, hashedPassword);
+            pstmt.setString(4, admin.getTelefone());
+            pstmt.setDate(5, admin.getNascimento());
+            pstmt.setString(6, admin.getCargo());
+            pstmt.setString(7, admin.getFoto());
+            pstmt.setLong(8, admin.getId());
+            result = pstmt.executeUpdate();
+
+            pstmt.close();
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao atualizar o admin: " + admin.getId());
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao atualizar admin", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return (result > 0);
+    }
+
+    @Override
+    public boolean deletarPorId(Long id) {
+        String sql = "DELETE FROM admin WHERE id = ?";
+
+        boolean result = false;
+
+        if (id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
+        PreparedStatement ps = null;
+        Connection connect = null;
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            result = (ps.executeUpdate() > 0);
+            if (!result) {
+                throw new EntityNotFoundException("Admin", id);
+            }
+
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao deletar o admin: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao deletar admin", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public int contarTodos() {
+        int totalAdmins = 0;
+
+        String sql = "SELECT COUNT(*) FROM admin";
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            stmt = connect.createStatement();
+            rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                totalAdmins = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao realizar a contagem total de admins");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao realizar a contagem total de admins", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+
+        return totalAdmins;
     }
 
     /**
