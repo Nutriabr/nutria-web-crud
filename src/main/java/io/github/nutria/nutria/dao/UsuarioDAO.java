@@ -38,7 +38,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
         boolean result = false;
 
-        validateUser(usuario);
+        validarUsuario(usuario);
 
 
         PreparedStatement ps = null;
@@ -178,6 +178,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         }
     }
 
+    @Override
     public Optional<Usuario> buscarPorEmail(String email) {
         String sql = "SELECT * FROM usuario WHERE email = ?";
 
@@ -599,7 +600,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
      * @throws InvalidEmailException se o email do {@link Usuario} for inválido.
      * @throws InvalidPasswordException se a senha do {@link Usuario} tiver menos de 8 caracteres.
      */
-    private void validateUser(Usuario usuario) {
+    private void validarUsuario(Usuario usuario) {
         if (usuario == null) {
             throw new ValidationException("Usuario não pode ser nulo");
         }

@@ -153,7 +153,7 @@ public class ReceitaIngredienteDAO implements GenericDAO<ReceitaIngrediente, Lon
     }
 
     @Override
-    public List<ReceitaIngrediente> buscarPorMaiorQuant(int page, Double quant) {
+    public List<ReceitaIngrediente> buscarPorMaiorQuant(int page, double quant) {
         int limit = 4;
         int offset = (page - 1) * limit;
 
@@ -197,7 +197,7 @@ public class ReceitaIngredienteDAO implements GenericDAO<ReceitaIngrediente, Lon
     }
 
     @Override
-    public List<ReceitaIngrediente> buscarPorMenorQuant(int page, Double quant) {
+    public List<ReceitaIngrediente> buscarPorMenorQuant(int page, double quant) {
         int limit = 4;
         int offset = (page - 1) * limit;
 
@@ -241,7 +241,7 @@ public class ReceitaIngredienteDAO implements GenericDAO<ReceitaIngrediente, Lon
     }
 
     @Override
-    public List<ReceitaIngrediente> buscarPorIntervalo(int page, Double quantMax, Double quantMin) {
+    public List<ReceitaIngrediente> buscarPorIntervalo(int page, double quantMin, double quantMax) {
         int limit = 4;
         int offset = (page - 1) * limit;
 

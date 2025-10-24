@@ -5,6 +5,13 @@ import io.github.nutria.nutria.model.ReceitaIngrediente;
 
 import java.util.List;
 
+/**
+ * Interface para operações específicas de CRUD na entidade {@link ReceitaIngrediente}.
+ *
+ * @see ReceitaIngrediente
+ * @author Enzo Mota
+ * @version 1.0
+ */
 public interface IReceitaIngredienteDAO {
 
     /**

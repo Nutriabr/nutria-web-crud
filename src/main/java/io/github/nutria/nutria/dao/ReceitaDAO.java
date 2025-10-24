@@ -155,6 +155,7 @@ public class ReceitaDAO implements IReceitaDAO {
         return receita;
     }
 
+    @Override
     public List<Receita> buscarPorPorcao(String porcao){
         String sql =
                 """

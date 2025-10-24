@@ -39,6 +39,7 @@ public interface GenericDAO<T, ID> {
      * Busca um registro de {@link T} pelo ID informado.
      *
      * @param id o ID que será utilizado na busca.
+     * @return um objeto {@link T} correspondente ao ID informado.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
     T buscarPorId(Long id);

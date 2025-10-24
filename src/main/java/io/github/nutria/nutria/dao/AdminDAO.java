@@ -68,6 +68,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             }
         }
     }
+
     @Override
     public List<Admin> buscarTodos(int page) {
         int limite = 4;
