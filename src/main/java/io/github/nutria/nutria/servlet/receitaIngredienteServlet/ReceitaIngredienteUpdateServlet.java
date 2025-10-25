@@ -26,7 +26,7 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
 
             Long id = Long.parseLong(idStr);
 
-            receitaIngrediente = receitaIngredienteDAO.findById(id);
+            receitaIngrediente = receitaIngredienteDAO.buscarPorId(id);
 
             Double quantidade = receitaIngrediente.getQuantidade();
 
@@ -52,18 +52,18 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ReceitaIngredienteDAO receitaIngredienteDAO = new ReceitaIngredienteDAO();
 
-        int lastPage = (int) Math.ceil((double) receitaIngredienteDAO.countAll() / 4);
+        int lastPage = (int) Math.ceil((double) receitaIngredienteDAO.contarTodos() / 4);
 
 
         try {
             String idStr = req.getParameter("id");
             Long id = Long.parseLong(String.valueOf(idStr));
 
-            ReceitaIngrediente receitaIngrediente = receitaIngredienteDAO.findById(id);
+            ReceitaIngrediente receitaIngrediente = receitaIngredienteDAO.buscarPorId(id);
 
             receitaIngrediente.setQuantidade(Double.parseDouble(req.getParameter("quantity")));
 
-            receitaIngredienteDAO.update(receitaIngrediente);
+            receitaIngredienteDAO.alterar(receitaIngrediente);
 
             resp.sendRedirect(req.getContextPath() + "/receitaIngrediente/listar?page=" + (lastPage + 1));
         } catch (RequiredFieldException rfe) {

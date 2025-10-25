@@ -1,8 +1,8 @@
 package io.github.nutria.nutria.servlet.receitaIngredienteServlet;
 
 import io.github.nutria.nutria.dao.ReceitaIngredienteDAO;
-import io.github.nutria.nutria.dao.ReceitaIngredienteDAO;
-import io.github.nutria.nutria.exceptions.*;
+import io.github.nutria.nutria.exceptions.DataAccessException;
+import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.model.ReceitaIngrediente;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,7 +26,7 @@ public class ReceitaIngredienteInsertServlet extends HttpServlet {
         ReceitaIngredienteDAO receitaIngredienteDAO = new ReceitaIngredienteDAO();
         ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
 
-        int lastPage = (int) Math.ceil((double) receitaIngredienteDAO.countAll() / 4);
+        int lastPage = (int) Math.ceil((double) receitaIngredienteDAO.contarTodos() / 4);
 
         try {
             receitaIngrediente.setIdReceita(Long.parseLong(req.getParameter("id")));
@@ -34,7 +34,7 @@ public class ReceitaIngredienteInsertServlet extends HttpServlet {
             receitaIngrediente.setIdIngrediente(Long.parseLong(req.getParameter("idIngrediente")));
             receitaIngrediente.setQuantidade(Integer.parseInt(req.getParameter("quantity")));
 
-            receitaIngredienteDAO.insert(receitaIngrediente);
+            receitaIngredienteDAO.inserir(receitaIngrediente);
 
             resp.sendRedirect(req.getContextPath() + "/receitaIngrediente/listar?page=" + (lastPage + 1));
         } catch (RequiredFieldException rfe) {

@@ -1,6 +1,5 @@
 package io.github.nutria.nutria.servlet.receitaIngredienteServlet;
 
-import io.github.nutria.nutria.dao.AdminDAO;
 import io.github.nutria.nutria.dao.ReceitaIngredienteDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.exceptions.EntityNotFoundException;
@@ -23,7 +22,7 @@ public class ReceitaIngredienteDeleteServlet extends HttpServlet {
         try {
             ReceitaIngredienteDAO receitaIngredienteDAO = new ReceitaIngredienteDAO();
 
-            receitaIngredienteDAO.deleteById(id);
+            receitaIngredienteDAO.deletarPorId(id);
 
             resp.sendRedirect(req.getContextPath() + "/receitasIngredientes/listar");
         }  catch (NumberFormatException e) {

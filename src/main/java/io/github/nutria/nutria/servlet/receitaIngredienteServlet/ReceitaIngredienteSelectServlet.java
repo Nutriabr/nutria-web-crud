@@ -1,10 +1,8 @@
 package io.github.nutria.nutria.servlet.receitaIngredienteServlet;
 
 import io.github.nutria.nutria.dao.ReceitaIngredienteDAO;
-import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.model.ReceitaIngrediente;
-import io.github.nutria.nutria.model.Usuario;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -34,7 +32,7 @@ public class ReceitaIngredienteSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalReceitasIngrediente = receitaIngredienteDAO.countAll();
+            int totalReceitasIngrediente = receitaIngredienteDAO.contarTodos();
             int totalPages = (int) Math.ceil((double) totalReceitasIngrediente / TOTAL_RECEITA_INGREDIENTE_PAGE);
 
             if (currentPage < 1) {
@@ -43,7 +41,7 @@ public class ReceitaIngredienteSelectServlet extends HttpServlet {
                 currentPage = totalPages;
             }
 
-            List<ReceitaIngrediente> receitaIngredienteList = receitaIngredienteDAO.findAll(currentPage);
+            List<ReceitaIngrediente> receitaIngredienteList = receitaIngredienteDAO.buscarTodos(currentPage);
 
             req.setAttribute("receitaIngredienteList", receitaIngredienteList);
             req.setAttribute("totalReceitasIngrediente", totalReceitasIngrediente);
