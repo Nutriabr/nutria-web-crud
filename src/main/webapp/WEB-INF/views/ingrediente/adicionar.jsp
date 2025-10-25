@@ -19,7 +19,7 @@
 <%@include file="../components/messagemErro.jsp"%>
 <main>
   <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
-    <jsp:param name="activePage" value="produto"/>
+    <jsp:param name="activePage" value="ingrediente"/>
   </jsp:include>
   <div class="container">
     <div class="main-content">
