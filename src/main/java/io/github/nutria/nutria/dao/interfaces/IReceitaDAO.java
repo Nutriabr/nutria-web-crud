@@ -15,12 +15,11 @@ import java.util.List;
 public interface IReceitaDAO {
 
     /**
-     * Busca registros de {@link Receita} com a porção informada.
+     * Lista todos os registros de {@link Receita} com a porção informada.
      *
      * @param porcao a porção que será utilizada na busca.
      * @return uma lista de objetos {@link Receita} correspondentes à porção informada.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     * @author Mariana Marrão
      */
-    List<Receita> buscarPorPorcao(String porcao);
+    List<Receita> buscarPorPorcao(String porcao, int page);
 }

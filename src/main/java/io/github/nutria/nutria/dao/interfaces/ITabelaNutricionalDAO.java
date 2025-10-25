@@ -22,25 +22,23 @@ public interface ITabelaNutricionalDAO {
      * Os filtros disponíveis são definidos na implementação da DAO, em um mapa constante
      * que associa o nome do filtro às suas condições.
      *
-     * @param nomeFiltro o nome do filtro a ser aplicado (ex.: "baixo_sodio", "rico_fibras").
+     * @param nomeFiltro o nome do filtro que será aplicado (ex.: "baixo_sodio", "rico_fibras").
      * @param page o número da página de resultados (para paginação).
      * @return uma lista de objetos {@link TabelaNutricional} que atendem aos critérios do filtro.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     * @author Giovanna Santos
      */
-    List<TabelaNutricional> filterBy(String nomeFiltro, int page);
+    List<TabelaNutricional> buscarPor(String nomeFiltro, int page);
 
     /**
      * Filtra os registros de {@link TabelaNutricional} por valor mínimo, máximo ou intervalo de quantidade de determinado nutriente.
      *
-     * @param type o tipo de comparação ou intervalo (ex.: "min", "max", "range").
-     * @param column o nome da coluna/nutriente a ser filtrado.
-     * @param minValue a quantidade mínima do nutriente.
-     * @param maxValue a quantidade máxima do nutriente.
+     * @param tipo o tipo de comparação ou intervalo (ex.: "min", "max", "intervalo").
+     * @param coluna o nome da coluna/nutriente a ser filtrado.
+     * @param quantMin a quantidade mínima do nutriente.
+     * @param quantMax a quantidade máxima do nutriente.
      * @param page o número da página de resultados (para paginação).
      * @return uma lista de objetos {@link TabelaNutricional} que atendem aos critérios do filtro.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     * @author Giovanna Santos
      */
-    List<TabelaNutricional> findByNutrientRange(String type, String column, double minValue, double maxValue, int page);
+    List<TabelaNutricional> buscarPorIntervaloNutriente(String tipo, String coluna, double quantMin, double quantMax, int page);
 }

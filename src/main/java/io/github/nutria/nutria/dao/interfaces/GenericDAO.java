@@ -7,7 +7,10 @@ import java.util.List;
 /**
  * Interface genérica para operações de CRUD.
  *
+ * @author Enzo Mota
+ * @author Giovanna Santos
  * @author Luis Henrique
+ * @author Mariana Marrão
  * @version 1.0
  * @param <T> Tipo da entidade.
  * @param <ID> Tipo da Chave Primária (key) da entidade.
@@ -20,7 +23,6 @@ public interface GenericDAO<T, ID> {
      * @param entity o objeto que será inserido.
      * @return {@code true} se for inserido com sucesso; {@code false} caso contrário.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     * @author Mariana Marrão
      */
     boolean inserir(T entity);
 
@@ -30,9 +32,17 @@ public interface GenericDAO<T, ID> {
      * @param page o número da página de resultados (para paginação).
      * @return uma lista de objetos {@link T} com todos os registros.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     * @author Mariana Marrão
      */
     List<T> buscarTodos(int page);
+
+    /**
+     * Busca um registro de {@link T} pelo ID informado.
+     *
+     * @param id o ID que será utilizado na busca.
+     * @return um objeto {@link T} correspondente ao ID informado.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    T buscarPorId(Long id);
 
     /**
      * Atualiza os valores de um objeto {@link T}.
@@ -40,7 +50,6 @@ public interface GenericDAO<T, ID> {
      * @param entity o objeto que será atualizado.
      * @return {@code true} se for atualizado com sucesso; {@code false} caso contrário.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     * @author Luis Henrique
      */
     boolean alterar(T entity);
 
@@ -50,7 +59,6 @@ public interface GenericDAO<T, ID> {
      * @param id o ID do objeto que será deletado.
      * @return {@code true} se for deletado com sucesso; {@code false} caso contrário.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     * @author Luis Henrique
      */
     boolean deletarPorId(Long id);
 
@@ -59,7 +67,6 @@ public interface GenericDAO<T, ID> {
      *
      * @return um inteiro com o número total de registros.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     * @author Enzo Mota
      */
     int contarTodos();
 }
