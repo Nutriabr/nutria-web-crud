@@ -25,7 +25,7 @@ public class UsuarioUpdateServlet extends HttpServlet {
             }
             Long id = Long.parseLong(idStr);
 
-            usuario = usuarioDAO.findById(id);
+            usuario = usuarioDAO.buscarPorId(id);
 
             req.setAttribute("id", usuario.getId());
             req.setAttribute("nome", usuario.getNome());
@@ -59,7 +59,7 @@ public class UsuarioUpdateServlet extends HttpServlet {
         try {
             System.out.println(req.getParameter("id"));
             Long id = Long.valueOf(req.getParameter("id"));
-            Usuario usuario = usuarioDAO.findById(id);
+            Usuario usuario = usuarioDAO.buscarPorId(id);
 
             usuario.setNome(req.getParameter("name"));
             usuario.setEmail(req.getParameter("email"));
