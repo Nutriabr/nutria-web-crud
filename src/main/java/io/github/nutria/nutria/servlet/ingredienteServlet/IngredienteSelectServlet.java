@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/ingrediente/listar")
@@ -20,6 +21,9 @@ public class IngredienteSelectServlet extends HttpServlet {
         IngredienteDAO ingredienteDAO = new IngredienteDAO();
         int currentPage = 1;
         String pageParam = req.getParameter("page");
+        String filtro = req.getParameter("busca");
+        List<Ingrediente> ingredientesList = new ArrayList<>();
+        int totalIngredientes;
 
 
         if(pageParam != null){
@@ -31,7 +35,24 @@ public class IngredienteSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalIngredientes = ingredienteDAO.contarTodos();
+            if(filtro == null || filtro.isEmpty()){
+                 totalIngredientes = ingredienteDAO.contarTodos();
+                 ingredientesList = ingredienteDAO.buscarTodos(currentPage);
+            }
+            else {
+                try {
+                    Long id = Long.parseLong(filtro);
+                    Ingrediente ingrediente = ingredienteDAO.buscarPorId(id);
+                    if(ingrediente != null){
+                        ingredientesList.add(ingrediente);
+                    }
+                    totalIngredientes = 1;
+                } catch (NumberFormatException nfe){
+                    ingredientesList = ingredienteDAO.buscarPorNome(filtro, currentPage);
+                    totalIngredientes = ingredienteDAO.contarPorNome(filtro);
+                }
+            }
+
             int totalPages = (int) Math.ceil((double) totalIngredientes / TOTAL_INGREDIENTE_PAGE);
             if (totalPages == 0) totalPages = 1;
             if(currentPage < 1){
@@ -39,11 +60,11 @@ public class IngredienteSelectServlet extends HttpServlet {
             } else if (currentPage > totalPages && totalPages > 0) {
                 currentPage = totalPages;
             }
-            List<Ingrediente> ingredienteList = ingredienteDAO.buscarTodos(currentPage);
             req.setAttribute("totalIngredientes",totalIngredientes);
-            req.setAttribute("ingredientesList", ingredienteList);
+            req.setAttribute("ingredientesList", ingredientesList);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("totalPages",totalPages);
+            req.setAttribute("filtro",filtro);
             req.getRequestDispatcher("/WEB-INF/views/ingrediente/ingredientes.jsp").forward(req, resp);
 
         } catch (DataAccessException e) {
