@@ -15,6 +15,8 @@
   int totalProdutos = (int) request.getAttribute("totalProdutos");
   int totalPages = (int) request.getAttribute("totalPages");
   int currentPage = (int) request.getAttribute("currentPage");
+  String filtro = (String) request.getAttribute("filtro");
+  String buscaParam = (filtro != null && !filtro.trim().isEmpty()) ? "&busca=" + filtro : "";
 %>
 
 <!DOCTYPE html>
@@ -49,10 +51,10 @@
       <header class="table-header">
         <h2>Produtos</h2>
         <div class="table-actions">
-          <div class="search-bar">
+          <form action="${pageContext.request.contextPath}/produto/listar" method="get" class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="search" placeholder="Buscar">
-          </div>
+            <input type="search" name="busca" placeholder="Buscar" value="<%= filtro != null ? filtro : "" %>">
+          </form>
           <a href="${pageContext.request.contextPath}/produto/adicionar" class="btn btn-primary">
             <i class="fa-solid fa-plus"></i>
             Adicionar novo produto
@@ -93,11 +95,15 @@
       <footer class="table-footer">
         <span>Página <%= currentPage %> de <%= totalPages %></span>
         <nav class="pagination">
-          <a href="?page=<%= currentPage - 1 %>" class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
+          <a href="${pageContext.request.contextPath}/produto/listar?page=<%= currentPage - 1 %><%= buscaParam %>"
+             class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
             <i class="fa-solid fa-chevron-left"></i>
           </a>
+
           <span class="current-page"><%= currentPage %></span>
-          <a href="?page=<%= currentPage + 1 %>" class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
+
+          <a href="${pageContext.request.contextPath}/produto/listar?page=<%= currentPage + 1 %><%= buscaParam %>"
+             class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
             <i class="fa-solid fa-chevron-right"></i>
           </a>
         </nav>

@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
+    Object id = request.getAttribute("id");
     Double quantidade = (Double) request.getAttribute("quantidade");
     String errorMessage = (String) request.getAttribute("errorMessage");
 %>
@@ -33,6 +34,8 @@
         <form class="form-content" name="forms-edit-receitaIngrediente" action="${pageContext.request.contextPath}/receitasIngredientes/editar"
               method="post">
             <h2>Informações da receita ingrediente</h2>
+            <input type="hidden" name="id" value="<%= id %>">
+
             <label for="quantity-input">Quantidade</label>
             <input class="parameter-input" type="number" id="quantity-input" name="quantity"
                    value="<%= quantidade%>" placeholder="Insira a quantidade">

@@ -15,6 +15,8 @@
     int totalReceitas = (int) request.getAttribute("totalReceitas");
     int totalPages = (int) request.getAttribute("totalPages");
     int currentPage = (int) request.getAttribute("currentPage");
+    String filtro = (String) request.getAttribute("filtro");
+    String buscaParam = (filtro != null && !filtro.trim().isEmpty()) ? "&busca=" + filtro : "";
 %>
 
 <!DOCTYPE html>
@@ -49,10 +51,10 @@
             <header class="table-header">
                 <h2>Receita</h2>
                 <div class="table-actions">
-                    <div class="search-bar">
+                    <form action="${pageContext.request.contextPath}/receita/listar" method="get" class="search-bar">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="search" placeholder="Buscar">
-                    </div>
+                        <input type="search" name="busca" placeholder="Buscar" value="<%= filtro != null ? filtro : "" %>">
+                    </form>
                     <a href="${pageContext.request.contextPath}/receita/adicionar" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i>
                         Adicionar nova receita
@@ -89,15 +91,18 @@
                     </tbody>
                 </table>
             </div>
-
             <footer class="table-footer">
                 <span>Página <%= currentPage %> de <%= totalPages %></span>
                 <nav class="pagination">
-                    <a href="?page=<%= currentPage - 1 %>" class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
+                    <a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage - 1 %><%= buscaParam %>"
+                       class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
+
                     <span class="current-page"><%= currentPage %></span>
-                    <a href="?page=<%= currentPage + 1 %>" class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
+
+                    <a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage + 1 %><%= buscaParam %>"
+                       class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
                 </nav>
@@ -110,12 +115,12 @@
 <div class="overlay" id="delete-popup-overlay" style="display: none;">
     <div class="popup-container">
         <h1>Você tem certeza que deseja excluir este registro?</h1>
-        <p>Você não poderá recuperar o registro de <strong id="delete-usuario-name"></strong>após excluir.</p>
+        <p>Você não poderá recuperar o registro de ID <strong id="delete-id"></strong> após excluir.</p>
         <div class="popup-actions">
             <button class="btn btn-secondary" id="cancel-delete-btn">Cancelar</button>
             <form id="delete-form" action="${pageContext.request.contextPath}/receita/excluir" method="post">
-                <input type="hidden" name="id" id="receita-id">
-                <button type="submit" class="btn btn-danger">Excluir</button>
+                <input type="hidden" name="input-id" id="input-id">
+                <input type="submit" class="btn btn-danger" value="Excluir">
             </form>
         </div>
     </div>
