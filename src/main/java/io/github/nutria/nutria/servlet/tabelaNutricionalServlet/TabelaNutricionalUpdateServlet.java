@@ -15,20 +15,19 @@ import java.io.IOException;
 
 @WebServlet("/tabela_nutricional/editar")
 public class TabelaNutricionalUpdateServlet extends HttpServlet {
-    private final String viewPath = "/WEB-INF/views/tabela_nutricional/editar.jsp";
-    private final TabelaNutricionalDAO tabelaNutricionalDAO = new TabelaNutricionalDAO();
+    private static final String VIEW_PATH = "/WEB-INF/views/tabela_nutricional/editar.jsp";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getParameter("id");
 
         try {
-            if (idStr == null || idStr.isBlank()) {
-                throw new InvalidNumberException("ID", idStr);
-            }
+            if (idStr == null || idStr.isBlank()) throw new InvalidNumberException("ID", idStr);
+
             Long id = Long.parseLong(idStr);
 
-            TabelaNutricional tabelaNutricional = tabelaNutricionalDAO.findById(id);
+            TabelaNutricionalDAO tabelaNutricionalDAO = new TabelaNutricionalDAO();
+            TabelaNutricional tabelaNutricional = tabelaNutricionalDAO.buscarPorId(id);
 
             req.setAttribute("id", tabelaNutricional.getIdIngrediente());
             req.setAttribute("valor-energetico", tabelaNutricional.getValorEnergeticoKcal());
@@ -49,13 +48,13 @@ public class TabelaNutricionalUpdateServlet extends HttpServlet {
             req.setAttribute("ferro", tabelaNutricional.getFerroMg());
             req.setAttribute("potassio", tabelaNutricional.getPotassioMg());
 
-            req.getRequestDispatcher(viewPath).forward(req, resp);
+            req.getRequestDispatcher(VIEW_PATH).forward(req, resp);
         } catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");
-            req.getRequestDispatcher(viewPath).forward(req, resp);
+            req.getRequestDispatcher(VIEW_PATH).forward(req, resp);
         } catch (InvalidNumberException | EntityNotFoundException e) {
             req.setAttribute("errorMessage", e.getMessage());
-            req.getRequestDispatcher(viewPath).forward(req, resp);
+            req.getRequestDispatcher(VIEW_PATH).forward(req, resp);
         } catch (DataAccessException e) {
             System.err.println("[ERRO INTERNO]: " + e);
             req.setAttribute("errorMessage", "Erro ao acessar os dados. Tente novamente mais tarde.");
@@ -66,8 +65,10 @@ public class TabelaNutricionalUpdateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            Long id = Long.valueOf(req.getParameter("id"));
-            TabelaNutricional tabelaNutricional = tabelaNutricionalDAO.findById(id);
+            Long id = Long.parseLong(req.getParameter("id"));
+
+            TabelaNutricionalDAO tabelaNutricionalDAO = new TabelaNutricionalDAO();
+            TabelaNutricional tabelaNutricional = tabelaNutricionalDAO.buscarPorId(id);
 
             double valor_energetico = Double.parseDouble(req.getParameter("valor-energetico"));
             double carboidratos = Double.parseDouble(req.getParameter("carboidratos"));
@@ -111,18 +112,16 @@ public class TabelaNutricionalUpdateServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/tabela_nutricional/listar");
         } catch (EntityNotFoundException e) {
             req.setAttribute("errorMessage", "Tabela nutricional não encontrada para atualização.");
-            req.getRequestDispatcher(viewPath).forward(req, resp);
+            req.getRequestDispatcher(VIEW_PATH).forward(req, resp);
         } catch (Exception e) {
             req.setAttribute("errorMessage", "Ocorreu um erro inesperado: " + e.getMessage());
-            req.getRequestDispatcher(viewPath).forward(req, resp);
+            req.getRequestDispatcher(VIEW_PATH).forward(req, resp);
         }
     }
 
     private Double parseNullableDouble(HttpServletRequest req, String paramName) {
         String value = req.getParameter(paramName);
-        if (value == null || value.isBlank()) {
-            return null;
-        }
+        if (value == null || value.isBlank()) return null;
         else return Double.parseDouble(value);
     }
 }
