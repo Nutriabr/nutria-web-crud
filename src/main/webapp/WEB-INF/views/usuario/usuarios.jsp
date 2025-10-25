@@ -16,6 +16,7 @@
     int totalUsuarios = (int) request.getAttribute("totalUsuarios");
     int totalPages = (int) request.getAttribute("totalPages");
     int currentPage = (int) request.getAttribute("currentPage");
+    String busca = (String) request.getAttribute("busca");
 %>
 
 <!DOCTYPE html>
@@ -29,11 +30,11 @@
     <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
 </head>
 <body>
+<%@include file="../components/mensagemSucesso.jsp" %>
 <div class="page-container">
     <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
         <jsp:param name="activePage" value="usuario"/>
     </jsp:include>
-
 
 
     <main class="main-content">
@@ -54,8 +55,10 @@
                 <h2>Usuário</h2>
                 <div class="table-actions">
                     <div class="search-bar">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="search" placeholder="Buscar">
+                        <form id="form-busca"  action="${pageContext.request.contextPath}/usuario/buscar" method="get">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="${busca != null && !busca.isEmpty() ? busca : '' }">
+                        </form>
                     </div>
                     <a href="${pageContext.request.contextPath}/usuario/adicionar" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i>
@@ -105,11 +108,11 @@
             <footer class="table-footer">
                 <span>Página <%= currentPage %> de <%= totalPages %></span>
                 <nav class="pagination">
-                    <a href="?page=<%= currentPage - 1 %>" class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
+                    <a href="?page=<%= currentPage - 1 %>" class="arrow <%= currentPage <= 1 ? "disabled" : "" %>&<%= busca != null && !busca.isEmpty() ? busca : "" %>">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
                     <span class="current-page"><%= currentPage %></span>
-                    <a href="?page=<%= currentPage + 1 %>" class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
+                    <a href="?page=<%= currentPage + 1 %>" class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>&<%= busca != null && !busca.isEmpty() ? busca : "" %>">
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
                 </nav>
@@ -134,6 +137,7 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/assets/js/popup.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/formAutoSubmit.js"></script>
 
 </body>
 </html>
