@@ -6,7 +6,9 @@ import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.exceptions.InvalidNumberException;
 import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.exceptions.ValidationException;
+import io.github.nutria.nutria.model.Ingrediente;
 import io.github.nutria.nutria.model.Produto;
+import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 import java.sql.*;
@@ -144,27 +146,33 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public List<Produto> buscarPorNome(String nome) {
+    public List<Produto> buscarPorNome(String nome, int page) {
+        int limite = 4;
+        int offset = (page - 1) * limite;
         String sql = """
                 SELECT * FROM produto
                 WHERE LOWER(nome) LIKE LOWER(?)
+                LIMIT ? OFFSET ?
                 """;
 
-        PreparedStatement psmt = null;
+        PreparedStatement ps = null;
         Connection connect = null;
         ResultSet rs = null;
         List<Produto> produtos = new ArrayList<>();
 
         try {
             connect = ConnectionFactory.connect();
-            psmt = connect.prepareStatement(sql);
-            psmt.setString(1, "%" + nome + "%");
-            rs = psmt.executeQuery();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, "%" + nome + "%");
+            ps.setInt(2,limite);
+            ps.setInt(3,offset);
+            rs = ps.executeQuery();
 
             while (rs.next()) {
                 Produto produto = new Produto();
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
+                produto.setIdUsuario(rs.getLong("id_usuario"));
                 produtos.add(produto);
             }
         } catch (SQLException e) {
@@ -174,13 +182,60 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
-                if (psmt != null) psmt.close();
+                if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
 
+        return produtos;
+    }
+
+    public List<Produto> buscarPorIdUsuario(Long idUsuario, int page){
+        int limite = 4;
+        int offset = (page - 1) * limite;
+        String sql =
+                """
+                SELECT * FROM produto
+                WHERE id_usuario = ? 
+                LIMIT ? OFFSET ?
+                """;
+
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+
+        try{
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1,idUsuario);
+            ps.setInt(2,limite);
+            ps.setInt(3,offset);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                Produto produto = new Produto();
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setIdUsuario(rs.getLong("id_usuario"));
+
+                produtos.add(produto);
+            }
+
+        } catch (SQLException sqle){
+            System.err.println("[DAO ERROR] Erro ao buscar o produto com o id_usuario: " + idUsuario);
+            sqle.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar a produto com id_usuario: " + idUsuario, sqle);
+        } finally {
+            try {
+                if(connect != null) ConnectionFactory.disconnect(connect);
+                if(ps != null) ps.close();
+                if(rs != null) rs.close();
+            } catch (SQLException sqle){
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", sqle);
+            }
+        }
         return produtos;
     }
 
@@ -282,6 +337,63 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         }
 
         return totalProdutos;
+    }
+
+    public int contarPorNome(String nome) {
+        String sql = "SELECT COUNT(*) FROM produto WHERE LOWER(nome) LIKE LOWER(?)";
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int total = 0;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, "%" + nome + "%");
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Erro ao contar produtos filtradas", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco", e);
+            }
+        }
+        return total;
+    }
+    public int contarPorIdProduto(Long idUsuario) {
+        String sql = "SELECT COUNT(*) FROM produto WHERE id_usuario = ?";
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int total = 0;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, idUsuario);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Erro ao contar produtos filtrados", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco", e);
+            }
+        }
+        return total;
     }
 
     /**

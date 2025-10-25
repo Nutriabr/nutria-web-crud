@@ -297,7 +297,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
                 total = rs.getInt(1);
             }
         } catch (SQLException e) {
-            throw new DataAccessException("Erro ao contar ingredientes filtradas", e);
+            throw new DataAccessException("Erro ao contar ingredientes filtrados", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
