@@ -7,6 +7,7 @@ import io.github.nutria.nutria.exceptions.InvalidNumberException;
 import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.exceptions.ValidationException;
 import io.github.nutria.nutria.model.Produto;
+import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 import java.sql.*;
@@ -33,7 +34,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         PreparedStatement ps = null;
         Connection connect = null;
 
-        validateProduto(produto);
+        validarProduto(produto);
 
         try {
             connect = ConnectionFactory.conectar();
@@ -102,37 +103,139 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public int contarTodos() {
-        int totalProdutos = 0;
-        String sql = "SELECT COUNT(*) FROM produto";
-
-        Statement stmt = null;
-        ResultSet rs = null;
+    public Produto buscarPorId(Long id){
+        String sql = "SELECT * FROM produto WHERE id = ?";
+        PreparedStatement ps = null;
         Connection connect = null;
+        ResultSet rs = null;
+        Produto produto = null;
+
+        if (id == null || id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
 
         try {
             connect = ConnectionFactory.conectar();
-            stmt = connect.createStatement();
-            rs = stmt.executeQuery(sql);
 
-            if (rs.next()) {
-                totalProdutos = rs.getInt(1);
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            rs=  ps.executeQuery();
+            if(rs.next()){
+                produto = new Produto();
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setIdUsuario(rs.getLong("id_usuario"));
             }
+
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao realizar a contagem total de produtos");
+            System.err.println("[DAO ERROR] Erro ao buscar o produto: " + id);
             e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao realizar a contagem total de produtos", e);
+            throw new DataAccessException("Erro ao buscar a produto com ID: " + id, e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.desconectar(connect);
-                if (stmt != null) stmt.close();
+                if (ps != null) ps.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return produto;
+    }
+
+    @Override
+    public List<Produto> buscarPorNome(String nome, int page) {
+        int limite = 4;
+        int offset = (page - 1) * limite;
+        String sql = """
+                SELECT * FROM produto
+                WHERE LOWER(nome) LIKE LOWER(?)
+                LIMIT ? OFFSET ?
+                """;
+
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, "%" + nome + "%");
+            ps.setInt(2,limite);
+            ps.setInt(3,offset);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setIdUsuario(rs.getLong("id_usuario"));
+                produtos.add(produto);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar produto pelo nome: " + nome);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar produto pelo nome", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
 
-        return totalProdutos;
+        return produtos;
+    }
+
+    public List<Produto> buscarPorIdUsuario(Long idUsuario, int page){
+        int limite = 4;
+        int offset = (page - 1) * limite;
+        String sql =
+                """
+                SELECT * FROM produto
+                WHERE id_usuario = ? 
+                LIMIT ? OFFSET ?
+                """;
+
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+
+        try{
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1,idUsuario);
+            ps.setInt(2,limite);
+            ps.setInt(3,offset);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                Produto produto = new Produto();
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setIdUsuario(rs.getLong("id_usuario"));
+
+                produtos.add(produto);
+            }
+
+        } catch (SQLException sqle){
+            System.err.println("[DAO ERROR] Erro ao buscar o produto com o id_usuario: " + idUsuario);
+            sqle.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar a produto com id_usuario: " + idUsuario, sqle);
+        } finally {
+            try {
+                if(connect != null) ConnectionFactory.desconectar(connect);
+                if(ps != null) ps.close();
+                if(rs != null) rs.close();
+            } catch (SQLException sqle){
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", sqle);
+            }
+        }
+        return produtos;
     }
 
     @Override
@@ -141,7 +244,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new ValidationException("ID é obrigatório para atualização");
         }
 
-        validateProduto(produto);
+        validarProduto(produto);
 
         String sql = "UPDATE produto SET nome = ? WHERE id = ?";
         PreparedStatement psmt = null;
@@ -201,85 +304,95 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         }
     }
 
-    public List<Produto> findByNome(String nome) {
-        String sql = """
-                SELECT * FROM produto
-                WHERE LOWER(nome) LIKE LOWER(?)
-                """;
+    @Override
+    public int contarTodos() {
+        int totalProdutos = 0;
+        String sql = "SELECT COUNT(*) FROM produto";
 
-        PreparedStatement psmt = null;
-        Connection connect = null;
+        Statement stmt = null;
         ResultSet rs = null;
-        List<Produto> produtos = new ArrayList<>();
+        Connection connect = null;
 
         try {
             connect = ConnectionFactory.conectar();
-            psmt = connect.prepareStatement(sql);
-            psmt.setString(1, "%" + nome + "%");
-            rs = psmt.executeQuery();
+            stmt = connect.createStatement();
+            rs = stmt.executeQuery(sql);
 
-            while (rs.next()) {
-                Produto produto = new Produto();
-                produto.setId(rs.getLong("id"));
-                produto.setNome(rs.getString("nome"));
-                produtos.add(produto);
+            if (rs.next()) {
+                totalProdutos = rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar produto pelo nome: " + nome);
+            System.err.println("[DAO ERROR] Erro ao realizar a contagem total de produtos");
             e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar produto pelo nome", e);
+            throw new DataAccessException("Erro ao realizar a contagem total de produtos", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.desconectar(connect);
-                if (psmt != null) psmt.close();
+                if (stmt != null) stmt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
 
-        return produtos;
+        return totalProdutos;
     }
 
-    public Produto findById(Long id){
-        String sql = "SELECT * FROM produto WHERE id = ?";
-        PreparedStatement ps = null;
+    public int contarPorNome(String nome) {
+        String sql = "SELECT COUNT(*) FROM produto WHERE LOWER(nome) LIKE LOWER(?)";
         Connection connect = null;
+        PreparedStatement ps = null;
         ResultSet rs = null;
-        Produto produto = null;
-
-        if (id == null || id <= 0) {
-            throw new InvalidNumberException("id", "ID deve ser maior que zero");
-        }
+        int total = 0;
 
         try {
             connect = ConnectionFactory.conectar();
-
             ps = connect.prepareStatement(sql);
-            ps.setLong(1, id);
-
-            rs=  ps.executeQuery();
-            if(rs.next()){
-                produto = new Produto();
-                produto.setId(rs.getLong("id"));
-                produto.setNome(rs.getString("nome"));
-                produto.setIdUsuario(rs.getLong("id_usuario"));
+            ps.setString(1, "%" + nome + "%");
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
             }
-
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar o produto: " + id);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar a produto com ID: " + id, e);
+            throw new DataAccessException("Erro ao contar produtos filtradas", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
-                if(rs != null) rs.close();
+                if (rs != null) rs.close();
             } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+                throw new DataAccessException("Erro ao fechar recursos do banco", e);
             }
         }
-        return produto;
+        return total;
+    }
+    public int contarPorIdProduto(Long idUsuario) {
+        String sql = "SELECT COUNT(*) FROM produto WHERE id_usuario = ?";
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int total = 0;
+
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, idUsuario);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Erro ao contar produtos filtrados", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco", e);
+            }
+        }
+        return total;
     }
 
     /**
@@ -289,15 +402,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
      * @throws ValidationException se o objeto for {@code null}.
      * @throws RequiredFieldException se determinado campo obrigatório for {@code null} ou vazio.
      */
-    private void validateProduto(Produto produto) {
-        if (produto == null) {
-            throw new ValidationException("Produto não pode ser nulo");
-        }
-        if (produto.getNome() == null || produto.getNome().isBlank()) {
-            throw new RequiredFieldException("nome");
-        }
-        if (produto.getIdUsuario() == null || produto.getIdUsuario() == null) {
-            throw new RequiredFieldException("usuario");
-        }
+    private void validarProduto(Produto produto) {
+        if (produto == null) throw new ValidationException("Produto não pode ser nulo");
+        if (produto.getNome() == null || produto.getNome().isBlank()) throw new RequiredFieldException("nome");
+        if (produto.getIdUsuario() == null || produto.getIdUsuario() == null) throw new RequiredFieldException("usuario");
     }
 }
