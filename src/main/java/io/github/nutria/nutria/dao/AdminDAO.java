@@ -68,7 +68,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         }
     }
 
-    public Admin buscarPeloId(long id) {
+    public Admin buscarPorId(Long id) {
         if (id <= 0) throw new InvalidNumberException("id", "ID deve ser maior que zero");
 
         String sql = "SELECT * FROM admin WHERE id = ?";
@@ -117,7 +117,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     public boolean alterar(Admin admin) {
         if (admin.getId() == null || admin.getId() <= 0) throw new ValidationException("ID é obrigatório para atualização");
 
-        buscarPeloId(admin.getId());
+        buscarPorId(admin.getId());
 
         Optional<Admin> adminExistentePeloEmail = buscarPorEmail(admin.getEmail());
         if (adminExistentePeloEmail.isPresent() && !adminExistentePeloEmail.get().getId().equals(admin.getId())) {
