@@ -27,7 +27,7 @@ public class AdminUpdateServlet extends HttpServlet {
             }
             Long id = Long.parseLong(idStr);
 
-            Admin admin = adminDAO.findById(id);
+            Admin admin = adminDAO.buscarPeloId(id);
 
             req.setAttribute("id", admin.getId());
             req.setAttribute("nome", admin.getNome());
@@ -58,22 +58,22 @@ public class AdminUpdateServlet extends HttpServlet {
 
         try {
             Long id = Long.valueOf(req.getParameter("id"));
-            Admin admin = adminDAO.findById(id);
+            Admin admin = adminDAO.buscarPeloId(id);
 
-            admin.setNome(req.getParameter("name"));
+            admin.setNome(req.getParameter("nome"));
             admin.setEmail(req.getParameter("email"));
-            admin.setTelefone(req.getParameter("phone").replaceAll("\\s", ""));
-            admin.setCargo(req.getParameter("role"));
-            admin.setFoto(req.getParameter("picture"));
+            admin.setTelefone(req.getParameter("telefone").replaceAll("\\s", ""));
+            admin.setCargo(req.getParameter("cargo"));
+            admin.setFoto(req.getParameter("foto"));
 
-            String birthDateStr = req.getParameter("birth");
+            String birthDateStr = req.getParameter("nascimento");
             if (birthDateStr != null && !birthDateStr.isEmpty()) {
                 admin.setNascimento(Date.valueOf(birthDateStr));
             }
 
-            String newPassword = req.getParameter("password");
+            String newPassword = req.getParameter("senha");
             if (newPassword != null && !newPassword.isEmpty()) {
-                String newHash = PasswordHasher.hashPassword(newPassword);
+                String newHash = PasswordHasher.hashSenha(newPassword);
                 admin.setSenha(newHash);
             }
 

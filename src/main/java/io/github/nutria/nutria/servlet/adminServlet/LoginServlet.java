@@ -2,7 +2,7 @@ package io.github.nutria.nutria.servlet.adminServlet;
 
 import io.github.nutria.nutria.dao.AdminDAO;
 import io.github.nutria.nutria.model.Admin;
-import io.github.nutria.nutria.util.PasswordVerifier;
+import io.github.nutria.nutria.util.PasswordHasher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,23 +20,23 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
-        String password = req.getParameter("password");
+        String senha = req.getParameter("senha");
 
         if (email == null || email.trim().isEmpty() ||
-                password == null || password.trim().isEmpty()) {
+                senha == null || senha.trim().isEmpty()) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             req.setAttribute("error", "Email e senha são obrigatórios");
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
             return;
         }
 
-        Optional<Admin> admin = adminDAO.findByEmail(email);
+        Optional<Admin> admin = adminDAO.buscarPorEmail(email);
 
-        if (admin.isPresent() && PasswordVerifier.checkPassword(password, admin.get().getSenha())) {
+        if (admin.isPresent() && PasswordHasher.verificarSenha(senha, admin.get().getSenha())) {
             HttpSession session = req.getSession();
             session.setAttribute("adminLoggedIn", admin);
             session.setAttribute("adminId", admin.get().getId());
-            session.setAttribute("adminName", admin.get().getNome());
+            session.setAttribute("adminNome", admin.get().getNome());
             session.setAttribute("adminEmail", admin.get().getEmail());
 
             resp.sendRedirect( req.getContextPath()+"/home");

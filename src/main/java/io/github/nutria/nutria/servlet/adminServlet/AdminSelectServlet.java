@@ -15,38 +15,38 @@ import java.util.List;
 
 @WebServlet("/admin/listar")
 public class AdminSelectServlet extends HttpServlet {
-    private static final int TOTAL_ADMINS_PAGE = 4;
+    private static final int TOTAL_ADMINS_PAGINAS = 4;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AdminDAO adminDAO = new AdminDAO();
-        int currentPage = 1;
+        int paginaAtual = 1;
 
-        String pageParam = req.getParameter("page");
-        if (pageParam != null) {
+        String paginaParam = req.getParameter("page");
+        if (paginaParam != null) {
             try {
-                currentPage = Integer.parseInt(pageParam);
+                paginaAtual = Integer.parseInt(paginaParam);
             } catch (NumberFormatException e) {
-                System.err.println("Parâmetro de página inválido: " + pageParam);
+                System.err.println("Parâmetro de página inválido: " + paginaParam);
             }
         }
 
         try {
             int totalAdmins = adminDAO.contarTodos();
-            int totalPages = (int) Math.ceil((double) totalAdmins / TOTAL_ADMINS_PAGE);
+            int totalPaginas = (int) Math.ceil((double) totalAdmins / TOTAL_ADMINS_PAGINAS);
 
-            if (currentPage < 1) {
-                currentPage = 1;
-            } else if (currentPage > totalPages && totalPages > 0) {
-                currentPage = totalPages;
+            if (paginaAtual < 1) {
+                paginaAtual = 1;
+            } else if (paginaAtual > totalPaginas && totalPaginas > 0) {
+                paginaAtual = totalPaginas;
             }
 
-            List<Admin> adminList = adminDAO.buscarTodos(currentPage);
+            List<Admin> adminList = adminDAO.buscarTodos(paginaAtual);
 
             req.setAttribute("adminList", adminList);
             req.setAttribute("totalAdmins", totalAdmins);
-            req.setAttribute("totalPages", totalPages);
-            req.setAttribute("currentPage", currentPage);
+            req.setAttribute("totalPages", totalPaginas);
+            req.setAttribute("currentPage", paginaAtual);
 
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/admin/admins.jsp");
             dispatcher.forward(req, resp);

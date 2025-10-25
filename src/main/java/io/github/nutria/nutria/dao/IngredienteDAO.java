@@ -36,7 +36,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         validateIngrediente(ingrediente);
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setString(1, ingrediente.getNome());
 
@@ -47,7 +47,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             throw new DataAccessException("Erro ao salvar ingrediente", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -68,7 +68,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             psmt = connect.prepareStatement(sql);
             psmt.setString(1, ingrediente.getNome());
             psmt.setLong(2, ingrediente.getId());
@@ -80,7 +80,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             throw new DataAccessException("Erro ao atualizar ingrediente", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (psmt != null) psmt.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -99,7 +99,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
 
@@ -110,7 +110,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             throw new DataAccessException("Erro ao deletar ingrediente", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -131,7 +131,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setInt(1, limite);
             ps.setInt(2, offset);
@@ -150,7 +150,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             throw new DataAccessException("Erro ao buscar todos os ingredientes", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -171,7 +171,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             stmt = connect.createStatement();
             rs = stmt.executeQuery(sql);
 
@@ -184,7 +184,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             throw new DataAccessException("Erro ao realizar a contagem total de ingredientes", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (stmt != null) stmt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -208,7 +208,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         ResultSet rs = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             psmt = connect.prepareStatement(sql);
             psmt.setString(1, "%" + nome + "%");
             rs = psmt.executeQuery();
@@ -225,7 +225,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             throw new DataAccessException("Erro ao buscar ingrediente pelo nome", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (psmt != null) psmt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -247,7 +247,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         }
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
@@ -265,7 +265,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             throw new DataAccessException("Erro ao buscar o ingrediente com ID: " + id, e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if(rs != null) rs.close();
             } catch (SQLException e) {

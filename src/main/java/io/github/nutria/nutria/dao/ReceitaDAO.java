@@ -39,7 +39,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         PreparedStatement ps = null;
         Connection connect = null;
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             ps = connect.prepareStatement(sql);
 
@@ -56,7 +56,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             throw new DataAccessException("Erro ao salvar receita", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
 
             } catch (SQLException e) {
@@ -78,7 +78,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         int result = 0;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             psmt = connect.prepareStatement(sql);
             psmt.setString(1,receita.getPorcao());
             psmt.setLong(2,receita.getIdProduto());
@@ -92,7 +92,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             throw new DataAccessException("Erro ao atualizar receita", sqle);
         } finally {
             try {
-                if(connect != null) ConnectionFactory.disconnect(connect);
+                if(connect != null) ConnectionFactory.desconectar(connect);
                 if(psmt != null) psmt.close();
             } catch (SQLException e){
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -117,7 +117,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             ps = connect.prepareStatement(sql);
             ps.setInt(1, limite);
@@ -142,7 +142,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         } finally {
             // 11. Fechar ResultSet, PreparedStatement e conexão
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -165,7 +165,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             stmt = connect.createStatement();
             rs = stmt.executeQuery(sql);
@@ -179,7 +179,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             throw new DataAccessException("Erro ao contar as receitas", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (stmt != null) stmt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -202,7 +202,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         }
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
@@ -215,7 +215,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             throw new DataAccessException("Erro ao deletar a receita com ID: " + id, e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -236,7 +236,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         List<Receita> receitas = new ArrayList<>();
 
         try{
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             psmt = connect.prepareStatement(sql);
             psmt.setString(1,"%" + porcao + "%");
             rs = psmt.executeQuery();
@@ -255,7 +255,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             throw new DataAccessException("Erro ao buscar a receita com porcao: " + porcao, sqle);
         } finally {
             try {
-                if(connect != null) ConnectionFactory.disconnect(connect);
+                if(connect != null) ConnectionFactory.desconectar(connect);
                 if(psmt != null) psmt.close();
                 if(rs != null) rs.close();
             } catch (SQLException sqle){
@@ -277,7 +277,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
         }
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
@@ -296,7 +296,7 @@ public class ReceitaDAO implements GenericDAO<Receita, Long> {
             throw new DataAccessException("Erro ao buscar a receita com ID: " + id, e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if(rs != null) rs.close();
             } catch (SQLException e) {
