@@ -33,7 +33,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         PreparedStatement ps = null;
         Connection connect = null;
 
-        validateIngrediente(ingrediente);
+        validarIngrediente(ingrediente);
 
         try {
             connect = ConnectionFactory.connect();
@@ -56,12 +56,141 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
     }
 
     @Override
+    public List<Ingrediente> buscarTodos(int page) {
+        int limite = 4;
+        int offset = (page - 1) * limite;
+
+        String sql = "SELECT * FROM ingrediente LIMIT ? OFFSET ?";
+
+        List<Ingrediente> ingredientesArrayList = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setInt(1, limite);
+            ps.setInt(2, offset);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Ingrediente ingrediente = new Ingrediente();
+                ingrediente.setId(rs.getLong("id"));
+                ingrediente.setNome(rs.getString("nome"));
+                ingredientesArrayList.add(ingrediente);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar todos os ingredientes");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar todos os ingredientes", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+
+        return ingredientesArrayList;
+    }
+
+    @Override
+    public Ingrediente buscarPorId(Long id){
+        String sql = "SELECT * FROM ingrediente WHERE id = ?";
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        Ingrediente ingrediente = null;
+
+        if (id == null || id <= 0) {
+            throw new InvalidNumberException("id", "ID deve ser maior que zero");
+        }
+
+        try {
+            connect = ConnectionFactory.connect();
+
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            rs=  ps.executeQuery();
+            if(rs.next()){
+                ingrediente = new Ingrediente();
+                ingrediente.setId(rs.getLong("id"));
+                ingrediente.setNome(rs.getString("nome"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar o ingrediente: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar o ingrediente com ID: " + id, e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return ingrediente;
+    }
+
+    @Override
+    public List<Ingrediente> buscarPorNome(String nome, int page) {
+        int limite = 4;
+        int offset = (page - 1) * limite;
+        String sql = """
+                SELECT * FROM ingrediente
+                WHERE LOWER(nome) LIKE LOWER(?)
+                LIMIT ? OFFSET ?
+                """;
+
+        List<Ingrediente> ingredientes = new ArrayList<>();
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, "%" + nome + "%");
+            ps.setInt(2,limite);
+            ps.setInt(3,offset);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Ingrediente ingrediente = new Ingrediente();
+                ingrediente.setId(rs.getLong("id"));
+                ingrediente.setNome(rs.getString("nome"));
+                ingredientes.add(ingrediente);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar ingrediente pelo nome: " + nome);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar ingrediente pelo nome", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return ingredientes;
+    }
+
+    @Override
     public boolean alterar(Ingrediente ingrediente) {
         if (ingrediente.getId() == null || ingrediente.getId() <= 0) {
             throw new ValidationException("ID é obrigatório para atualização");
         }
 
-        validateIngrediente(ingrediente);
+        validarIngrediente(ingrediente);
 
         String sql = "UPDATE ingrediente SET nome = ? WHERE id = ?";
         PreparedStatement psmt = null;
@@ -119,49 +248,6 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
     }
 
     @Override
-    public List<Ingrediente> buscarTodos(int page) {
-        int limite = 4;
-        int offset = (page - 1) * limite;
-
-        String sql = "SELECT * FROM ingrediente LIMIT ? OFFSET ?";
-
-        List<Ingrediente> ingredientesArrayList = new ArrayList<>();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection connect = null;
-
-        try {
-            connect = ConnectionFactory.connect();
-            ps = connect.prepareStatement(sql);
-            ps.setInt(1, limite);
-            ps.setInt(2, offset);
-
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Ingrediente ingrediente = new Ingrediente();
-                ingrediente.setId(rs.getLong("id"));
-                ingrediente.setNome(rs.getString("nome"));
-                ingredientesArrayList.add(ingrediente);
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar todos os ingredientes");
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar todos os ingredientes", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-
-        return ingredientesArrayList;
-    }
-
-    @Override
     public int contarTodos() {
         int totalIngredientes = 0;
         String sql = "SELECT COUNT(*) FROM ingrediente";
@@ -195,86 +281,34 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         return totalIngredientes;
     }
 
-    @Override
-    public List<Ingrediente> findByNome(String nome) {
-        String sql = """
-                SELECT * FROM ingrediente
-                WHERE LOWER(nome) LIKE LOWER(?)
-                """;
-
-        List<Ingrediente> ingredientes = new ArrayList<>();
-        PreparedStatement psmt = null;
+    public int contarPorNome(String nome) {
+        String sql = "SELECT COUNT(*) FROM ingrediente WHERE LOWER(nome) LIKE LOWER(?)";
         Connection connect = null;
-        ResultSet rs = null;
-
-        try {
-            connect = ConnectionFactory.connect();
-            psmt = connect.prepareStatement(sql);
-            psmt.setString(1, "%" + nome + "%");
-            rs = psmt.executeQuery();
-
-            while (rs.next()) {
-                Ingrediente ingrediente = new Ingrediente();
-                ingrediente.setId(rs.getLong("id"));
-                ingrediente.setNome(rs.getString("nome"));
-                ingredientes.add(ingrediente);
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar ingrediente pelo nome: " + nome);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar ingrediente pelo nome", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (psmt != null) psmt.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return ingredientes;
-    }
-
-    public Ingrediente findById(Long id){
-        String sql = "SELECT * FROM ingrediente WHERE id = ?";
         PreparedStatement ps = null;
-        Connection connect = null;
         ResultSet rs = null;
-        Ingrediente ingrediente = null;
-
-        if (id == null || id <= 0) {
-            throw new InvalidNumberException("id", "ID deve ser maior que zero");
-        }
+        int total = 0;
 
         try {
             connect = ConnectionFactory.connect();
-
             ps = connect.prepareStatement(sql);
-            ps.setLong(1, id);
-
-            rs=  ps.executeQuery();
-            if(rs.next()){
-                ingrediente = new Ingrediente();
-                ingrediente.setId(rs.getLong("id"));
-                ingrediente.setNome(rs.getString("nome"));
+            ps.setString(1, "%" + nome + "%");
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
             }
-
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar o ingrediente: " + id);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar o ingrediente com ID: " + id, e);
+            throw new DataAccessException("Erro ao contar ingredientes filtrados", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
                 if (ps != null) ps.close();
-                if(rs != null) rs.close();
+                if (rs != null) rs.close();
             } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+                throw new DataAccessException("Erro ao fechar recursos do banco", e);
             }
         }
-        return ingrediente;
+        return total;
     }
-
     /**
      * Valida campos obrigatórios de um {@link Ingrediente}.
      *
@@ -282,12 +316,8 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
      * @throws ValidationException se o objeto for {@code null}.
      * @throws RequiredFieldException se o nome do {@link Ingrediente} for {@code null} ou vazio.
      */
-    private void validateIngrediente(Ingrediente ingrediente) {
-        if (ingrediente == null) {
-            throw new ValidationException("Ingrediente não pode ser nulo");
-        }
-        if (ingrediente.getNome() == null || ingrediente.getNome().isBlank()) {
-            throw new RequiredFieldException("nome");
-        }
+    private void validarIngrediente(Ingrediente ingrediente) {
+        if (ingrediente == null) throw new ValidationException("Ingrediente não pode ser nulo");
+        if (ingrediente.getNome() == null || ingrediente.getNome().isBlank()) throw new RequiredFieldException("nome");
     }
 }
