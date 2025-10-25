@@ -36,6 +36,7 @@ public class UsuarioInsertServlet extends HttpServlet {
 
             usuarioDAO.inserir(usuario);
 
+            req.getSession().setAttribute("successMessage", "Usuário inserido com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/usuario/listar?page=" + (lastPage + 1));
         }  catch (DuplicateEmailException dee) {
             System.err.println("[ERRO DE DUPLICIDADE]: " + dee);
