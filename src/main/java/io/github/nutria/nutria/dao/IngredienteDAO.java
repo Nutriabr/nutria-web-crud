@@ -140,22 +140,27 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
     }
 
     @Override
-    public List<Ingrediente> buscarPorNome(String nome) {
+    public List<Ingrediente> buscarPorNome(String nome, int page) {
+        int limite = 4;
+        int offset = (page - 1) * limite;
         String sql = """
                 SELECT * FROM ingrediente
                 WHERE LOWER(nome) LIKE LOWER(?)
+                LIMIT ? OFFSET ?
                 """;
 
         List<Ingrediente> ingredientes = new ArrayList<>();
-        PreparedStatement psmt = null;
+        PreparedStatement ps = null;
         Connection connect = null;
         ResultSet rs = null;
 
         try {
             connect = ConnectionFactory.connect();
-            psmt = connect.prepareStatement(sql);
-            psmt.setString(1, "%" + nome + "%");
-            rs = psmt.executeQuery();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, "%" + nome + "%");
+            ps.setInt(2,limite);
+            ps.setInt(3,offset);
+            rs = ps.executeQuery();
 
             while (rs.next()) {
                 Ingrediente ingrediente = new Ingrediente();
@@ -170,7 +175,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         } finally {
             try {
                 if (connect != null) ConnectionFactory.disconnect(connect);
-                if (psmt != null) psmt.close();
+                if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -286,7 +291,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         try {
             connect = ConnectionFactory.connect();
             ps = connect.prepareStatement(sql);
-            ps.setString(1, nome);
+            ps.setString(1, "%" + nome + "%");
             rs = ps.executeQuery();
             if (rs.next()) {
                 total = rs.getInt(1);
