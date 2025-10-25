@@ -70,6 +70,7 @@ public class UsuarioUpdateServlet extends HttpServlet {
 
             usuarioDAO.alterar(usuario);
 
+            req.getSession().setAttribute("successMessage", "Usuário atualizado com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/usuario/listar?page=" + (lastPage + 1));
         } catch (DuplicateEmailException dee) {
             System.err.println("[ERRO DE DUPLICIDADE]: " + dee);
