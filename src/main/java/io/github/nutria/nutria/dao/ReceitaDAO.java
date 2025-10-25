@@ -24,7 +24,7 @@ import java.util.List;
  * @author Mariana Marrão
  * @version 1.0
  */
-public class ReceitaDAO implements IReceitaDAO {
+public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
 
     public boolean inserir(Receita receita) {
         if (receita == null) throw new ValidationException("Receita não pode ser nulo");
@@ -65,12 +65,12 @@ public class ReceitaDAO implements IReceitaDAO {
         }
     }
 
-    public List<Receita> buscarTodos(int page, String ordem) {
+    public List<Receita> buscarTodos(int page) {
 
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM receita ORDER BY " + ordem + " LIMIT " + limite + " OFFSET " + offset;
+        String sql = "SELECT * FROM receita LIMIT ? OFFSET ?";
 
         List<Receita> receitasArrayList = new ArrayList<>();
 
@@ -82,6 +82,8 @@ public class ReceitaDAO implements IReceitaDAO {
             connect = ConnectionFactory.connect();
 
             ps = connect.prepareStatement(sql);
+            ps.setInt(1, limite);
+            ps.setInt(2, offset);
 
             rs = ps.executeQuery();
 
