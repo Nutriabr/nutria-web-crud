@@ -21,5 +21,5 @@ public interface IProdutoDAO {
      * @return uma lista de objetos {@link Produto} correspondentes ao nome informado.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
-    List<Produto> findByNome(String nome);
+    List<Produto> buscarPorNome(String nome, int page);
 }
