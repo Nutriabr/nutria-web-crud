@@ -19,18 +19,18 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
         ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
 
         try {
-            String idStr = req.getParameter("idReceita");
-            String id2Str = req.getParameter("idIngrediente");
-            if (idStr == null || idStr.isEmpty() && id2Str == null || id2Str.isEmpty()) {
+            String idStr = req.getParameter("id");
+            if (idStr == null || idStr.isEmpty()) {
                 throw new InvalidNumberException("ID", idStr);
             }
 
-            Long idReceita = Long.parseLong(idStr);
-            Long idIngrediente = Long.parseLong(id2Str);
+            Long id = Long.parseLong(idStr);
 
-            receitaIngrediente = receitaIngredienteDAO.findById(idReceita, idIngrediente);
+            receitaIngrediente = receitaIngredienteDAO.buscarPorId(id);
 
             Double quantidade = receitaIngrediente.getQuantidade();
+
+            req.setAttribute("id", receitaIngrediente.getId());
             req.setAttribute("quantidade", quantidade);
 
             req.getRequestDispatcher("/WEB-INF/views/receitaIngrediente/editar.jsp").forward(req, resp);
@@ -52,20 +52,18 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ReceitaIngredienteDAO receitaIngredienteDAO = new ReceitaIngredienteDAO();
 
-        int lastPage = (int) Math.ceil((double) receitaIngredienteDAO.countAll() / 4);
+        int lastPage = (int) Math.ceil((double) receitaIngredienteDAO.contarTodos() / 4);
 
 
         try {
-            String id1 = req.getParameter("idReceita");
-            Long idReceita = Long.parseLong(String.valueOf(id1));
-            String id2 = req.getParameter("idIngrediente");
-            Long idIngrediente = Long.parseLong(String.valueOf(id2));
+            String idStr = req.getParameter("id");
+            Long id = Long.parseLong(String.valueOf(idStr));
 
-            ReceitaIngrediente receitaIngrediente = receitaIngredienteDAO.findById(idReceita, idIngrediente);
+            ReceitaIngrediente receitaIngrediente = receitaIngredienteDAO.buscarPorId(id);
 
             receitaIngrediente.setQuantidade(Double.parseDouble(req.getParameter("quantity")));
 
-            receitaIngredienteDAO.update(receitaIngrediente);
+            receitaIngredienteDAO.alterar(receitaIngrediente);
 
             resp.sendRedirect(req.getContextPath() + "/receitaIngrediente/listar?page=" + (lastPage + 1));
         } catch (RequiredFieldException rfe) {
