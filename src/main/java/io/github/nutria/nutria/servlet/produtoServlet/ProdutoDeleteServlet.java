@@ -15,7 +15,7 @@ import java.io.IOException;
 public class ProdutoDeleteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String idStr = req.getParameter("input-id");
+        String idStr = req.getParameter("id");
         Long id = Long.parseLong(idStr);
 
         try {
