@@ -25,7 +25,7 @@ public class ProdutoUpdateServlet extends HttpServlet {
             }
             Long id = Long.parseLong(idStr);
 
-            Produto produto = produtoDAO.findById(id);
+            Produto produto = produtoDAO.buscarPorId(id);
 
             req.setAttribute("id", produto.getId());
             req.setAttribute("nome", produto.getNome());
@@ -59,7 +59,7 @@ public class ProdutoUpdateServlet extends HttpServlet {
             }
 
             Long id = Long.parseLong(idStr);
-            Produto produto = produtoDAO.findById(id);
+            Produto produto = produtoDAO.buscarPorId(id);
 
             produto.setNome(req.getParameter("nome"));
 
