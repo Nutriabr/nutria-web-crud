@@ -116,7 +116,8 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return receitasArrayList;
     }
 
-    public Receita buscarPorId(Long id){
+    public Receita buscarPorId (Long id){
+
         String sql = "SELECT * FROM receita WHERE id = ?";
         PreparedStatement ps = null;
         Connection connect = null;
@@ -132,7 +133,6 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
 
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
-
             rs=  ps.executeQuery();
             if(rs.next()){
                 receita = new Receita();
@@ -157,24 +157,74 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return receita;
     }
 
-    @Override
-    public List<Receita> buscarPorPorcao(String porcao){
+    public List<Receita> buscarPorIdProduto(Long idProduto, int page){
+        int limite = 4;
+        int offset = (page - 1) * limite;
         String sql =
                 """
                 SELECT * FROM receita
-                WHERE LOWER(porcao) LIKE LOWER(?)
+                WHERE id_produto = ? 
+                LIMIT ? OFFSET ?
                 """;
 
-        PreparedStatement psmt = null;
+        PreparedStatement ps = null;
         Connection connect = null;
         ResultSet rs = null;
         List<Receita> receitas = new ArrayList<>();
 
         try{
             connect = ConnectionFactory.connect();
-            psmt = connect.prepareStatement(sql);
-            psmt.setString(1,"%" + porcao + "%");
-            rs = psmt.executeQuery();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1,idProduto);
+            ps.setInt(2,limite);
+            ps.setInt(3,offset);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                Receita receita = new Receita();
+                receita.setId(rs.getLong("id"));
+                receita.setPorcao(rs.getString("porcao"));
+                receita.setIdProduto(rs.getLong("id_produto"));
+
+                receitas.add(receita);
+            }
+
+        } catch (SQLException sqle){
+            System.err.println("[DAO ERROR] Erro ao buscar a receita com o id_produto: " + idProduto);
+            sqle.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar a receita com id_produto: " + idProduto, sqle);
+        } finally {
+            try {
+                if(connect != null) ConnectionFactory.disconnect(connect);
+                if(ps != null) ps.close();
+                if(rs != null) rs.close();
+            } catch (SQLException sqle){
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", sqle);
+            }
+        }
+        return receitas;
+    }
+    public List<Receita> buscarPorPorcao(String porcao, int page){
+        int limite = 4;
+        int offset = (page - 1) * limite;
+        String sql =
+                """
+                SELECT * FROM receita
+                WHERE LOWER(porcao) LIKE LOWER(?) 
+                LIMIT ? OFFSET ?
+                """;
+
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        List<Receita> receitas = new ArrayList<>();
+
+        try{
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1,"%" + porcao + "%");
+            ps.setInt(2,limite);
+            ps.setInt(3,offset);
+            rs = ps.executeQuery();
             while (rs.next()){
                 Receita receita = new Receita();
                 receita.setId(rs.getLong("id"));
@@ -191,7 +241,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         } finally {
             try {
                 if(connect != null) ConnectionFactory.disconnect(connect);
-                if(psmt != null) psmt.close();
+                if(ps != null) ps.close();
                 if(rs != null) rs.close();
             } catch (SQLException sqle){
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", sqle);
@@ -199,6 +249,8 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         }
         return receitas;
     }
+
+
 
     public boolean alterar(Receita receita){
         String sql = "UPDATE receita SET porcao = ?, id_produto = ? WHERE id = ?";
@@ -301,5 +353,92 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         }
 
         return totalReceitas;
+    }
+
+    public int contarPorPorcao(String porcao) {
+        String sql = "SELECT COUNT(*) FROM receita WHERE LOWER(porcao) LIKE LOWER(?)";
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int total = 0;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, "%" + porcao + "%");
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Erro ao contar receitas filtradas", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco", e);
+            }
+        }
+        return total;
+    }
+
+    public int contarPorId(Long id) {
+        String sql = "SELECT COUNT(*) FROM receita WHERE id = ?";
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int total = 0;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Erro ao contar receitas filtradas", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco", e);
+            }
+        }
+        return total;
+    }
+
+    public int contarPorIdProduto(Long idProduto) {
+        String sql = "SELECT COUNT(*) FROM receita WHERE id_produto = ?";
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int total = 0;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, idProduto);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Erro ao contar receitas filtradas", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco", e);
+            }
+        }
+        return total;
     }
 }

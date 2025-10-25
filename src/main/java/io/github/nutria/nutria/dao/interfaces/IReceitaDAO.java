@@ -21,5 +21,5 @@ public interface IReceitaDAO {
      * @return uma lista de objetos {@link Receita} correspondentes à porção informada.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
-    List<Receita> buscarPorPorcao(String porcao);
+    List<Receita> buscarPorPorcao(String porcao, int page);
 }
