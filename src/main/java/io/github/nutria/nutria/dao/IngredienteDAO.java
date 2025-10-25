@@ -276,6 +276,34 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         return totalIngredientes;
     }
 
+    public int contarPorNome(String nome) {
+        String sql = "SELECT COUNT(*) FROM ingrediente WHERE LOWER(nome) LIKE LOWER(?)";
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int total = 0;
+
+        try {
+            connect = ConnectionFactory.connect();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, nome);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Erro ao contar ingredientes filtradas", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco", e);
+            }
+        }
+        return total;
+    }
     /**
      * Valida campos obrigatórios de um {@link Ingrediente}.
      *

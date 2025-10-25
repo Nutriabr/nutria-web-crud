@@ -49,12 +49,6 @@ public class ReceitaSelectServlet extends HttpServlet {
                     currentPage = totalPages;
                 }
                 receitasList = receitaDAO.buscarTodos(currentPage);
-                req.setAttribute("totalReceitas",totalReceitas);
-                req.setAttribute("receitasList", receitasList);
-                req.setAttribute("currentPage", currentPage);
-                req.setAttribute("totalPages",totalPages);
-                req.setAttribute("filtro",filtro);
-                req.getRequestDispatcher("/WEB-INF/views/receita/receitas.jsp").forward(req, resp);
             }
             else {
                 try {
@@ -75,12 +69,6 @@ public class ReceitaSelectServlet extends HttpServlet {
 
                     totalReceitas = receitaDAO.contarPorId(numero) + receitaDAO.contarPorIdProduto(numero);
                     totalPages = (int) Math.ceil((double) totalReceitas / TOTAL_RECEITA_PAGE);
-                    req.setAttribute("totalReceitas",totalReceitas);
-                    req.setAttribute("receitasList",receitasList);
-                    req.setAttribute("currentPage",currentPage);
-                    req.setAttribute("totalPages",totalPages);
-                    req.setAttribute("filtro",filtro);
-                    req.getRequestDispatcher("/WEB-INF/views/receita/receitas.jsp").forward(req, resp);
 
                 } catch (NumberFormatException nfe){
                     receitasList = receitaDAO.buscarPorPorcao(filtro,currentPage);
@@ -92,14 +80,14 @@ public class ReceitaSelectServlet extends HttpServlet {
                     } else if (currentPage > totalPages && totalPages > 0) {
                         currentPage = totalPages;
                     }
-                    req.setAttribute("totalReceitas",totalReceitas);
-                    req.setAttribute("receitasList", receitasList);
-                    req.setAttribute("currentPage", currentPage);
-                    req.setAttribute("totalPages",totalPages);
-                    req.setAttribute("filtro",filtro);
-                    req.getRequestDispatcher("/WEB-INF/views/receita/receitas.jsp").forward(req, resp);
                 }
             }
+            req.setAttribute("totalReceitas",totalReceitas);
+            req.setAttribute("receitasList", receitasList);
+            req.setAttribute("currentPage", currentPage);
+            req.setAttribute("totalPages",totalPages);
+            req.setAttribute("filtro",filtro);
+            req.getRequestDispatcher("/WEB-INF/views/receita/receitas.jsp").forward(req, resp);
 
 
         } catch (DataAccessException e) {
