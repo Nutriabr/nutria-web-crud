@@ -23,7 +23,7 @@
     <div class="user">
         <i class="fa-solid fa-user-circle"></i>
         <span><%
-            String nome = (String) session.getAttribute("adminName");
+            String nome = (String) session.getAttribute("adminNome");
             if (nome != null) {
                 int primeiroEspaco = nome.indexOf(" ");
                 int segundoEspaco = nome.indexOf(" ", primeiroEspaco + 1);

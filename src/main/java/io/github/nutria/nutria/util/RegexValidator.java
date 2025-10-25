@@ -1,6 +1,6 @@
 package io.github.nutria.nutria.util;
 
-public class ValidadorRegex {
+public class RegexValidator {
     public static boolean ehEmailValido(String email) {
         return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
