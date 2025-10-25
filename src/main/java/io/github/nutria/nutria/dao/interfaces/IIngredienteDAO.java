@@ -21,5 +21,5 @@ public interface IIngredienteDAO {
      * @return uma lista de objetos {@link Ingrediente} correspondentes ao nome informado.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
-    List<Ingrediente> findByNome(String nome);
+    List<Ingrediente> buscarPorNome(String nome, int page);
 }
