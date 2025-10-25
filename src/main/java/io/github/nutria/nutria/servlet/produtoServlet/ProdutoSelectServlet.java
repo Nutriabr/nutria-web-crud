@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/produto/listar")
@@ -21,7 +22,10 @@ ProdutoSelectServlet extends HttpServlet {
         ProdutoDAO produtoDAO = new ProdutoDAO();
         int currentPage = 1;
         String pageParam = req.getParameter("page");
-
+        String filtro = req.getParameter("busca");
+        List<Produto> produtosList = new ArrayList<>();
+        List<Long> idsAdicionados = new ArrayList<>();
+        int totalProdutos;
 
         if(pageParam != null){
             try{
@@ -32,7 +36,32 @@ ProdutoSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalProdutos = produtoDAO.contarTodos();
+            if(filtro == null || filtro.isEmpty()){
+                produtosList = produtoDAO.buscarTodos(currentPage);
+                totalProdutos = produtoDAO.contarTodos();
+
+            } else {
+                try{
+                    Long numero = Long.parseLong(filtro);
+                    Produto produto = produtoDAO.buscarPorId(numero);
+                    if (produto != null) {
+                        produtosList.add(produto);
+                        idsAdicionados.add(produto.getId());
+                    }
+
+                    List<Produto> produtosComIdUsuario = produtoDAO.buscarPorIdUsuario(numero, currentPage);
+                    for (Produto p : produtosComIdUsuario) {
+                        if (!idsAdicionados.contains(p.getId())) {
+                            produtosList.add(p);
+                            idsAdicionados.add(p.getId());
+                        }
+                    }
+                }catch (NumberFormatException nfe){
+                    produtosList = produtoDAO.buscarPorNome(filtro,currentPage);
+
+                }
+                totalProdutos =  produtosList.size();
+            }
             int totalPages = (int) Math.ceil((double) totalProdutos / TOTAL_PRODUTO_PAGE);
             if (totalPages == 0) totalPages = 1;
             if(currentPage < 1){
@@ -40,11 +69,11 @@ ProdutoSelectServlet extends HttpServlet {
             } else if (currentPage > totalPages && totalPages > 0) {
                 currentPage = totalPages;
             }
-            List<Produto> produtoList = produtoDAO.buscarTodos(currentPage);
             req.setAttribute("totalProdutos",totalProdutos);
-            req.setAttribute("produtosList", produtoList);
+            req.setAttribute("produtosList", produtosList);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("totalPages",totalPages);
+            req.setAttribute("filtro", filtro);
             req.getRequestDispatcher("/WEB-INF/views/produto/produtos.jsp").forward(req, resp);
 
         } catch (DataAccessException e) {
