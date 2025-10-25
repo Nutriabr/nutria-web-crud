@@ -47,25 +47,25 @@
             <input type="hidden" name="id" value="<%= id %>">
 
             <label for="name-input">Nome</label>
-            <input class="parameter-input" type="text" id="name-input" name="name" value="<%= nome %>">
+            <input class="parameter-input" type="text" id="name-input" name="nome" value="<%= nome %>">
 
             <label for="email-input">E-mail</label>
             <input class="parameter-input" type="email" id="email-input" name="email" oninput="validateForm()" value="<%= email %>">
 
             <label for="password-input">Nova Senha</label>
-            <input class="parameter-input" type="password" id="password-input" name="password" placeholder="Deixe em branco para não alterar">
+            <input class="parameter-input" type="password" id="password-input" name="senha" placeholder="Deixe em branco para não alterar">
 
             <label for="phone-input">Telefone</label>
-            <input class="parameter-input" type="text" id="phone-input" name="phone" value="<%= telefone %>">
+            <input class="parameter-input" type="text" id="phone-input" name="telefone" value="<%= telefone %>">
 
             <label for="birth-input">Data de nascimento</label>
-            <input class="parameter-input" type="date" id="birth-input" name="birth" value="<%= nascimento %>">
+            <input class="parameter-input" type="date" id="birth-input" name="nascimento" value="<%= nascimento %>">
 
             <label for="role-input">Cargo</label>
-            <input class="parameter-input" type="text" id="role-input" name="role" value="<%= cargo %>">
+            <input class="parameter-input" type="text" id="role-input" name="cargo" value="<%= cargo %>">
 
             <label for="picture-input">Foto (URL)</label>
-            <input class="parameter-input" type="text" id="picture-input" name="picture" value="<%= foto %>">
+            <input class="parameter-input" type="text" id="picture-input" name="foto" value="<%= foto %>">
 
             <div class="submit-content">
                 <a href="<%= contextPath %>/admin/listar" id="btn-cancel">Cancelar</a>
@@ -76,7 +76,7 @@
 <%--        <% } %>--%>
     </div>
 </main>
-<script src="${pageContext.request.contextPath}/assets/js/validator.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/validador.js"></script>
 
 </body>
 </html>
