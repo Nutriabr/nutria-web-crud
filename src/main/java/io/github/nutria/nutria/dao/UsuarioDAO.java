@@ -178,117 +178,65 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         }
     }
 
-    public List<Usuario> buscarPorNomeDeUsuarioOuDominioEmail(String valorBuscado, int page) {
-            Connection connect = null;
-            PreparedStatement ps = null;
-            ResultSet rs = null;
-
-            int limit = 4;
-            int offset = (page - 1) * limit;
-
-            List<Usuario> usuarios = new ArrayList<>();
-
-            try {
-                connect = ConnectionFactory.conectar();
-
-                String sql = "SELECT * FROM usuario WHERE nome LIKE ? OR email LIKE ? LIMIT ? OFFSET ?";
-                ps = connect.prepareStatement(sql);
-                ps.setString(1, "%" + valorBuscado + "%");
-                ps.setString(2, "%" + valorBuscado + "%");
-                ps.setInt(3, limit);
-                ps.setInt(4, offset);
-
-                rs = ps.executeQuery();
-
-                while (rs.next()) {
-                    Usuario usuario = new Usuario(
-                            rs.getLong("id"),
-                            rs.getString("nome"),
-                            rs.getString("email"),
-                            rs.getString("senha"),
-                            rs.getString("telefone"),
-                            rs.getString("empresa"),
-                            rs.getString("foto")
-                    );
-
-                    usuarios.add(usuario);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (connect != null) ConnectionFactory.desconectar(connect);
-                    if (ps != null) ps.close();
-                    if (rs != null) rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return usuarios;
-        }
-
-    public int contarTodosFiltrados(String valorBuscado) {
-        int totalUsuarios = 0;
-
-        String sql = "SELECT COUNT(*) FROM usuario WHERE email LIKE ? OR nome LIKE ?";
-
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Connection connect = null;
-
-        try {
-            connect = ConnectionFactory.conectar();
-
-
-
-            pstmt = connect.prepareStatement(sql);
-            pstmt.setString(1, "%" + valorBuscado + "%");
-            pstmt.setString(2, "%" + valorBuscado + "%");
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                totalUsuarios = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao realizar a contagem total de usuarios");
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao realizar a contagem total de usuarios", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.desconectar(connect);
-                if (pstmt != null) pstmt.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-
-        return totalUsuarios;
-    }
-
-    /**
-     * Busca um registro de {@link Usuario} pelo email informado.
-     *
-     * @param email o endereço de email que será utilizado na busca.
-     * @return um {@link Optional} contendo o {@link Usuario} correspondente ao email informado, ou vazio se não encontrado.
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     */
     @Override
     public Optional<Usuario> buscarPorEmail(String email) {
         return Optional.empty();
     }
 
-    /**
-     * Adicionar documentação
-     *
-     * @param nomeFiltro
-     * @param valorBuscado
-     * @param page
-     */
     @Override
     public List<Usuario> buscarPorNomeDeUsuario(String nomeFiltro, String valorBuscado, int page) {
         return List.of();
+    }
+
+    @Override
+    public List<Usuario> buscarPorNomeDeUsuarioOuDominioEmail(String valorBuscado, int page) {
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        int limit = 4;
+        int offset = (page - 1) * limit;
+
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.conectar();
+
+            String sql = "SELECT * FROM usuario WHERE nome LIKE ? OR email LIKE ? LIMIT ? OFFSET ?";
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, "%" + valorBuscado + "%");
+            ps.setString(2, "%" + valorBuscado + "%");
+            ps.setInt(3, limit);
+            ps.setInt(4, offset);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Usuario usuario = new Usuario(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getString("empresa"),
+                        rs.getString("foto")
+                );
+
+                usuarios.add(usuario);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return usuarios;
     }
 
     @Override
@@ -337,13 +285,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return Optional.empty();
     }
 
-    /**
-     * Verifica se há um registro de {@link Usuario} com o telefone informado.
-     *
-     * @param fone o telefone que será utilizado na busca.
-     * @return {@code true} se houver um registro; {@code false} caso contrário.
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     */
     @Override
     public boolean buscarPorTelefoneUsado(String fone) {
         return false;
@@ -462,6 +403,46 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             try {
                 if (connect != null) ConnectionFactory.desconectar(connect);
                 if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+
+        return totalUsuarios;
+    }
+
+    @Override
+    public int contarTodosFiltrados(String valorBuscado) {
+        int totalUsuarios = 0;
+
+        String sql = "SELECT COUNT(*) FROM usuario WHERE email LIKE ? OR nome LIKE ?";
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.conectar();
+
+
+
+            pstmt = connect.prepareStatement(sql);
+            pstmt.setString(1, "%" + valorBuscado + "%");
+            pstmt.setString(2, "%" + valorBuscado + "%");
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                totalUsuarios = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao realizar a contagem total de usuarios");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao realizar a contagem total de usuarios", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (pstmt != null) pstmt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
