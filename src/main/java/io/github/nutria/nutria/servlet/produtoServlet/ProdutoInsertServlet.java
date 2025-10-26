@@ -22,16 +22,11 @@ public class ProdutoInsertServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String nome;
+        String nome = req.getParameter("nome");
+        Long idUsuario = Long.parseLong(req.getParameter("idUsuario"));
         boolean success;
-        Produto produto;
+        Produto produto = new Produto(nome,idUsuario);
         ProdutoDAO produtoDAO = new ProdutoDAO();
-
-
-        nome = req.getParameter("nome");
-
-        produto = new Produto(nome);
-
 
         try {
             success = produtoDAO.inserir(produto);

@@ -30,6 +30,11 @@ public interface IUsuarioDAO {
     List<Usuario> buscarPorNomeDeUsuario(String nomeFiltro, String valorBuscado, int page);
 
     /**
+     * Adicionar documentação
+     */
+    List<Usuario> buscarPorNomeDeUsuarioOuDominioEmail(String valorBuscado, int page);
+
+    /**
      * Busca um registro de {@link Usuario} pelo telefone informado.
      *
      * @param fone o telefone que será utilizado na busca.
@@ -50,5 +55,5 @@ public interface IUsuarioDAO {
     /**
      * Adicionar documentação
      */
-    List<Usuario> buscarTodosFiltrado(String nomeFiltro, String valorBuscado, int page);
+    int contarTodosFiltrados(String valorBuscado);
 }
