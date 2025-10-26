@@ -50,5 +50,5 @@ public interface IUsuarioDAO {
     /**
      * Adicionar documentação
      */
-    List<Usuario> buscarTodosFiltrado(String nomeFiltro, String valorBuscado, int page);
+    List<Usuario> buscarPorNomeDeUsuarioOuDominioEmail(String valorBuscado, int page);
 }
