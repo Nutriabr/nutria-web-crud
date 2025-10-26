@@ -28,23 +28,23 @@ public class AdminInsertServlet extends HttpServlet {
 
 
         try {
-            String birthDateStr = req.getParameter("birth");
-            Date dtBirth = null;
-            if (birthDateStr != null && !birthDateStr.isEmpty()) {
-                dtBirth = Date.valueOf(birthDateStr);
+            String dataNascimentoStr = req.getParameter("nascimento");
+            Date dataNascimento = null;
+            if (dataNascimentoStr != null && !dataNascimentoStr.isEmpty()) {
+                dataNascimento = Date.valueOf(dataNascimentoStr);
             }
 
-            String phoneNumberStr = req.getParameter("phone");
-            String phoneNumber = phoneNumberStr.replaceAll("\\s", "");
+            String telefoneStr = req.getParameter("telefone");
+            String telefone = telefoneStr.replaceAll("\\s", "");
 
-            admin.setNascimento(dtBirth);
-            admin.setTelefone(phoneNumber);
+            admin.setNascimento(dataNascimento);
+            admin.setTelefone(telefone);
 
-            admin.setNome(req.getParameter("name"));
+            admin.setNome(req.getParameter("nome"));
             admin.setEmail(req.getParameter("email"));
-            admin.setSenha(req.getParameter("password"));
-            admin.setCargo(req.getParameter("role"));
-            admin.setFoto(req.getParameter("picture"));
+            admin.setSenha(req.getParameter("senha"));
+            admin.setCargo(req.getParameter("cargo"));
+            admin.setFoto(req.getParameter("foto"));
 
             adminDAO.inserir(admin);
 
