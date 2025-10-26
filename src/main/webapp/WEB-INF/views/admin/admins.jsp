@@ -16,6 +16,8 @@
     int totalAdmins = (int) request.getAttribute("totalAdmins");
     int totalPages = (int) request.getAttribute("totalPages");
     int currentPage = (int) request.getAttribute("currentPage");
+
+    String contextPath = request.getContextPath();
 %>
 
 <!DOCTYPE html>
@@ -53,7 +55,9 @@
                 <div class="table-actions">
                     <div class="search-bar">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="search" placeholder="Buscar">
+                        <form method="get" action="<%= contextPath %>/admin/editar/admin/buscar">
+                            <input type="search" placeholder="Buscar" name="search-filter-input" >
+                        </form>
                     </div>
                     <a href="${pageContext.request.contextPath}/admin/adicionar" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i>
