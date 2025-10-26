@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+    --primary-color: #EE7026;
+    --secondary-color: #00a651;
+    --secondary-hover-color: #008f45;
+    --text-primary: #2C3036;
+    --text-secondary: #718096;
+    --text-light: #FFFFFF;
+
+    --text-tertiary: #777;
+    --bg-main: #fdfdfd;
+    --border-card: #E6E6E6;
+    --font-family-base: 'Montserrat', sans-serif;
+    --sidebar-width: 320px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family-base), serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--bg-main);
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px 40px;
+    margin-left: var(--sidebar-width);
+}
+
+.dashboard h2 {
+    font-size: 32px;
+    color: var(--text-primary);
+    margin-top: 60px;
+
+}
+
+.dashboard p {
+    color: var(--text-secondary);
+    font-size: 18px;
+    margin-bottom: 32px;
+
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+    justify-content: center;
+}
+
+.card {
+    border-radius: 8px;
+    border: 1px solid var(--border-card);
+    padding: 50px;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.card span {
+    color: var(--text-secondary);
+    font-size: 32px;
+}
+
+.card h3 {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.value {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 5px 0;
+}
+
+.card a {
+    margin-top: auto;
+    text-decoration: none;
+    color: var(--secondary-color);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.card a:hover {
+    color: var(--secondary-hover-color);
+}
+
+.info {
+    margin-top: 50px;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: 15px;
+}
+
+.icon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+.icon img {
+    width: 30px;
+}
+
+.acess {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.acess img {
+    width: 30px;
+}

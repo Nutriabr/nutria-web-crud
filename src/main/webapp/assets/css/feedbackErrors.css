@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+    --primary-color: #EE7026;
+    --primary-color-hover: #D66522;
+
+    --text-primary: #2C3036;
+    --text-secondary: #718096;
+    --text-light: #FFFFFF;
+
+    --bg-light: #f8f8f8;
+    --overlay-bg: rgba(0, 0, 0, 0.6);
+    --font-family-base: 'Montserrat', sans-serif;
+    --font-size-lg: 1.5rem;
+    --font-size-md: 1rem;
+    --font-size-icon: 48px;
+    --spacing-sm: 8px;
+    --spacing-md: 10px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+    --spacing-xxl: 32px;
+    --border-radius-md: 5px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.overlay-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-bg);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.message-error {
+    background: white;
+    padding: 32px;
+    border-radius: 8px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+}
+
+.message-error i {
+    font-size: var(--font-size-icon);
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.message-error h2 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.message-error p {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+}
+
+.message-error button {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.message-error button:hover {
+    background-color: var(--primary-color-hover);
+}
