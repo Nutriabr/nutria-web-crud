@@ -41,7 +41,7 @@
     align-items: center;
 }
 
-.message-error {
+.message {
     background: white;
     padding: 32px;
     border-radius: 8px;
@@ -50,23 +50,23 @@
     text-align: center;
 }
 
-.message-error i {
+.message i {
     font-size: var(--font-size-icon);
     color: var(--primary-color);
     margin-bottom: var(--spacing-lg);
 }
 
-.message-error h2 {
+.message h2 {
     font-size: 1.25rem;
     margin-bottom: var(--spacing-sm);
 }
 
-.message-error p {
+.message p {
     color: var(--text-secondary);
     margin-bottom: var(--spacing-xl);
 }
 
-.message-error button {
+.message button {
     background-color: var(--primary-color);
     color: var(--text-light);
     align-items: center;
@@ -80,6 +80,6 @@
     transition: background-color 0.2s ease;
 }
 
-.message-error button:hover {
+.message button:hover {
     background-color: var(--primary-color-hover);
 }

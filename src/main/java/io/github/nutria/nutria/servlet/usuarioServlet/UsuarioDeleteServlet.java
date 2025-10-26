@@ -5,6 +5,7 @@ import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.exceptions.EntityNotFoundException;
 import io.github.nutria.nutria.exceptions.InvalidNumberException;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,7 +26,9 @@ public class UsuarioDeleteServlet extends HttpServlet {
 
             usuarioDAO.deletarPorId(id);
 
+            req.getSession().setAttribute("successMessage", "Usuário deletado com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/usuario/listar");
+
         }  catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");
             req.getRequestDispatcher("/WEB-INF/views/usuario/editar.jsp").forward(req, resp);
