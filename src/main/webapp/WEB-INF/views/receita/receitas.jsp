@@ -15,7 +15,8 @@
     int totalReceitas = (int) request.getAttribute("totalReceitas");
     int totalPages = (int) request.getAttribute("totalPages");
     int currentPage = (int) request.getAttribute("currentPage");
-    String ordem = (String) request.getAttribute("ordem");
+    String filtro = (String) request.getAttribute("filtro");
+    String buscaParam = (filtro != null && !filtro.trim().isEmpty()) ? "&busca=" + filtro : "";
 %>
 
 <!DOCTYPE html>
@@ -50,10 +51,10 @@
             <header class="table-header">
                 <h2>Receita</h2>
                 <div class="table-actions">
-                    <div class="search-bar">
+                    <form action="${pageContext.request.contextPath}/receita/listar" method="get" class="search-bar">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="search" placeholder="Buscar">
-                    </div>
+                        <input type="search" name="busca" placeholder="Buscar" value="<%= filtro != null ? filtro : "" %>">
+                    </form>
                     <a href="${pageContext.request.contextPath}/receita/adicionar" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i>
                         Adicionar nova receita
@@ -65,9 +66,9 @@
                 <table>
                     <thead>
                     <tr>
-                        <th><a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage %>&ordem=id">ID</a></th>
-                        <th><a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage %>&ordem=porcao">Porção</a></th>
-                        <th><a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage %>&ordem=id_produto">ID-Produto</a></th>
+                        <th>ID</th>
+                        <th>Porção</th>
+                        <th>ID-Produto</th>
                         <th>Ações</th>
                     </tr>
                     </thead>
@@ -90,16 +91,17 @@
                     </tbody>
                 </table>
             </div>
-
             <footer class="table-footer">
                 <span>Página <%= currentPage %> de <%= totalPages %></span>
                 <nav class="pagination">
-                    <a href="?page=<%= currentPage - 1 %>&ordem=<%= ordem %>"
+                    <a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage - 1 %><%= buscaParam %>"
                        class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
+
                     <span class="current-page"><%= currentPage %></span>
-                    <a href="?page=<%= currentPage + 1 %>&ordem=<%= ordem %>"
+
+                    <a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage + 1 %><%= buscaParam %>"
                        class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
