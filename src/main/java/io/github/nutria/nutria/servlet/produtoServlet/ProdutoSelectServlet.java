@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/produto/listar")
@@ -23,8 +22,6 @@ public class ProdutoSelectServlet extends HttpServlet {
         int currentPage = 1;
         String pageParam = req.getParameter("page");
         String filtro = req.getParameter("busca");
-        List<Produto> produtosList = new ArrayList<>();
-        int totalProdutos = 0;
 
         if (pageParam != null) {
             try {
@@ -32,33 +29,19 @@ public class ProdutoSelectServlet extends HttpServlet {
             } catch (NumberFormatException ignored) {}
         }
 
+        List<Produto> produtosList;
+        int totalProdutos = 0;
+
         try {
-            if (filtro == null || filtro.isEmpty()) {
+            if (filtro == null || filtro.trim().isEmpty()) {
                 totalProdutos = produtoDAO.contarTodos();
                 produtosList = produtoDAO.buscarTodos(currentPage);
             } else {
                 try {
-                    Long numero = Long.parseLong(filtro);
-                    Produto produto = produtoDAO.buscarPorId(numero);
-                    List<Produto> produtosComIdUsuario = produtoDAO.buscarPorIdUsuario(numero, currentPage);
-                    totalProdutos = (produto != null ? 1 : 0) + produtoDAO.contarPorIdUsuario(numero);
+                    Long numero = Long.parseLong(filtro.trim());
 
-                    if (produto != null) {
-                        boolean jaAdicionado = false;
-                        for (Produto p : produtosComIdUsuario) {
-                            if (p.getId().equals(produto.getId())) {
-                                jaAdicionado = true;
-                            }
-                            produtosList.add(p);
-                        }
-                        if (produto != null && !jaAdicionado) {
-                            produtosList.add(0, produto);
-                        }
-                    }
-                    // adicionar todos do usuario
-                    for (Produto p : produtosComIdUsuario) {
-                        produtosList.add(p);
-                    }
+                    totalProdutos = produtoDAO.contarPorIdOuIdUsuario(numero);
+                    produtosList = produtoDAO.buscarPorIdOuIdUsuario(numero, currentPage);
 
                 } catch (NumberFormatException nfe) {
                     totalProdutos = produtoDAO.contarPorNome(filtro);
