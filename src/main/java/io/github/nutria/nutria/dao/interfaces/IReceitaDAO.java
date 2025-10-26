@@ -16,13 +16,13 @@ import java.util.List;
 public interface IReceitaDAO {
 
     /**
-     * Lista todos os registros de {@link Receita} com o ID de {@link Produto} informado.
+     * Lista todos os registros de {@link Receita} com o ID de {@link Produto} informado ou ID da própria {@link  Receita}.
      *
-     * @param idProduto o ID de {@link Produto} que será utilizado na busca.
+     * @param filtro o número que será utilizado na busca.
      * @return uma lista de objetos {@link Receita} correspondentes ao ID informado.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
-    List<Receita> buscarPorIdProduto(Long idProduto, int page);
+   List<Receita> buscarPorIdOuIdProduto(Long filtro, int page);
 
     /**
      * Lista todos os registros de {@link Receita} com a porção informada.
@@ -43,13 +43,13 @@ public interface IReceitaDAO {
     int contarPorId(Long id);
 
     /**
-     * Conta a quantidade de registros de {@link Receita} com o ID de {@link Produto} informado.
+     * Conta a quantidade de registros de {@link Receita} com o ID de {@link Produto} informado ou o ID da própria {@link Receita}.
      *
-     * @param idProduto o ID de {@link Produto} que será utilizado para contagem.
+     * @param filtro que será utilizado para contagem.
      * @return um inteiro com o número total de registros.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
-    int contarPorIdProduto(Long idProduto);
+    int contarPorIdOuIdProduto(Long filtro);
 
     /**
      * Conta a quantidade de registros de {@link Receita} com a porção informada.
