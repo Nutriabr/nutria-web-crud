@@ -267,6 +267,30 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return totalUsuarios;
     }
 
+    /**
+     * Busca um registro de {@link Usuario} pelo email informado.
+     *
+     * @param email o endereço de email que será utilizado na busca.
+     * @return um {@link Optional} contendo o {@link Usuario} correspondente ao email informado, ou vazio se não encontrado.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    @Override
+    public Optional<Usuario> buscarPorEmail(String email) {
+        return Optional.empty();
+    }
+
+    /**
+     * Adicionar documentação
+     *
+     * @param nomeFiltro
+     * @param valorBuscado
+     * @param page
+     */
+    @Override
+    public List<Usuario> buscarPorNomeDeUsuario(String nomeFiltro, String valorBuscado, int page) {
+        return List.of();
+    }
+
     @Override
     public Optional<Usuario> buscarPorTelefone(String fone) {
         String sql = "SELECT * FROM usuario WHERE telefone = ?";
@@ -311,6 +335,18 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * Verifica se há um registro de {@link Usuario} com o telefone informado.
+     *
+     * @param fone o telefone que será utilizado na busca.
+     * @return {@code true} se houver um registro; {@code false} caso contrário.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    @Override
+    public boolean buscarPorTelefoneUsado(String fone) {
+        return false;
     }
 
     @Override
