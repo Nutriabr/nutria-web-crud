@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/produto/listar")
-public class
-ProdutoSelectServlet extends HttpServlet {
+public class ProdutoSelectServlet extends HttpServlet {
     private final int TOTAL_PRODUTO_PAGE = 4;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProdutoDAO produtoDAO = new ProdutoDAO();
@@ -24,56 +24,59 @@ ProdutoSelectServlet extends HttpServlet {
         String pageParam = req.getParameter("page");
         String filtro = req.getParameter("busca");
         List<Produto> produtosList = new ArrayList<>();
-        List<Long> idsAdicionados = new ArrayList<>();
-        int totalProdutos;
+        int totalProdutos = 0;
 
-        if(pageParam != null){
-            try{
+        if (pageParam != null) {
+            try {
                 currentPage = Integer.parseInt(pageParam);
-            } catch (NumberFormatException nfe){
-                System.err.println("Parâmetro de página inválida: " + pageParam);
-            }
+            } catch (NumberFormatException ignored) {}
         }
 
         try {
-            if(filtro == null || filtro.isEmpty()){
-                produtosList = produtoDAO.buscarTodos(currentPage);
+            if (filtro == null || filtro.isEmpty()) {
                 totalProdutos = produtoDAO.contarTodos();
-
+                produtosList = produtoDAO.buscarTodos(currentPage);
             } else {
-                try{
+                try {
                     Long numero = Long.parseLong(filtro);
                     Produto produto = produtoDAO.buscarPorId(numero);
-                    if (produto != null) {
-                        produtosList.add(produto);
-                        idsAdicionados.add(produto.getId());
-                    }
-
                     List<Produto> produtosComIdUsuario = produtoDAO.buscarPorIdUsuario(numero, currentPage);
-                    for (Produto p : produtosComIdUsuario) {
-                        if (!idsAdicionados.contains(p.getId())) {
+                    totalProdutos = (produto != null ? 1 : 0) + produtoDAO.contarPorIdUsuario(numero);
+
+                    if (produto != null) {
+                        boolean jaAdicionado = false;
+                        for (Produto p : produtosComIdUsuario) {
+                            if (p.getId().equals(produto.getId())) {
+                                jaAdicionado = true;
+                            }
                             produtosList.add(p);
-                            idsAdicionados.add(p.getId());
+                        }
+                        if (produto != null && !jaAdicionado) {
+                            produtosList.add(0, produto);
                         }
                     }
-                }catch (NumberFormatException nfe){
-                    produtosList = produtoDAO.buscarPorNome(filtro,currentPage);
+                    // adicionar todos do usuario
+                    for (Produto p : produtosComIdUsuario) {
+                        produtosList.add(p);
+                    }
 
+                } catch (NumberFormatException nfe) {
+                    totalProdutos = produtoDAO.contarPorNome(filtro);
+                    produtosList = produtoDAO.buscarPorNome(filtro, currentPage);
                 }
-                totalProdutos =  produtosList.size();
             }
+
             int totalPages = (int) Math.ceil((double) totalProdutos / TOTAL_PRODUTO_PAGE);
             if (totalPages == 0) totalPages = 1;
-            if(currentPage < 1){
-                currentPage = 1;
-            } else if (currentPage > totalPages && totalPages > 0) {
-                currentPage = totalPages;
-            }
-            req.setAttribute("totalProdutos",totalProdutos);
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            req.setAttribute("totalProdutos", totalProdutos);
             req.setAttribute("produtosList", produtosList);
             req.setAttribute("currentPage", currentPage);
-            req.setAttribute("totalPages",totalPages);
+            req.setAttribute("totalPages", totalPages);
             req.setAttribute("filtro", filtro);
+
             req.getRequestDispatcher("/WEB-INF/views/produto/produtos.jsp").forward(req, resp);
 
         } catch (DataAccessException e) {

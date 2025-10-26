@@ -367,7 +367,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         }
         return total;
     }
-    public int contarPorIdProduto(Long idUsuario) {
+    public int contarPorIdUsuario(Long idUsuario) {
         String sql = "SELECT COUNT(*) FROM produto WHERE id_usuario = ?";
         Connection connect = null;
         PreparedStatement ps = null;
