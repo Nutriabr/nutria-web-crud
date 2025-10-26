@@ -7,7 +7,7 @@ import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.FieldUsedValidator;
 import io.github.nutria.nutria.util.PasswordHasher;
-import io.github.nutria.nutria.util.ValidadorRegex;
+import io.github.nutria.nutria.util.RegexValidator;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,7 +27,6 @@ import java.util.Optional;
  */
 public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
-    @Override
     public boolean inserir(Admin admin) {
         String sql = "INSERT INTO admin (nome, email, senha, telefone, nascimento, cargo, foto) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -37,17 +36,17 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         validarAdmin(admin);
 
         try {
-            if (FieldUsedValidator.isFieldUsed("admin","email", admin.getEmail())) throw new DuplicateEmailException(admin.getEmail());
-            if (FieldUsedValidator.isFieldUsed("admin","telefone", admin.getTelefone())) throw new DuplicatePhoneException(admin.getTelefone());
+            if (FieldUsedValidator.ehCampoEmUso("admin","email", admin.getEmail())) throw new DuplicateEmailException(admin.getEmail());
+            if (FieldUsedValidator.ehCampoEmUso("admin","telefone", admin.getTelefone())) throw new DuplicatePhoneException(admin.getTelefone());
 
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
 
-            String hashedPassword = PasswordHasher.hashPassword(admin.getSenha());
+            String senhaHashed = PasswordHasher.hashSenha(admin.getSenha());
 
             ps.setString(1, admin.getNome());
             ps.setString(2, admin.getEmail());
-            ps.setString(3, hashedPassword);
+            ps.setString(3, senhaHashed);
             ps.setString(4, admin.getTelefone());
             ps.setDate(5, admin.getNascimento());
             ps.setString(6, admin.getCargo());
@@ -61,13 +60,115 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             throw new DataAccessException("Erro ao salvar admin", se);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
     }
+
+    public Admin buscarPorId(Long id) {
+        if (id <= 0) throw new InvalidNumberException("id", "ID deve ser maior que zero");
+
+        String sql = "SELECT * FROM admin WHERE id = ?";
+
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Admin admin = new Admin();
+                admin.setId(rs.getLong("id"));
+                admin.setNome(rs.getString("nome"));
+                admin.setEmail(rs.getString("email"));
+                admin.setSenha(rs.getString("senha"));
+                admin.setTelefone(rs.getString("telefone"));
+                admin.setNascimento(rs.getDate("nascimento"));
+                admin.setCargo(rs.getString("cargo"));
+                admin.setFoto(rs.getString("foto"));
+
+                return admin;
+            } else {
+                throw new EntityNotFoundException("Admin", id);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar usuário por ID: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar usuário", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+    }
+
+    @Override
+    public boolean alterar(Admin admin) {
+        if (admin.getId() == null || admin.getId() <= 0) throw new ValidationException("ID é obrigatório para atualização");
+
+        buscarPorId(admin.getId());
+
+        Optional<Admin> adminExistentePeloEmail = buscarPorEmail(admin.getEmail());
+        if (adminExistentePeloEmail.isPresent() && !adminExistentePeloEmail.get().getId().equals(admin.getId())) {
+            throw new DuplicateEmailException(admin.getEmail());
+        }
+
+        Optional<Admin> adminExistentePeloTelefone = buscarPorTelefone(admin.getTelefone());
+        if (adminExistentePeloTelefone.isPresent() && !adminExistentePeloTelefone.get().getId().equals(admin.getId())) {
+            throw new DuplicatePhoneException(admin.getTelefone());
+        }
+
+        String sql = "UPDATE admin SET nome = ?, email = ?, senha = ?, telefone = ?, nascimento = ?, cargo = ?, foto = ? WHERE id = ?";
+
+        int result = 0;
+
+        PreparedStatement pstmt = null;
+        Connection connect = null;
+        try {
+            connect = ConnectionFactory.conectar();
+            pstmt = connect.prepareStatement(sql);
+
+            String hashedSenha = PasswordHasher.hashSenha(admin.getSenha());
+
+            pstmt.setString(1, admin.getNome());
+            pstmt.setString(2, admin.getEmail());
+            pstmt.setString(3, hashedSenha);
+            pstmt.setString(4, admin.getTelefone());
+            pstmt.setDate(5, admin.getNascimento());
+            pstmt.setString(6, admin.getCargo());
+            pstmt.setString(7, admin.getFoto());
+            pstmt.setLong(8, admin.getId());
+
+            result = pstmt.executeUpdate();
+
+            pstmt.close();
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao atualizar o admin: " + admin.getId());
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao atualizar admin", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return (result > 0);
+    }
+
+
 
     @Override
     public List<Admin> buscarTodos(int page) {
@@ -82,7 +183,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         ResultSet rs = null;
         Connection connect = null;
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
 
             ps.setInt(1, limite);
@@ -110,7 +211,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             throw new DataAccessException("Erro ao buscar pelos admininstradores", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -121,107 +222,47 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
     }
 
     @Override
-    public Admin buscarPorId(Long id) {
-        if (id <= 0) {
-            throw new InvalidNumberException("id", "ID deve ser maior que zero");
-        }
+    public boolean deletarPorId(Long id) {
+        String sql = "DELETE FROM admin WHERE id = ?";
 
-        String sql = "SELECT * FROM admin WHERE id = ?";
+        boolean result = false;
 
-        Connection connect = null;
+        if (id <= 0) throw new InvalidNumberException("id", "ID deve ser maior que zero");
+
         PreparedStatement ps = null;
-        ResultSet rs = null;
-
+        Connection connect = null;
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
-            rs = ps.executeQuery();
 
-            if (rs.next()) {
-                Admin admin = new Admin();
-                admin.setId(rs.getLong("id"));
-                admin.setNome(rs.getString("nome"));
-                admin.setEmail(rs.getString("email"));
-                admin.setSenha(rs.getString("senha"));
-                admin.setTelefone(rs.getString("telefone"));
-                admin.setNascimento(rs.getDate("nascimento"));
-                admin.setCargo(rs.getString("cargo"));
-                admin.setFoto(rs.getString("foto"));
-
-                return admin;
-            } else {
+            result = (ps.executeUpdate() > 0);
+            if (!result) {
                 throw new EntityNotFoundException("Admin", id);
             }
+
+
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar usuário por ID: " + id);
+            System.err.println("[DAO ERROR] Erro ao deletar o admin: " + id);
             e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar usuário", e);
+            throw new DataAccessException("Erro ao deletar admin", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
-                if (rs != null) rs.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
+        return result;
     }
 
-    @Override
-    public Optional<Admin> buscarPorEmail(String email) {
-        String sql = "SELECT * FROM admin WHERE email = ?";
-
-        if (email == null || email.isBlank()) {
-            throw new RequiredFieldException("email");
-        }
-
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection connect = null;
-        try {
-            connect = ConnectionFactory.connect();
-            ps = connect.prepareStatement(sql);
-            ps.setString(1, email);
-
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                Admin admin = new Admin(
-                        rs.getLong("id"),
-                        rs.getString("nome"),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getString("telefone"),
-                        rs.getDate("nascimento"),
-                        rs.getString("cargo"),
-                        rs.getString("foto")
-                );
-
-                return Optional.of(admin);
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar admin por email: " + email);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar admin", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<List<Admin>> buscarPorDominioEmail(String dominio) {
+    public Optional<List<Admin>> buscarPorDominioDoEmail(String domain) {
         String sql = """
                 SELECT * FROM admin
                 WHERE email LIKE ?
                 """;
-        String emailLink = "%@" + dominio;
+        String emailLink = "%@" + domain;
 
         List<Admin> adminList = new ArrayList<Admin>();
 
@@ -229,7 +270,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         ResultSet rs = null;
         Connection connect = null;
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setString(1, emailLink);
 
@@ -249,12 +290,12 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
                 adminList.add(admin);
             }
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar usuário pelo domínio de email: " + dominio);
+            System.err.println("[DAO ERROR] Erro ao buscar usuário pelo domínio de email: " + domain);
             e.printStackTrace(System.err);
             throw new DataAccessException("Erro ao buscar pelo domínio de email", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -264,8 +305,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return (adminList.isEmpty() ? Optional.empty() : Optional.of(adminList));
     }
 
-    @Override
-    public Optional<List<Admin>> buscarPorNome(String nome) {
+    public Optional<List<Admin>> buscarPorNome(String name) {
         String sql = """
                 SELECT * FROM admin
                 WHERE nome = ?
@@ -277,9 +317,9 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         ResultSet rs = null;
         Connection connect = null;
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
-            ps.setString(1, nome);
+            ps.setString(1, name);
 
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -297,12 +337,12 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
                 adminList.add(admin);
             }
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar usuário pelo nome: " + nome);
+            System.err.println("[DAO ERROR] Erro ao buscar usuário pelo nome: " + name);
             e.printStackTrace(System.err);
             throw new DataAccessException("Erro ao buscar pelo domínio de email", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -312,21 +352,61 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return (adminList.isEmpty() ? Optional.empty() : Optional.of(adminList));
     }
 
-    @Override
-    public Optional<Admin> buscarPorTelefone(String fone) {
-        String sql = "SELECT * FROM admin WHERE telefone = ?";
+    public Optional<Admin> buscarPorEmail(String email) {
+        String sql = "SELECT * FROM admin WHERE email = ?";
 
-        if (fone == null || fone.isBlank()) {
-            throw new RequiredFieldException("telefone");
-        }
+        if (email == null || email.isBlank()) throw new RequiredFieldException("email");
 
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection connect = null;
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
-            ps.setString(1, fone);
+            ps.setString(1, email);
+
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Admin admin = new Admin(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getDate("nascimento"),
+                        rs.getString("cargo"),
+                        rs.getString("foto")
+                );
+                return Optional.of(admin);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar admin por email: " + email);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar admin", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Admin> buscarPorTelefone(String telefone) {
+        String sql = "SELECT * FROM admin WHERE telefone = ?";
+
+        if (telefone == null || telefone.isBlank()) throw new RequiredFieldException("telefone");
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, telefone);
 
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -344,12 +424,12 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
                 return Optional.of(admin);
             }
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar admin pelo telefone: " + fone);
+            System.err.println("[DAO ERROR] Erro ao buscar admin pelo telefone: " + telefone);
             e.printStackTrace(System.err);
             throw new DataAccessException("Erro ao buscar admin pelo telefone", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -357,100 +437,6 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             }
         }
         return Optional.empty();
-    }
-
-    @Override
-    public boolean alterar(Admin admin) {
-        if (admin.getId() == null || admin.getId() <= 0) {
-            throw new ValidationException("ID é obrigatório para atualização");
-        }
-
-        deletarPorId(admin.getId());
-
-        Optional<Admin> existingAdminByEmail = buscarPorEmail(admin.getEmail());
-        if (existingAdminByEmail.isPresent() && !existingAdminByEmail.get().getId().equals(admin.getId())) {
-            throw new DuplicateEmailException(admin.getEmail());
-        }
-
-        Optional<Admin> existingAdminByPhone = buscarPorTelefone(admin.getTelefone());
-        if (existingAdminByPhone.isPresent() && !existingAdminByPhone.get().getId().equals(admin.getId())) {
-            throw new DuplicatePhoneException(admin.getTelefone());
-        }
-
-        String sql = "UPDATE admin SET nome = ?, email = ?, senha = ?, telefone = ?, nascimento = ?, cargo = ?, foto = ? WHERE id = ?";
-
-        int result = 0;
-
-        PreparedStatement pstmt = null;
-        Connection connect = null;
-        try {
-            connect = ConnectionFactory.connect();
-            pstmt = connect.prepareStatement(sql);
-
-            String hashedPassword = PasswordHasher.hashPassword(admin.getSenha());
-
-            pstmt.setString(1, admin.getNome());
-            pstmt.setString(2, admin.getEmail());
-            pstmt.setString(3, hashedPassword);
-            pstmt.setString(4, admin.getTelefone());
-            pstmt.setDate(5, admin.getNascimento());
-            pstmt.setString(6, admin.getCargo());
-            pstmt.setString(7, admin.getFoto());
-            pstmt.setLong(8, admin.getId());
-            result = pstmt.executeUpdate();
-
-            pstmt.close();
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao atualizar o admin: " + admin.getId());
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao atualizar admin", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (pstmt != null) pstmt.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return (result > 0);
-    }
-
-    @Override
-    public boolean deletarPorId(Long id) {
-        String sql = "DELETE FROM admin WHERE id = ?";
-
-        boolean result = false;
-
-        if (id <= 0) {
-            throw new InvalidNumberException("id", "ID deve ser maior que zero");
-        }
-
-        PreparedStatement ps = null;
-        Connection connect = null;
-        try {
-            connect = ConnectionFactory.connect();
-            ps = connect.prepareStatement(sql);
-            ps.setLong(1, id);
-
-            result = (ps.executeUpdate() > 0);
-            if (!result) {
-                throw new EntityNotFoundException("Admin", id);
-            }
-
-
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao deletar o admin: " + id);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao deletar admin", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
-                if (ps != null) ps.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return result;
     }
 
     @Override
@@ -464,7 +450,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             stmt = connect.createStatement();
             rs = stmt.executeQuery(sql);
@@ -478,16 +464,21 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             throw new DataAccessException("Erro ao realizar a contagem total de admins", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (stmt != null) stmt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+               throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
 
         return totalAdmins;
     }
+
+    public Optional<Admin> buscarPorEmailETelefone(String email, String telefone) {
+        return Optional.empty();
+    }
+
 
     /**
      * Valida campos obrigatórios de um {@link Admin}.
@@ -512,9 +503,9 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             throw new RequiredFieldException("email");
         }
 
-        if (!ValidadorRegex.ehEmailValido(admin.getEmail())) throw new InvalidEmailException(admin.getEmail());
+        if (!RegexValidator.ehEmailValido(admin.getEmail())) throw new InvalidEmailException(admin.getEmail());
 
-        if (!ValidadorRegex.ehTelefoneValido(admin.getTelefone())) throw new InvalidPhoneException(admin.getTelefone());
+        if (!RegexValidator.ehTelefoneValido(admin.getTelefone())) throw new InvalidPhoneException(admin.getTelefone());
 
         if (admin.getTelefone() == null || admin.getTelefone().isBlank()) {
             throw new RequiredFieldException("telefone");
@@ -535,4 +526,6 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             throw new InvalidPasswordException();
         }
     }
+
+
 }

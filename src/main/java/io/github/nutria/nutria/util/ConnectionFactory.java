@@ -24,7 +24,7 @@ public class ConnectionFactory {
      * @throws ConfigurationException se variáveis de ambiente não estiverem configuradas
      * @author luismedeiros-ieg
      */
-    public static Connection connect() {
+    public static Connection conectar() {
         try {
             // Utilizando as variáveis de ambiente configuradas no .env com as informações sensíveis do banco de dados
             final String URL =  System.getenv("DB_URL");
@@ -79,17 +79,17 @@ public class ConnectionFactory {
             e.printStackTrace(System.err);
 
             // Mensagens específicas para erros comuns
-            String message = "Erro ao conectar com o banco de dados";
+            String mensagem = "Erro ao conectar com o banco de dados";
 
             if (e.getMessage().contains("password authentication failed")) {
-                message = "Usuário ou senha incorretos";
+                mensagem = "Usuário ou senha incorretos";
             } else if (e.getMessage().contains("Connection refused")) {
-                message = "Banco de dados não está acessível. Verifique se o PostgreSQL está rodando";
+                mensagem = "Banco de dados não está acessível. Verifique se o PostgreSQL está rodando";
             } else if (e.getMessage().contains("database") && e.getMessage().contains("does not exist")) {
-                message = "Banco de dados não existe. Verifique a URL de conexão";
+                mensagem = "Banco de dados não existe. Verifique a URL de conexão";
             }
 
-            throw new DatabaseConnectionException(message, e);
+            throw new DatabaseConnectionException(mensagem, e);
         }
     }
 
@@ -99,7 +99,7 @@ public class ConnectionFactory {
      * @param connection Conexão a ser fechada
      * @author luismedeiros-ieg
      */
-    public static void disconnect(Connection connection) {
+    public static void desconectar(Connection connection) {
         if (connection == null) {
             return;
         }

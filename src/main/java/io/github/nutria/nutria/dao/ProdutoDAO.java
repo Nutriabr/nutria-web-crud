@@ -6,7 +6,6 @@ import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.exceptions.InvalidNumberException;
 import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.exceptions.ValidationException;
-import io.github.nutria.nutria.model.Ingrediente;
 import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
@@ -38,7 +37,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         validarProduto(produto);
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setString(1, produto.getNome());
             ps.setLong(2, produto.getIdUsuario());
@@ -50,7 +49,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new DataAccessException("Erro ao salvar produto", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -72,7 +71,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setInt(1, limite);
             ps.setInt(2, offset);
@@ -92,7 +91,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new DataAccessException("Erro ao buscar todos os produtos", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -116,7 +115,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         }
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
@@ -135,7 +134,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new DataAccessException("Erro ao buscar a produto com ID: " + id, e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if(rs != null) rs.close();
             } catch (SQLException e) {
@@ -161,7 +160,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         List<Produto> produtos = new ArrayList<>();
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setString(1, "%" + nome + "%");
             ps.setInt(2,limite);
@@ -181,7 +180,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new DataAccessException("Erro ao buscar produto pelo nome", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -208,7 +207,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         List<Produto> produtos = new ArrayList<>();
 
         try{
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setLong(1,idUsuario);
             ps.setInt(2,limite);
@@ -229,7 +228,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new DataAccessException("Erro ao buscar a produto com id_usuario: " + idUsuario, sqle);
         } finally {
             try {
-                if(connect != null) ConnectionFactory.disconnect(connect);
+                if(connect != null) ConnectionFactory.desconectar(connect);
                 if(ps != null) ps.close();
                 if(rs != null) rs.close();
             } catch (SQLException sqle){
@@ -253,7 +252,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         int result = 0;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             psmt = connect.prepareStatement(sql);
             psmt.setString(1, produto.getNome());
             psmt.setLong(2, produto.getId());
@@ -265,7 +264,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new DataAccessException("Erro ao atualizar produto", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (psmt != null) psmt.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -286,7 +285,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
 
@@ -297,7 +296,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new DataAccessException("Erro ao deletar produto", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -315,7 +314,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             stmt = connect.createStatement();
             rs = stmt.executeQuery(sql);
 
@@ -328,7 +327,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new DataAccessException("Erro ao realizar a contagem total de produtos", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (stmt != null) stmt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -347,7 +346,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         int total = 0;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setString(1, "%" + nome + "%");
             rs = ps.executeQuery();
@@ -358,7 +357,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new DataAccessException("Erro ao contar produtos filtradas", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -375,7 +374,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         int total = 0;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setLong(1, idUsuario);
             rs = ps.executeQuery();
@@ -386,7 +385,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new DataAccessException("Erro ao contar produtos filtrados", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {

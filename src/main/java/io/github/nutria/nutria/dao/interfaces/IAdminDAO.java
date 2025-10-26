@@ -19,19 +19,10 @@ public interface IAdminDAO {
      * Busca um registro de {@link Admin} pelo email informado.
      *
      * @param email o endereço de email que será utilizado na busca.
-     * @return um {@link Optional} contendo o {@link Admin} correspondente ao email informado, ou vazio se não encontrado.
+     * @return um {@link Optional} contendo o {@link Admin} correspondente, ou vazio se não encontrado.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
     Optional<Admin> buscarPorEmail(String email);
-
-    /**
-     * Lista todos os registros de {@link Admin} com o domínio de email informado.
-     *
-     * @param dominio o domínio do endereço de email que será utilizado na busca.
-     * @return um {@link Optional} contendo uma lista de objetos {@link Admin} correspondentes ao dominio informado, ou vazio se não encontrado.
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     */
-    Optional<List<Admin>> buscarPorDominioEmail(String dominio);
 
     /**
      * Lista todos os registros de {@link Admin} com o nome informado.

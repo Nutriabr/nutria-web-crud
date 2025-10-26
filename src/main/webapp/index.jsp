@@ -17,7 +17,7 @@
 
             <form class="login-form" method="post" action="${pageContext.request.contextPath}/login">
                 <input type="email" placeholder="Endereço de email" name="email" class="login-input" required>
-                <input type="password" placeholder="Senha" name="password" class="login-input" required>
+                <input type="password" placeholder="Senha" name="senha" class="login-input" required>
                 <% if (request.getAttribute("error") != null) { %>
                 <div class="error">
                     <%= request.getAttribute("error") %>

@@ -23,7 +23,7 @@
     <div class="user">
         <i class="fa-solid fa-user-circle"></i>
         <span><%
-            String nome = (String) session.getAttribute("adminName");
+            String nome = (String) session.getAttribute("adminNome");
             if (nome != null) {
                 int primeiroEspaco = nome.indexOf(" ");
                 int segundoEspaco = nome.indexOf(" ", primeiroEspaco + 1);
@@ -50,7 +50,7 @@
         <li class="<% if ("ingrediente".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-carrot"></i><a href="${pageContext.request.contextPath}/ingrediente/listar"> Ingredientes</a></li>
         <li class="<% if ("tabela_nutricional".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-list"></i><a href="${pageContext.request.contextPath}/tabela_nutricional/listar"> Tabela Nutricional</a></li>
         <li class="<% if ("receita".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-utensils"></i><a href="${pageContext.request.contextPath}/receita/listar"> Receitas</a></li>
-        <li class="<% if ("ingrediente_receita".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-clipboard-list"></i><a href="${pageContext.request.contextPath}/ingrediente_receita/listar"> Ingredientes da Receita</a></li>
+        <li class="<% if ("ingrediente_receita".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-clipboard-list"></i><a href="${pageContext.request.contextPath}/receitasIngredientes/listar"> Ingredientes da Receita</a></li>
     </ul>
 
     <form class="logout" action="${pageContext.request.contextPath}/logout" method="post">

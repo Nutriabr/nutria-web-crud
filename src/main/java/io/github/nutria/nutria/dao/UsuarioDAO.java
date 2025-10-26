@@ -44,17 +44,17 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         PreparedStatement ps = null;
         Connection connect = null;
         try  {
-            if (FieldUsedValidator.isFieldUsed("usuario", "email", usuario.getEmail())) throw new DuplicateEmailException(usuario.getEmail());
-            if (FieldUsedValidator.isFieldUsed("usuario","telefone", usuario.getTelefone())) throw new DuplicatePhoneException(usuario.getTelefone());
+            if (FieldUsedValidator.ehCampoEmUso("usuario", "email", usuario.getEmail())) throw new DuplicateEmailException(usuario.getEmail());
+            if (FieldUsedValidator.ehCampoEmUso("usuario","telefone", usuario.getTelefone())) throw new DuplicatePhoneException(usuario.getTelefone());
 
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             ps = connect.prepareStatement(sql);
 
             /* 2. Inicializa uma variável hashedPassword que recebe o retorno método hashPassword
              * o método recebe como parametro o atributo de senha do objeto usuario
              */
-            String hashedPassword = PasswordHasher.hashPassword(usuario.getSenha());
+            String hashedPassword = PasswordHasher.hashSenha(usuario.getSenha());
 
             ps.setString(1, usuario.getNome());
             ps.setString(2, usuario.getEmail());
@@ -71,7 +71,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             throw new DataAccessException("Erro ao salvar usuario", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -94,7 +94,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         ResultSet rs = null;
         Connection connect = null;
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
 
             ps.setInt(1, limite);
@@ -121,7 +121,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             throw new DataAccessException("Erro ao buscar pelos usuarios", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -144,7 +144,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         ResultSet rs = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
             rs = ps.executeQuery();
@@ -169,7 +169,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             throw new DataAccessException("Erro ao buscar usuário", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -190,7 +190,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         ResultSet rs = null;
         Connection connect = null;
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setString(1, email);
 
@@ -213,7 +213,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             throw new DataAccessException("Erro ao buscar usuario", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -239,7 +239,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         List<Usuario> usuarios = new ArrayList<>();
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             switch (nomeFiltro) {
                 case "nome_usuario" -> {
@@ -259,7 +259,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
                     ps.setInt(4, offset);
                 }
                 case "dominio_email_usuario" -> {
-                    String sql = "SELECT * FROM usuario WHERE ? LIKE LIMIT ? OFFSET ?";
+                    String sql = "SELECT * FROM usuario WHERE ? LIKE ? LIMIT ? OFFSET ?";
                     ps = connect.prepareStatement(sql);
                     ps.setString(1, filtroUsuario.getColuna());
                     ps.setInt(2, limit);
@@ -307,7 +307,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             e.printStackTrace();
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -330,7 +330,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         ResultSet rs = null;
         Connection connect = null;
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setString(1, fone);
 
@@ -354,7 +354,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             throw new DataAccessException("Erro ao buscar usuário pelo telefone", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -375,7 +375,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setString(1, fone);
 
@@ -393,7 +393,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             throw new DataAccessException("Erro ao buscar telefones usados", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
@@ -419,7 +419,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         List<Usuario> usuarios = new ArrayList<>();
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             String sql = "SELECT * FROM usuario WHERE ? LIKE ? LIMIT ? OFFSET ?";
             ps = connect.prepareStatement(sql);
@@ -450,7 +450,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         try {
             if (rs != null) rs.close();
             if (ps != null) ps.close();
-            if (connect != null) ConnectionFactory.disconnect(connect);
+            if (connect != null) ConnectionFactory.desconectar(connect);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -479,10 +479,10 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         PreparedStatement pstmt = null;
         Connection connect = null;
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             pstmt = connect.prepareStatement(sql);
 
-            String hashedPassword = PasswordHasher.hashPassword(usuario.getSenha());
+            String hashedPassword = PasswordHasher.hashSenha(usuario.getSenha());
 
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getEmail());
@@ -501,7 +501,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             throw new DataAccessException("Erro ao atualizar usuário", sqle);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (pstmt != null) pstmt.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -524,7 +524,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         }
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setLong(1, id);
 
@@ -536,7 +536,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             throw new DataAccessException("Erro ao deletar usuario", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
@@ -556,7 +556,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         Connection connect = null;
 
         try {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
 
             stmt = connect.createStatement();
             rs = stmt.executeQuery(sql);
@@ -570,7 +570,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             throw new DataAccessException("Erro ao realizar a contagem total de usuarios", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (stmt != null) stmt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
