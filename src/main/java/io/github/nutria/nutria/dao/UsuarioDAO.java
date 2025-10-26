@@ -178,144 +178,93 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         }
     }
 
-    @Override
-    public Optional<Usuario> buscarPorEmail(String email) {
-        String sql = "SELECT * FROM usuario WHERE email = ?";
+    public List<Usuario> buscarPorNomeDeUsuarioOuDominioEmail(String valorBuscado, int page) {
+            Connection connect = null;
+            PreparedStatement ps = null;
+            ResultSet rs = null;
 
-        if (email == null || email.isBlank()) {
-            throw new RequiredFieldException("email");
+            int limit = 4;
+            int offset = (page - 1) * limit;
+
+            List<Usuario> usuarios = new ArrayList<>();
+
+            try {
+                connect = ConnectionFactory.conectar();
+
+                String sql = "SELECT * FROM usuario WHERE nome LIKE ? OR email LIKE ? LIMIT ? OFFSET ?";
+                ps = connect.prepareStatement(sql);
+                ps.setString(1, "%" + valorBuscado + "%");
+                ps.setString(2, "%" + valorBuscado + "%");
+                ps.setInt(3, limit);
+                ps.setInt(4, offset);
+
+                rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    Usuario usuario = new Usuario(
+                            rs.getLong("id"),
+                            rs.getString("nome"),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("telefone"),
+                            rs.getString("empresa"),
+                            rs.getString("foto")
+                    );
+
+                    usuarios.add(usuario);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (connect != null) ConnectionFactory.desconectar(connect);
+                    if (ps != null) ps.close();
+                    if (rs != null) rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return usuarios;
         }
 
-        PreparedStatement ps = null;
+    public int contarTodosFiltrados(String valorBuscado) {
+        int totalUsuarios = 0;
+
+        String sql = "SELECT COUNT(*) FROM usuario WHERE email LIKE ? OR nome LIKE ?";
+
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
         Connection connect = null;
+
         try {
             connect = ConnectionFactory.conectar();
-            ps = connect.prepareStatement(sql);
-            ps.setString(1, email);
 
-            rs = ps.executeQuery();
+
+
+            pstmt = connect.prepareStatement(sql);
+            pstmt.setString(1, "%" + valorBuscado + "%");
+            pstmt.setString(2, "%" + valorBuscado + "%");
+            rs = pstmt.executeQuery();
+
             if (rs.next()) {
-                Usuario usuario = new Usuario();
-                usuario.setId(rs.getLong("id"));
-                usuario.setNome(rs.getString("nome"));
-                usuario.setEmail(rs.getString("email"));
-                usuario.setTelefone(rs.getString("telefone"));
-                usuario.setSenha(rs.getString("senha"));
-                usuario.setEmpresa(rs.getString("empresa"));
-                usuario.setFoto(rs.getString("foto"));
-
-                return Optional.of(usuario);
+                totalUsuarios = rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar usuario por email: " + email);
+            System.err.println("[DAO ERROR] Erro ao realizar a contagem total de usuarios");
             e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar usuario", e);
+            throw new DataAccessException("Erro ao realizar a contagem total de usuarios", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.desconectar(connect);
-                if (ps != null) ps.close();
+                if (pstmt != null) pstmt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
                 throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
-        return Optional.empty();
-    }
 
-    @Override
-    public List<Usuario> buscarPorNomeDeUsuario(String nomeFiltro, String valorBuscado, int page) {
-        Connection connect = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        int limit = 4;
-        int offset = (page - 1) * limit;
-
-        FiltroUsuario filtroUsuario = FILTROS.get(nomeFiltro);
-
-        FiltroUsuario.setValor(valorBuscado);
-
-        List<Usuario> usuarios = new ArrayList<>();
-
-        try {
-            connect = ConnectionFactory.conectar();
-
-            switch (nomeFiltro) {
-                case "nome_usuario" -> {
-                    String sql = "SELECT * FROM usuario WHERE ? LIKE ? LIMIT ? OFFSET ?";
-                    ps = connect.prepareStatement(sql);
-                    ps.setString(1, filtroUsuario.getColuna());
-                    ps.setString(2, filtroUsuario.getValor());
-                    ps.setInt(3, limit);
-                    ps.setInt(4, offset);
-                }
-                case "email_usuario" -> {
-                    String sql = "SELECT * FROM usuario WHERE ? = ? LIMIT ? OFFSET ?";
-                    ps = connect.prepareStatement(sql);
-                    ps.setString(1, filtroUsuario.getColuna());
-                    ps.setString(2, filtroUsuario.getValor());
-                    ps.setInt(3, limit);
-                    ps.setInt(4, offset);
-                }
-                case "dominio_email_usuario" -> {
-                    String sql = "SELECT * FROM usuario WHERE ? LIKE ? LIMIT ? OFFSET ?";
-                    ps = connect.prepareStatement(sql);
-                    ps.setString(1, filtroUsuario.getColuna());
-                    ps.setInt(2, limit);
-                    ps.setInt(3, offset);
-                }
-                case "empresa" -> {
-                    String sql = "SELECT * FROM usuario WHERE ? LIKE ? OFFSET ?";
-                    ps = connect.prepareStatement(sql);
-                    ps.setString(1, filtroUsuario.getColuna());
-                    ps.setInt(2, limit);
-                    ps.setInt(3, offset);
-                }
-                case "com_foto" -> {
-                    String sql = "SELECT * FROM usuario WHERE ? IS NOT NULL LIMIT ? OFFSET ?";
-                    ps = connect.prepareStatement(sql);
-                    ps.setString(1, filtroUsuario.getColuna());
-                    ps.setInt(2, limit);
-                    ps.setInt(3, offset);
-                }
-                case "sem_foto" -> {
-                    String sql = "SELECT * FROM usuario WHERE ? IS NULL LIMIT ? OFFSET ?";
-                    ps = connect.prepareStatement(sql);
-                    ps.setString(1, filtroUsuario.getColuna());
-                    ps.setInt(2, limit);
-                    ps.setInt(3, offset);
-                }
-            }
-
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Usuario usuario = new Usuario(
-                        rs.getLong("id"),
-                        rs.getString("nome"),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getString("telefone"),
-                        rs.getString("empresa"),
-                        rs.getString("foto")
-                );
-
-                usuarios.add(usuario);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.desconectar(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return usuarios;
+        return totalUsuarios;
     }
 
     @Override
@@ -363,101 +312,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         }
         return Optional.empty();
     }
-
-    @Override
-    public boolean buscarPorTelefoneUsado(String fone) {
-        String sql = "SELECT COUNT(*) FROM usuario WHERE telefone = ?";
-
-        boolean result = false;
-
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection connect = null;
-
-        try {
-            connect = ConnectionFactory.conectar();
-            ps = connect.prepareStatement(sql);
-            ps.setString(1, fone);
-
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                /* 4. Se o resultado da função COUNT for maior que 0, significa que
-                 *  o telefone já está cadastrado
-                 * */
-                result = rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar os telefones usados por usuario: " + fone);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar telefones usados", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.desconectar(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public List<Usuario> buscarTodosFiltrado(String nomeFiltro, String valorBuscado, int page) {
-        Connection connect = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        int limit = 4;
-        int offset = (page - 1) * limit;
-
-        FiltroUsuario filtroUsuario = FILTROS.get(nomeFiltro);
-
-        FiltroUsuario.setValor(valorBuscado);
-
-        List<Usuario> usuarios = new ArrayList<>();
-
-        try {
-            connect = ConnectionFactory.conectar();
-
-            String sql = "SELECT * FROM usuario WHERE ? LIKE ? LIMIT ? OFFSET ?";
-            ps = connect.prepareStatement(sql);
-            ps.setString(1, filtroUsuario.getColuna());
-            ps.setString(2, filtroUsuario.getValor());
-            ps.setInt(3, limit);
-            ps.setInt(4, offset);
-
-
-        rs = ps.executeQuery();
-
-        while (rs.next()) {
-            Usuario usuario = new Usuario(
-                    rs.getLong("id"),
-                    rs.getString("nome"),
-                    rs.getString("email"),
-                    rs.getString("senha"),
-                    rs.getString("telefone"),
-                    rs.getString("empresa"),
-                    rs.getString("foto")
-            );
-
-            usuarios.add(usuario);
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } finally {
-        try {
-            if (rs != null) rs.close();
-            if (ps != null) ps.close();
-            if (connect != null) ConnectionFactory.desconectar(connect);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-        return usuarios;
-}
 
     @Override
     public boolean alterar(Usuario usuario) {
