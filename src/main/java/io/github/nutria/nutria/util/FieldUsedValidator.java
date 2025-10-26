@@ -1,7 +1,6 @@
 package io.github.nutria.nutria.util;
 
 import io.github.nutria.nutria.exceptions.DataAccessException;
-import io.github.nutria.nutria.model.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,14 +19,14 @@ public class FieldUsedValidator {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      * @author Luis Henrique
      */
-    public static boolean isFieldUsed(String table, String field, String value) {
+    public static boolean ehCampoEmUso(String table, String field, String value) {
         String sql = "SELECT COUNT(*) FROM " + table+ " WHERE " + field + " = ?";
 
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection connect = null;
         try  {
-            connect = ConnectionFactory.connect();
+            connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setString(1, value);
 
@@ -37,7 +36,7 @@ public class FieldUsedValidator {
             throw new DataAccessException(" Erro ao verificar valor duplicado: ", e);
         } finally {
             try {
-                if (connect != null) ConnectionFactory.disconnect(connect);
+                if (connect != null) ConnectionFactory.desconectar(connect);
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
