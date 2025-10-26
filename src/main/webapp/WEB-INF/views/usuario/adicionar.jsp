@@ -61,6 +61,6 @@
         </form>
     </div>
 </main>
-<script src="${pageContext.request.contextPath}/assets/js/validator.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/validador.js"></script>
 </body>
 </html>
