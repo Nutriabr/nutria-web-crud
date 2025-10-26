@@ -28,30 +28,31 @@
         <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/admin/adicionar"
               method="post">
             <h2>Informações do administrador</h2>
-            <label for="name-input">Nome</label>
-            <input class="parameter-input" type="text" id="name-input" name="name" placeholder="Insira o nome" required>
+            <label for="name-input">Nome *</label>
+            <input class="parameter-input" type="text" id="name-input" name="nome" placeholder="Insira o nome" required>
 
-            <label for="email-input">E-mail</label>
-            <input class="parameter-input" type="email" id="email-input" oninput="validateForm()" name="email"
+            <label for="email-input">E-mail *</label>
+            <input class="parameter-input" type="email" id="email-input" oninput="return validateEmail()" name="email"
                    placeholder="Insira o endereço de email" required>
-            <span id="errorFeedback"></span>
+            <span id="errorFeedbackEmail"></span>
 
-            <label for="password-input">Senha</label>
-            <input class="parameter-input" type="password" id="password-input" name="password"
+            <label for="password-input">Senha *</label>
+            <input class="parameter-input" type="password" id="password-input" name="senha"
                    placeholder="Insira a senha" required>
 
-            <label for="phone-input">Telefone</label>
-            <input class="parameter-input" type="text" id="phone-input" name="phone" placeholder="XX XXXXX-XXXX" required>
+            <label for="phone-input">Telefone *</label>
+            <input class="parameter-input" type="text" id="phone-input" oninput="return validatePhone()" name="telefone" placeholder="XX XXXXX-XXXX" required>
+            <span id="errorFeedbackPhone"></span>
 
-            <label for="birth-input">Data de nascimento</label>
-            <input class="parameter-input" type="date" id="birth-input" name="birth"
+            <label for="birth-input">Data de nascimento *</label>
+            <input class="parameter-input" type="date" id="birth-input" name="nascimento"
                    placeholder="Insira sua data de nascimento" required>
 
-            <label for="role-input">Cargo</label>
-            <input class="parameter-input" type="text" id="role-input" name="role" placeholder="Insira seu cargo" required>
+            <label for="role-input">Cargo *</label>
+            <input class="parameter-input" type="text" id="role-input" name="cargo" placeholder="Insira seu cargo" required>
 
-            <label for="picture-input">Foto</label>
-            <input class="parameter-input" type="text" id="picture-input" name="picture"
+            <label for="picture-input">Foto </label>
+            <input class="parameter-input" type="text" id="picture-input" name="foto"
                    placeholder="Insira a URL da foto">
 
             <div class="submit-content">
@@ -61,6 +62,6 @@
         </form>
     </div>
 </main>
-<script src="${pageContext.request.contextPath}/assets/js/validator.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/validador.js"></script>
 </body>
 </html>
