@@ -12,6 +12,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe de acesso a dados (DAO) para a entidade {@link ReceitaIngrediente}.
+ * <p>
+ * Implementa as operações de CRUD e métodos personalizados.
+ *
+ * @see GenericDAO
+ * @see IReceitaIngredienteDAO
+ * @see ReceitaIngrediente
+ * @author Enzo Mota
+ * @version 1.0
+ */
 public class ReceitaIngredienteDAO implements GenericDAO<ReceitaIngrediente, Long>, IReceitaIngredienteDAO {
 
     @Override
