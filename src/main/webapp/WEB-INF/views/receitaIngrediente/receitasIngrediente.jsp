@@ -29,6 +29,7 @@
     <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
 </head>
 <body>
+<%@include file="../components/mensagemSucesso.jsp" %>
 <div class="page-container">
     <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
         <jsp:param name="activePage" value="receitaIngrediente"/>
@@ -83,7 +84,7 @@
                         <td><%= receitaIngrediente.getIdIngrediente() %></td>
                         <td><%= receitaIngrediente.getQuantidade() %></td>
                         <td class="action-buttons">
-                            <a href="${pageContext.request.contextPath}/receitasIngredientes/editar?idReceita=<%= receitaIngrediente.getIdReceita() %>&idIngrediente=<%= receitaIngrediente.getIdIngrediente() %>" class="btn-action btn-edit">
+                            <a href="${pageContext.request.contextPath}/receitasIngredientes/editar?id=<%= receitaIngrediente.getId() %>" class="btn-action btn-edit">
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
                             <button class="btn-action btn-delete" data-id="<%= receitaIngrediente.getId()%>">
@@ -120,14 +121,15 @@
         <div class="popup-actions">
             <button class="btn btn-secondary" id="cancel-delete-btn">Cancelar</button>
             <form id="delete-form" action="${pageContext.request.contextPath}/receitasIngredientes/excluir" method="post">
-                <input type="hidden" name="id" id="receitasIngredientes-admin-id">
-                <button type="submit" class="btn btn-danger">Excluir</button>
+                <input type="hidden" name="input-id" id="input-id">
+                <input type="submit" class="btn btn-danger" value="Excluir">
             </form>
         </div>
     </div>
 </div>
 
 <script src="${pageContext.request.contextPath}/assets/js/popup.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/formAutoSubmit.js"></script>
 
 </body>
 </html>
