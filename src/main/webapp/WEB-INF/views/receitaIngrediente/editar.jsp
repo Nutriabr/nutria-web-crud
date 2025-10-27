@@ -36,7 +36,7 @@
             <h2>Informações da receita ingrediente</h2>
             <input type="hidden" name="id" value="<%= id %>">
 
-            <label for="quantity-input">Quantidade</label>
+            <label for="quantidade-input">Quantidade</label>
             <input class="parameter-input" type="number" id="quantidade-input" name="quantidade"
                    value="<%= quantidade%>" placeholder="Insira a quantidade" step="0.1">
             <span id="errorFeedback"></span>
