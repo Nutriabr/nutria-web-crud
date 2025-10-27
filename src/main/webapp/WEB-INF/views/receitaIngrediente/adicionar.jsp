@@ -37,8 +37,8 @@
                    value="${idIngrediente}" placeholder="Insira o ID do Ingrediente" required>
 
 
-            <label for="quantity-input">Quantidade</label>
-            <input class="parameter-input" type="number" id="quantity-input" name="quantity"
+            <label for="quantidade-input">Quantidade</label>
+            <input class="parameter-input" type="number" id="quantidade-input" name="quantidade"
                    value="${quantidade}" placeholder="Insira a quantidade" required>
 
             <div class="submit-content">

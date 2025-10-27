@@ -21,6 +21,9 @@ public class UsuarioSelectServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         int currentPage = 1;
+        int totalPages = 1;
+        int totalUsuarios = 0;
+        List<Usuario> usuarioList = null;
 
         String pageParam = req.getParameter("page");
         if (pageParam != null) {
@@ -32,8 +35,17 @@ public class UsuarioSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalUsuarios = usuarioDAO.contarTodos();
-            int totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGE);
+            String busca = req.getParameter("busca");
+
+            if (busca != null && !busca.isEmpty()) {
+                totalUsuarios = usuarioDAO.contarTodosFiltrados(busca);
+                totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGE);
+                usuarioList = usuarioDAO.buscarPorNomeDeUsuarioOuDominioEmail(busca, currentPage);
+            } else {
+                totalUsuarios = usuarioDAO.contarTodos();
+                totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGE);
+                usuarioList = usuarioDAO.buscarTodos(currentPage);
+            }
 
             if (currentPage < 1) {
                 currentPage = 1;
@@ -41,12 +53,12 @@ public class UsuarioSelectServlet extends HttpServlet {
                 currentPage = totalPages;
             }
 
-            List<Usuario> usuarioList = usuarioDAO.buscarTodos(currentPage);
 
             req.setAttribute("usuarioList", usuarioList);
             req.setAttribute("totalUsuarios", totalUsuarios);
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("currentPage", currentPage);
+            req.setAttribute("busca", busca);
 
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/usuario/usuarios.jsp");
             dispatcher.forward(req, resp);

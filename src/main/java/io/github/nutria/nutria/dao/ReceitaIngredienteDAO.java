@@ -33,7 +33,7 @@ public class ReceitaIngredienteDAO implements GenericDAO<ReceitaIngrediente, Lon
         if (receitaIngrediente.getIdIngrediente() == 0) return false;
         if (receitaIngrediente.getQuantidade() == 0) return false;
 
-        String sql = "INSERT INTO receita (id_receita, id_ingrediente, quantidade) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO receita_ingrediente (id_receita, id_ingrediente, quantidade) VALUES (?, ?, ?)";
 
         PreparedStatement ps = null;
         Connection connect = null;
@@ -298,7 +298,7 @@ public class ReceitaIngredienteDAO implements GenericDAO<ReceitaIngrediente, Lon
 
     @Override
     public boolean alterar(ReceitaIngrediente receitaIngrediente){
-        String sql = "UPDATE receita_ingrediente id_receita = ?, id_ingrediente = ?, quantidade = ? WHERE id_receita = ? and id_ingrediente = ?";
+        String sql = "UPDATE receita_ingrediente SET quantidade = ? WHERE id = ?";
         PreparedStatement psmt = null;
         Connection connect = null;
         int result = 0;
@@ -306,11 +306,8 @@ public class ReceitaIngredienteDAO implements GenericDAO<ReceitaIngrediente, Lon
         try {
             connect = ConnectionFactory.conectar();
             psmt = connect.prepareStatement(sql);
-            psmt.setLong(1, receitaIngrediente.getIdReceita());
-            psmt.setLong(2, receitaIngrediente.getIdIngrediente());
-            psmt.setDouble(3, receitaIngrediente.getQuantidade());
-            psmt.setLong(4, receitaIngrediente.getIdReceita());
-            psmt.setLong(4, receitaIngrediente.getIdReceita());
+            psmt.setDouble(1, receitaIngrediente.getQuantidade());
+            psmt.setLong(2, receitaIngrediente.getId());
 
 
             result = psmt.executeUpdate();
