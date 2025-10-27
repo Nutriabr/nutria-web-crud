@@ -376,6 +376,66 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return result;
     }
 
+    public boolean deletarPorEmpresa(String empresa) {
+        String sql = "DELETE FROM usuario WHERE empresa = ?";
+
+        boolean result = false;
+
+        PreparedStatement ps = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, empresa);
+
+            result = (ps.executeUpdate() > 0);
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao deletar os usuarios: " + empresa);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao deletar usuario", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return result;
+    }
+
+//    public boolean deletarPorDominioDeEmail(String dominioEmail) {
+//        String sql = "DELETE FROM usuario WHERE email LIKE ?";
+//
+//        boolean result = false;
+//
+//        PreparedStatement ps = null;
+//        Connection connect = null;
+//
+//        try {
+//            connect = ConnectionFactory.conectar();
+//            ps = connect.prepareStatement(sql);
+//            ps.setString(1, dominioEmail);
+//
+//            result = (ps.executeUpdate() > 0);
+//
+//        } catch (SQLException e) {
+//            System.err.println("[DAO ERROR] Erro ao deletar os usuarios: " + dominioEmail);
+//            e.printStackTrace(System.err);
+//            throw new DataAccessException("Erro ao deletar usuarios", e);
+//        } finally {
+//            try {
+//                if (connect != null) ConnectionFactory.desconectar(connect);
+//                if (ps != null) ps.close();
+//            } catch (SQLException e) {
+//                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+//            }
+//        }
+//        return result;
+//    }
+
     @Override
     public int contarTodos() {
         int totalUsuarios = 0;
