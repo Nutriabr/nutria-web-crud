@@ -36,7 +36,7 @@ public interface IReceitaDAO {
     List<Receita> buscarPorPorcao(String porcao, int page);
 
     /**
-     * Conta a quantidade de registros de {@link Receita} com o ID informado.
+     * Conta a quantidade total de registros de {@link Receita} com o ID informado.
      *
      * @param id o ID que será utilizado na busca.
      * @return um inteiro com o número total de registros.
@@ -45,7 +45,7 @@ public interface IReceitaDAO {
     int contarPorId(Long id);
 
     /**
-     * Conta a quantidade de registros de {@link Receita} com o ID de {@link Receita} ou de {@link Produto} informado.
+     * Conta a quantidade total de registros de {@link Receita} com o ID de {@link Receita} ou de {@link Produto} informado.
      *
      * @param filtro o ID de {@link Receita} ou de {@link Produto} que será utilizado na busca.
      * @return um inteiro com o número total de registros.
@@ -54,7 +54,7 @@ public interface IReceitaDAO {
     int contarPorIdOuIdProduto(Long filtro);
 
     /**
-     * Conta a quantidade de registros de {@link Receita} com a porção informada.
+     * Conta a quantidade total de registros de {@link Receita} com a porção informada.
      *
      * @param porcao a porção que será utilizada na busca.
      * @return um inteiro com o número total de registros.
