@@ -109,6 +109,7 @@ public class TabelaNutricionalUpdateServlet extends HttpServlet {
 
             tabelaNutricionalDAO.alterar(tabelaNutricional);
 
+            req.getSession().setAttribute("successMessage", "Tabela nutricional atualizada com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/tabela_nutricional/listar");
         } catch (EntityNotFoundException e) {
             req.setAttribute("errorMessage", "Tabela nutricional não encontrada para atualização.");

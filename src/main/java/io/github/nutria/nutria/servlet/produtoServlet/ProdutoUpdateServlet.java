@@ -65,6 +65,7 @@ public class ProdutoUpdateServlet extends HttpServlet {
 
             produtoDAO.alterar(produto);
 
+            req.getSession().setAttribute("successMessage", "Produto atualizado com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/produto/listar");
 
         } catch (EntityNotFoundException e) {

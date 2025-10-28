@@ -33,6 +33,7 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
             req.setAttribute("id", receitaIngrediente.getId());
             req.setAttribute("quantidade", quantidade);
 
+            req.getSession().setAttribute("successMessage", "Receita Ingrediente atualizada com sucesso!");
             req.getRequestDispatcher("/WEB-INF/views/receitaIngrediente/editar.jsp").forward(req, resp);
         } catch (NumberFormatException nfe) {
             System.out.println(nfe.getMessage());
