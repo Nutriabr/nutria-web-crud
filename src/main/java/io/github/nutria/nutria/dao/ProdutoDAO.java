@@ -62,7 +62,10 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM produto LIMIT ? OFFSET ?";
+        String sql = "SELECT p.*, u.nome AS \"nome_usuario\", u.email AS \"email_usuario\", u.empresa AS \"empresa_usuario\""+
+                "FROM produto p "+
+                "JOIN usuario u ON p.id_usuario = u.id "+
+                "LIMIT ? OFFSET ?";
 
         List<Produto> produtosArrayList = new ArrayList<>();
 
@@ -83,6 +86,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
                 produtosArrayList.add(produto);
             }
         } catch (SQLException e) {
@@ -126,6 +132,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
             }
 
         } catch (SQLException e) {
@@ -172,6 +181,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
                 produtos.add(produto);
             }
         } catch (SQLException e) {
@@ -221,6 +233,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
                 produtos.add(produto);
             }
         } catch (SQLException e) {
