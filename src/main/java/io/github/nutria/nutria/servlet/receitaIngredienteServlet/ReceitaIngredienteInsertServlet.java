@@ -34,8 +34,8 @@ public class ReceitaIngredienteInsertServlet extends HttpServlet {
 
             receitaIngredienteDAO.inserir(receitaIngrediente);
 
-            req.getSession().setAttribute("successMessage", "Receita Ingrediente inserida com sucesso!");
-            resp.sendRedirect(req.getContextPath() + "/receitasIngredientes/listar?page=" + (lastPage + 1));
+            req.getSession().setAttribute("successMessage", "Receita Ingrediente adicionada com sucesso!");
+            resp.sendRedirect(req.getContextPath() + "/receitaIngrediente/listar?page=" + (lastPage + 1));
         } catch (RequiredFieldException rfe) {
             System.err.println("[ERRO DE CAMPO OBRIGATÓRIO]: " + rfe);
             req.setAttribute("quantidade", req.getParameter("quantity"));

@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<%@include file="../components/messagemErro.jsp"%>
+<%@include file="../components/messagemErro.jsp" %>
 <main>
     <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
         <jsp:param name="activePage" value="admin"/>
@@ -50,13 +50,13 @@
             <input class="parameter-input" type="text" id="name-input" name="nome" value="<%= nome %>">
 
             <label for="email-input">E-mail</label>
-            <input class="parameter-input" type="email" id="email-input" name="email" oninput="validateForm()" value="<%= email %>">
+            <input class="parameter-input" type="email" id="email-input" name="email" oninput="validateEmail()" value="<%= email %>">
 
             <label for="password-input">Nova Senha</label>
             <input class="parameter-input" type="password" id="password-input" name="senha" placeholder="Deixe em branco para não alterar">
 
             <label for="phone-input">Telefone</label>
-            <input class="parameter-input" type="text" id="phone-input" name="telefone" value="<%= telefone %>">
+            <input class="parameter-input" type="text" id="phone-input" name="telefone" oninput="validatePhone()" value="<%= telefone %>">
 
             <label for="birth-input">Data de nascimento</label>
             <input class="parameter-input" type="date" id="birth-input" name="nascimento" value="<%= nascimento %>">

@@ -24,17 +24,18 @@ public class AdminDeleteServlet extends HttpServlet {
 
             adminDAO.deletarPorId(id);
 
+            req.getSession().setAttribute("successMessage", "Administrador deletado com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/admin/listar");
         }  catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");
-            req.getRequestDispatcher("/WEB-INF/views/admin/editar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/admin/admins.jsp").forward(req, resp);
         } catch (InvalidNumberException | EntityNotFoundException e) {
             req.setAttribute("errorMessage", e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin/editar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/admin/admins.jsp").forward(req, resp);
         } catch (DataAccessException e) {
             System.err.println("[ERRO INTERNO]: " + e);
             req.setAttribute("errorMessage", "Erro ao acessar os dados. Tente novamente mais tarde.");
-            req.getRequestDispatcher("/WEB-INF/views/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/admin/admins.jsp").forward(req, resp);
         }
 
     }

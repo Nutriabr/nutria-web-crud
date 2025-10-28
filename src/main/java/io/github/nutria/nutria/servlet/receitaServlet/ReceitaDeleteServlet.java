@@ -24,6 +24,7 @@ public class ReceitaDeleteServlet extends HttpServlet {
 
             receitaDAO.deletarPorId(id);
 
+            req.getSession().setAttribute("successMessage", "Receita deletada com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/receita/listar");
         }  catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");

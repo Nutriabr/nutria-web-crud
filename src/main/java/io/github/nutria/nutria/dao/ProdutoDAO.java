@@ -62,7 +62,10 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM produto LIMIT ? OFFSET ?";
+        String sql = "SELECT p.*, u.nome AS \"nome_usuario\", u.email AS \"email_usuario\", u.empresa AS \"empresa_usuario\""+
+                "FROM produto p "+
+                "JOIN usuario u ON p.id_usuario = u.id "+
+                "LIMIT ? OFFSET ?";
 
         List<Produto> produtosArrayList = new ArrayList<>();
 
@@ -83,6 +86,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
                 produtosArrayList.add(produto);
             }
         } catch (SQLException e) {
@@ -149,8 +155,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         int limite = 4;
         int offset = (page - 1) * limite;
         String sql = """
-                SELECT * FROM produto
-                WHERE LOWER(nome) LIKE LOWER(?)
+                SELECT p.*, u.nome AS "nome_usuario", u.email AS "email_usuario", u.empresa AS "empresa_usuario" FROM produto p
+                JOIN usuario u ON p.id_usuario = u.id
+                WHERE LOWER(p.nome) LIKE LOWER(?)
                 LIMIT ? OFFSET ?
                 """;
 
@@ -172,6 +179,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
                 produtos.add(produto);
             }
         } catch (SQLException e) {
@@ -196,8 +206,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         int offset = (page - 1) * limite;
 
         String sql = """
-            SELECT DISTINCT * FROM produto 
-            WHERE id = ? OR id_usuario = ?
+            SELECT DISTINCT p.*, u.nome AS "nome_usuario", u.email AS "email_usuario", u.empresa AS "empresa_usuario" FROM produto p
+            JOIN usuario u ON p.id_usuario = u.ido 
+            WHERE p.id = ? OR p.id_usuario = ?
             LIMIT ? OFFSET ?
             """;
 
@@ -221,6 +232,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
                 produtos.add(produto);
             }
         } catch (SQLException e) {

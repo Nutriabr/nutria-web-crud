@@ -30,7 +30,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
     public boolean inserir(Receita receita) {
         if (receita == null) throw new ValidationException("Receita não pode ser nulo");
         if (receita.getPorcao() == null || receita.getPorcao().isEmpty()) throw new RequiredFieldException("porcao");
-        if (receita.getIdProduto() == null || receita.getIdProduto() == null || receita.getIdProduto() <= 0)
+        if (receita.getIdProduto() == null || receita.getIdProduto() <= 0)
             throw new RequiredFieldException("id_produto");
 
 

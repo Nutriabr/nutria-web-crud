@@ -63,6 +63,7 @@ public class IngredienteUpdateServlet extends HttpServlet {
 
             ingredienteDAO.alterar(ingrediente);
 
+            req.getSession().setAttribute("successMessage", "Usuário atualizado com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/ingrediente/listar");
 
         } catch (EntityNotFoundException e) {

@@ -33,7 +33,7 @@
                    placeholder="Insira o nome" required>
 
             <label for="email-input">E-mail</label>
-            <input class="parameter-input" type="email" id="email-input" oninput="validateForm()" name="email"
+            <input class="parameter-input" type="email" id="email-input" oninput="validateEmail()" name="email"
                    value="${email}" placeholder="Insira o endereço de email" required>
             <span id="errorFeedback"></span>
 
@@ -43,7 +43,7 @@
                    value="${password}" placeholder="Insira a senha" required>
 
             <label for="phone-input">Telefone</label>
-            <input class="parameter-input" type="text" id="phone-input" name="phone"
+            <input class="parameter-input" type="text" id="phone-input" oninput="validatePhone()" name="phone"
                    value="${phone}" placeholder="XX XXXXX-XXXX" required>
 
             <label for="company-input">Empresa</label>

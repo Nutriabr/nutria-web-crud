@@ -471,7 +471,7 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
     @Override
     public boolean deletarPorId(Long id) {
-        String sql = "DELETE FROM tabela_nutricional WHERE id = ?";
+        String sql = "DELETE FROM tabela_nutricional WHERE id_ingrediente = ?";
 
         boolean result;
         PreparedStatement ps = null;
