@@ -64,6 +64,7 @@ public class ReceitaUpdateServlet extends HttpServlet {
 
             receitaDAO.alterar(receita);
 
+            req.getSession().setAttribute("successMessage", "Receita atualizada com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/receita/listar");
 
         } catch (EntityNotFoundException e) {
