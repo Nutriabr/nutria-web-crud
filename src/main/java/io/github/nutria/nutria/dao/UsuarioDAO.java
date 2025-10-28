@@ -3,7 +3,6 @@ package io.github.nutria.nutria.dao;
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IUsuarioDAO;
 import io.github.nutria.nutria.exceptions.*;
-import io.github.nutria.nutria.model.FiltroUsuario;
 import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.FieldUsedValidator;
@@ -12,7 +11,6 @@ import io.github.nutria.nutria.util.PasswordHasher;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -29,7 +27,6 @@ import java.util.Optional;
  * @version 1.0
  */
 public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
-    private final static Map<String, FiltroUsuario> FILTROS = FiltroUsuario.filtrosUsuarios();
 
     @Override
     public boolean inserir(Usuario usuario) {
@@ -181,11 +178,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     @Override
     public Optional<Usuario> buscarPorEmail(String email) {
         return Optional.empty();
-    }
-
-    @Override
-    public List<Usuario> buscarPorNomeDeUsuario(String nomeFiltro, String valorBuscado, int page) {
-        return List.of();
     }
 
     @Override
