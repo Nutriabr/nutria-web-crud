@@ -1,10 +1,12 @@
 package io.github.nutria.nutria.servlet.produtoServlet;
 
 import io.github.nutria.nutria.dao.ProdutoDAO;
+import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.exceptions.ValidationException;
 import io.github.nutria.nutria.model.Produto;
+import io.github.nutria.nutria.model.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet("/produto/adicionar")
 public class ProdutoInsertServlet extends HttpServlet {
@@ -23,10 +26,18 @@ public class ProdutoInsertServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String nome = req.getParameter("nome");
-        Long idUsuario = Long.parseLong(req.getParameter("idUsuario"));
+        String emailUsuario = req.getParameter("emailUsuario");
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        Optional<Usuario> optionalUsuario = usuarioDAO.buscarPorEmail(emailUsuario);
+        Usuario usuario = new Usuario();
+        Long idUsuario;
+        if (optionalUsuario.isPresent()) {
+             usuario = optionalUsuario.get();
+        }
+        idUsuario = usuario.getId();
         boolean success;
         Produto produto = new Produto(nome,idUsuario);
-        ProdutoDAO produtoDAO = new ProdutoDAO();
 
         try {
             success = produtoDAO.inserir(produto);
