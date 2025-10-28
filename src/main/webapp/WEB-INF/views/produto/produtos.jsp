@@ -69,6 +69,9 @@
             <th>ID</th>
             <th>Nome</th>
             <th>ID-Usuario</th>
+            <th>Nome-Usuário</th>
+            <th>Email-Usuário</th>
+            <th>Empresa-Usuário</th>
             <th>Ações</th>
           </tr>
           </thead>
@@ -78,6 +81,9 @@
             <td><%= produto.getId() %></td>
             <td><%= produto.getNome() %></td>
             <td><%= produto.getIdUsuario() %></td>
+            <td><%= produto.getNomeUsuario()%></td>
+            <td><%= produto.getEmailUsuario()%></td>
+            <td><%= produto.getEmpresaUsuario()%></td>
             <td class="action-buttons">
               <a href="${pageContext.request.contextPath}/produto/editar?id=<%= produto.getId() %>" class="btn-action btn-edit">
                 <i class="fa-solid fa-pencil"></i>
