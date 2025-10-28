@@ -37,6 +37,7 @@ public class AdminUpdateServlet extends HttpServlet {
             req.setAttribute("cargo", admin.getCargo());
             req.setAttribute("foto", admin.getFoto());
 
+            req.getSession().setAttribute("successMessage", "Administrador atualizado com sucesso!");
             req.getRequestDispatcher("/WEB-INF/views/admin/editar.jsp").forward(req, resp);
         } catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");

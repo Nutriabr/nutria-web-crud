@@ -48,6 +48,7 @@ public class TabelaNutricionalInsertServlet extends HttpServlet {
 
             tabelaNutricionalDAO.inserir(tabelaNutricional);
 
+            req.getSession().setAttribute("successMessage", "Tabela nutricional adicionada com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/tabela_nutricional/listar");
         } catch (DataAccessException dae) {
             req.setAttribute("errorMessage", "Ops! " + dae.getMessage());

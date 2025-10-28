@@ -3,7 +3,6 @@ package io.github.nutria.nutria.dao;
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IUsuarioDAO;
 import io.github.nutria.nutria.exceptions.*;
-import io.github.nutria.nutria.model.FiltroUsuario;
 import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.FieldUsedValidator;
@@ -12,7 +11,6 @@ import io.github.nutria.nutria.util.PasswordHasher;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -29,7 +27,6 @@ import java.util.Optional;
  * @version 1.0
  */
 public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
-    private final static Map<String, FiltroUsuario> FILTROS = FiltroUsuario.filtrosUsuarios();
 
     @Override
     public boolean inserir(Usuario usuario) {
@@ -223,11 +220,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
 
     @Override
-    public List<Usuario> buscarPorNomeDeUsuario(String nomeFiltro, String valorBuscado, int page) {
-        return List.of();
-    }
-
-    @Override
     public List<Usuario> buscarPorNomeDeUsuarioOuDominioEmail(String valorBuscado, int page) {
         Connection connect = null;
         PreparedStatement ps = null;
@@ -280,7 +272,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
     @Override
     public Optional<Usuario> buscarPorTelefone(String fone) {
-        String sql = "SELECT * FROM usuario WHERE telefone = ?";
+        String sql = "SELECT DISTINCT * FROM usuario WHERE telefone = ?";
 
         if (fone == null || fone.isBlank()) {
             throw new RequiredFieldException("telefone");

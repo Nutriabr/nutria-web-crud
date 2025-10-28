@@ -44,11 +44,19 @@ public class AdminInsertServlet extends HttpServlet {
             admin.setEmail(req.getParameter("email"));
             admin.setSenha(req.getParameter("senha"));
             admin.setCargo(req.getParameter("cargo"));
-            admin.setFoto(req.getParameter("foto"));
+
+            String foto = req.getParameter("foto");
+            if (foto.isEmpty()) {
+                admin.setFoto("Sem foto");
+            } else {
+                admin.setFoto(foto);
+            }
 
             adminDAO.inserir(admin);
 
+            req.getSession().setAttribute("successMessage", "Administrador adicionado com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/admin/listar");
+
         } catch (DuplicateEmailException dee) {
             System.err.println("[ERRO DE DUPLICIDADE]: " + dee);
             req.setAttribute("errorMessage", "Ops! Esse e-mail já está em uso!");

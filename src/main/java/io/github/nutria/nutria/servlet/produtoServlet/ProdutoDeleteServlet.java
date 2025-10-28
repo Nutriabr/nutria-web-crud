@@ -23,6 +23,7 @@ public class ProdutoDeleteServlet extends HttpServlet {
 
             produtoDAO.deletarPorId(id);
 
+            req.getSession().setAttribute("successMessage", "Produto deletado com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/produto/listar");
         }  catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");
