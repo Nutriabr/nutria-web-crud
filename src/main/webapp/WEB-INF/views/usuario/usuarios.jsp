@@ -143,7 +143,5 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/assets/js/popup.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/formAutoSubmit.js"></script>
-
 </body>
 </html>
