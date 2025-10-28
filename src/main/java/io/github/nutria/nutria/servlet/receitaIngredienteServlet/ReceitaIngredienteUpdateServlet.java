@@ -28,10 +28,10 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
 
             receitaIngrediente = receitaIngredienteDAO.buscarPorId(id);
 
-            Double quantidade = receitaIngrediente.getQuantidade();
-
             req.setAttribute("id", receitaIngrediente.getId());
-            req.setAttribute("quantidade", quantidade);
+            req.setAttribute("quantidade", receitaIngrediente.getQuantidade());
+
+            receitaIngredienteDAO.alterar(receitaIngrediente);
 
             req.getSession().setAttribute("successMessage", "Receita Ingrediente atualizada com sucesso!");
             req.getRequestDispatcher("/WEB-INF/views/receitaIngrediente/editar.jsp").forward(req, resp);
@@ -55,18 +55,18 @@ public class ReceitaIngredienteUpdateServlet extends HttpServlet {
 
         int lastPage = (int) Math.ceil((double) receitaIngredienteDAO.contarTodos() / 4);
 
-
         try {
             String idStr = req.getParameter("id");
             Long id = Long.parseLong(String.valueOf(idStr));
 
             ReceitaIngrediente receitaIngrediente = receitaIngredienteDAO.buscarPorId(id);
 
-            receitaIngrediente.setQuantidade(Double.parseDouble(req.getParameter("quantity")));
+            receitaIngrediente.setQuantidade(Double.parseDouble(req.getParameter("quantidade")));
 
             receitaIngredienteDAO.alterar(receitaIngrediente);
 
-            resp.sendRedirect(req.getContextPath() + "/receitaIngrediente/listar?page=" + (lastPage + 1));
+            req.getSession().setAttribute("successMessage", "Receita Ingrediente atualizada com sucesso!");
+            resp.sendRedirect(req.getContextPath() + "/receitasIngredientes/listar?page=" + (lastPage + 1));
         } catch (RequiredFieldException rfe) {
             System.out.println(rfe.getMessage());
             System.err.println("[ERRO DE CAMPO OBRIGATÓRIO]: " + rfe);

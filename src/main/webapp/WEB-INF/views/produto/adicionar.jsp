@@ -31,6 +31,8 @@
             <h2>Informações do produto</h2>
             <label for="nome-input">Nome</label>
             <input class="parameter-input" type="text" id="nome-input" name="nome" placeholder="Insira o nome" required>
+            <label for="nome-input">ID-Usuário</label>
+            <input class="parameter-input" type="text" id="id-usuario-input" name="idUsuario" placeholder="Insira o ID do usuário" required>
             <span id="errorFeedback"></span>
             <div class="submit-content">
                 <a href="${pageContext.request.contextPath}/produto/listar" id="btn-cancel">Cancelar</a>

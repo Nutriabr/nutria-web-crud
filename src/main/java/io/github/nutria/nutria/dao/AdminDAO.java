@@ -255,6 +255,101 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return result;
     }
 
+    public Optional<List<Admin>> buscarPorDominioDoEmail(String domain) {
+        String sql = """
+                SELECT * FROM admin
+                WHERE email LIKE ?
+                """;
+        String emailLink = "%@" + domain;
+
+        List<Admin> adminList = new ArrayList<Admin>();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, emailLink);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Admin admin = new Admin(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getDate("nascimento"),
+                        rs.getString("cargo"),
+                        rs.getString("foto")
+                );
+
+                adminList.add(admin);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar usuário pelo domínio de email: " + domain);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar pelo domínio de email", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return (adminList.isEmpty() ? Optional.empty() : Optional.of(adminList));
+    }
+
+    public Optional<List<Admin>> buscarPorNome(String name) {
+        String sql = """
+                SELECT * FROM admin
+                WHERE nome = ?
+                """;
+
+        List<Admin> adminList = new ArrayList<Admin>();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connect = null;
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, name);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Admin admin = new Admin(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getDate("nascimento"),
+                        rs.getString("cargo"),
+                        rs.getString("foto")
+                );
+
+                adminList.add(admin);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar usuário pelo nome: " + name);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar pelo domínio de email", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return (adminList.isEmpty() ? Optional.empty() : Optional.of(adminList));
+    }
+
     public Optional<Admin> buscarPorEmail(String email) {
         String sql = "SELECT * FROM admin WHERE email = ?";
 
@@ -377,6 +472,11 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
         return totalAdmins;
     }
+
+    public Optional<Admin> buscarPorEmailETelefone(String email, String telefone) {
+        return Optional.empty();
+    }
+
 
     /**
      * Valida campos obrigatórios de um {@link Admin}.

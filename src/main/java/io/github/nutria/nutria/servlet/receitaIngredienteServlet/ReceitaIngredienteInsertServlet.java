@@ -17,8 +17,7 @@ public class ReceitaIngredienteInsertServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String currentPage = req.getParameter("page");
-        final String viewPath = "/WEB-INF/views/receitaIngrediente/adicionar.jsp";
-        req.getRequestDispatcher(viewPath).forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/receitaIngrediente/adicionar.jsp").forward(req, resp);
     }
 
     @Override
@@ -29,10 +28,9 @@ public class ReceitaIngredienteInsertServlet extends HttpServlet {
         int lastPage = (int) Math.ceil((double) receitaIngredienteDAO.contarTodos() / 4);
 
         try {
-            receitaIngrediente.setIdReceita(Long.parseLong(req.getParameter("id")));
             receitaIngrediente.setIdReceita(Long.parseLong(req.getParameter("idReceita")));
             receitaIngrediente.setIdIngrediente(Long.parseLong(req.getParameter("idIngrediente")));
-            receitaIngrediente.setQuantidade(Integer.parseInt(req.getParameter("quantity")));
+            receitaIngrediente.setQuantidade(Integer.parseInt(req.getParameter("quantidade")));
 
             receitaIngredienteDAO.inserir(receitaIngrediente);
 

@@ -17,6 +17,7 @@
     int totalPages = (int) request.getAttribute("totalPages");
     int currentPage = (int) request.getAttribute("currentPage");
     String busca = (String) request.getAttribute("busca");
+    String buscaParam = (busca != null && !busca.trim().isEmpty()) ? "&busca=" + busca : "";
 %>
 
 <!DOCTYPE html>
@@ -54,12 +55,10 @@
             <header class="table-header">
                 <h2>Usuário</h2>
                 <div class="table-actions">
-                    <div class="search-bar">
-                        <form id="form-busca"  action="${pageContext.request.contextPath}/usuario/buscar" method="get">
+                        <form id="form-busca"  action="${pageContext.request.contextPath}/usuario/listar" method="get" class="search-bar">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="${busca != null && !busca.isEmpty() ? busca : '' }">
+                            <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
                         </form>
-                    </div>
                     <a href="${pageContext.request.contextPath}/usuario/adicionar" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i>
                         Adicionar novo usuário
@@ -114,11 +113,15 @@
             <footer class="table-footer">
                 <span>Página <%= currentPage %> de <%= totalPages %></span>
                 <nav class="pagination">
-                    <a href="?page=<%= currentPage - 1 %>" class="arrow <%= currentPage <= 1 ? "disabled" : "" %>&<%= busca != null && !busca.isEmpty() ? busca : "" %>">
+                    <a href="${pageContext.request.contextPath}/usuario/listar?page=<%= currentPage - 1 %><%= buscaParam %>"
+                       class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
+
                     <span class="current-page"><%= currentPage %></span>
-                    <a href="?page=<%= currentPage + 1 %>" class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>&<%= busca != null && !busca.isEmpty() ? busca : "" %>">
+
+                    <a href="${pageContext.request.contextPath}/usuario/listar?page=<%= currentPage + 1 %><%= buscaParam %>"
+                       class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
                 </nav>

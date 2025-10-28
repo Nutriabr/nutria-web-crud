@@ -24,9 +24,6 @@ public class ReceitaSelectServlet extends HttpServlet {
         int currentPage = 1;
         String pageParam = req.getParameter("page");
         String filtro = req.getParameter("busca");
-        List<Receita> receitasList = new ArrayList<>();
-        List<Long> idsAdicionados = new ArrayList<>();
-        int totalReceitas;
 
         if (pageParam != null) {
             try {
@@ -36,6 +33,10 @@ public class ReceitaSelectServlet extends HttpServlet {
             }
         }
 
+        List<Receita> receitasList = new ArrayList<>();
+        List<Long> idsAdicionados = new ArrayList<>();
+        int totalReceitas;
+
         try {
             if (filtro == null || filtro.isEmpty()) {
                 receitasList = receitaDAO.buscarTodos(currentPage);
@@ -43,21 +44,8 @@ public class ReceitaSelectServlet extends HttpServlet {
             } else {
                 try {
                     Long numero = Long.parseLong(filtro);
-                    Receita receita = receitaDAO.buscarPorId(numero);
-                    if (receita != null) {
-                        receitasList.add(receita);
-                        idsAdicionados.add(receita.getId());
-                    }
-
-                    List<Receita> receitasComIdProduto = receitaDAO.buscarPorIdProduto(numero, currentPage);
-                    for (Receita r : receitasComIdProduto) {
-                        if (!idsAdicionados.contains(r.getId())) {
-                            receitasList.add(r);
-                            idsAdicionados.add(r.getId());
-                        }
-                    }
-
-                    totalReceitas = receitaDAO.contarPorId(numero) + receitaDAO.contarPorIdProduto(numero);
+                    totalReceitas = receitaDAO.contarPorIdOuIdProduto(numero);
+                    receitasList = receitaDAO.buscarPorIdOuIdProduto(numero,currentPage);
 
                 } catch (NumberFormatException nfe) {
                     receitasList = receitaDAO.buscarPorPorcao(filtro, currentPage);

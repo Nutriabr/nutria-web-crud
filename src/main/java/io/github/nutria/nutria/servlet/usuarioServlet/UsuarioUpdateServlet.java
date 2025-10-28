@@ -52,12 +52,10 @@ public class UsuarioUpdateServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        final String viewPath = "/WEB-INF/views/usuario/editar.jsp";
 
         int lastPage = (int) Math.ceil((double) usuarioDAO.contarTodos() / 4);
 
         try {
-            System.out.println(req.getParameter("id"));
             Long id = Long.valueOf(req.getParameter("id"));
             Usuario usuario = usuarioDAO.buscarPorId(id);
 

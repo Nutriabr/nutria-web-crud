@@ -26,6 +26,7 @@ public class ReceitaIngredienteDeleteServlet extends HttpServlet {
 
             req.getSession().setAttribute("successMessage", "Receita Ingrediente deletada com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/receitasIngredientes/listar");
+
         }  catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");
             req.getRequestDispatcher("/WEB-INF/views/receitasIngredientes/editar.jsp").forward(req, resp);

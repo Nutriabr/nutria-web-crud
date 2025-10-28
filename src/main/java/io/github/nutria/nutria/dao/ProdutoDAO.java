@@ -62,7 +62,10 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM produto LIMIT ? OFFSET ?";
+        String sql = "SELECT p.*, u.nome AS \"nome_usuario\", u.email AS \"email_usuario\", u.empresa AS \"empresa_usuario\""+
+                "FROM produto p "+
+                "JOIN usuario u ON p.id_usuario = u.id "+
+                "LIMIT ? OFFSET ?";
 
         List<Produto> produtosArrayList = new ArrayList<>();
 
@@ -83,6 +86,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
                 produtosArrayList.add(produto);
             }
         } catch (SQLException e) {
@@ -126,6 +132,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
             }
 
         } catch (SQLException e) {
@@ -172,6 +181,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
                 produtos.add(produto);
             }
         } catch (SQLException e) {
@@ -191,50 +203,55 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         return produtos;
     }
 
-    public List<Produto> buscarPorIdUsuario(Long idUsuario, int page){
+    public List<Produto> buscarPorIdOuIdUsuario(Long numero, int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
-        String sql =
-                """
-                SELECT * FROM produto
-                WHERE id_usuario = ? 
-                LIMIT ? OFFSET ?
-                """;
+
+        String sql = """
+            SELECT DISTINCT * FROM produto 
+            WHERE id = ? OR id_usuario = ?
+            LIMIT ? OFFSET ?
+            """;
 
         PreparedStatement ps = null;
         Connection connect = null;
         ResultSet rs = null;
         List<Produto> produtos = new ArrayList<>();
 
-        try{
+        try {
             connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
-            ps.setLong(1,idUsuario);
-            ps.setInt(2,limite);
-            ps.setInt(3,offset);
+            ps.setLong(1, numero);
+            ps.setLong(2, numero);
+            ps.setInt(3, limite);
+            ps.setInt(4, offset);
+
             rs = ps.executeQuery();
-            while (rs.next()){
+
+            while (rs.next()) {
                 Produto produto = new Produto();
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
-
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
                 produtos.add(produto);
             }
-
-        } catch (SQLException sqle){
-            System.err.println("[DAO ERROR] Erro ao buscar o produto com o id_usuario: " + idUsuario);
-            sqle.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar a produto com id_usuario: " + idUsuario, sqle);
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar produto por ID ou ID_Usuário: " + numero);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar produto por ID ou ID_Usuário", e);
         } finally {
             try {
-                if(connect != null) ConnectionFactory.desconectar(connect);
-                if(ps != null) ps.close();
-                if(rs != null) rs.close();
-            } catch (SQLException sqle){
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", sqle);
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
             }
         }
+
         return produtos;
     }
 
@@ -366,8 +383,13 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         }
         return total;
     }
-    public int contarPorIdProduto(Long idUsuario) {
-        String sql = "SELECT COUNT(*) FROM produto WHERE id_usuario = ?";
+
+    public int contarPorIdOuIdUsuario(Long numero) {
+        String sql = """
+            SELECT COUNT(DISTINCT id) FROM produto 
+            WHERE id = ? OR id_usuario = ?
+            """;
+
         Connection connect = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -376,13 +398,17 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         try {
             connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
-            ps.setLong(1, idUsuario);
+            ps.setLong(1, numero);
+            ps.setLong(2, numero);
+
             rs = ps.executeQuery();
             if (rs.next()) {
                 total = rs.getInt(1);
             }
         } catch (SQLException e) {
-            throw new DataAccessException("Erro ao contar produtos filtrados", e);
+            System.err.println("[DAO ERROR] Erro ao contar produtos por ID ou ID_Usuário: " + numero);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao contar produtos por ID ou ID_Usuário", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.desconectar(connect);
@@ -392,6 +418,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 throw new DataAccessException("Erro ao fechar recursos do banco", e);
             }
         }
+
         return total;
     }
 
