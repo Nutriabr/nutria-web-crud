@@ -293,7 +293,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
     @Override
     public Optional<Usuario> buscarPorTelefone(String fone) {
-        String sql = "SELECT * FROM usuario WHERE telefone = ?";
+        String sql = "SELECT DISTINCT * FROM usuario WHERE telefone = ?";
 
         if (fone == null || fone.isBlank()) {
             throw new RequiredFieldException("telefone");

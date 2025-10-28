@@ -405,6 +405,6 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     private void validarProduto(Produto produto) {
         if (produto == null) throw new ValidationException("Produto não pode ser nulo");
         if (produto.getNome() == null || produto.getNome().isBlank()) throw new RequiredFieldException("nome");
-        if (produto.getIdUsuario() == null || produto.getIdUsuario() == null) throw new RequiredFieldException("usuario");
+        if (produto.getIdUsuario() == null) throw new RequiredFieldException("usuario");
     }
 }
