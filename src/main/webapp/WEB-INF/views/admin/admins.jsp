@@ -31,6 +31,7 @@
     <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
 </head>
 <body>
+<%@include file="../components/mensagemSucesso.jsp" %>
 <div class="page-container">
     <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
         <jsp:param name="activePage" value="admin"/>
@@ -91,7 +92,14 @@
                         <td><%= admin.getTelefone() %></td>
                         <td><%= admin.getNascimento() %></td>
                         <td><%= admin.getCargo() %></td>
-                        <td><img src="<%= admin.getFoto() %>" alt="Foto de <%= admin.getNome() %>" class="table-photo"></td>
+                        <% if (admin.getFoto() == null || admin.getFoto().equals("Sem foto")) { %>
+                        <td>Sem foto</td>
+                        <% } else { %>
+                        <td>
+                            <img src="<%= admin.getFoto() %>" alt="Foto de <%= admin.getNome() %>" class="table-photo">
+                        </td>
+                        <% } %>
+
                         <td class="action-buttons">
                             <a href="${pageContext.request.contextPath}/admin/editar?id=<%= admin.getId()%>" class="btn-action btn-edit">
                                 <i class="fa-solid fa-pencil"></i>
