@@ -75,7 +75,7 @@
                         <th>Gorduras totais (g)</th>
                         <th>Gorduras saturadas (g)</th>
                         <th>Gorduras trans (g)</th>
-                        <th>Fibras alimentares (G)</th>
+                        <th>Fibra alimentar (G)</th>
                         <th>Sódio (mg)</th>
                         <th>Colesterol (mg)</th>
                         <th>Vitamina A (µg)</th>
@@ -137,19 +137,18 @@
     </main>
 </div>
 
-
 <div class="overlay" id="delete-popup-overlay" style="display: none;">
-  <div class="popup-container">
-    <h1>Você tem certeza que deseja excluir este registro?</h1>
-    <p>Você não poderá recuperar o registro de <strong id="delete-usuario-name"></strong>após excluir.</p>
-    <div class="popup-actions">
-      <button class="btn btn-secondary" id="cancel-delete-btn">Cancelar</button>
-      <form id="delete-form" action="${pageContext.request.contextPath}/usuario/excluir" method="post">
-        <input type="hidden" name="id" id="usuario-admin-id">
-        <button type="submit" class="btn btn-danger">Excluir</button>
-      </form>
+    <div class="popup-container">
+        <h1>Você tem certeza que deseja excluir este registro?</h1>
+        <p>Você não poderá recuperar o registro de ID <strong id="delete-id"></strong> após excluir.</p>
+        <div class="popup-actions">
+            <button class="btn btn-secondary" id="cancel-delete-btn">Cancelar</button>
+            <form id="delete-form" action="${pageContext.request.contextPath}/tabela_nutricional/excluir" method="post">
+                <input type="hidden" name="input-id" id="input-id">
+                <input type="submit" class="btn btn-danger" value="Excluir">
+            </form>
+        </div>
     </div>
-  </div>
 </div>
 
 <script src="${pageContext.request.contextPath}/assets/js/popup.js"></script>
