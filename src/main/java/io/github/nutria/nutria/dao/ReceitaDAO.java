@@ -70,7 +70,12 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM receita LIMIT ? OFFSET ?";
+        String sql = """
+            SELECT r.*, p.nome AS "nome_produto" 
+            FROM receita r 
+            JOIN produto p ON r.id_produto = p.id 
+            LIMIT ? OFFSET ?
+        """;
 
         List<Receita> receitasArrayList = new ArrayList<>();
 
@@ -93,6 +98,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
                 receita.setId(rs.getLong("id"));
                 receita.setPorcao(rs.getString("porcao"));
                 receita.setIdProduto(rs.getLong("id_produto"));
+                receita.setNomeProduto(rs.getString("nome_produto"));
 
                 receitasArrayList.add(receita);
             }
@@ -161,7 +167,9 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         int offset = (page - 1) * limite;
 
         String sql = """
-            SELECT DISTINCT * FROM receita 
+            SELECT DISTINCT r.*, p.nome AS "nome_produto"
+            FROM receita r
+            JOIN produto p ON r.id_produto = p.id
             WHERE id = ? OR id_produto = ?
             LIMIT ? OFFSET ?
             """;
@@ -186,6 +194,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
                 receita.setId(rs.getLong("id"));
                 receita.setPorcao(rs.getString("porcao"));
                 receita.setIdProduto(rs.getLong("id_produto"));
+                receita.setNomeProduto(rs.getString("nome_produto"));
                 receitas.add(receita);
             }
         } catch (SQLException e) {
@@ -210,7 +219,9 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         int offset = (page - 1) * limite;
         String sql =
                 """
-                SELECT * FROM receita
+                SELECT r.*, p.nome AS "nome_produto"
+                FROM receita r 
+                JOIN produto p ON r.id_produto = p.id
                 WHERE LOWER(porcao) LIKE LOWER(?) 
                 LIMIT ? OFFSET ?
                 """;
@@ -232,6 +243,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
                 receita.setId(rs.getLong("id"));
                 receita.setPorcao(rs.getString("porcao"));
                 receita.setIdProduto(rs.getLong("id_produto"));
+                receita.setNomeProduto(rs.getString("nome_produto"));
 
                 receitas.add(receita);
             }
