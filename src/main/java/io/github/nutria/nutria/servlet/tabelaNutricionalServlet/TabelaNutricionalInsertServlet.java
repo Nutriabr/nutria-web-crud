@@ -11,9 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/tabela_nutricional/adicionar")
+@WebServlet("/tabelaNutricional/adicionar")
 public class TabelaNutricionalInsertServlet extends HttpServlet {
-    private static final String VIEW_PATH = "/WEB-INF/views/tabela_nutricional/adicionar.jsp";
+    private static final String VIEW_PATH = "/WEB-INF/views/tabelaNutricional/adicionar.jsp";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -49,7 +49,7 @@ public class TabelaNutricionalInsertServlet extends HttpServlet {
             tabelaNutricionalDAO.inserir(tabelaNutricional);
 
             req.getSession().setAttribute("successMessage", "Tabela nutricional adicionada com sucesso!");
-            resp.sendRedirect(req.getContextPath() + "/tabela_nutricional/listar");
+            resp.sendRedirect(req.getContextPath() + "/tabelaNutricional/listar");
         } catch (DataAccessException dae) {
             req.setAttribute("errorMessage", "Ops! " + dae.getMessage());
             req.getRequestDispatcher(VIEW_PATH).forward(req, resp);
