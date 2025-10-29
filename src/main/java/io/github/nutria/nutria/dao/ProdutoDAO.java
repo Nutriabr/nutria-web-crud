@@ -156,7 +156,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
 
         String sql = """
             SELECT DISTINCT p.*, u.nome AS "nome_usuario", u.email AS "email_usuario", u.empresa AS "empresa_usuario" FROM produto p
-            JOIN usuario u ON p.id_usuario = u.ido 
+            JOIN usuario u ON p.id_usuario = u.id
             WHERE p.id = ? OR p.id_usuario = ?
             LIMIT ? OFFSET ?
             """;
