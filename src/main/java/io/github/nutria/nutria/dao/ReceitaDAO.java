@@ -173,7 +173,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
             SELECT DISTINCT r.*, p.nome AS "nome_produto"
             FROM receita r
             JOIN produto p ON r.id_produto = p.id
-            WHERE id = ? OR id_produto = ?
+            WHERE r.id = ? OR r.id_produto = ?
             LIMIT ? OFFSET ?
             """;
 
@@ -226,7 +226,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
                 SELECT r.*, p.nome AS "nome_produto"
                 FROM receita r 
                 JOIN produto p ON r.id_produto = p.id
-                WHERE LOWER(porcao) LIKE LOWER(?) 
+                WHERE LOWER(r.porcao) LIKE LOWER(?) 
                 LIMIT ? OFFSET ?
                 """;
 
