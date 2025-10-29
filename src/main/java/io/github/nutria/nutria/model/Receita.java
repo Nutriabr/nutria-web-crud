@@ -6,6 +6,7 @@ public class Receita {
     private Long id;
     private String porcao;
     private Long idProduto;
+    private String nomeProduto;
 
     // Métodos construtores
     public Receita(){
@@ -16,6 +17,12 @@ public class Receita {
         this.id = id;
         this.porcao = porcao;
         this.idProduto = idProduto;
+    }
+    public Receita(Long id, String porcao, Long idProduto, String nomeProduto){
+        this.id = id;
+        this.porcao = porcao;
+        this.idProduto = idProduto;
+        this.nomeProduto = nomeProduto;
     }
 
     public Receita(String porcao, Long idProduto){
@@ -36,6 +43,9 @@ public class Receita {
         return idProduto;
     }
 
+    public String getNomeProduto() {
+        return nomeProduto;
+    }
     // Método setters
 
     public void setId(Long id) {
@@ -48,6 +58,10 @@ public class Receita {
 
     public void setIdProduto(Long idProduto) {
         this.idProduto = idProduto;
+    }
+
+    public void setNomeProduto(String nomeProduto) {
+        this.nomeProduto = nomeProduto;
     }
 
     // Método toString
