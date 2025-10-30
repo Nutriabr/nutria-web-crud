@@ -18,6 +18,8 @@
     int currentPage = (int) request.getAttribute("currentPage");
 
     String contextPath = request.getContextPath();
+    String busca = (String) request.getAttribute("busca");
+    String buscaParam = (busca != null && !busca.trim().isEmpty()) ? "&busca=" + busca : "";
 %>
 
 <!DOCTYPE html>
@@ -31,6 +33,7 @@
     <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
 </head>
 <body>
+<%@include file="../components/mensagemSucesso.jsp" %>
 <div class="page-container">
     <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
         <jsp:param name="activePage" value="admin"/>
@@ -55,8 +58,8 @@
                 <div class="table-actions">
                     <div class="search-bar">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <form method="get" action="<%= contextPath %>/admin/editar/admin/buscar">
-                            <input type="search" placeholder="Buscar" name="search-filter-input" >
+                        <form id="form-busca"  action="${pageContext.request.contextPath}/admin/listar" method="get">
+                            <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
                         </form>
                     </div>
                     <a href="${pageContext.request.contextPath}/admin/adicionar" class="btn btn-primary">
@@ -91,7 +94,14 @@
                         <td><%= admin.getTelefone() %></td>
                         <td><%= admin.getNascimento() %></td>
                         <td><%= admin.getCargo() %></td>
-                        <td><img src="<%= admin.getFoto() %>" alt="Foto de <%= admin.getNome() %>" class="table-photo"></td>
+                        <% if (admin.getFoto() == null || admin.getFoto().equals("Sem foto")) { %>
+                        <td>Sem foto</td>
+                        <% } else { %>
+                        <td>
+                            <img src="<%= admin.getFoto() %>" alt="Foto de <%= admin.getNome() %>" class="table-photo">
+                        </td>
+                        <% } %>
+
                         <td class="action-buttons">
                             <a href="${pageContext.request.contextPath}/admin/editar?id=<%= admin.getId()%>" class="btn-action btn-edit">
                                 <i class="fa-solid fa-pencil"></i>
