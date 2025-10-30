@@ -3,6 +3,7 @@ package io.github.nutria.nutria.servlet.adminServlet;
 import io.github.nutria.nutria.dao.AdminDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.model.Admin;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,6 +22,9 @@ public class AdminSelectServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AdminDAO adminDAO = new AdminDAO();
         int paginaAtual = 1;
+        int totalAdmins = 0;
+        int totalPaginas = 1;
+        List<Admin> adminList = null;
 
         String paginaParam = req.getParameter("page");
         if (paginaParam != null) {
@@ -32,8 +36,17 @@ public class AdminSelectServlet extends HttpServlet {
         }
 
         try {
-            int totalAdmins = adminDAO.contarTodos();
-            int totalPaginas = (int) Math.ceil((double) totalAdmins / TOTAL_ADMINS_PAGINAS);
+            String busca = req.getParameter("busca");
+
+            if (busca != null && !busca.isEmpty()) {
+                totalAdmins = adminDAO.contarTodosFiltrados(busca);
+                totalPaginas = (int) Math.ceil((double) totalAdmins / TOTAL_ADMINS_PAGINAS);
+                adminList = adminDAO.buscarPorNomeDeUsuarioOuDominioEmail(busca, paginaAtual);
+            } else {
+                totalAdmins = adminDAO.contarTodos();
+                totalPaginas = (int) Math.ceil((double) totalAdmins / TOTAL_ADMINS_PAGINAS);
+                adminList = adminDAO.buscarTodos(paginaAtual);
+            }
 
             if (paginaAtual < 1) {
                 paginaAtual = 1;
@@ -41,12 +54,11 @@ public class AdminSelectServlet extends HttpServlet {
                 paginaAtual = totalPaginas;
             }
 
-            List<Admin> adminList = adminDAO.buscarTodos(paginaAtual);
-
             req.setAttribute("adminList", adminList);
             req.setAttribute("totalAdmins", totalAdmins);
             req.setAttribute("totalPages", totalPaginas);
             req.setAttribute("currentPage", paginaAtual);
+            req.setAttribute("busca", busca);
 
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/admin/admins.jsp");
             dispatcher.forward(req, resp);
