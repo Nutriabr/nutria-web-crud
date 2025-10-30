@@ -30,6 +30,7 @@
     <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
 </head>
 <body>
+<%@include file="../components/mensagemSucesso.jsp" %>
 <div class="page-container">
     <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
         <jsp:param name="activePage" value="receita"/>
@@ -66,9 +67,11 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Porção</th>
+                        <th>ID da Receita</th>
+                        <th>Porção da Receita</th>
+                        <th>Nome do Produto</th>
                         <th>ID-Produto</th>
+
                         <th>Ações</th>
                     </tr>
                     </thead>
@@ -77,6 +80,7 @@
                     <tr>
                         <td><%= receita.getId() %></td>
                         <td><%= receita.getPorcao() %></td>
+                        <td><%= receita.getNomeProduto()%></td>
                         <td><%= receita.getIdProduto() %></td>
                         <td class="action-buttons">
                             <a href="${pageContext.request.contextPath}/receita/editar?id=<%= receita.getId() %>" class="btn-action btn-edit">

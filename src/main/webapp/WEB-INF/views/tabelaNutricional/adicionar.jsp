@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <html>
 <head>
-  <title>Adicionar nova tabela nutricional</title>
+  <title>Adicionar nova Tabela Nutricional</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/forms.css">
@@ -19,14 +19,14 @@
 <%@include file="../components/messagemErro.jsp"%>
 <main>
   <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
-    <jsp:param name="activePage" value="tabela_nutricional"/>
+    <jsp:param name="activePage" value="tabelaNutricional"/>
   </jsp:include>
   <div class="container">
     <div class="main-content">
-      <h1>Adicionar tabela nutricional</h1>
-      <p>Preencha as informações da nova tabela nutricional.</p>
+      <h1>Adicionar Tabela Nutricional</h1>
+      <p>Preencha as informações da nova Tabela Nutricional.</p>
     </div>
-    <form class="form-content" name="forms-add-tabela-nutricional" action="${pageContext.request.contextPath}/tabela_nutricional/adicionar"
+    <form class="form-content" name="forms-add-tabela-nutricional" action="${pageContext.request.contextPath}/tabelaNutricional/adicionar"
           method="post">
       <h2>Informações da tabela nutricional</h2>
 
@@ -85,7 +85,7 @@
       <input class="parameter-input" type="number" id="potassio-input" name="potassio" min="0" step="0.01" placeholder="Ex: 15.50">
 
       <div class="submit-content">
-        <a href="${pageContext.request.contextPath}/tabela_nutricional/listar" id="btn-cancel">Cancelar</a>
+        <a href="${pageContext.request.contextPath}/tabelaNutricional/listar" id="btn-cancel">Cancelar</a>
         <input id="submit-btn" type="submit" value="Adicionar">
       </div>
     </form>
