@@ -19,14 +19,24 @@ public class UsuarioDeleteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getParameter("input-id");
-        Long id = Long.parseLong(idStr);
+        String acao = req.getParameter("acao");
 
         try {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-            usuarioDAO.deletarPorId(id);
+            if ("Excluir".equals(acao)) {
+                String opcao = req.getParameter("input-empresa");
+                if (opcao != null && !opcao.isEmpty()) {
+                    usuarioDAO.deletarPorEmpresa(opcao);
+                    req.getSession().setAttribute("successMessage",
+                            "Usuários da empresa " + opcao + " deletados com sucesso!");
+                }
+            } else if (idStr != null && !idStr.isEmpty()) {
+                Long id = Long.parseLong(idStr);
+                usuarioDAO.deletarPorId(id);
+                req.getSession().setAttribute("successMessage", "Usuário deletado com sucesso!");
+            }
 
-            req.getSession().setAttribute("successMessage", "Usuário deletado com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/usuario/listar");
 
         }  catch (NumberFormatException e) {
