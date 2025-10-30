@@ -9,6 +9,7 @@
 
 <%
     Object id = request.getAttribute("id");
+
     double valor_energetico = (Double) request.getAttribute("valor-energetico");
     double carboidratos = (Double) request.getAttribute("carboidratos");
     double acucares_totais = (Double) request.getAttribute("acucares-totais");
@@ -19,6 +20,7 @@
     double gorduras_trans = (Double) request.getAttribute("gorduras_trans");
     double fibra_alimentar = (Double) request.getAttribute("fibra-alimentar");
     double sodio = (Double) request.getAttribute("sodio");
+
     Double colesterol = (Double) request.getAttribute("colesterol");
     Double vitamina_a = (Double) request.getAttribute("vitamina-a");
     Double vitamina_c = (Double) request.getAttribute("vitamina-c");
@@ -34,7 +36,7 @@
 
 <html>
 <head>
-    <title>Editar Administrador</title>
+    <title>Editar Tabela Nutricional</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<%= contextPath %>/assets/css/forms.css">
@@ -44,16 +46,15 @@
 <%@include file="../components/messagemErro.jsp"%>
 <main>
     <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
-        <jsp:param name="activePage" value="tabela_nutricional"/>
+        <jsp:param name="activePage" value="tabelaNutricional"/>
     </jsp:include>
     <div class="container">
         <div class="main-content">
             <h1>Editar Tabela Nutricional</h1>
-            <p>Preencha as novas informações da tabela nutricional.</p>
+            <p>Preencha as novas informações da Tabela Nutricional.</p>
         </div>
 
-
-        <form class="form-content" name="forms-add-tabela-nutricional" action="<%= contextPath %>/tabela_nutricional/editar" method="post">
+        <form class="form-content" name="forms-add-tabela-nutricional" action="<%= contextPath %>/tabelaNutricional/editar" method="post">
             <h2>Informações da Tabela Nutricional</h2>
 
             <input type="hidden" name="id" value="<%= id %>">
@@ -110,7 +111,7 @@
             <input class="parameter-input" type="number" id="potassio-input" name="potassio" min="0" step="0.01" value="<%= potassio %>">
 
             <div class="submit-content">
-                <a href="<%= contextPath %>/tabela_nutricional/listar" id="btn-cancel">Cancelar</a>
+                <a href="<%= contextPath %>/tabelaNutricional/listar" id="btn-cancel">Cancelar</a>
                 <input id="submit-btn" type="submit" value="Salvar Alterações">
             </div>
         </form>

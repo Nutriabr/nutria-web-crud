@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/tabela_nutricional/listar")
+@WebServlet("/tabelaNutricional/listar")
 public class TabelaNutricionalSelectServlet extends HttpServlet {
     private static final int TOTAL_TABELAS_NUTRICIONAIS_PAGE = 4;
 
@@ -48,7 +48,7 @@ public class TabelaNutricionalSelectServlet extends HttpServlet {
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("currentPage", currentPage);
 
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/tabela_nutricional/tabela_nutricional.jsp");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/tabelaNutricional/tabelaNutricional.jsp");
             dispatcher.forward(req, resp);
 
         } catch (DataAccessException e) {

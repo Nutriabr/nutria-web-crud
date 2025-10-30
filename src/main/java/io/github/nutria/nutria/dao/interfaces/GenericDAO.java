@@ -45,7 +45,7 @@ public interface GenericDAO<T, ID> {
     T buscarPorId(Long id);
 
     /**
-     * Atualiza os valores de um objeto {@link T}.
+     * Atualiza os valores de um resgistro {@link T}.
      *
      * @param entity o objeto que será atualizado.
      * @return {@code true} se for atualizado com sucesso; {@code false} caso contrário.
@@ -54,7 +54,7 @@ public interface GenericDAO<T, ID> {
     boolean alterar(T entity);
 
     /**
-     * Deleta um objeto {@link T} pelo ID.
+     * Deleta um registro {@link T} pelo ID.
      *
      * @param id o ID do objeto que será deletado.
      * @return {@code true} se for deletado com sucesso; {@code false} caso contrário.

@@ -6,7 +6,6 @@ import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.exceptions.InvalidNumberException;
 import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.exceptions.ValidationException;
-import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
@@ -27,6 +26,7 @@ import java.util.List;
  */
 public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
 
+    @Override
     public boolean inserir(Receita receita) {
         if (receita == null) throw new ValidationException("Receita não pode ser nulo");
         if (receita.getPorcao() == null || receita.getPorcao().isEmpty()) throw new RequiredFieldException("porcao");
@@ -65,12 +65,18 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         }
     }
 
+    @Override
     public List<Receita> buscarTodos(int page) {
 
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM receita LIMIT ? OFFSET ?";
+        String sql = """
+            SELECT r.*, p.nome AS "nome_produto" 
+            FROM receita r 
+            JOIN produto p ON r.id_produto = p.id 
+            LIMIT ? OFFSET ?
+        """;
 
         List<Receita> receitasArrayList = new ArrayList<>();
 
@@ -93,6 +99,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
                 receita.setId(rs.getLong("id"));
                 receita.setPorcao(rs.getString("porcao"));
                 receita.setIdProduto(rs.getLong("id_produto"));
+                receita.setNomeProduto(rs.getString("nome_produto"));
 
                 receitasArrayList.add(receita);
             }
@@ -116,6 +123,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return receitasArrayList;
     }
 
+    @Override
     public Receita buscarPorId (Long id){
 
         String sql = "SELECT * FROM receita WHERE id = ?";
@@ -156,13 +164,16 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return receita;
     }
 
+    @Override
     public List<Receita> buscarPorIdOuIdProduto(Long numero, int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
 
         String sql = """
-            SELECT DISTINCT * FROM receita 
-            WHERE id = ? OR id_produto = ?
+            SELECT DISTINCT r.*, p.nome AS "nome_produto"
+            FROM receita r
+            JOIN produto p ON r.id_produto = p.id
+            WHERE r.id = ? OR r.id_produto = ?
             LIMIT ? OFFSET ?
             """;
 
@@ -186,6 +197,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
                 receita.setId(rs.getLong("id"));
                 receita.setPorcao(rs.getString("porcao"));
                 receita.setIdProduto(rs.getLong("id_produto"));
+                receita.setNomeProduto(rs.getString("nome_produto"));
                 receitas.add(receita);
             }
         } catch (SQLException e) {
@@ -205,13 +217,16 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return receitas;
     }
 
+    @Override
     public List<Receita> buscarPorPorcao(String porcao, int page){
         int limite = 4;
         int offset = (page - 1) * limite;
         String sql =
                 """
-                SELECT * FROM receita
-                WHERE LOWER(porcao) LIKE LOWER(?) 
+                SELECT r.*, p.nome AS "nome_produto"
+                FROM receita r 
+                JOIN produto p ON r.id_produto = p.id
+                WHERE LOWER(r.porcao) LIKE LOWER(?) 
                 LIMIT ? OFFSET ?
                 """;
 
@@ -232,6 +247,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
                 receita.setId(rs.getLong("id"));
                 receita.setPorcao(rs.getString("porcao"));
                 receita.setIdProduto(rs.getLong("id_produto"));
+                receita.setNomeProduto(rs.getString("nome_produto"));
 
                 receitas.add(receita);
             }
@@ -252,6 +268,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return receitas;
     }
 
+    @Override
     public boolean alterar(Receita receita){
         String sql = "UPDATE receita SET porcao = ?, id_produto = ? WHERE id = ?";
         PreparedStatement psmt = null;
@@ -288,6 +305,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
 
     }
 
+    @Override
     public boolean deletarPorId(Long id) {
         String sql = "DELETE FROM receita WHERE id = ?";
 
@@ -320,6 +338,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         }
     }
 
+    @Override
     public int contarTodos() {
         int totalReceitas = 0;
 
@@ -355,6 +374,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return totalReceitas;
     }
 
+    @Override
     public int contarPorId(Long id) {
         String sql = "SELECT COUNT(*) FROM receita WHERE id = ?";
         Connection connect = null;
@@ -384,6 +404,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return total;
     }
 
+    @Override
     public int contarPorIdOuIdProduto(Long numero) {
         String sql = """
             SELECT COUNT(DISTINCT id) FROM produto 
@@ -422,6 +443,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return total;
     }
 
+    @Override
     public int contarPorPorcao(String porcao) {
         String sql = "SELECT COUNT(*) FROM receita WHERE LOWER(porcao) LIKE LOWER(?)";
         Connection connect = null;

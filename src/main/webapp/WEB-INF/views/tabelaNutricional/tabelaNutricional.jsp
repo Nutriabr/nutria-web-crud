@@ -32,13 +32,13 @@
 <%@include file="../components/mensagemSucesso.jsp" %>
 <div class="page-container">
     <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
-        <jsp:param name="activePage" value="tabela_nutricional"/>
+        <jsp:param name="activePage" value="tabelaNutricional"/>
     </jsp:include>
 
     <main class="main-content">
         <header class="page-header">
             <h1>Tabelas Nutricionais</h1>
-            <p>Gerencie os dados das tabelas nutricionais.</p>
+            <p>Gerencie os dados das Tabelas Nutricionais.</p>
         </header>
 
         <section class="stats-card">
@@ -56,9 +56,9 @@
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="search" placeholder="Buscar">
                     </div>
-                    <a href="${pageContext.request.contextPath}/tabela_nutricional/adicionar" class="btn btn-primary">
+                    <a href="${pageContext.request.contextPath}/tabelaNutricional/adicionar" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i>
-                        Adicionar nova tabela nutricional
+                        Adicionar nova Tabela Nutricional
                     </a>
                 </div>
             </header>
@@ -109,7 +109,7 @@
                         <td><%= tabelaNutricional.getFerroMg() %></td>
                         <td><%= tabelaNutricional.getPotassioMg() %></td>
                         <td class="action-buttons">
-                            <a href="${pageContext.request.contextPath}/tabela_nutricional/editar?id=<%= tabelaNutricional.getIdIngrediente() %>" class="btn-action btn-edit">
+                            <a href="${pageContext.request.contextPath}/tabelaNutricional/editar?id=<%= tabelaNutricional.getIdIngrediente() %>" class="btn-action btn-edit">
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
                             <button class="btn-action btn-delete" data-id="<%= tabelaNutricional.getIdIngrediente() %>">
@@ -144,7 +144,7 @@
         <p>Você não poderá recuperar o registro de ID <strong id="delete-id"></strong> após excluir.</p>
         <div class="popup-actions">
             <button class="btn btn-secondary" id="cancel-delete-btn">Cancelar</button>
-            <form id="delete-form" action="${pageContext.request.contextPath}/tabela_nutricional/excluir" method="post">
+            <form id="delete-form" action="${pageContext.request.contextPath}/tabelaNutricional/excluir" method="post">
                 <input type="hidden" name="input-id" id="input-id">
                 <input type="submit" class="btn btn-danger" value="Excluir">
             </form>

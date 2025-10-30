@@ -281,6 +281,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         return totalIngredientes;
     }
 
+    @Override
     public int contarPorNome(String nome) {
         String sql = "SELECT COUNT(*) FROM ingrediente WHERE LOWER(nome) LIKE LOWER(?)";
         Connection connect = null;
@@ -309,6 +310,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         }
         return total;
     }
+
     /**
      * Valida campos obrigatórios de um {@link Ingrediente}.
      *
