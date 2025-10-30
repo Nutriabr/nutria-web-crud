@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/usuario/listar")
@@ -24,6 +25,7 @@ public class UsuarioSelectServlet extends HttpServlet {
         int totalPages = 1;
         int totalUsuarios = 0;
         List<Usuario> usuarioList = null;
+        List<String> empresaList = null;
 
         String pageParam = req.getParameter("page");
         if (pageParam != null) {
@@ -40,11 +42,13 @@ public class UsuarioSelectServlet extends HttpServlet {
             if (busca != null && !busca.isEmpty()) {
                 totalUsuarios = usuarioDAO.contarTodosFiltrados(busca);
                 totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGE);
-                usuarioList = usuarioDAO.buscarPorNomeDeUsuarioOuDominioEmail(busca, currentPage);
+                usuarioList = usuarioDAO.buscarPorNomeEmailOuEmpresa(busca, currentPage);
+                empresaList = usuarioDAO.buscarEmpresas();
             } else {
                 totalUsuarios = usuarioDAO.contarTodos();
                 totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGE);
                 usuarioList = usuarioDAO.buscarTodos(currentPage);
+                empresaList = usuarioDAO.buscarEmpresas();
             }
 
             if (currentPage < 1) {
@@ -55,6 +59,7 @@ public class UsuarioSelectServlet extends HttpServlet {
 
 
             req.setAttribute("usuarioList", usuarioList);
+            req.setAttribute("empresaList", empresaList);
             req.setAttribute("totalUsuarios", totalUsuarios);
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("currentPage", currentPage);
