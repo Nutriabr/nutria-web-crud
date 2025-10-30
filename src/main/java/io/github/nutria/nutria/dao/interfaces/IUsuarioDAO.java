@@ -32,7 +32,7 @@ public interface IUsuarioDAO {
     /**
      * Adicionar documentação
      */
-    List<Usuario> buscarPorNomeDeUsuarioOuDominioEmail(String valorBuscado, int page);
+    List<Usuario> buscarPorNomeEmailOuEmpresa(String valorBuscado, int page);
 
     /**
      * Busca um registro de {@link Usuario} pelo telefone informado.
