@@ -47,7 +47,7 @@ public class ReceitaInsertServlet extends HttpServlet {
             success = receitaDAO.inserir(receita);
             if (!success) throw new DataAccessException("Erro ao inserir receita no banco de dados.");
 
-            req.getSession().setAttribute("message", "Receita inserida com sucesso!");
+            req.getSession().setAttribute("successMessage", "Receita inserida com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/receita/listar");
 
         } catch (RequiredFieldException rfe){

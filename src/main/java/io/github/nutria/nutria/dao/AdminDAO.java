@@ -68,6 +68,97 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         }
     }
 
+    public int contarTodosFiltrados(String valorBuscado) {
+        int totalAdmins = 0;
+
+        String sql = "SELECT COUNT(*) FROM admin WHERE email LIKE ? OR nome LIKE ?";
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.conectar();
+
+            pstmt = connect.prepareStatement(sql);
+            pstmt.setString(1, "%" + valorBuscado + "%");
+            pstmt.setString(2, "%" + valorBuscado + "%");
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                totalAdmins = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao realizar a contagem total de usuarios");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao realizar a contagem total de usuarios", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (pstmt != null) pstmt.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+
+        return totalAdmins;
+    }
+
+    public List<Admin> buscarPorNomeDeUsuarioOuDominioEmail(String valorBuscado, int page) {
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        int limit = 4;
+        int offset = (page - 1) * limit;
+
+        List<Admin> admins = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.conectar();
+
+            String sql = "SELECT * FROM admin WHERE nome LIKE ? OR email LIKE ? LIMIT ? OFFSET ?";
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, "%" + valorBuscado + "%");
+            ps.setString(2, "%" + valorBuscado + "%");
+            ps.setInt(3, limit);
+            ps.setInt(4, offset);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Admin admin = new Admin(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("telefone"),
+                        rs.getDate("nascimento"),
+                        rs.getString("cargo"),
+                        rs.getString("foto")
+                );
+
+                admins.add(admin);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar admin pelo valor buscado: " + valorBuscado);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar admin", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+
+        return admins;
+    }
+
+
     public Admin buscarPorId(Long id) {
         if (id <= 0) throw new InvalidNumberException("id", "ID deve ser maior que zero");
 

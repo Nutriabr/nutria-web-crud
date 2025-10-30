@@ -18,8 +18,18 @@ public interface IIngredienteDAO {
      * Lista todos os registros de {@link Ingrediente} com o nome informado.
      *
      * @param nome o nome que será utilizado na busca.
+     * @param page o número da página de resultados (para paginação).
      * @return uma lista de objetos {@link Ingrediente} correspondentes ao nome informado.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
     List<Ingrediente> buscarPorNome(String nome, int page);
+
+    /**
+     * Conta a quantidade total de registros de {@link Ingrediente} correspondentes ao nome informado.
+     *
+     * @param nome o nome que será utilizado na busca.
+     * @return um inteiro com o número total de registros.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    int contarPorNome(String nome);
 }

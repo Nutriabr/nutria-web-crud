@@ -30,6 +30,7 @@
   <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
 </head>
 <body>
+<%@include file="../components/mensagemSucesso.jsp" %>
 <div class="page-container">
   <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
     <jsp:param name="activePage" value="produto"/>

@@ -18,6 +18,8 @@
     int currentPage = (int) request.getAttribute("currentPage");
 
     String contextPath = request.getContextPath();
+    String busca = (String) request.getAttribute("busca");
+    String buscaParam = (busca != null && !busca.trim().isEmpty()) ? "&busca=" + busca : "";
 %>
 
 <!DOCTYPE html>
@@ -56,8 +58,8 @@
                 <div class="table-actions">
                     <div class="search-bar">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <form method="get" action="<%= contextPath %>/admin/editar/admin/buscar">
-                            <input type="search" placeholder="Buscar" name="search-filter-input" >
+                        <form id="form-busca"  action="${pageContext.request.contextPath}/admin/listar" method="get">
+                            <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
                         </form>
                     </div>
                     <a href="${pageContext.request.contextPath}/admin/adicionar" class="btn btn-primary">
