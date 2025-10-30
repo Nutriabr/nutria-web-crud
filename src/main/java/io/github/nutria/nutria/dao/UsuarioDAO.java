@@ -189,7 +189,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     }
 
     @Override
-    public List<Usuario> buscarPorNomeDeUsuarioOuDominioEmail(String valorBuscado, int page) {
+    public List<Usuario> buscarPorNomeEmailOuEmpresa(String valorBuscado, int page) {
         Connection connect = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -202,12 +202,13 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         try {
             connect = ConnectionFactory.conectar();
 
-            String sql = "SELECT * FROM usuario WHERE nome LIKE ? OR email LIKE ? LIMIT ? OFFSET ?";
+            String sql = "SELECT * FROM usuario WHERE LOWER(nome) LIKE ? OR LOWER(email) LIKE ? OR LOWER(empresa) LIKE  ? LIMIT ? OFFSET ?";
             ps = connect.prepareStatement(sql);
-            ps.setString(1, "%" + valorBuscado + "%");
-            ps.setString(2, "%" + valorBuscado + "%");
-            ps.setInt(3, limit);
-            ps.setInt(4, offset);
+            ps.setString(1, "%" + valorBuscado.toLowerCase() + "%");
+            ps.setString(2, "%" + valorBuscado.toLowerCase() + "%");
+            ps.setString(3, "%" + valorBuscado.toLowerCase() + "%");
+            ps.setInt(4, limit);
+            ps.setInt(5, offset);
 
             rs = ps.executeQuery();
 
@@ -283,6 +284,39 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             }
         }
         return Optional.empty();
+    }
+
+    public List<String> buscarEmpresas() {
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<String> empresas = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.conectar();
+
+            String sql = "SELECT DISTINCT empresa FROM usuario";
+            ps = connect.prepareStatement(sql);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                empresas.add(rs.getString("empresa"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return empresas;
     }
 
     @Override
@@ -476,7 +510,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     public int contarTodosFiltrados(String valorBuscado) {
         int totalUsuarios = 0;
 
-        String sql = "SELECT COUNT(*) FROM usuario WHERE email LIKE ? OR nome LIKE ?";
+        String sql = "SELECT COUNT(*) FROM usuario WHERE LOWER(nome) LIKE ? OR LOWER(email) LIKE ? OR LOWER(empresa) LIKE  ?";
 
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -488,8 +522,9 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
 
             pstmt = connect.prepareStatement(sql);
-            pstmt.setString(1, "%" + valorBuscado + "%");
-            pstmt.setString(2, "%" + valorBuscado + "%");
+            pstmt.setString(1, "%" + valorBuscado.toLowerCase() + "%");
+            pstmt.setString(2, "%" + valorBuscado.toLowerCase() + "%");
+            pstmt.setString(3, "%" + valorBuscado.toLowerCase() + "%");
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
