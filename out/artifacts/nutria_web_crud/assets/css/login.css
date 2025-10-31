@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+:root {
+    --primary-color: #EE7026;
+    --secondary-color: #21B558;
+    --danger-color: #ff1500;
+    --text-primary: #2C3036;
+    --text-secondary: #555555;
+    --text-placeholder: #999999;
+    --text-light: #FFFFFF;
+    --border-color: #CCCCCC;
+
+    --font-family-base: 'Montserrat', sans-serif;
+    --font-size-base: 1rem;
+    --font-size-sm: 0.8rem;
+    --font-size-xs: small;
+    --font-weight-regular: 400;
+    --font-weight-bold: 700;
+
+    --spacing-xs: 5px;
+    --spacing-sm: 8px;
+    --spacing-md: 10px;
+    --spacing-lg: 15px;
+    --spacing-xl: 30px;
+    --border-radius-md: 6px;
+
+    --container-max-width: 400px;
+    --input-width: 80%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-base), serif;
+
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    position: relative;
+    background-image: url('../img/bg_grid.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    min-height: 90vh;
+}
+
+.logo-image {
+    width: 300px;
+    height: auto;
+    display: block;
+    margin: 0 auto var(--spacing-xl);
+}
+
+.login-container {
+    width: 100%;
+    max-width: var(--container-max-width);
+    text-align: center;
+}
+
+.login-container h1 {
+    font-weight: var(--font-weight-bold);
+    font-size: 25px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.login-container p {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.login-input {
+    width: var(--input-width);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+}
+
+.login-input::placeholder {
+    color: var(--text-placeholder);
+}
+
+#login-forget {
+    font-size: var(--font-size-xs);
+    color: var(--secondary-color);
+    margin: var(--spacing-xs) 0 var(--spacing-md);
+    width: var(--input-width);
+    text-align: left;
+    display: block;
+}
+
+.login-button {
+    width: var(--input-width);
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    cursor: pointer;
+    font-size: var(--font-size-xs);
+}
+
+.error {
+    color: var(--danger-color);
+    text-align: center;
+    margin: 10px;
+}
