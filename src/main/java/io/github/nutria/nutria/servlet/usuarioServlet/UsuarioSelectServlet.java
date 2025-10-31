@@ -16,12 +16,12 @@ import java.util.List;
 
 @WebServlet("/usuario/listar")
 public class UsuarioSelectServlet extends HttpServlet {
-    private static final int TOTAL_USUARIOS_PAGE = 4;
+    private static final int TOTAL_USUARIOS_PAGINAS = 4;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        int currentPage = 1;
+        int paginaAtual = 1;
         int totalPages = 1;
         int totalUsuarios = 0;
         List<Usuario> usuarioList = null;
@@ -30,7 +30,7 @@ public class UsuarioSelectServlet extends HttpServlet {
         String pageParam = req.getParameter("page");
         if (pageParam != null) {
             try {
-                currentPage = Integer.parseInt(pageParam);
+                paginaAtual = Integer.parseInt(pageParam);
             } catch (NumberFormatException e) {
                 System.err.println("Parâmetro de página inválido: " + pageParam);
             }
@@ -41,20 +41,20 @@ public class UsuarioSelectServlet extends HttpServlet {
 
             if (busca != null && !busca.isEmpty()) {
                 totalUsuarios = usuarioDAO.contarTodosFiltrados(busca);
-                totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGE);
-                usuarioList = usuarioDAO.buscarPorNomeEmailOuEmpresa(busca, currentPage);
+                totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGINAS);
+                usuarioList = usuarioDAO.buscarPorNomeEmailOuEmpresa(busca, paginaAtual);
                 empresaList = usuarioDAO.buscarEmpresas();
             } else {
                 totalUsuarios = usuarioDAO.contarTodos();
-                totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGE);
-                usuarioList = usuarioDAO.buscarTodos(currentPage);
+                totalPages = (int) Math.ceil((double) totalUsuarios / TOTAL_USUARIOS_PAGINAS);
+                usuarioList = usuarioDAO.buscarTodos(paginaAtual);
                 empresaList = usuarioDAO.buscarEmpresas();
             }
 
-            if (currentPage < 1) {
-                currentPage = 1;
-            } else if (currentPage > totalPages && totalPages > 0) {
-                currentPage = totalPages;
+            if (paginaAtual < 1) {
+                paginaAtual = 1;
+            } else if (paginaAtual > totalPages && totalPages > 0) {
+                paginaAtual = totalPages;
             }
 
 
@@ -62,7 +62,7 @@ public class UsuarioSelectServlet extends HttpServlet {
             req.setAttribute("empresaList", empresaList);
             req.setAttribute("totalUsuarios", totalUsuarios);
             req.setAttribute("totalPages", totalPages);
-            req.setAttribute("currentPage", currentPage);
+            req.setAttribute("currentPage", paginaAtual);
             req.setAttribute("busca", busca);
 
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/usuario/usuarios.jsp");
