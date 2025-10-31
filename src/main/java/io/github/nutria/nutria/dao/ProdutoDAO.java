@@ -7,7 +7,6 @@ import io.github.nutria.nutria.exceptions.InvalidNumberException;
 import io.github.nutria.nutria.exceptions.RequiredFieldException;
 import io.github.nutria.nutria.exceptions.ValidationException;
 import io.github.nutria.nutria.model.Produto;
-import io.github.nutria.nutria.model.Receita;
 import io.github.nutria.nutria.util.ConnectionFactory;
 
 import java.sql.*;
@@ -62,7 +61,10 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM produto LIMIT ? OFFSET ?";
+        String sql = "SELECT p.*, u.nome AS \"nome_usuario\", u.email AS \"email_usuario\", u.empresa AS \"empresa_usuario\""+
+                "FROM produto p "+
+                "JOIN usuario u ON p.id_usuario = u.id "+
+                "LIMIT ? OFFSET ?";
 
         List<Produto> produtosArrayList = new ArrayList<>();
 
@@ -83,6 +85,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
                 produtosArrayList.add(produto);
             }
         } catch (SQLException e) {
@@ -145,59 +150,14 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public List<Produto> buscarPorNome(String nome, int page) {
-        int limite = 4;
-        int offset = (page - 1) * limite;
-        String sql = """
-                SELECT * FROM produto
-                WHERE LOWER(nome) LIKE LOWER(?)
-                LIMIT ? OFFSET ?
-                """;
-
-        PreparedStatement ps = null;
-        Connection connect = null;
-        ResultSet rs = null;
-        List<Produto> produtos = new ArrayList<>();
-
-        try {
-            connect = ConnectionFactory.conectar();
-            ps = connect.prepareStatement(sql);
-            ps.setString(1, "%" + nome + "%");
-            ps.setInt(2,limite);
-            ps.setInt(3,offset);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Produto produto = new Produto();
-                produto.setId(rs.getLong("id"));
-                produto.setNome(rs.getString("nome"));
-                produto.setIdUsuario(rs.getLong("id_usuario"));
-                produtos.add(produto);
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar produto pelo nome: " + nome);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar produto pelo nome", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.desconectar(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-
-        return produtos;
-    }
-
     public List<Produto> buscarPorIdOuIdUsuario(Long numero, int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
 
         String sql = """
-            SELECT DISTINCT * FROM produto 
-            WHERE id = ? OR id_usuario = ?
+            SELECT DISTINCT p.*, u.nome AS "nome_usuario", u.email AS "email_usuario", u.empresa AS "empresa_usuario" FROM produto p
+            JOIN usuario u ON p.id_usuario = u.id
+            WHERE p.id = ? OR p.id_usuario = ?
             LIMIT ? OFFSET ?
             """;
 
@@ -221,12 +181,66 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
                 produtos.add(produto);
             }
         } catch (SQLException e) {
             System.err.println("[DAO ERROR] Erro ao buscar produto por ID ou ID_Usuário: " + numero);
             e.printStackTrace(System.err);
             throw new DataAccessException("Erro ao buscar produto por ID ou ID_Usuário", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+
+        return produtos;
+    }
+
+    @Override
+    public List<Produto> buscarPorNome(String nome, int page) {
+        int limite = 4;
+        int offset = (page - 1) * limite;
+        String sql = """
+                SELECT p.*, u.nome AS "nome_usuario", u.email AS "email_usuario", u.empresa AS "empresa_usuario" FROM produto p
+                JOIN usuario u ON p.id_usuario = u.id
+                WHERE LOWER(p.nome) LIKE LOWER(?)
+                LIMIT ? OFFSET ?
+                """;
+
+        PreparedStatement ps = null;
+        Connection connect = null;
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, "%" + nome + "%");
+            ps.setInt(2,limite);
+            ps.setInt(3,offset);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setIdUsuario(rs.getLong("id_usuario"));
+                produto.setNomeUsuario(rs.getString("nome_usuario"));
+                produto.setEmailUsuario(rs.getString("email_usuario"));
+                produto.setEmpresaUsuario(rs.getString("empresa_usuario"));
+                produtos.add(produto);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar produto pelo nome: " + nome);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar produto pelo nome", e);
         } finally {
             try {
                 if (connect != null) ConnectionFactory.desconectar(connect);
@@ -340,35 +354,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         return totalProdutos;
     }
 
-    public int contarPorNome(String nome) {
-        String sql = "SELECT COUNT(*) FROM produto WHERE LOWER(nome) LIKE LOWER(?)";
-        Connection connect = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int total = 0;
-
-        try {
-            connect = ConnectionFactory.conectar();
-            ps = connect.prepareStatement(sql);
-            ps.setString(1, "%" + nome + "%");
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                total = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            throw new DataAccessException("Erro ao contar produtos filtradas", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.desconectar(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco", e);
-            }
-        }
-        return total;
-    }
-
+    @Override
     public int contarPorIdOuIdUsuario(Long numero) {
         String sql = """
             SELECT COUNT(DISTINCT id) FROM produto 
@@ -404,6 +390,36 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             }
         }
 
+        return total;
+    }
+
+    @Override
+    public int contarPorNome(String nome) {
+        String sql = "SELECT COUNT(*) FROM produto WHERE LOWER(nome) LIKE LOWER(?)";
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int total = 0;
+
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, "%" + nome + "%");
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Erro ao contar produtos filtradas", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco", e);
+            }
+        }
         return total;
     }
 
