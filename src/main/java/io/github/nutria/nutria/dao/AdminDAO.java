@@ -307,7 +307,6 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return (adminList.isEmpty() ? Optional.empty() : Optional.of(adminList));
     }
 
-    @Override
     public List<Admin> buscarPorNomeDeUsuarioOuDominioEmail(String valorBuscado, int page) {
         Connection connect = null;
         PreparedStatement ps = null;
@@ -533,7 +532,6 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return totalAdmins;
     }
 
-    @Override
     public int contarTodosFiltrados(String valorBuscado) {
         int totalAdmins = 0;
 

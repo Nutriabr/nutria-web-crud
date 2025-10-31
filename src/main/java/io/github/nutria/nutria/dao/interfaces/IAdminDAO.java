@@ -34,16 +34,6 @@ public interface IAdminDAO {
     Optional<Admin> buscarPorEmail(String email);
 
     /**
-     * Busca um registro de {@link Admin} pelo email e o telefone informados.
-     *
-     * @param email o endereço de email que será utilizado na busca.
-     * @param telefone o telefone que será utilizado na busca.
-     * @return um {@link Optional} contendo o {@link Admin} encontrado, ou vazio se não houver correspondência.
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     */
-    Optional<Admin> buscarPorEmailETelefone(String email, String telefone);
-
-    /**
      * Lista todos os registros de {@link Admin} com o nome informado.
      *
      * @param nome o nome que será utilizado na busca.
