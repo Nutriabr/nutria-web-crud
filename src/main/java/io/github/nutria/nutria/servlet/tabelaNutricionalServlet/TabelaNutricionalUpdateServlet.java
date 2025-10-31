@@ -13,9 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/tabela_nutricional/editar")
+@WebServlet("/tabelaNutricional/editar")
 public class TabelaNutricionalUpdateServlet extends HttpServlet {
-    private static final String VIEW_PATH = "/WEB-INF/views/tabela_nutricional/editar.jsp";
+    private static final String VIEW_PATH = "/WEB-INF/views/tabelaNutricional/editar.jsp";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -109,7 +109,8 @@ public class TabelaNutricionalUpdateServlet extends HttpServlet {
 
             tabelaNutricionalDAO.alterar(tabelaNutricional);
 
-            resp.sendRedirect(req.getContextPath() + "/tabela_nutricional/listar");
+            req.getSession().setAttribute("successMessage", "Tabela nutricional atualizada com sucesso!");
+            resp.sendRedirect(req.getContextPath() + "/tabelaNutricional/listar");
         } catch (EntityNotFoundException e) {
             req.setAttribute("errorMessage", "Tabela nutricional não encontrada para atualização.");
             req.getRequestDispatcher(VIEW_PATH).forward(req, resp);
