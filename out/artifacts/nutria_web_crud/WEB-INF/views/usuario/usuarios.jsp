@@ -108,7 +108,13 @@
                         <td>•••••••</td>
                         <td><%= usuario.getTelefone() %></td>
                         <td><%= usuario.getEmpresa() %></td>
-                        <td><img src="<%= usuario.getFoto() %>" alt="Foto de <%= usuario.getNome() %>" class="table-photo"></td>
+                        <% if (usuario.getFoto() == null || usuario.getFoto().equals("Sem foto")) { %>
+                        <td>Sem foto</td>
+                        <% } else { %>
+                        <td>
+                            <img src="<%= usuario.getFoto() %>" alt="Foto de <%= usuario.getNome() %>" class="table-photo">
+                        </td>
+                        <% } %>
                         <td class="action-buttons">
                             <a href="${pageContext.request.contextPath}/usuario/editar?id=<%= usuario.getId() %>" class="btn-action btn-edit">
                                 <i class="fa-solid fa-pencil"></i>
@@ -173,7 +179,5 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/assets/js/popup.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/formAutoSubmit.js"></script>
-
 </body>
 </html>

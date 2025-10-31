@@ -44,7 +44,7 @@
             <input class="parameter-input" type="text" id="name-input" name="name" value="<%= name%>" placeholder="Insira o nome">
 
             <label for="email-input">E-mail</label>
-            <input class="parameter-input" type="email" id="email-input" oninput="validateForm()" name="email"
+            <input class="parameter-input" type="email" id="email-input" oninput="validateEmail()" name="email"
                    value="<%= email%>" placeholder="Insira o endereço de email">
             <span id="errorFeedback"></span>
 
@@ -54,7 +54,7 @@
                    placeholder="Deixe em branco para não alterar">
 
             <label for="phone-input">Telefone</label>
-            <input class="parameter-input" type="text" id="phone-input" name="phone"
+            <input class="parameter-input" type="text" id="phone-input" oninput="validatePhone()" name="phone"
                    value="<%= telefone%>" placeholder="XX XXXXX-XXXX">
 
             <label for="company-input">Empresa</label>
