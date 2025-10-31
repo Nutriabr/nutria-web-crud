@@ -14,7 +14,6 @@ function deletarPorId() {
     const deleteButtons = document.querySelectorAll(".btn-delete");
 
     if (!deletePopupOverlay) {
-        console.log("Popup de encerrar sessão não existe nesta página");
         return;
     }
 
@@ -51,7 +50,6 @@ function deletarPorEmpresa() {
     const deleteButton = document.querySelectorAll(".deletar-por-empresa");
 
     if (!deletePopupOverlay) {
-        console.log("Popup de encerrar sessão não existe nesta página");
         return;
     }
 
@@ -87,7 +85,6 @@ function encerrarSessao() {
     const endSessionButton = document.querySelectorAll(".btn-end-sesion");
 
     if (!endSessionPopupOverlay) {
-        console.log("Popup de encerrar sessão não existe nesta página");
         return;
     }
 

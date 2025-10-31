@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     deletarPorId();
     deletarPorEmpresa();
+    encerrarSessao();
 });
 
 function deletarPorId() {
@@ -11,6 +12,11 @@ function deletarPorId() {
     const deleteForm = document.getElementById("delete-form");
 
     const deleteButtons = document.querySelectorAll(".btn-delete");
+
+    if (!deletePopupOverlay) {
+        console.log("Popup de encerrar sessão não existe nesta página");
+        return;
+    }
 
     deleteButtons.forEach(button => {
         button.addEventListener("click", function () {
@@ -44,6 +50,11 @@ function deletarPorEmpresa() {
     const cancelBtn = document.getElementById("cancel-delete-all-btn");
     const deleteButton = document.querySelectorAll(".deletar-por-empresa");
 
+    if (!deletePopupOverlay) {
+        console.log("Popup de encerrar sessão não existe nesta página");
+        return;
+    }
+
     deleteButton.forEach(button => {
         button.addEventListener("click", function () {
             const opcao = document.getElementById("selectEmpresa").value;
@@ -65,6 +76,37 @@ function deletarPorEmpresa() {
         if (event.target === deletePopupOverlay) {
             deletePopupOverlay.style.display = "none";
             deleteAllform.reset();
+        }
+    });
+}
+
+function encerrarSessao() {
+    const endSessionPopupOverlay = document.getElementById("end-session-popup-overlay");
+    const endSessionForm = document.getElementById("end-session-form");
+    const cancelBtn = document.getElementById("cancel-btn");
+    const endSessionButton = document.querySelectorAll(".btn-end-sesion");
+
+    if (!endSessionPopupOverlay) {
+        console.log("Popup de encerrar sessão não existe nesta página");
+        return;
+    }
+
+    endSessionButton.forEach(button => {
+        button.addEventListener("click", function () {
+            console.log("Botão de logout clicado!");
+            endSessionPopupOverlay.style.display = "flex";
+        });
+    });
+
+    cancelBtn.addEventListener("click", function () {
+        endSessionPopupOverlay.style.display = "none";
+        endSessionForm.reset();
+    });
+
+    endSessionPopupOverlay.addEventListener("click", function (event) {
+        if (event.target === endSessionPopupOverlay) {
+            endSessionPopupOverlay.style.display = "none";
+            endSessionForm.reset();
         }
     });
 }
