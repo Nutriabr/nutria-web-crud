@@ -3,7 +3,6 @@ package io.github.nutria.nutria.dao;
 import io.github.nutria.nutria.dao.interfaces.GenericDAO;
 import io.github.nutria.nutria.dao.interfaces.IUsuarioDAO;
 import io.github.nutria.nutria.exceptions.*;
-import io.github.nutria.nutria.model.FiltroUsuario;
 import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.FieldUsedValidator;
@@ -12,7 +11,6 @@ import io.github.nutria.nutria.util.PasswordHasher;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -29,7 +27,6 @@ import java.util.Optional;
  * @version 1.0
  */
 public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
-    private final static Map<String, FiltroUsuario> FILTROS = FiltroUsuario.filtrosUsuarios();
 
     @Override
     public boolean inserir(Usuario usuario) {
@@ -180,13 +177,47 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
     @Override
     public Optional<Usuario> buscarPorEmail(String email) {
-        return Optional.empty();
+        String sql = "SELECT * FROM usuario WHERE email = ?";
+
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getLong("id"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setTelefone(rs.getString("telefone"));
+                usuario.setSenha(rs.getString("senha"));
+                usuario.setEmpresa(rs.getString("empresa"));
+                usuario.setFoto(rs.getString("foto"));
+
+                return Optional.of(usuario);
+            } else {
+                throw new EntityNotFoundException("Usuario", email);
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar usuário pelo Email: " + email);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar usuário", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
     }
 
-    @Override
-    public List<Usuario> buscarPorNomeDeUsuario(String nomeFiltro, String valorBuscado, int page) {
-        return List.of();
-    }
 
     @Override
     public List<Usuario> buscarPorNomeEmailOuEmpresa(String valorBuscado, int page) {
@@ -242,7 +273,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
     @Override
     public Optional<Usuario> buscarPorTelefone(String fone) {
-        String sql = "SELECT * FROM usuario WHERE telefone = ?";
+        String sql = "SELECT DISTINCT * FROM usuario WHERE telefone = ?";
 
         if (fone == null || fone.isBlank()) {
             throw new RequiredFieldException("telefone");
