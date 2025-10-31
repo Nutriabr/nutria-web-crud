@@ -23,6 +23,7 @@ public class IngredienteDeleteServlet extends HttpServlet {
 
             ingredienteDAO.deletarPorId(id);
 
+            req.getSession().setAttribute("successMessage", "Ingrediente deletado com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/ingrediente/listar");
         }  catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");
