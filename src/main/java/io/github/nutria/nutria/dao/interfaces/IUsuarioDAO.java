@@ -43,15 +43,6 @@ public interface IUsuarioDAO {
     Optional<Usuario> buscarPorTelefone(String fone);
 
     /**
-     * Verifica se há um registro de {@link Usuario} com o telefone informado.
-     *
-     * @param fone o telefone que será utilizado na busca.
-     * @return {@code true} se houver um registro; {@code false} caso contrário.
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     */
-    boolean buscarPorTelefoneUsado(String fone);
-
-    /**
      * Deleta registros {@link Usuario} pela empresa.
      *
      * @param empresa o nome da empresa que será utilizado na exclusão.
