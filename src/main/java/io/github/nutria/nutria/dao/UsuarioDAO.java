@@ -351,11 +351,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     }
 
     @Override
-    public boolean buscarPorTelefoneUsado(String fone) {
-        return false;
-    }
-
-    @Override
     public boolean alterar(Usuario usuario) {
         String sql = "UPDATE usuario SET nome = ?, email = ?, telefone = ?, senha = ?, empresa = ?, foto = ? WHERE id = ?";
 
