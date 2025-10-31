@@ -32,7 +32,13 @@ public class UsuarioInsertServlet extends HttpServlet {
             usuario.setSenha(req.getParameter("password"));
             usuario.setTelefone(req.getParameter("phone"));
             usuario.setEmpresa(req.getParameter("company"));
-            usuario.setFoto(req.getParameter("picture"));
+
+            String foto = req.getParameter("picture");
+            if (foto.isEmpty()) {
+                usuario.setFoto("Sem foto");
+            } else {
+                usuario.setFoto(foto);
+            }
 
             usuarioDAO.inserir(usuario);
 
