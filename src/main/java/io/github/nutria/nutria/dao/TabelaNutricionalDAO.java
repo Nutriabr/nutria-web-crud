@@ -36,13 +36,13 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
      */
     public static final Map<String, FiltroNutricional> FILTROS = Map.of(
             "muito_baixo_sodio", new FiltroNutricional("sodio_mg", "<=", 40.00, null),
-            "baixo_sodio", new FiltroNutricional("sodio_mg", "BETWEEN", 41.00, 80.00),
+            "baixo_sodio", new FiltroNutricional("sodio_mg", "BETWEEN ? AND", 41.00, 80.00),
             "alto_sodio", new FiltroNutricional("sodio_mg", ">=", 600.00, null),
             "alto_acucares_adicionados", new FiltroNutricional("acucares_adicionados_g", ">=", 15.00, null),
             "alto_gorduras_saturadas", new FiltroNutricional("gorduras_saturadas_g", ">=", 6.00, null),
-            "fonte_proteinas", new FiltroNutricional("proteinas_g", "BETWEEN", 5.00, 9.99),
+            "fonte_proteinas", new FiltroNutricional("proteinas_g", "BETWEEN ? AND", 5.00, 9.99),
             "rico_proteinas", new FiltroNutricional("proteinas_g", ">=", 10.00, null),
-            "fonte_fibras", new FiltroNutricional("fibra_alimentar_g", "BETWEEN", 2.50, 4.99),
+            "fonte_fibras", new FiltroNutricional("fibra_alimentar_g", "BETWEEN ? AND", 2.50, 4.99),
             "rico_fibras", new FiltroNutricional("fibra_alimentar_g", ">=", 5.00, null)
     );
 
@@ -248,14 +248,8 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
 
         FiltroNutricional filtro = FILTROS.get(nomeFiltro);
 
-        String sql;
-        if (filtro.getOperador().equals("BETWEEN")) {
-            sql = "SELECT * FROM tabela_nutricional WHERE " + filtro.getColuna() +
-                    " BETWEEN ? AND ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
-        } else {
-            sql = "SELECT * FROM tabela_nutricional WHERE " + filtro.getColuna() + " " +
-                    filtro.getOperador() + "  ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
-        }
+        String sql = "SELECT * FROM tabela_nutricional WHERE " + filtro.getColuna() + " " +
+                filtro.getOperador() + "  ? ORDER BY id_ingrediente LIMIT ? OFFSET ?";
 
         List<TabelaNutricional> tabelaNutricionalArrayList = new ArrayList<TabelaNutricional>();
         PreparedStatement ps = null;
@@ -535,43 +529,5 @@ public class TabelaNutricionalDAO implements GenericDAO<TabelaNutricional, Long>
         }
 
         return totalTabelas;
-    }
-
-    public boolean existePorId(Long id) {
-        String sql = "SELECT COUNT(*) FROM tabela_nutricional WHERE id_ingrediente = ?";
-
-        boolean result = false;
-        Connection connect = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            connect = ConnectionFactory.conectar();
-            ps = connect.prepareStatement(sql);
-
-            ps.setLong(1, id);
-            
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                result = (rs.getInt(1) > 0);
-            }
-        }
-        catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao verificar existência na tabela nutricional");
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao verificar existência na tabela nutricional", e);
-        }
-        finally {
-            try {
-                if (connect != null) ConnectionFactory.desconectar(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        
-        return result;
     }
 }
