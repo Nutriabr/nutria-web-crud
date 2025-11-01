@@ -16,6 +16,14 @@ import java.util.Optional;
 public interface IUsuarioDAO {
 
     /**
+     * Lista todas as empresas dos registros de {@link Usuario}.
+
+     * @return uma lista de {@link String} com todas as empresas encontradas.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    List<String> buscarEmpresas();
+
+    /**
      * Busca um registro de {@link Usuario} pelo email informado.
      *
      * @param email o endereço de email que será utilizado na busca.
@@ -25,9 +33,10 @@ public interface IUsuarioDAO {
     Optional<Usuario> buscarPorEmail(String email);
 
     /**
-     * Lista todos os registros de {@link Usuario} com o nome ou domínio de email informado.
+     * Lista todos os registros de {@link Usuario} com o nome ou email informado.
      *
-     * @param valorBuscado o nome ou domínio de email que será utilizado na busca.
+     * @param valorBuscado o nome ou endereço de email que será utilizado na busca
+     * @param page o número da página de resultados (para paginação).
      * @return uma lista de objetos {@link Usuario} correspondentes ao valor buscado.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
@@ -43,9 +52,9 @@ public interface IUsuarioDAO {
     Optional<Usuario> buscarPorTelefone(String fone);
 
     /**
-     * Deleta registros {@link Usuario} pela empresa.
+     * Deleta registros de {@link Usuario} pela empresa.
      *
-     * @param empresa o nome da empresa que será utilizado na exclusão.
+     * @param empresa o nome da empresa que será utilizado na busca.
      * @return {@code true} se deletar com sucesso; {@code false} caso contrário.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */

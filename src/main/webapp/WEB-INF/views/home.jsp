@@ -108,7 +108,7 @@
 
             <div class="card">
                 <div class="icon">
-                    <h3>Tabela Nutricional</h3>
+                    <h3>Tabelas Nutricionais</h3>
                     <img src="${pageContext.request.contextPath}/assets/img/IconeTabela.png" alt="">
                 </div>
                 <span class="value"><%= tabelaNutricionalDAO.contarTodos()%></span>
