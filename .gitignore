@@ -14,6 +14,7 @@ src/main/resources/.env
 *.iws
 *.iml
 *.ipr
+out/
 
 ### Eclipse ###
 .apt_generated
