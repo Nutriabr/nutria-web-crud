@@ -59,4 +59,22 @@ public interface IAdminDAO {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
     Optional<Admin> buscarPorTelefone(String fone);
+
+    /**
+     * Atualiza a senha de um resgistro de {@link Admin} pelo email informado.
+     *
+     * @param email o endereço de email de {@link Admin} que será utilizado para o envio de um código.
+     * @param senha a nova senha que será utilizada.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    void alterarSenhaPeloEmail(String email, String senha);
+
+    /**
+     * Conta a quantidade total de registros de {@link Admin} correspondentes ao nome ou domínio de email buscado.
+     *
+     * @param valorBuscado o nome ou domínio de email que será utilizado na busca.
+     * @return um inteiro com o número total de registros.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    int contarTodosFiltrados(String valorBuscado);
 }

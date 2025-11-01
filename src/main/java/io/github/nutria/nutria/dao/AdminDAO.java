@@ -74,7 +74,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         int limite = 4;
         int offset = (page - 1) * limite;
 
-        String sql = "SELECT * FROM admin LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM admin ORDER BY id LIMIT ? OFFSET ?";
 
         List<Admin> adminArrayList = new ArrayList<Admin>();
 
@@ -461,6 +461,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return (result > 0);
     }
 
+    @Override
     public void alterarSenhaPeloEmail(String email, String senha) {
         if (email.isBlank()) throw new ValidationException("Email é obrigatório para atualização");
 
@@ -569,6 +570,7 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return totalAdmins;
     }
 
+    @Override
     public int contarTodosFiltrados(String valorBuscado) {
         int totalAdmins = 0;
 
