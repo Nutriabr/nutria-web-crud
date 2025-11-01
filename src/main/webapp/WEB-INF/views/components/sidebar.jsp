@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Controle - Nutria</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/sidebar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tables.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -21,7 +22,7 @@
 <div class="sidebar">
     <img id="nutria" src="${pageContext.request.contextPath}/assets/img/logo.svg" alt="">
     <div class="user">
-        <i class="fa-solid fa-user-circle"></i>
+        <img src="${pageContext.request.contextPath}/assets/img/Foto padrão.png">
         <span><%
             String nome = (String) session.getAttribute("adminNome");
             if (nome != null) {
@@ -54,10 +55,24 @@
     </ul>
 
     <form class="logout" action="${pageContext.request.contextPath}/logout" method="post">
-        <button type="submit">Encerrar sessão</button>
+        <button type="button" class="btn-action btn-end-sesion">Encerrar sessão</button>
         <i class="fa-solid fa-right-from-bracket"></i>
     </form>
 </div>
 
+
+<div class="overlay" id="end-session-popup-overlay" style="display: none;">
+    <div class="popup-container">
+        <h1>Você tem certeza que deseja encerrar a sessão?</h1>
+        <div class="popup-actions">
+            <button class="btn btn-secondary" id="cancel-btn">Cancelar</button>
+            <form id="end-session-form" action="${pageContext.request.contextPath}/logout" method="post">
+                <input type="submit" class="btn btn-danger" value="Encerrar Sessão">
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="${pageContext.request.contextPath}/assets/js/popup.js"></script>
 </body>
 </html>

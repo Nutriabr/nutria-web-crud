@@ -19,6 +19,7 @@
     <title>Painel de Controle - Nutria</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
@@ -82,7 +83,7 @@
             <div class="card">
                 <div class="icon">
                     <h3>Receitas</h3>
-                    <img src="${pageContext.request.contextPath}/assets/img/UserLaranja.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/IconeReceita.png" alt="">
                 </div>
                 <span class="value"><%= receitaDAO.contarTodos()%></span>
                 <div class="acess">
@@ -94,7 +95,7 @@
             <div class="card">
                 <div class="icon">
                     <h3>Receita Ingrediente</h3>
-                    <img src="${pageContext.request.contextPath}/assets/img/UserLaranja.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/IconeReceitaIngrediente.png" alt="">
                 </div>
                 <span class="value"><%= receitaIngredienteDAO.contarTodos()%></span>
                 <div class="acess">
@@ -108,7 +109,7 @@
             <div class="card">
                 <div class="icon">
                     <h3>Tabela Nutricional</h3>
-                    <img src="${pageContext.request.contextPath}/assets/img/UserLaranja.png" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/img/IconeTabela.png" alt="">
                 </div>
                 <span class="value"><%= tabelaNutricionalDAO.contarTodos()%></span>
                 <div class="acess">

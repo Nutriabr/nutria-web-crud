@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --primary-color: #EE7026;
+    --primary-color-hover: #D66522;
+    --text-primary: #2C3036;
+    --text-secondary: #718096;
+    --text-light: #FFFFFF;
+    --bg-light: #F3F3F3;
+    --border-color: #E2E8F0;
+
+    --font-family-base: 'Montserrat', sans-serif;
+    --font-size-base: 1rem;
+    --line-height-base: 1.6;
+
+    --spacing-xs: 8px;
+    --spacing-sm: 10px;
+    --spacing-md: 16px;
+    --spacing-lg: 36px;
+    --spacing-xl: 60px;
+    --spacing-xxl: 64px;
+    --border-radius-sm: 5px;
+    --border-radius-md: 8px;
+
+    --sidebar-width: 320px;
+    --form-max-width: 800px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-base), serif;
+    line-height: var(--line-height-base);
+    -webkit-font-smoothing: antialiased;
+}
+
+main {
+    display: flex;
+}
+
+.container {
+    padding: 20px 40px;
+    width: 100%;
+    margin-left: var(--sidebar-width);
+    margin-top: var(--spacing-xl);
+}
+
+.main-content {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    padding: var(--spacing-xxl);
+    border-radius: var(--border-radius-md);
+    width: 100%;
+    max-width: var(--form-max-width);
+}
+
+.form-content label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.parameter-input {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-light);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+}
+
+.submit-content {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+}
+
+#submit-btn,
+#btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+}
+
+#submit-btn {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+#submit-btn:hover {
+        background-color: var(--primary-color-hover);
+}
+
+#btn-cancel {
+    background-color: var(--bg-alt);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+#btn-cancel:hover {
+    background-color: var(--border-color);
+}
+
+

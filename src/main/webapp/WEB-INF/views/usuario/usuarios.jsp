@@ -13,6 +13,7 @@
 
 <%
     List<Usuario> usuarioList = (List<Usuario>) request.getAttribute("usuarioList");
+    List<String> empresaList = (List<String>) request.getAttribute("empresaList");
     int totalUsuarios = (int) request.getAttribute("totalUsuarios");
     int totalPages = (int) request.getAttribute("totalPages");
     int currentPage = (int) request.getAttribute("currentPage");
@@ -55,16 +56,35 @@
             <header class="table-header">
                 <h2>Usuário</h2>
                 <div class="table-actions">
-                        <form id="form-busca"  action="${pageContext.request.contextPath}/usuario/listar" method="get" class="search-bar">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
-                        </form>
+                    <form id="form-busca"  action="${pageContext.request.contextPath}/usuario/listar" method="get" class="search-bar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
+                    </form>
+
+                    <i class="fa-solid fa-filter" name="filter"></i>
+
                     <a href="${pageContext.request.contextPath}/usuario/adicionar" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i>
                         Adicionar novo usuário
                     </a>
                 </div>
             </header>
+
+            <div class="delete-popup">
+                <p>Empresa</p>
+                <div class="delete-popup-content">
+                <select name="opcao" id="selectEmpresa">
+                    <% for (int i = 0; i < empresaList.size(); i++) { %>
+                    <option value="<%= empresaList.get(i)%>" id="empresa-opcao"><%= empresaList.get(i)%></option>
+                    <% } %>
+                </select>
+
+                <form action="${pageContext.request.contextPath}/usuario/excluir" method="post">
+                    <input type="hidden" name="acao" value="deletarPorEmpresa">
+                    <button type="button" class="btn-action deletar-por-empresa">Deletar todos os registros</button>
+                </form>
+                </div>
+            </div>
 
             <div class="table-container">
                 <table>
@@ -120,7 +140,7 @@
 
                     <span class="current-page"><%= currentPage %></span>
 
-                    <a href="${pageContext.request.contextPath}/usuario/listar?page=<%= currentPage + 1 %><%= buscaParam %>"
+                    <a href="${pageContext.request.contextPath}/usuario/listar?page=<%= currentPage  + 1 %><%= buscaParam %>"
                        class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
@@ -140,6 +160,20 @@
             <form id="delete-form" action="${pageContext.request.contextPath}/usuario/excluir" method="post">
                 <input type="hidden" name="input-id" id="input-id">
                 <input type="submit" class="btn btn-danger" value="Excluir">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="overlay" id="delete-all-popup-overlay" style="display: none;">
+    <div class="popup-container">
+        <h1>Você tem certeza que deseja excluir todos os registros dessa empresa?</h1>
+        <p>Você não poderá recuperar nenhum registro da empresa <strong id="empresa-nome"></strong> após excluir.</p>
+        <div class="popup-actions">
+            <button class="btn btn-secondary" id="cancel-delete-all-btn">Cancelar</button>
+            <form id="delete-all-form" action="${pageContext.request.contextPath}/usuario/excluir" method="post">
+                <input type="hidden" name="input-empresa" id="input-empresa">
+                <input type="submit" class="btn btn-danger" name="acao" value="Excluir">
             </form>
         </div>
     </div>

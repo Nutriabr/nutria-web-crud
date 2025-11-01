@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+:root {
+    --primary-color: #EE7026;
+    --sidebar-bg: #F2F2F2;
+    --sidebar-border-color: #ddd;
+    --hr-bg: #ffffff;
+    --text-primary: #2C3036;
+    --text-secondary: #666;
+    --text-tertiary: #555;
+    --text-light: #ffffff;
+    --sidebar-width: 320px;
+    --font-size-base: 14px;
+    --font-size-icon: 28px;
+    --spacing-xs: 8px;
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 20px;
+    --border-radius-md: 6px;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--sidebar-border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: var(--spacing-lg) 0;
+    position: fixed;
+}
+
+hr {
+    background: var(--hr-bg);
+    width: 100%;
+}
+
+#nutria {
+    width: 50%;
+    margin: var(--spacing-lg) auto 0;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    margin: var(--spacing-md) 0;
+}
+
+.user i {
+    font-size: var(--font-size-icon);
+    color: var(--text-tertiary);
+}
+
+.menu {
+    list-style: none;
+    padding: 0 var(--spacing-md);
+}
+
+.menu li {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.menu li.active {
+    color: var(--text-light);
+    background: var(--primary-color);
+}
+
+.menu li.active a {
+    color: var(--text-light);
+}
+
+.menu li:hover {
+    background: var(--sidebar-border-color);
+}
+
+.menu li a {
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+.logout {
+    text-align: center;
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.logout button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.logout:hover {
+    color: var(--primary-color);
+}
