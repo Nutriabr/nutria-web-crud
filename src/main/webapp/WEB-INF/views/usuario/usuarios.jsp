@@ -72,9 +72,9 @@
                 </div>
             </header>
 
-            <div id="delete-popup">
-                <h2>Empresa</h2>
-
+            <div class="delete-popup">
+                <p>Empresa</p>
+                <div class="delete-popup-content">
                 <select name="opcao" id="selectEmpresa">
                     <% for (int i = 0; i < empresaList.size(); i++) { %>
                     <option value="<%= empresaList.get(i)%>" id="empresa-opcao"><%= empresaList.get(i)%></option>
@@ -83,8 +83,9 @@
 
                 <form action="${pageContext.request.contextPath}/usuario/excluir" method="post">
                     <input type="hidden" name="acao" value="deletarPorEmpresa">
-                    <button type="button" class="btn-action deletar-por-empresa">Deletar todos os registros da empresa</button>
+                    <button type="button" class="btn-action deletar-por-empresa">Deletar todos os registros</button>
                 </form>
+                </div>
             </div>
 
             <div class="table-container">
