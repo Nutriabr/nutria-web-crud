@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: enzomota-ieg
-  Date: 11/10/2025
-  Time: 02:03
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -29,30 +22,31 @@
               method="post">
             <h2>Informações do usuário</h2>
             <label for="name-input">Nome</label>
-            <input class="parameter-input" type="text" id="name-input" name="name" value="${name}"
+            <input class="parameter-input" type="text" id="name-input" name="name"
                    placeholder="Insira o nome" required>
 
             <label for="email-input">E-mail</label>
             <input class="parameter-input" type="email" id="email-input" oninput="validateEmail()" name="email"
-                   value="${email}" placeholder="Insira o endereço de email" required>
+                    placeholder="Insira o endereço de email" required>
             <span id="errorFeedback"></span>
 
 
             <label for="password-input">Senha</label>
-            <input class="parameter-input" type="password" id="password-input" name="password"
-                   value="${password}" placeholder="Insira a senha" required>
+            <input class="parameter-input" type="password" id="password-input" oninput="validatePassword()" name="password"
+                    placeholder="Insira a senha" required>
+            <span id="erroFeedbackPassword"></span>
 
             <label for="phone-input">Telefone</label>
             <input class="parameter-input" type="text" id="phone-input" oninput="validatePhone()" name="phone"
-                   value="${phone}" placeholder="XX XXXXX-XXXX" required>
+                    placeholder="XX XXXXX-XXXX" required>
 
             <label for="company-input">Empresa</label>
             <input class="parameter-input" type="text" id="company-input" name="company"
-                   value="${company}" placeholder="Insira sua empresa">
+                    placeholder="Insira sua empresa">
 
             <label for="picture-input">Foto</label>
             <input class="parameter-input" type="text" id="picture-input" name="picture"
-                   value="${picture}" placeholder="Insira a URL da foto">
+                    placeholder="Insira a URL da foto">
 
             <div class="submit-content">
                 <a href="${pageContext.request.contextPath}/usuario/listar" id="btn-cancel">Cancelar</a>

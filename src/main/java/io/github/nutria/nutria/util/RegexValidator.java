@@ -8,4 +8,8 @@ public class RegexValidator {
     public static boolean ehTelefoneValido(String telefone) {
         return telefone != null && telefone.matches("^\\(?[0-9]{2}\\)? ?[0-9]{5}-?[0-9]{4}$");
     }
+
+    public static boolean ehSenhaValida(String senha) {
+        return senha != null && senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+={}\\[\\].?-]).{8,}$");
+    }
 }

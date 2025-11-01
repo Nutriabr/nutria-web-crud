@@ -37,8 +37,9 @@
             <span id="errorFeedbackEmail"></span>
 
             <label for="password-input">Senha *</label>
-            <input class="parameter-input" type="password" id="password-input" name="senha"
+            <input class="parameter-input" type="password" id="password-input" oninput="return validatePassword()" name="senha"
                    placeholder="Insira a senha" required>
+            <span id="errorFeedbackPassword"></span>
 
             <label for="phone-input">Telefone *</label>
             <input class="parameter-input" type="text" id="phone-input" oninput="return validatePhone()" name="telefone" placeholder="XX XXXXX-XXXX" required>

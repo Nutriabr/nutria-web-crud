@@ -4,7 +4,7 @@
     --secondary-color: #21B558;
     --danger-color: #ff1500;
     --text-primary: #2C3036;
-    --text-secondary: #555555;
+    --text-secondary: #717171;
     --text-placeholder: #999999;
     --text-light: #FFFFFF;
     --border-color: #CCCCCC;
@@ -35,7 +35,6 @@
 
 body {
     font-family: var(--font-family-base), serif;
-
 }
 
 .main-content {
@@ -56,21 +55,21 @@ main {
 }
 
 .logo-image {
-    width: 300px;
+    width: 150px;
     height: auto;
     display: block;
     margin: 0 auto var(--spacing-xl);
 }
 
 .login-container {
-    width: 100%;
+    width: 200%;
     max-width: var(--container-max-width);
     text-align: center;
 }
 
 .login-container h1 {
     font-weight: var(--font-weight-bold);
-    font-size: 25px;
+    font-size: 30px;
     margin-bottom: var(--spacing-sm);
 }
 
@@ -98,15 +97,6 @@ main {
     color: var(--text-placeholder);
 }
 
-#login-forget {
-    font-size: var(--font-size-xs);
-    color: var(--secondary-color);
-    margin: var(--spacing-xs) 0 var(--spacing-md);
-    width: var(--input-width);
-    text-align: left;
-    display: block;
-}
-
 .login-button {
     width: var(--input-width);
     background-color: var(--primary-color);
@@ -116,10 +106,23 @@ main {
     padding: var(--spacing-lg);
     cursor: pointer;
     font-size: var(--font-size-xs);
+    margin-top: 20px;
 }
 
 .error {
     color: var(--danger-color);
     text-align: center;
     margin: 10px;
+}
+.login-forget{
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    margin-top: 5px;
+    margin-right: 200px;
+    text-decoration: none;
+}
+
+.login-forget:hover {
+    color: var(--primary-color);
 }
