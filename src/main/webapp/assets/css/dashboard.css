@@ -31,7 +31,7 @@ body {
 .main-content {
     flex-grow: 1;
     padding: 20px 40px;
-    margin-left: var(--sidebar-width);
+    margin-left: 260px !important;
 }
 
 .dashboard h2 {
@@ -45,7 +45,6 @@ body {
     color: var(--text-secondary);
     font-size: 18px;
     margin-bottom: 32px;
-
 }
 
 .cards {
@@ -53,6 +52,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 40px;
     justify-content: center;
+    margin-left: 30px;
 }
 
 .card {

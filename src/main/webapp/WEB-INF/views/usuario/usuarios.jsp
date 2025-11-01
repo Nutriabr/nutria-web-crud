@@ -70,8 +70,8 @@
                 </div>
             </header>
 
-            <div id="delete-popup">
-                <label>Empresa</label>
+            <div class="delete-popup">
+                <p>Empresa</p>
 
                 <select name="opcao" id="selectEmpresa">
                     <% for (int i = 0; i < empresaList.size(); i++) { %>

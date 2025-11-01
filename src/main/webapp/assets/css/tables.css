@@ -336,3 +336,13 @@ tbody tr:last-child {
 .fa-pencil {
     color: var(--secondary-color);
 }
+
+.delete-popup{
+    background-color: var(--primary-color);
+    opacity: 0.2;
+    border: var(--primary-color) ;
+    border-radius: 15px;
+}
+.delete-popup p{
+    color: var(--text-primary);
+}
