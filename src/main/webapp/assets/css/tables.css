@@ -14,7 +14,7 @@
     --bg-alt: #F8F9FA;
     --border-color: #E2E8F0;
 
-    --sidebar-width: 420px;
+    --sidebar-width: 300px;
     --font-family-base: 'Montserrat', sans-serif;
 
 }
@@ -337,12 +337,34 @@ tbody tr:last-child {
     color: var(--secondary-color);
 }
 
-.delete-popup{
-    background-color: var(--primary-color);
-    opacity: 0.2;
-    border: var(--primary-color) ;
-    border-radius: 15px;
+.delete-popup {
+    background-color: rgba(238, 112, 38, 0.2);
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    margin-bottom: 30px;
+    padding: 16px;
 }
-.delete-popup p{
-    color: var(--text-primary);
+.delete-popup-content{
+    display: flex;
+    gap:20px;
+    width: 300px;
+    height: 40px;
+}
+.delete-popup p {
+    color: black;
+    font-size: 18px;
+}
+
+.delete-popup .btn-action.deletar-por-empresa {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border-radius: 5px;
+    width: 300px;
+    height: 40px;
+}
+#selectEmpresa{
+    border-radius: 5px;
+}
+.delete-popup input{
+    border: 1px solid var(--border-color);
 }
