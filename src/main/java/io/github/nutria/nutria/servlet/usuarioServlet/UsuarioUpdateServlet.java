@@ -98,4 +98,5 @@ public class UsuarioUpdateServlet extends HttpServlet {
             throw new DataAccessException("Erro ao acessar o banco de dados", dae);
         }
     }
+
 }

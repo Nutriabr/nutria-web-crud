@@ -35,3 +35,23 @@ function validatePhone() {
 
     return ehFormValido;
 }
+
+function validatePassword() {
+    const senhaInput = document.getElementById('password-input').value;
+
+    const feedbackElementSenha = document.getElementById('errorFeedbackPassword');
+
+    const senhaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\].?-]).{8,}$/;
+
+    let ehFormValido = true;
+
+    feedbackElementSenha.textContent = '';
+
+    if (!senhaRegex.test(senhaInput)) {
+        feedbackElementSenha.textContent = 'A senha deve ter ao menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e símbolos especiais.';
+        ehFormValido = false;
+    }
+
+    return ehFormValido;
+}
+

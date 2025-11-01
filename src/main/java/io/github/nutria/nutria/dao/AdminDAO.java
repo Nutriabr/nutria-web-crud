@@ -627,6 +627,8 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
 
         if (!RegexValidator.ehTelefoneValido(admin.getTelefone())) throw new InvalidPhoneException(admin.getTelefone());
 
+        if (!RegexValidator.ehSenhaValida(admin.getSenha())) throw new InvalidPasswordException(admin.getSenha());
+
         if (admin.getTelefone() == null || admin.getTelefone().isBlank()) throw new RequiredFieldException("telefone");
 
         if (admin.getTelefone().length() > 11) throw new InvalidPhoneException(admin.getTelefone());
