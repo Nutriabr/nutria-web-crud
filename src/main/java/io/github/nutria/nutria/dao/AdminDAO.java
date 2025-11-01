@@ -461,6 +461,43 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return (result > 0);
     }
 
+    public void alterarSenhaPeloEmail(String email, String senha) {
+        if (email.isBlank()) throw new ValidationException("Email é obrigatório para atualização");
+
+        Optional<Admin> admin = buscarPorEmail(email);
+        if (admin.isEmpty()) {
+            throw new EntityNotFoundException("Admin", admin);
+        }
+
+        String sql = "UPDATE admin SET senha = ? WHERE email = ?";
+
+        PreparedStatement pstmt = null;
+        Connection connect = null;
+        try {
+            connect = ConnectionFactory.conectar();
+            pstmt = connect.prepareStatement(sql);
+
+            String hashedSenha = PasswordHasher.hashSenha(senha);
+
+            pstmt.setString(1, hashedSenha);
+            pstmt.setString(2, email);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao atualizar o admin: " + email);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao atualizar admin", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+    }
+
     @Override
     public boolean deletarPorId(Long id) {
         String sql = "DELETE FROM admin WHERE id = ?";
