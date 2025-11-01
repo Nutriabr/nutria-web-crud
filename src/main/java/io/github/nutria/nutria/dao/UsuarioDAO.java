@@ -176,6 +176,40 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     }
 
     @Override
+    public List<String> buscarEmpresas() {
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<String> empresas = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.conectar();
+
+            String sql = "SELECT DISTINCT empresa FROM usuario";
+            ps = connect.prepareStatement(sql);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                empresas.add(rs.getString("empresa"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return empresas;
+    }
+
+    @Override
     public Optional<Usuario> buscarPorEmail(String email) {
         String sql = "SELECT * FROM usuario WHERE email = ?";
 
@@ -217,7 +251,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
             }
         }
     }
-
 
     @Override
     public List<Usuario> buscarPorNomeEmailOuEmpresa(String valorBuscado, int page) {
@@ -317,39 +350,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return Optional.empty();
     }
 
-    public List<String> buscarEmpresas() {
-        Connection connect = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        List<String> empresas = new ArrayList<>();
-
-        try {
-            connect = ConnectionFactory.conectar();
-
-            String sql = "SELECT DISTINCT empresa FROM usuario";
-            ps = connect.prepareStatement(sql);
-
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                empresas.add(rs.getString("empresa"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.desconectar(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return empresas;
-    }
-
     @Override
     public boolean alterar(Usuario usuario) {
         String sql = "UPDATE usuario SET nome = ?, email = ?, telefone = ?, senha = ?, empresa = ?, foto = ? WHERE id = ?";
@@ -436,6 +436,7 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         return result;
     }
 
+    @Override
     public boolean deletarPorEmpresa(String empresa) {
         String sql = "DELETE FROM usuario WHERE empresa = ?";
 
@@ -465,36 +466,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
         }
         return result;
     }
-
-//    public boolean deletarPorDominioDeEmail(String dominioEmail) {
-//        String sql = "DELETE FROM usuario WHERE email LIKE ?";
-//
-//        boolean result = false;
-//
-//        PreparedStatement ps = null;
-//        Connection connect = null;
-//
-//        try {
-//            connect = ConnectionFactory.conectar();
-//            ps = connect.prepareStatement(sql);
-//            ps.setString(1, dominioEmail);
-//
-//            result = (ps.executeUpdate() > 0);
-//
-//        } catch (SQLException e) {
-//            System.err.println("[DAO ERROR] Erro ao deletar os usuarios: " + dominioEmail);
-//            e.printStackTrace(System.err);
-//            throw new DataAccessException("Erro ao deletar usuarios", e);
-//        } finally {
-//            try {
-//                if (connect != null) ConnectionFactory.desconectar(connect);
-//                if (ps != null) ps.close();
-//            } catch (SQLException e) {
-//                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-//            }
-//        }
-//        return result;
-//    }
 
     @Override
     public int contarTodos() {
