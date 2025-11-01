@@ -116,8 +116,13 @@ main {
 }
 .login-forget{
     color: var(--text-primary);
-    font-size: var(--font-size-xs);
-    font-weight: bold;
-    margin-right: 210px;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
     margin-top: 5px;
+    margin-right: 200px;
+    text-decoration: none;
+}
+
+.login-forget:hover {
+    color: var(--primary-color);
 }

@@ -43,6 +43,15 @@ public interface IAdminDAO {
     Optional<List<Admin>> buscarPorNome(String nome);
 
     /**
+     * Lista todos os registros de {@link Admin} com o nome ou domínio de email informado.
+     *
+     * @param valorBuscado o nome ou domínio de email que será utilizado na busca.
+     * @return uma lista de objetos {@link Admin} correspondentes.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    List<Admin> buscarPorNomeAdminOuDominioEmail(String valorBuscado, int page);
+
+    /**
      * Busca um registro de {@link Admin} pelo telefone informado.
      *
      * @param fone o telefone que será utilizado na busca.

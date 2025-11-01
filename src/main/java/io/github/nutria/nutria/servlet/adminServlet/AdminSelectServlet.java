@@ -41,7 +41,7 @@ public class AdminSelectServlet extends HttpServlet {
             if (busca != null && !busca.isEmpty()) {
                 totalAdmins = adminDAO.contarTodosFiltrados(busca);
                 totalPaginas = (int) Math.ceil((double) totalAdmins / TOTAL_ADMINS_PAGINAS);
-                adminList = adminDAO.buscarPorNomeDeUsuarioOuDominioEmail(busca, paginaAtual);
+                adminList = adminDAO.buscarPorNomeAdminOuDominioEmail(busca, paginaAtual);
             } else {
                 totalAdmins = adminDAO.contarTodos();
                 totalPaginas = (int) Math.ceil((double) totalAdmins / TOTAL_ADMINS_PAGINAS);
