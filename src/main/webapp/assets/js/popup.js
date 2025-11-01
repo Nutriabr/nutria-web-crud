@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     deletarPorId();
+    mostrarPopupDeletarEmpresa();
     deletarPorEmpresa();
     encerrarSessao();
 });
@@ -41,6 +42,19 @@ function deletarPorId() {
     });
 }
 
+function mostrarPopupDeletarEmpresa() {
+    const filtroBtn = document.getElementById("btn-filter");
+    const deletarPorEmpresaPopup = document.getElementById("delete-popup");
+
+    filtroBtn.addEventListener("click", function () {
+        if (deletarPorEmpresaPopup.style.display === "none") {
+            deletarPorEmpresaPopup.style.display = "flex";
+        } else {
+            deletarPorEmpresaPopup.style.display = "none";
+        }
+    });
+}
+
 function deletarPorEmpresa() {
     const deletePopupOverlay = document.getElementById("delete-all-popup-overlay");
     const deleteAllform = document.getElementById("delete-all-form");
@@ -67,7 +81,7 @@ function deletarPorEmpresa() {
 
     cancelBtn.addEventListener("click", function () {
         deletePopupOverlay.style.display = "none";
-        deleteForm.reset();
+        deleteAllform.reset();
     });
 
     deletePopupOverlay.addEventListener("click", function (event) {
