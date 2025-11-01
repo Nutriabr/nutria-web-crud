@@ -12,7 +12,6 @@
     --bg-main: #fdfdfd;
     --border-card: #E6E6E6;
     --font-family-base: 'Montserrat', sans-serif;
-    --sidebar-width: 320px;
 }
 
 * {
@@ -31,14 +30,13 @@ body {
 .main-content {
     flex-grow: 1;
     padding: 20px 40px;
-    margin-left: 260px !important;
+    margin-left: var(--sidebar-width);
 }
 
 .dashboard h2 {
     font-size: 32px;
     color: var(--text-primary);
     margin-top: 60px;
-
 }
 
 .dashboard p {
