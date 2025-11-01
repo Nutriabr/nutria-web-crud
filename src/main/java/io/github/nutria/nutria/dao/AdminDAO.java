@@ -307,7 +307,8 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
         return (adminList.isEmpty() ? Optional.empty() : Optional.of(adminList));
     }
 
-    public List<Admin> buscarPorNomeDeUsuarioOuDominioEmail(String valorBuscado, int page) {
+    @Override
+    public List<Admin> buscarPorNomeAdminOuDominioEmail(String valorBuscado, int page) {
         Connection connect = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -479,7 +480,6 @@ public class AdminDAO implements GenericDAO<Admin, Long>, IAdminDAO {
             if (!result) {
                 throw new EntityNotFoundException("Admin", id);
             }
-
 
         } catch (SQLException e) {
             System.err.println("[DAO ERROR] Erro ao deletar o admin: " + id);

@@ -564,32 +564,18 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
      * @throws InvalidPasswordException se a senha do {@link Usuario} tiver menos de 8 caracteres.
      */
     private void validarUsuario(Usuario usuario) {
-        if (usuario == null) {
-            throw new ValidationException("Usuario não pode ser nulo");
-        }
+        if (usuario == null) throw new ValidationException("Usuario não pode ser nulo");
 
-        if (usuario.getNome() == null || usuario.getNome().isBlank()) {
-            throw new RequiredFieldException("nome");
-        }
+        if (usuario.getNome() == null || usuario.getNome().isBlank()) throw new RequiredFieldException("nome");
 
-        if (usuario.getEmail() == null || usuario.getEmail().isBlank()) {
-            throw new RequiredFieldException("email");
-        }
+        if (usuario.getEmail() == null || usuario.getEmail().isBlank()) throw new RequiredFieldException("email");
 
-        if (usuario.getTelefone() == null || usuario.getTelefone().isBlank()) {
-            throw new RequiredFieldException("telefone");
-        }
+        if (usuario.getTelefone() == null || usuario.getTelefone().isBlank()) throw new RequiredFieldException("telefone");
 
-        if (!emailEhValido(usuario.getEmail())) {
-            throw new InvalidEmailException(usuario.getEmail());
-        }
+        if (!emailEhValido(usuario.getEmail())) throw new InvalidEmailException(usuario.getEmail());
 
-        if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
-            throw new RequiredFieldException("senha");
-        }
+        if (usuario.getSenha() == null || usuario.getSenha().isBlank()) throw new RequiredFieldException("senha");
 
-        if (usuario.getSenha().length() < 8) {
-            throw new InvalidPasswordException();
-        }
+        if (usuario.getSenha().length() < 8) throw new InvalidPasswordException();
     }
 }
