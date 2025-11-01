@@ -19,6 +19,7 @@
 </head>
 <body>
 <main>
+    <%@include file="../components/messagemErro.jsp" %>
     <section class="main-content">
         <img src="assets/img/Nutria.svg" alt="logo" class="logo-image">
         <section class="login-container">
@@ -26,8 +27,8 @@
                 <p>Digite o código que enviamos em seu e-mail para redefinir a senha.</p>
 
 
-            <form class="login-form" method="post" action="${pageContext.request.contextPath}/cadastroSenha">
-                <input type="text" inputmode="numeric" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="------" name="codigo" class="login-input" required>
+            <form class="login-form" method="post" action="${pageContext.request.contextPath}/verificar-codigo">
+                <input type="text" inputmode="numeric" maxlength="6" placeholder="------" name="codigo" class="login-input" required>
                 <% if (request.getAttribute("error") != null) { %>
                 <div class="error">
                     <%= request.getAttribute("error") %>

@@ -17,6 +17,7 @@
 
 </head>
 <body>
+<%@include file="../components/messagemErro.jsp" %>
 <main>
     <section class="main-content">
         <img src="assets/img/Nutria.svg" alt="logo" class="logo-image">
@@ -24,9 +25,9 @@
             <h1>Cadastro nova senha</h1>
             <p>Digite uma nova senha e insira duas vezes para confirmar.</p>
 
-            <form class="login-form" method="post" action="${pageContext.request.contextPath}/login">
+            <form class="login-form" method="post" action="${pageContext.request.contextPath}/redefinir-senha">
                 <input type="password" placeholder="Digite uma senha" name="password" class="login-input" required>
-                <input type="password" placeholder="Digite a senha novamente" name="password" class="login-input" required>
+                <input type="password" placeholder="Digite a senha novamente" name="passwordConfirm" class="login-input" required>
 
                 <% if (request.getAttribute("error") != null) { %>
                 <div class="error">

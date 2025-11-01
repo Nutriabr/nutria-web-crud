@@ -18,6 +18,7 @@
 
 </head>
 <body>
+<%@include file="../components/messagemErro.jsp" %>
 <main>
     <section class="main-content">
         <img src="assets/img/Nutria.svg" alt="logo" class="logo-image">
@@ -25,7 +26,7 @@
                 <h1>Esqueceu a sua senha?</h1>
                 <p>Insira seu endereço de e-mail e enviaremos um código para redefinir a senha.</p>
 
-            <form class="login-form" method="get" action="${pageContext.request.contextPath}/codigoVerificacao">
+            <form class="login-form" method="post" action="${pageContext.request.contextPath}/recuperar-senha">
                 <input type="email" placeholder="Endereço de email" name="email" class="login-input" required>
                 <% if (request.getAttribute("error") != null) { %>
                 <div class="error">
