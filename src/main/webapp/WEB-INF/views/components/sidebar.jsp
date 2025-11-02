@@ -49,10 +49,10 @@
         <li class="<% if ("produto".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-box"></i><a href="${pageContext.request.contextPath}/produto/listar"> Produtos</a></li>
         <li class="<% if ("admin".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-user-gear"></i><a href="${pageContext.request.contextPath}/admin/listar"> Administradores</a></li>
         <li class="<% if ("ingrediente".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-carrot"></i><a href="${pageContext.request.contextPath}/ingrediente/listar"> Ingredientes</a></li>
-        <li class="<% if ("tabela_nutricional".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-list"></i><a href="${pageContext.request.contextPath}/tabelaNutricional/listar"> Tabelas Nutricionais</a></li>
+        <li class="<% if ("tabelaNutricional".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-list"></i><a href="${pageContext.request.contextPath}/tabelaNutricional/listar"> Tabelas Nutricionais</a></li>
         <li class="<% if ("receita".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-utensils"></i><a href="${pageContext.request.contextPath}/receita/listar"> Receitas</a></li>
-        <li class="<% if ("ingrediente_receita".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-clipboard-list"></i><a href="${pageContext.request.contextPath}/receitasIngredientes/listar"> Ingredientes da Receita</a></li>
-    </ul>
+        <li class="<% if ("receitaIngrediente".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-clipboard-list"></i><a href="${pageContext.request.contextPath}/receitasIngredientes/listar"> Ingredientes da Receita</a></li>
+        <li class="<% if ("analytics".equals(activePage)) {out.print("active"); } %>"><i class="fa-solid fa-chart-column"></i><a href="https://app.powerbi.com/view?r=eyJrIjoiZGYyZWI3MmMtOTBhYS00ZjFjLWJiYTYtNGIwY2RmZTMyZmE5IiwidCI6ImIxNDhmMTRjLTIzOTctNDAyYy1hYjZhLTFiNDcxMTE3N2FjMCJ9" target="_blank">Analytics</a></li>    </ul>
 
     <form class="logout" action="${pageContext.request.contextPath}/logout" method="post">
         <button type="button" class="btn-action btn-end-sesion">Encerrar sessão</button>

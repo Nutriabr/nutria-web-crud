@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/forms.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/img/logo.svg" type="image/x-icon">
 </head>
 <body>
 <%@include file="../components/messagemErro.jsp"%>
@@ -29,9 +30,9 @@
         <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/produto/adicionar"
               method="post">
             <h2>Informações do produto</h2>
-            <label for="nome-input">Nome do Produto</label>
+            <label for="nome-input">Nome do Produto*</label>
             <input class="parameter-input" type="text" id="nome-input" name="nome" placeholder="Insira o nome" required>
-            <label for="nome-input">Email do Usuário</label>
+            <label for="nome-input">Email do Usuário*</label>
             <input class="parameter-input" type="text" id="email-usuario-input" name="emailUsuario" placeholder="Insira o email do usuário" required>
             <span id="errorFeedback"></span>
             <div class="submit-content">

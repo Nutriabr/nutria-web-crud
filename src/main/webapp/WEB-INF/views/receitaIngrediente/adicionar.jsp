@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/forms.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/img/logo.svg" type="image/x-icon">
 </head>
 <body>
 <%@include file="../components/messagemErro.jsp" %>
@@ -28,16 +29,16 @@
         <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/receitasIngredientes/adicionar"
               method="post">
             <h2>Informações da receita</h2>
-            <label for="id-receita-input">ID Receita</label>
+            <label for="id-receita-input">ID Receita*</label>
             <input class="parameter-input" type="number" id="id-receita-input" name="idReceita"
                    value="${idReceita}" placeholder="Insira o ID da receita" required>
 
-            <label for="id-ingrediente-input">ID Ingrediente</label>
+            <label for="id-ingrediente-input">ID Ingrediente*</label>
             <input class="parameter-input" type="number" id="id-ingrediente-input"  name="idIngrediente"
                    value="${idIngrediente}" placeholder="Insira o ID do Ingrediente" required>
 
 
-            <label for="quantidade-input">Quantidade</label>
+            <label for="quantidade-input">Quantidade*</label>
             <input class="parameter-input" type="number" id="quantidade-input" name="quantidade"
                    value="${quantidade}" placeholder="Insira a quantidade" required>
 

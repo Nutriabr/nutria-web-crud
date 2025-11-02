@@ -268,6 +268,39 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return receitas;
     }
 
+    public List<Long> buscarIdProduto() {
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<Long> idsProdutosList = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.conectar();
+
+            String sql = "SELECT DISTINCT id_produto FROM receita";
+            ps = connect.prepareStatement(sql);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                idsProdutosList.add(rs.getLong("id_produto"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return idsProdutosList;
+    }
+
     @Override
     public boolean alterar(Receita receita){
         String sql = "UPDATE receita SET porcao = ?, id_produto = ? WHERE id = ?";
@@ -338,6 +371,36 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         }
     }
 
+    public boolean deletarPorIdProduto(Long idProduto) {
+        String sql = "DELETE FROM receita WHERE id_produto = ?";
+
+        boolean result = false;
+
+        PreparedStatement ps = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setLong(1, idProduto);
+
+            result = (ps.executeUpdate() > 0);
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao deletar as receitas: " + idProduto);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao deletar receitas", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+        return result;
+    }
+
     @Override
     public int contarTodos() {
         int totalReceitas = 0;
@@ -372,36 +435,6 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         }
 
         return totalReceitas;
-    }
-
-    @Override
-    public int contarPorId(Long id) {
-        String sql = "SELECT COUNT(*) FROM receita WHERE id = ?";
-        Connection connect = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int total = 0;
-
-        try {
-            connect = ConnectionFactory.conectar();
-            ps = connect.prepareStatement(sql);
-            ps.setLong(1, id);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                total = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            throw new DataAccessException("Erro ao contar receitas filtradas", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.desconectar(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco", e);
-            }
-        }
-        return total;
     }
 
     @Override

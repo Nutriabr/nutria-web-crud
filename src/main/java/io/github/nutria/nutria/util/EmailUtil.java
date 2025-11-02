@@ -12,10 +12,31 @@ import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 import java.util.Properties;
 
+/**
+ * Classe utilitária responsável pelo envio de emails.
+ * <p>
+ * Esta classe configura e envia emails usando o SMTP do Gmail
+ *
+ * @author Luis Henrique
+ */
 public class EmailUtil {
     private static final String EMAIL_REMETENTE = System.getenv("SMTP_USER");
     private static final String SENHA_REMETENTE = System.getenv("APP_PASS");
 
+    /**
+     * Envia um email de recuperação de senha para um administrador.
+     * <p>
+     * O método primeiro verifica se o email fornecido pertence a um administrador cadastrado
+     * usando {@link FieldUsedValidator}. Se o email for válido, ele formata e envia
+     * uma mensagem HTML contendo o código de verificação.
+     *
+     * @param email             O email do destinatário.
+     * @param codigoVerificacao O código de verificação.
+     * @throws MessagingException        Se ocorrer um erro durante a configuração ou envio da mensagem
+     * @throws UnsupportedEncodingException Se a codificação do nome do remetente ("Nutria") não for suportada.
+     * @throws EntityNotFoundException  Se nenhum administrador for encontrado com o email fornecido,
+     * lançada pela verificação do {@link FieldUsedValidator}.
+     */
     public static void enviarEmail(String email, String codigoVerificacao) throws MessagingException, UnsupportedEncodingException, EntityNotFoundException {
         AdminDAO adminDAO = new AdminDAO();
         if (!FieldUsedValidator.ehCampoEmUso("admin","email", email)) throw new EntityNotFoundException("admin", email);

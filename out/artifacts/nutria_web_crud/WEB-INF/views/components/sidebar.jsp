@@ -22,7 +22,7 @@
 <div class="sidebar">
     <img id="nutria" src="${pageContext.request.contextPath}/assets/img/logo.svg" alt="">
     <div class="user">
-        <i class="fa-solid fa-user-circle"></i>
+        <img src="${pageContext.request.contextPath}/assets/img/Foto padrão.png">
         <span><%
             String nome = (String) session.getAttribute("adminNome");
             if (nome != null) {

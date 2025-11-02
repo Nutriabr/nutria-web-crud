@@ -1,12 +1,3 @@
-<%--
-    Refatorado por seu Desenvolvedor Frontend.
-    Este JSP agora espera receber os dados prontos de um Servlet.
-    Atributos esperados:
-    - "tabelaNutricionalList": Uma lista de objetos TabelaNutricional a serem exibidos.
-    - "totalTabelasNutricionais": O número total de tabelas nutricionais (int).
-    - "totalPages": O número total de páginas (int).
-    - "currentPage": O número da página atual (int).
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="io.github.nutria.nutria.model.TabelaNutricional" %>
@@ -26,7 +17,7 @@
   <title>Tabelas Nutricionais - Nutria</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tables.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/img/logo.svg" type="image/x-icon">
 </head>
 <body>
 <%@include file="../components/mensagemSucesso.jsp" %>

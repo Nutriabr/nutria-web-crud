@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     deletarPorId();
-    deletarPorEmpresa();
+    deletarPorFiltro();
     encerrarSessao();
+    toggleFiltro();
 });
 
 function deletarPorId() {
@@ -41,13 +42,50 @@ function deletarPorId() {
     });
 }
 
-function deletarPorEmpresa() {
+function toggleFiltro() {
+    const btnFilter = document.getElementById("btn-filter");
+    const deletarPopup = document.querySelector(".delete-popup");
+
+    if (!btnFilter || !deletarPopup) {
+        return;
+    }
+
+    deletarPopup.style.display = "none";
+
+    const newBtnFilter = btnFilter.cloneNode(true);
+    btnFilter.parentNode.replaceChild(newBtnFilter, btnFilter);
+
+    newBtnFilter.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        console.log("Clicou no filtro");
+        console.log("Display:", deletarPopup.style.display);
+
+        if (deletarPopup.style.display === "flex") {
+            deletarPopup.style.display = "none";
+        } else {
+            deletarPopup.style.display = "flex";
+        }
+
+    }, { once: false });
+
+    document.addEventListener("click", function (event) {
+        const isClickInsidePopup = deletarPopup.contains(event.target);
+        const isClickOnButton = newBtnFilter.contains(event.target);
+
+        if (!isClickInsidePopup && !isClickOnButton && deletarPopup.style.display === "flex") {
+            deletarPopup.style.display = "none";
+        }
+    });
+}
+function deletarPorFiltro() {
     const deletePopupOverlay = document.getElementById("delete-all-popup-overlay");
     const deleteAllform = document.getElementById("delete-all-form");
-    const empresaNome = document.getElementById("empresa-nome");
-    const inputEmpresa = document.getElementById("input-empresa");
+    const opcaoNome = document.getElementById("opcao-nome");
+    const inputOpcao = document.getElementById("input-opcao");
     const cancelBtn = document.getElementById("cancel-delete-all-btn");
-    const deleteButton = document.querySelectorAll(".deletar-por-empresa");
+    const deleteButton = document.querySelectorAll(".deletar-por-opcao");
 
     if (!deletePopupOverlay) {
         return;
@@ -55,11 +93,10 @@ function deletarPorEmpresa() {
 
     deleteButton.forEach(button => {
         button.addEventListener("click", function () {
-            const opcao = document.getElementById("selectEmpresa").value;
+            const opcao = document.getElementById("selectOpcao").value;
 
-            empresaNome.value = opcao;
-
-            inputEmpresa.value = opcao;
+            opcaoNome.textContent = opcao;
+            inputOpcao.value = opcao;
 
             deletePopupOverlay.style.display = "flex";
         });
@@ -67,7 +104,7 @@ function deletarPorEmpresa() {
 
     cancelBtn.addEventListener("click", function () {
         deletePopupOverlay.style.display = "none";
-        deleteForm.reset();
+        deleteAllform.reset();
     });
 
     deletePopupOverlay.addEventListener("click", function (event) {
@@ -90,7 +127,6 @@ function encerrarSessao() {
 
     endSessionButton.forEach(button => {
         button.addEventListener("click", function () {
-            console.log("Botão de logout clicado!");
             endSessionPopupOverlay.style.display = "flex";
         });
     });

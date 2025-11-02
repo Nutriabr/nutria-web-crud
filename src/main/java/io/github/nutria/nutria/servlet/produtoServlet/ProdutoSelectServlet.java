@@ -1,6 +1,7 @@
 package io.github.nutria.nutria.servlet.produtoServlet;
 
 import io.github.nutria.nutria.dao.ProdutoDAO;
+import io.github.nutria.nutria.dao.UsuarioDAO;
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.model.Produto;
 import jakarta.servlet.ServletException;
@@ -19,17 +20,17 @@ public class ProdutoSelectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProdutoDAO produtoDAO = new ProdutoDAO();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         int currentPage = 1;
         String pageParam = req.getParameter("page");
         String filtro = req.getParameter("busca");
 
         if (pageParam != null) {
-            try {
-                currentPage = Integer.parseInt(pageParam);
-            } catch (NumberFormatException ignored) {}
+            try { currentPage = Integer.parseInt(pageParam); } catch (NumberFormatException ignored) {}
         }
 
         List<Produto> produtosList;
+        List<String> emailsList;
         int totalProdutos = 0;
 
         try {
@@ -39,10 +40,8 @@ public class ProdutoSelectServlet extends HttpServlet {
             } else {
                 try {
                     Long numero = Long.parseLong(filtro.trim());
-
                     totalProdutos = produtoDAO.contarPorIdOuIdUsuario(numero);
                     produtosList = produtoDAO.buscarPorIdOuIdUsuario(numero, currentPage);
-
                 } catch (NumberFormatException nfe) {
                     totalProdutos = produtoDAO.contarPorNome(filtro);
                     produtosList = produtoDAO.buscarPorNome(filtro, currentPage);
@@ -54,8 +53,11 @@ public class ProdutoSelectServlet extends HttpServlet {
             if (currentPage < 1) currentPage = 1;
             if (currentPage > totalPages) currentPage = totalPages;
 
+            emailsList = produtoDAO.buscarEmails();
+
             req.setAttribute("totalProdutos", totalProdutos);
             req.setAttribute("produtosList", produtosList);
+            req.setAttribute("emailsList", emailsList);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("filtro", filtro);
@@ -63,7 +65,7 @@ public class ProdutoSelectServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/views/produto/produtos.jsp").forward(req, resp);
 
         } catch (DataAccessException e) {
-            throw new DataAccessException("Erro ao acessar o banco de dados", e);
+            throw new ServletException("Erro ao acessar o banco de dados", e);
         }
     }
 }

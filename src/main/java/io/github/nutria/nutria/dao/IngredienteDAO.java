@@ -184,6 +184,37 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         return ingredientes;
     }
 
+    public List<String> buscarNomes() {
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<String> nomes = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.conectar();
+
+            String sql = "SELECT nome FROM ingrediente";
+            ps = connect.prepareStatement(sql);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                nomes.add(rs.getString("nome"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return nomes;
+    }
     @Override
     public boolean alterar(Ingrediente ingrediente) {
         if (ingrediente.getId() == null || ingrediente.getId() <= 0) {
@@ -235,6 +266,31 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("[DAO ERROR] Erro ao deletar ingrediente: " + id);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao deletar ingrediente", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+    }
+
+    public boolean deletarPorNome(String nome) {
+        String sql = "DELETE FROM ingrediente WHERE nome = ?";
+        PreparedStatement ps = null;
+        Connection connect = null;
+
+        try {
+            connect = ConnectionFactory.conectar();
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, nome);
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao deletar ingrediente: " + nome);
             e.printStackTrace(System.err);
             throw new DataAccessException("Erro ao deletar ingrediente", e);
         } finally {

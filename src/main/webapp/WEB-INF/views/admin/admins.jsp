@@ -1,18 +1,10 @@
-<%--
-    Refatorado por seu Desenvolvedor Frontend.
-    Este JSP agora espera receber os dados prontos de um Servlet.
-    Atributos esperados:
-    - "adminList": Uma lista de objetos Admin a serem exibidos.
-    - "totalAdmins": O número total de administradores (int).
-    - "totalPages": O número total de páginas (int).
-    - "currentPage": O número da página atual (int).
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="io.github.nutria.nutria.model.Admin" %>
 
 <%
     List<Admin> adminList = (List<Admin>) request.getAttribute("adminList");
+    List<String> cargoList = (List<String>) request.getAttribute("cargoList");
     int totalAdmins = (int) request.getAttribute("totalAdmins");
     int totalPages = (int) request.getAttribute("totalPages");
     int currentPage = (int) request.getAttribute("currentPage");
@@ -31,6 +23,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tables.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/img/logo.svg" type="image/x-icon">
 </head>
 <body>
 <%@include file="../components/mensagemSucesso.jsp" %>
@@ -59,15 +52,34 @@
                     <div class="search-bar">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <form id="form-busca"  action="${pageContext.request.contextPath}/admin/listar" method="get">
-                            <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
+                            <input type="search" placeholder="Buscar por nome ou e-mail" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
                         </form>
                     </div>
+                    <button class="btn-action btn-filter" id="btn-filter">
+                        <i class="fa-solid fa-filter" name="filter"></i>
+                    </button>
                     <a href="${pageContext.request.contextPath}/admin/adicionar" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i>
                         Adicionar novo administrador
                     </a>
                 </div>
             </header>
+
+            <div class="delete-popup" style="display: none">
+                <h3>Empresa</h3>
+                <div class="delete-popup-content">
+                    <select name="opcao" id="selectOpcao">
+                        <% for (int i = 0; i < cargoList.size(); i++) { %>
+                        <option value="<%= cargoList.get(i)%>" id="cargo-opcao"><%= cargoList.get(i)%></option>
+                        <% } %>
+                    </select>
+
+                    <form action="${pageContext.request.contextPath}/usuario/excluir" method="post">
+                        <input type="hidden" name="acao" value="deletarPorOpcao">
+                        <button type="button" class="btn-action deletar-por-opcao">Deletar todos os registros</button>
+                    </form>
+                </div>
+            </div>
 
             <div class="table-container">
                 <table>
@@ -141,6 +153,20 @@
             <form id="delete-form" action="${pageContext.request.contextPath}/admin/excluir" method="post">
                 <input type="hidden" name="input-id" id="input-id">
                 <input type="submit" class="btn btn-danger" value="Excluir">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="overlay" id="delete-all-popup-overlay" style="display: none;">
+    <div class="popup-container">
+        <h1>Você tem certeza que deseja excluir todos os registros dessa empresa?</h1>
+        <p>Você não poderá recuperar nenhum registro da empresa <strong id="opcao-nome"></strong> após excluir.</p>
+        <div class="popup-actions">
+            <button class="btn btn-secondary" id="cancel-delete-all-btn">Cancelar</button>
+            <form id="delete-all-form" action="${pageContext.request.contextPath}/admin/excluir" method="post">
+                <input type="hidden" name="input-opcao" id="input-opcao">
+                <input type="submit" class="btn btn-danger" name="acao" value="Excluir">
             </form>
         </div>
     </div>

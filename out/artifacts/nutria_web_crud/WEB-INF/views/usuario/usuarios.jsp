@@ -57,11 +57,13 @@
                 <h2>Usuário</h2>
                 <div class="table-actions">
                     <form id="form-busca"  action="${pageContext.request.contextPath}/usuario/listar" method="get" class="search-bar">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <button ><i class="fa-solid fa-magnifying-glass"></i></button>
                         <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
                     </form>
 
-                    <i class="fa-solid fa-filter" name="filter"></i>
+                    <button class="btn-action btn-filter" id="btn-filter">
+                        <i class="fa-solid fa-filter" name="filter"></i>
+                    </button>
 
                     <a href="${pageContext.request.contextPath}/usuario/adicionar" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i>
@@ -71,7 +73,7 @@
             </header>
 
             <div id="delete-popup">
-                <label>Empresa</label>
+                <h2>Empresa</h2>
 
                 <select name="opcao" id="selectEmpresa">
                     <% for (int i = 0; i < empresaList.size(); i++) { %>

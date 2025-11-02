@@ -17,14 +17,25 @@ public class AdminDeleteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getParameter("input-id");
-        Long id = Long.parseLong(idStr);
+        String acao = req.getParameter("acao");
+
 
         try {
             AdminDAO adminDAO = new AdminDAO();
 
-            adminDAO.deletarPorId(id);
+            if ("Excluir".equals(acao)) {
+                String opcao = req.getParameter("input-opcao");
+                if (opcao != null && !opcao.isEmpty()) {
+                    adminDAO.deletarPorCargo(opcao);
+                    req.getSession().setAttribute("successMessage",
+                            "Adminstradores com cargo " + opcao + " deletados com sucesso!");
+                }
+            } else if (idStr != null && !idStr.isEmpty()) {
+                Long id = Long.parseLong(idStr);
+                adminDAO.deletarPorId(id);
+                req.getSession().setAttribute("successMessage", "Administrador deletado com sucesso!");
+            }
 
-            req.getSession().setAttribute("successMessage", "Administrador deletado com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/admin/listar");
         }  catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");
