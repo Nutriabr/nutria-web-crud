@@ -8,7 +8,7 @@
     --text-secondary: #666;
     --text-tertiary: #555;
     --text-light: #ffffff;
-    --sidebar-width: 180px;
+    --sidebar-width: 250px;
     --font-size-base: 14px;
     --font-size-icon: 28px;
     --img-size-icon: 40px;
@@ -23,6 +23,7 @@
     height: 100vh;
     background: var(--sidebar-bg);
     border-right: 1px solid var(--sidebar-border-color);
+    width: var(--sidebar-width);
     display: flex;
     flex-direction: column;
     padding: var(--spacing-lg) 0;
@@ -76,7 +77,8 @@ hr {
     padding: 6px 10px;
     border-radius: var(--border-radius-md);
     display: flex;
-    align-items: center;
+    align-items: start;
+    text-align: left;
     gap: var(--spacing-lg);
     cursor: pointer;
     transition: 0.3s;
@@ -102,9 +104,8 @@ hr {
 }
 
 .logout {
-    margin-top: 150px;
+    margin-top: auto;
     text-align: center;
-    padding: var(--spacing-sm);
     font-size: var(--font-size-base);
     cursor: pointer;
     color: var(--text-secondary);

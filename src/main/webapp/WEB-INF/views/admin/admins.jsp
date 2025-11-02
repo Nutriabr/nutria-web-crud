@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tables.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/img/logo.svg" type="image/x-icon">
 </head>
 <body>
 <%@include file="../components/mensagemSucesso.jsp" %>
@@ -59,7 +60,7 @@
                     <div class="search-bar">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <form id="form-busca"  action="${pageContext.request.contextPath}/admin/listar" method="get">
-                            <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
+                            <input type="search" placeholder="Buscar por nome ou e-mail" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
                         </form>
                     </div>
                     <a href="${pageContext.request.contextPath}/admin/adicionar" class="btn btn-primary">

@@ -36,15 +36,6 @@ public interface IReceitaDAO {
     List<Receita> buscarPorPorcao(String porcao, int page);
 
     /**
-     * Conta a quantidade total de registros de {@link Receita} com o ID informado.
-     *
-     * @param id o ID que será utilizado na busca.
-     * @return um inteiro com o número total de registros.
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     */
-    int contarPorId(Long id);
-
-    /**
      * Conta a quantidade total de registros de {@link Receita} com o ID de {@link Receita} ou de {@link Produto} informado.
      *
      * @param filtro o ID de {@link Receita} ou de {@link Produto} que será utilizado na busca.

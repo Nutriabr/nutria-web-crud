@@ -19,7 +19,8 @@
     <title>Painel de Controle - Nutria</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/img/logo.svg" type="image/x-icon">
+
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/components/sidebar.jsp">
@@ -94,7 +95,7 @@
 
             <div class="card">
                 <div class="icon">
-                    <h3>Receita Ingrediente</h3>
+                    <h3>Ingredientes da Receita</h3>
                     <img src="${pageContext.request.contextPath}/assets/img/IconeReceitaIngrediente.png" alt="">
                 </div>
                 <span class="value"><%= receitaIngredienteDAO.contarTodos()%></span>

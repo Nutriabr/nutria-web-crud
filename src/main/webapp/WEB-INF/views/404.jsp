@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Página não encontrada - Nutria</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/error.css"/>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/img/logo.svg" type="image/x-icon">
 </head>
 <body>
 <div class="container">

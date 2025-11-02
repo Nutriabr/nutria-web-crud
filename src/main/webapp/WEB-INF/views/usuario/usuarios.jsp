@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tables.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/img/logo.svg" type="image/x-icon">
 </head>
 <body>
 <%@include file="../components/mensagemSucesso.jsp" %>
@@ -57,8 +58,8 @@
                 <h2>Usuário</h2>
                 <div class="table-actions">
                     <form id="form-busca"  action="${pageContext.request.contextPath}/usuario/listar" method="get" class="search-bar">
-                        <button ><i class="fa-solid fa-magnifying-glass"></i></button>
-                        <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="search" placeholder="Buscar por nome ou e-mail" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
                     </form>
 
                     <button class="btn-action btn-filter" id="btn-filter">
@@ -72,7 +73,7 @@
                 </div>
             </header>
 
-            <div class="delete-popup">
+            <div class="delete-popup" style="display: flex">
                 <h2>Empresa</h2>
                 <div class="delete-popup-content">
                     <select name="opcao" id="selectEmpresa">

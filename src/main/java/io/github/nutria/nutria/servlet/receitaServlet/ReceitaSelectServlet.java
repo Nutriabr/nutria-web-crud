@@ -33,33 +33,43 @@ public class ReceitaSelectServlet extends HttpServlet {
             }
         }
 
-        List<Receita> receitasList = new ArrayList<>();
-        List<Long> idsAdicionados = new ArrayList<>();
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+
+        List<Receita> receitasList;
         int totalReceitas;
 
         try {
             if (filtro == null || filtro.isEmpty()) {
-                receitasList = receitaDAO.buscarTodos(currentPage);
                 totalReceitas = receitaDAO.contarTodos();
             } else {
                 try {
                     Long numero = Long.parseLong(filtro);
                     totalReceitas = receitaDAO.contarPorIdOuIdProduto(numero);
-                    receitasList = receitaDAO.buscarPorIdOuIdProduto(numero,currentPage);
-
                 } catch (NumberFormatException nfe) {
-                    receitasList = receitaDAO.buscarPorPorcao(filtro, currentPage);
                     totalReceitas = receitaDAO.contarPorPorcao(filtro);
                 }
             }
 
             int totalPages = (int) Math.ceil((double) totalReceitas / TOTAL_RECEITA_PAGE);
-            if (totalPages == 0) totalPages = 1;
+            if (totalPages == 0) {
+                totalPages = 1;
+            }
 
-            if (currentPage < 1) {
-                currentPage = 1;
-            } else if (currentPage > totalPages && totalPages > 0) {
+            if (currentPage > totalPages) {
                 currentPage = totalPages;
+            }
+
+            if (filtro == null || filtro.isEmpty()) {
+                receitasList = receitaDAO.buscarTodos(currentPage);
+            } else {
+                try {
+                    Long numero = Long.parseLong(filtro);
+                    receitasList = receitaDAO.buscarPorIdOuIdProduto(numero, currentPage);
+                } catch (NumberFormatException nfe) {
+                    receitasList = receitaDAO.buscarPorPorcao(filtro, currentPage);
+                }
             }
 
             req.setAttribute("totalReceitas", totalReceitas);
@@ -70,7 +80,7 @@ public class ReceitaSelectServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/views/receita/receitas.jsp").forward(req, resp);
 
         } catch (DataAccessException e) {
-            throw new DataAccessException("Erro ao acessar o banco de dados", e);
+            throw new ServletException("Erro ao acessar o banco de dados", e);
         }
     }
 }

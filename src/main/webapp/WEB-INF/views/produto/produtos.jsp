@@ -27,7 +27,7 @@
   <title>Produtos - Nutria</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tables.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/img/logo.svg" type="image/x-icon">
 </head>
 <body>
 <%@include file="../components/mensagemSucesso.jsp" %>
@@ -54,7 +54,7 @@
         <div class="table-actions">
           <form action="${pageContext.request.contextPath}/produto/listar" method="get" class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="search" name="busca" placeholder="Buscar pelo nome ou id" value="<%= filtro != null ? filtro : "" %>">
+            <input type="search" name="busca" placeholder="Buscar pelo nome ou ID" value="<%= filtro != null ? filtro : "" %>">
           </form>
           <a href="${pageContext.request.contextPath}/produto/adicionar" class="btn btn-primary">
             <i class="fa-solid fa-plus"></i>

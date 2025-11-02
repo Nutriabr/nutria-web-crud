@@ -13,6 +13,13 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Servlet responsável por autenticar o administrador no sistema.
+ * <p>
+ * Recebe as credenciais do formulário de login, valida os dados e,
+ * se corretos, cria uma sessão com as informações do administrador.
+ * </p>
+ */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private AdminDAO adminDAO = new AdminDAO();

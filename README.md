@@ -3,21 +3,32 @@
 - `io.github.nutria.nutria.model`: Entidades que representam as tabelas do banco de dados.
 - `io.github.nutria.nutria.dao`: Objetos de acesso a dados (DAO) responsáveis pelo CRUD.
 - `io.github.nutria.nutria.service`: Camada de serviço, contém as regras de negócio e validações.
-- `io.github.nutria.nutria.servlet`: Servlets responsáveis por receber requisições HTTP.
-- `src/main/webapp`: Páginas JSP (views) para interação com o usuário.
+- `io.github.nutria.nutria.util`: Classes utilitarias para facilitar e otimizar o desenvolvimento.
+- `io.github.nutria.nutria.exceptions`: Exceções personalizadas utilizadas para facilitar o envio de erros e tratamento.
+- `src/main/webapp/WEB-INF/views`: Páginas JSP (views) para interação com o usuário.
 
 # Configuração de Variáveis de Ambiente (.env)
 
 O projeto utiliza um arquivo `.env` para armazenar variáveis sensíveis, como configurações de banco de dados.  
 ⚠️ **Nunca versionar o `.env` no repositório.**
 
-### Estrutura de `.env` que deve ser criada em 
-`src/main/resources`:
-
 ```dotenv
-DB_URL=jdbc:mysql://host:port/nosso_banco
-DB_USER=nosso_usuario
-DB_PASSWORD=nossa_senha
+# AIVEN
+DB_URL=
+DB_USER=
+DB_PASSWORD=
+
+# MONGODB
+MONGODB_URI=
+
+# GEMINI, REDIS E MONGO
+GEMINI_API_KEY=
+MONGO_USER=
+MONGO_PWD=
+REDIS_URI=
+
+SMTP_USER=
+APP_PASS=
 ```
 ⚠️ **Nunca versionar o `.env` no repositório.**
 
