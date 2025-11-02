@@ -50,8 +50,9 @@
 
 
             <label for="password-input">Nova Senha</label>
-            <input class="parameter-input" type="password" id="password-input" name="password"
+            <input class="parameter-input" type="password" id="password-input" oninput="validatePassword()" name="password"
                    placeholder="Deixe em branco para não alterar">
+            <span id="erroFeedbackPassword"></span>
 
             <label for="phone-input">Telefone</label>
             <input class="parameter-input" type="text" id="phone-input" oninput="validatePhone()" name="phone"

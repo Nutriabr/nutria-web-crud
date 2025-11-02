@@ -41,3 +41,4 @@ build/
 
 ### Testes ###
 src/main/java/io/github/nutria/tests
+out/
