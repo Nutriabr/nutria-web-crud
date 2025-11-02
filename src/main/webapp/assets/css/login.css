@@ -8,8 +8,7 @@
     --text-placeholder: #999999;
     --text-light: #FFFFFF;
     --border-color: #CCCCCC;
-
-    --font-family: "Inter", sans-serif;
+    --font-family-base: "Inter", sans-serif;
     --font-size-base: 1rem;
     --font-size-sm: 0.8rem;
     --font-size-xs: small;
@@ -35,6 +34,7 @@
 
 body {
     font-family: var(--font-family-base), serif;
+
 }
 
 .main-content {
