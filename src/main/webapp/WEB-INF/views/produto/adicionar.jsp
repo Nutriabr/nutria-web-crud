@@ -30,9 +30,9 @@
         <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/produto/adicionar"
               method="post">
             <h2>Informações do produto</h2>
-            <label for="nome-input">Nome do Produto</label>
+            <label for="nome-input">Nome do Produto*</label>
             <input class="parameter-input" type="text" id="nome-input" name="nome" placeholder="Insira o nome" required>
-            <label for="nome-input">Email do Usuário</label>
+            <label for="nome-input">Email do Usuário*</label>
             <input class="parameter-input" type="text" id="email-usuario-input" name="emailUsuario" placeholder="Insira o email do usuário" required>
             <span id="errorFeedback"></span>
             <div class="submit-content">

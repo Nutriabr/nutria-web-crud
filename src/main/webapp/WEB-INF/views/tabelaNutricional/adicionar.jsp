@@ -31,37 +31,37 @@
           method="post">
       <h2>Informações da tabela nutricional</h2>
 
-      <label for="id-ingrediente-input">ID do ingrediente</label>
+      <label for="id-ingrediente-input">ID do ingrediente*</label>
       <input class="parameter-input" type="number" id="id-ingrediente-input" name="id-ingrediente" min="1" step="1" placeholder="Insira o ID do ingrediente" required>
 
-      <label for="valor-energetico-input">Valor energético (kcal)</label>
+      <label for="valor-energetico-input">Valor energético (kcal)*</label>
       <input class="parameter-input" type="number" id="valor-energetico-input" name="valor-energetico" min="0" step="1" placeholder="Ex: 23" required>
 
-      <label for="carboidratos-input">Carboidratos (g)</label>
+      <label for="carboidratos-input">Carboidratos (g)*</label>
       <input class="parameter-input" type="number" id="carboidratos-input" name="carboidratos" min="0" step="0.1" placeholder="Ex: 14.9" required>
 
-      <label for="acucares-totais-input">Açúcares totais (g)</label>
+      <label for="acucares-totais-input">Açúcares totais (g)*</label>
       <input class="parameter-input" type="number" id="acucares-totais-input" name="acucares-totais" min="0" step="0.1" placeholder="Ex: 46.3" required>
 
-      <label for="acucares-adicionados-input">Açúcares adicionados (g)</label>
+      <label for="acucares-adicionados-input">Açúcares adicionados (g)*</label>
       <input class="parameter-input" type="number" id="acucares-adicionados-input" name="acucares-adicionados" min="0" step="0.1" placeholder="Ex: 12.3" required>
 
-      <label for="proteinas-input">Proteínas (g)</label>
+      <label for="proteinas-input">Proteínas (g)*</label>
       <input class="parameter-input" type="number" id="proteinas-input" name="proteinas" min="0" step="0.1" placeholder="Ex: 8.5" required>
 
-      <label for="gorduras-totais-input">Gorduras totais (g)</label>
+      <label for="gorduras-totais-input">Gorduras totais (g)*</label>
       <input class="parameter-input" type="number" id="gorduras-totais-input" name="gorduras-totais" min="0" step="0.1" placeholder="Ex: 2.3" required>
 
-      <label for="gorduras-saturadas-input">Gorduras saturadas (g)</label>
+      <label for="gorduras-saturadas-input">Gorduras saturadas (g)*</label>
       <input class="parameter-input" type="number" id="gorduras-saturadas-input" name="gorduras-saturadas" min="0" step="0.1" placeholder="Ex: 1.2" required>
 
-      <label for="gorduras-trans-input">Gorduras trans (g)</label>
+      <label for="gorduras-trans-input">Gorduras trans (g)*</label>
       <input class="parameter-input" type="number" id="gorduras-trans-input" name="gorduras-trans" min="0" step="0.01" placeholder="Ex: 0.03" required>
 
-      <label for="fibra-alimentar-input">Fibra alimentar (g)</label>
+      <label for="fibra-alimentar-input">Fibra alimentar (g)*</label>
       <input class="parameter-input" type="number" id="fibra-alimentar-input" name="fibra-alimentar" min="0" step="0.1" placeholder="Ex: 2.5" required>
 
-      <label for="sodio-input">Sódio (mg)</label>
+      <label for="sodio-input">Sódio (mg)*</label>
       <input class="parameter-input" type="number" id="sodio-input" name="sodio" min="0" step="1" placeholder="Ex: 230" required>
 
       <label for="colesterol-input">Colesterol (mg)</label>

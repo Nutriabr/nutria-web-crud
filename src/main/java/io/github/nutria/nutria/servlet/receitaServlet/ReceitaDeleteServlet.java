@@ -17,14 +17,24 @@ public class ReceitaDeleteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getParameter("input-id");
-        Long id = Long.parseLong(idStr);
+        String acao = req.getParameter("acao");
 
         try {
             ReceitaDAO receitaDAO = new ReceitaDAO();
 
-            receitaDAO.deletarPorId(id);
+            if ("Excluir".equals(acao)) {
+                Long opcao = Long.parseLong(req.getParameter("input-opcao"));
+                if (opcao != 0) {
+                    receitaDAO.deletarPorIdProduto(opcao);
+                    req.getSession().setAttribute("successMessage",
+                            "Receitas com ID PRODUTO " + opcao + " deletados com sucesso!");
+                }
+            } else if (idStr != null && !idStr.isEmpty()) {
+                Long id = Long.parseLong(idStr);
+                receitaDAO.deletarPorId(id);
+                req.getSession().setAttribute("successMessage", "Receita deletada com sucesso!");
+            }
 
-            req.getSession().setAttribute("successMessage", "Receita deletada com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/receita/listar");
         }  catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");

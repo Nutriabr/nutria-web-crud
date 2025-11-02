@@ -11,6 +11,7 @@
 
 O projeto utiliza um arquivo `.env` para armazenar variáveis sensíveis, como configurações de banco de dados.  
 ⚠️ **Nunca versionar o `.env` no repositório.**
+:
 
 ```dotenv
 # AIVEN
@@ -60,7 +61,7 @@ feat(usuario): adicionar validação de email
 
 ### Escopo (opcional)
 
-O escopo indica a área afetada, por exemplo: `usuario`, `dao`, `service`, `controller`.
+O escopo indica a área afetada, por exemplo: `usuario`, `dao`, `controller`.
 
 ### Descrição
 
