@@ -53,7 +53,8 @@
             <input class="parameter-input" type="email" id="email-input" name="email" oninput="validateEmail()" value="<%= email %>">
 
             <label for="password-input">Nova Senha</label>
-            <input class="parameter-input" type="password" id="password-input" name="senha" placeholder="Deixe em branco para não alterar">
+            <input class="parameter-input" type="password" id="password-input" name="senha" oninput="validatePassword()" placeholder="Deixe em branco para não alterar">
+            <span id="erroFeedbackPassword"></span>
 
             <label for="phone-input">Telefone</label>
             <input class="parameter-input" type="text" id="phone-input" name="telefone" oninput="validatePhone()" value="<%= telefone %>">
