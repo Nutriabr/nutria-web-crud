@@ -10,14 +10,25 @@
 
 O projeto utiliza um arquivo `.env` para armazenar variáveis sensíveis, como configurações de banco de dados.  
 ⚠️ **Nunca versionar o `.env` no repositório.**
-
-### Estrutura de `.env` que deve ser criada em 
-`src/main/resources`:
+:
 
 ```dotenv
-DB_URL=jdbc:mysql://host:port/nosso_banco
-DB_USER=nosso_usuario
-DB_PASSWORD=nossa_senha
+# AIVEN
+DB_URL=
+DB_USER=
+DB_PASSWORD=
+
+# MONGODB
+MONGODB_URI=
+
+# GEMINI, REDIS E MONGO
+GEMINI_API_KEY=
+MONGO_USER=
+MONGO_PWD=
+REDIS_URI=
+
+SMTP_USER=
+APP_PASS=
 ```
 ⚠️ **Nunca versionar o `.env` no repositório.**
 
@@ -49,7 +60,7 @@ feat(usuario): adicionar validação de email
 
 ### Escopo (opcional)
 
-O escopo indica a área afetada, por exemplo: `usuario`, `dao`, `service`, `controller`.
+O escopo indica a área afetada, por exemplo: `usuario`, `dao`, `controller`.
 
 ### Descrição
 
