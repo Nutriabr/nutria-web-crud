@@ -43,15 +43,22 @@ function deletarPorId() {
 }
 
 function mostrarPopupDeletarEmpresa() {
-    const filtroBtn = document.getElementById("btn-filter");
+    console.log("Mostrando empresa!");
+    const filtroBtn = document.querySelectorAll<HTMLElement>(".btn-filter");
     const deletarPorEmpresaPopup = document.getElementById("delete-popup");
 
-    filtroBtn.addEventListener("click", function () {
-        if (deletarPorEmpresaPopup.style.display === "none") {
-            deletarPorEmpresaPopup.style.display = "flex";
-        } else {
-            deletarPorEmpresaPopup.style.display = "none";
-        }
+    if (!deletarPorEmpresaPopup) {
+        return;
+    }
+
+    filtroBtn.forEach(button => {
+        button.addEventListener("click", function () {
+            if (deletarPorEmpresaPopup.style.display === "none") {
+                deletarPorEmpresaPopup.style.display = "flex";
+            } else {
+                deletarPorEmpresaPopup.style.display = "none";
+            }
+        });
     });
 }
 

@@ -72,7 +72,7 @@
                 </div>
             </header>
 
-            <div class="delete-popup">
+            <div class="delete-popup" style="display: none">
                 <h2>Empresa</h2>
                 <div class="delete-popup-content">
                     <select name="opcao" id="selectEmpresa">
