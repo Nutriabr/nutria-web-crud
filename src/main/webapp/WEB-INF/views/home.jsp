@@ -114,7 +114,7 @@
                 </div>
                 <span class="value"><%= tabelaNutricionalDAO.contarTodos()%></span>
                 <div class="acess">
-                    <a href="#">Acessar</a>
+                    <a href="${pageContext.request.contextPath}/tabelaNutricional/listar">Acessar</a>
                     <img src="${pageContext.request.contextPath}/assets/img/setaVerde.png" alt="">
                 </div>
             </div>
