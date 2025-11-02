@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
     --primary-color: #EE7026;
@@ -10,7 +10,7 @@
 
     --bg-light: #f8f8f8;
     --overlay-bg: rgba(0, 0, 0, 0.6);
-    --font-family-base: 'Montserrat', sans-serif;
+    --font-family: "Inter", sans-serif;
     --font-size-lg: 1.5rem;
     --font-size-md: 1rem;
     --font-size-icon: 48px;

@@ -1,12 +1,3 @@
-<%--
-    Refatorado por seu Desenvolvedor Frontend.
-    Este JSP agora espera receber os dados prontos de um Servlet.
-    Atributos esperados:
-    - "receitaIngredienteList": Uma lista de objetos ReceitaIngrediente a serem exibidos.
-    - "totalReceitasIngrediente": O número total de Receitas Ingredientes (int).
-    - "totalPages": O número total de páginas (int).
-    - "currentPage": O número da página atual (int).
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="io.github.nutria.nutria.model.ReceitaIngrediente" %>
