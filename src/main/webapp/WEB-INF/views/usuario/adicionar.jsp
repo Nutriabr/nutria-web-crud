@@ -27,19 +27,20 @@
                    placeholder="Insira o nome" required>
 
             <label for="email-input">E-mail</label>
-            <input class="parameter-input" type="email" id="email-input" oninput="validateEmail()" name="email"
+            <input class="parameter-input" type="email" id="email-input" oninput="return validateEmail()" name="email"
                     placeholder="Insira o endereço de email" required>
-            <span id="errorFeedback"></span>
+            <span id="errorFeedbackEmail"></span>
 
 
             <label for="password-input">Senha</label>
-            <input class="parameter-input" type="password" id="password-input" oninput="validatePassword()" name="password"
+            <input class="parameter-input" type="password" id="password-input" oninput="return validatePassword()" name="password"
                     placeholder="Insira a senha" required>
-            <span id="erroFeedbackPassword"></span>
+            <span id="errorFeedbackPassword"></span>
 
             <label for="phone-input">Telefone</label>
-            <input class="parameter-input" type="text" id="phone-input" oninput="validatePhone()" name="phone"
+            <input class="parameter-input" type="text" id="phone-input" oninput="return validatePhone()" name="phone"
                     placeholder="XX XXXXX-XXXX" required>
+            <span id="errorFeedbackPhone"></span>
 
             <label for="company-input">Empresa</label>
             <input class="parameter-input" type="text" id="company-input" name="company"

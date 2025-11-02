@@ -1,12 +1,3 @@
-<%--
-    Refatorado por seu Desenvolvedor Frontend.
-    Este JSP agora espera receber os dados prontos de um Servlet.
-    Atributos esperados:
-    - "adminList": Uma lista de objetos Admin a serem exibidos.
-    - "totalAdmins": O número total de administradores (int).
-    - "totalPages": O número total de páginas (int).
-    - "currentPage": O número da página atual (int).
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="io.github.nutria.nutria.model.Usuario" %>
@@ -74,9 +65,9 @@
             </header>
 
             <div class="delete-popup" style="display: none">
-                <h2>Empresa</h2>
+                <h3>Empresa</h3>
                 <div class="delete-popup-content">
-                    <select name="opcao" id="selectEmpresa">
+                    <select name="opcao" id="selectOpcao">
                         <% for (int i = 0; i < empresaList.size(); i++) { %>
                         <option value="<%= empresaList.get(i)%>" id="empresa-opcao"><%= empresaList.get(i)%></option>
                         <% } %>
@@ -84,7 +75,7 @@
 
                     <form action="${pageContext.request.contextPath}/usuario/excluir" method="post">
                         <input type="hidden" name="acao" value="deletarPorEmpresa">
-                        <button type="button" class="btn-action deletar-por-empresa">Deletar todos os registros</button>
+                        <button type="button" class="btn-action deletar-por-opcao">Deletar todos os registros</button>
                     </form>
                 </div>
             </div>
@@ -171,11 +162,11 @@
 <div class="overlay" id="delete-all-popup-overlay" style="display: none;">
     <div class="popup-container">
         <h1>Você tem certeza que deseja excluir todos os registros dessa empresa?</h1>
-        <p>Você não poderá recuperar nenhum registro da empresa <strong id="empresa-nome"></strong> após excluir.</p>
+        <p>Você não poderá recuperar nenhum registro da empresa <strong id="opcao-nome"></strong> após excluir.</p>
         <div class="popup-actions">
             <button class="btn btn-secondary" id="cancel-delete-all-btn">Cancelar</button>
             <form id="delete-all-form" action="${pageContext.request.contextPath}/usuario/excluir" method="post">
-                <input type="hidden" name="input-empresa" id="input-empresa">
+                <input type="hidden" name="input-opcao" id="input-opcao">
                 <input type="submit" class="btn btn-danger" name="acao" value="Excluir">
             </form>
         </div>
