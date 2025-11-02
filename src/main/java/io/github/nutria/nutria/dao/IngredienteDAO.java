@@ -184,6 +184,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         return ingredientes;
     }
 
+    @Override
     public List<String> buscarNomes() {
         Connection connect = null;
         PreparedStatement ps = null;
@@ -278,6 +279,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
         }
     }
 
+    @Override
     public boolean deletarPorNome(String nome) {
         String sql = "DELETE FROM ingrediente WHERE nome = ?";
         PreparedStatement ps = null;
@@ -376,6 +378,7 @@ public class IngredienteDAO implements GenericDAO<Ingrediente, Long>, IIngredien
      */
     private void validarIngrediente(Ingrediente ingrediente) {
         if (ingrediente == null) throw new ValidationException("Ingrediente não pode ser nulo");
+
         if (ingrediente.getNome() == null || ingrediente.getNome().isBlank()) throw new RequiredFieldException("nome");
     }
 }

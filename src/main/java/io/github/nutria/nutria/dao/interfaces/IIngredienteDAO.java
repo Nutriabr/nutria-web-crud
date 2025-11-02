@@ -1,6 +1,7 @@
 package io.github.nutria.nutria.dao.interfaces;
 
 import io.github.nutria.nutria.exceptions.DataAccessException;
+import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.model.Ingrediente;
 
 import java.util.List;
@@ -23,6 +24,23 @@ public interface IIngredienteDAO {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
     List<Ingrediente> buscarPorNome(String nome, int page);
+
+    /**
+     * Lista todos os nomes dos registros de {@link Ingrediente}.
+
+     * @return uma lista de {@link String} com todos os nomes encontrados.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    List<String> buscarNomes();
+
+    /**
+     * Deleta registros de {@link Admin} pelo cargo.
+     *
+     * @param nome o nome do ingrediente que será utilizado na exclusão.
+     * @return {@code true} se deletar com sucesso; {@code false} caso contrário.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    boolean deletarPorNome(String nome);
 
     /**
      * Conta a quantidade total de registros de {@link Ingrediente} correspondentes ao nome informado.

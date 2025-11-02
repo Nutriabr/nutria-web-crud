@@ -2,7 +2,6 @@ package io.github.nutria.nutria.dao.interfaces;
 
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.model.Admin;
-import io.github.nutria.nutria.model.Usuario;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +15,13 @@ import java.util.Optional;
  */
 public interface IAdminDAO {
 
+    /**
+     * Lista todos os cargos dos registros de {@link Admin}.
+
+     * @return uma lista de {@link String} com todos os cargos encontrados.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    List<String> buscarCargos();
 
     /**
      * Busca um registro de {@link Admin} pelo email informado.
@@ -54,6 +60,15 @@ public interface IAdminDAO {
     void alterarSenhaPeloEmail(String email, String senha);
 
     /**
+     * Deleta registros de {@link Admin} pelo cargo.
+     *
+     * @param cargo o nome do cargo que será utilizado na exclusão.
+     * @return {@code true} se deletar com sucesso; {@code false} caso contrário.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    boolean deletarPorCargo(String cargo);
+
+    /**
      * Conta a quantidade total de registros de {@link Admin} correspondentes ao nome ou domínio de email buscado.
      *
      * @param valorBuscado o nome ou domínio de email que será utilizado na busca.
@@ -61,21 +76,4 @@ public interface IAdminDAO {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
     int contarTodosFiltrados(String valorBuscado);
-
-    /**
-     * Deleta registros de {@link Admin} pelo cargo.
-     *
-     * @param cargo o nome do cargo que será utilizado na hora de deletar.
-     * @return {@code true} se deletar com sucesso; {@code false} caso contrário.
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     */
-    boolean deletarPorCargo(String cargo);
-
-    /**
-     * Lista todos os cargos dos registros de {@link Admin}.
-
-     * @return uma lista de {@link String} com todas os cargos encontrados.
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     */
-    List<String> buscarCargos();
 }
