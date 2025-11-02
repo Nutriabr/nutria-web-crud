@@ -42,25 +42,19 @@ function deletarPorId() {
     });
 }
 
-function mostrarPopupDeletarEmpresa() {
-    console.log("Mostrando empresa!");
-    const filtroBtn = document.querySelectorAll<HTMLElement>(".btn-filter");
-    const deletarPorEmpresaPopup = document.getElementById("delete-popup");
+document.addEventListener("click", function (event) {
+    const botao = event.target.closest(".btn-filter");
+    if (!botao) return;
 
-    if (!deletarPorEmpresaPopup) {
-        return;
+    console.log("Clicou no filtro!");
+
+    const deletarPorEmpresaPopup = document.querySelector(".delete-popup");
+    if (!deletarPorEmpresaPopup) return;
+
+    if (deletarPorEmpresaPopup.style.display === "none") {
+        deletarPorEmpresaPopup.style.display = "flex";
     }
-
-    filtroBtn.forEach(button => {
-        button.addEventListener("click", function () {
-            if (deletarPorEmpresaPopup.style.display === "none") {
-                deletarPorEmpresaPopup.style.display = "flex";
-            } else {
-                deletarPorEmpresaPopup.style.display = "none";
-            }
-        });
-    });
-}
+});
 
 function deletarPorEmpresa() {
     const deletePopupOverlay = document.getElementById("delete-all-popup-overlay");
@@ -111,7 +105,6 @@ function encerrarSessao() {
 
     endSessionButton.forEach(button => {
         button.addEventListener("click", function () {
-            console.log("Botão de logout clicado!");
             endSessionPopupOverlay.style.display = "flex";
         });
     });
