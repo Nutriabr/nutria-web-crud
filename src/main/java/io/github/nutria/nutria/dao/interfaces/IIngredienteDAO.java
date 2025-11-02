@@ -1,7 +1,6 @@
 package io.github.nutria.nutria.dao.interfaces;
 
 import io.github.nutria.nutria.exceptions.DataAccessException;
-import io.github.nutria.nutria.model.Admin;
 import io.github.nutria.nutria.model.Ingrediente;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public interface IIngredienteDAO {
     List<String> buscarNomes();
 
     /**
-     * Deleta registros de {@link Admin} pelo cargo.
+     * Deleta registros de {@link Ingrediente} pelo cargo.
      *
      * @param nome o nome do ingrediente que será utilizado na exclusão.
      * @return {@code true} se deletar com sucesso; {@code false} caso contrário.
