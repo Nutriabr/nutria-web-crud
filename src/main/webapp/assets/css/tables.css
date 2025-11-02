@@ -47,6 +47,7 @@ ul {
 .main-content {
     flex-grow: 1;
     padding: 20px 40px;
+    margin-left: var(--sidebar-width);
     width: calc(100% - var(--sidebar-width));
 }
 
