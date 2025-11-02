@@ -60,7 +60,7 @@ public interface IAdminDAO {
     void alterarSenhaPeloEmail(String email, String senha);
 
     /**
-     * Deleta registros de {@link Admin} pelo cargo.
+     * Deleta todos os registros de {@link Admin} pelo cargo.
      *
      * @param cargo o nome do cargo que será utilizado na exclusão.
      * @return {@code true} se deletar com sucesso; {@code false} caso contrário.

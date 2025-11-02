@@ -33,7 +33,7 @@ public interface IIngredienteDAO {
     List<String> buscarNomes();
 
     /**
-     * Deleta registros de {@link Ingrediente} pelo cargo.
+     * Deleta todos os registros de {@link Ingrediente} pelo cargo.
      *
      * @param nome o nome do ingrediente que será utilizado na exclusão.
      * @return {@code true} se deletar com sucesso; {@code false} caso contrário.

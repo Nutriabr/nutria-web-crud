@@ -45,7 +45,7 @@ public interface IProdutoDAO {
     List<Produto> buscarPorNomeProdutoOuNomeUsuario(String nome, int page);
 
     /**
-     * Deleta registros de {@link Ingrediente} pelo email de {@link Usuario} informado.
+     * Deleta todos os registros de {@link Ingrediente} pelo email de {@link Usuario} informado.
      *
      * @param email o endereço de email que será utilizado na exclusão.
      * @return {@code true} se deletar com sucesso; {@code false} caso contrário.

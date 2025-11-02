@@ -268,6 +268,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return receitas;
     }
 
+    @Override
     public List<Long> buscarIdProduto() {
         Connection connect = null;
         PreparedStatement ps = null;
@@ -371,6 +372,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         }
     }
 
+    @Override
     public boolean deletarPorIdProduto(Long idProduto) {
         String sql = "DELETE FROM receita WHERE id_produto = ?";
 
