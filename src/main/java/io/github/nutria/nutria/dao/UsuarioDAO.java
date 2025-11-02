@@ -7,6 +7,7 @@ import io.github.nutria.nutria.model.Usuario;
 import io.github.nutria.nutria.util.ConnectionFactory;
 import io.github.nutria.nutria.util.FieldUsedValidator;
 import io.github.nutria.nutria.util.PasswordHasher;
+import io.github.nutria.nutria.util.RegexValidator;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -305,52 +306,6 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     }
 
     @Override
-    public Optional<Usuario> buscarPorTelefone(String fone) {
-        String sql = "SELECT DISTINCT * FROM usuario WHERE telefone = ?";
-
-        if (fone == null || fone.isBlank()) {
-            throw new RequiredFieldException("telefone");
-        }
-
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection connect = null;
-        try {
-            connect = ConnectionFactory.conectar();
-            ps = connect.prepareStatement(sql);
-            ps.setString(1, fone);
-
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                Usuario usuario = new Usuario(
-                        rs.getLong("id"),
-                        rs.getString("nome"),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getString("telefone"),
-                        rs.getString("empresa"),
-                        rs.getString("foto")
-                );
-
-                return Optional.of(usuario);
-            }
-        } catch (SQLException e) {
-            System.err.println("[DAO ERROR] Erro ao buscar usuário pelo telefone: " + fone);
-            e.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar usuário pelo telefone", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.desconectar(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
-            }
-        }
-        return Optional.empty();
-    }
-
-    @Override
     public boolean alterar(Usuario usuario) {
         String sql = "UPDATE usuario SET nome = ?, email = ?, telefone = ?, senha = ?, empresa = ?, foto = ? WHERE id = ?";
 
@@ -547,21 +502,12 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
     /**
      * Valida campos obrigatórios de um {@link Usuario}.
      *
-     * @param email o email que será validado.
-     * @return {@code true} se for válido; {@code false} caso contrário.
-     */
-    private boolean emailEhValido(String email) {
-        return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    }
-
-    /**
-     * Valida campos obrigatórios de um {@link Usuario}.
-     *
      * @param usuario o objeto {@link Usuario} que será validado.
      * @throws ValidationException se o objeto for {@code null}.
      * @throws RequiredFieldException se determinado campo obrigatório for {@code null} ou vazio.
      * @throws InvalidEmailException se o email do {@link Usuario} for inválido.
      * @throws InvalidPasswordException se a senha do {@link Usuario} tiver menos de 8 caracteres.
+     * @throws InvalidPhoneException se o telefone do {@link Usuario} tiver mais de 11 dígitos e não atender a regex.
      */
     private void validarUsuario(Usuario usuario) {
         if (usuario == null) throw new ValidationException("Usuario não pode ser nulo");
@@ -572,7 +518,11 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
         if (usuario.getTelefone() == null || usuario.getTelefone().isBlank()) throw new RequiredFieldException("telefone");
 
-        if (!emailEhValido(usuario.getEmail())) throw new InvalidEmailException(usuario.getEmail());
+        if (!RegexValidator.ehEmailValido(usuario.getEmail())) throw new InvalidEmailException(usuario.getEmail());
+
+        if (!RegexValidator.ehSenhaValida(usuario.getSenha())) throw new InvalidPasswordException(usuario.getSenha());
+
+        if (!RegexValidator.ehTelefoneValido(usuario.getTelefone())) throw new InvalidPhoneException(usuario.getTelefone());
 
         if (usuario.getSenha() == null || usuario.getSenha().isBlank()) throw new RequiredFieldException("senha");
 

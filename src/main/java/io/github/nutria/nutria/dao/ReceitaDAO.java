@@ -375,36 +375,6 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
     }
 
     @Override
-    public int contarPorId(Long id) {
-        String sql = "SELECT COUNT(*) FROM receita WHERE id = ?";
-        Connection connect = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int total = 0;
-
-        try {
-            connect = ConnectionFactory.conectar();
-            ps = connect.prepareStatement(sql);
-            ps.setLong(1, id);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                total = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            throw new DataAccessException("Erro ao contar receitas filtradas", e);
-        } finally {
-            try {
-                if (connect != null) ConnectionFactory.desconectar(connect);
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                throw new DataAccessException("Erro ao fechar recursos do banco", e);
-            }
-        }
-        return total;
-    }
-
-    @Override
     public int contarPorIdOuIdProduto(Long numero) {
         String sql = """
             SELECT COUNT(DISTINCT id) FROM produto 
