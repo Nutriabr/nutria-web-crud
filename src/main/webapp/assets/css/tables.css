@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
     --primary-color: #EE7026;
@@ -15,8 +15,7 @@
     --border-color: #E2E8F0;
 
     --sidebar-width: 300px;
-    --font-family-base: 'Montserrat', sans-serif;
-
+    --font-family-base: "Inter", sans-serif;
 }
 
 * {
@@ -48,7 +47,6 @@ ul {
 .main-content {
     flex-grow: 1;
     padding: 20px 40px;
-    margin-left: var(--sidebar-width);
     width: calc(100% - var(--sidebar-width));
 }
 
@@ -339,9 +337,9 @@ tbody tr:last-child {
 
 .delete-popup {
     flex-direction: column;
-    background-color: rgba(238, 112, 38, 0.2);
-    border: 1px solid var(--primary-color);
-    border-radius: 5px;
+    background-color: #F2F2F2;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     margin-bottom: 30px;
     padding: 16px;
 }
@@ -352,16 +350,23 @@ tbody tr:last-child {
     height: 40px;
 }
 
-.delete-popup .btn-action.deletar-por-empresa {
+.delete-popup .btn-action.deletar-por-opcao {
     background-color: var(--primary-color);
     color: var(--text-light);
     border-radius: 5px;
     width: 300px;
     height: 40px;
 }
-#selectEmpresa{
-    border-radius: 5px;
-}
-.delete-popup input{
+#selectOpcao{
+    align-items: center;
+    gap: 8px;
+    background-color: var(--bg-alt);
     border: 1px solid var(--border-color);
+    padding: 8px 18px 8px 12px;
+    border-radius: 6px;
+
+}
+
+.delete-popup h3 {
+    margin-bottom: var(--spacing-sm);
 }
