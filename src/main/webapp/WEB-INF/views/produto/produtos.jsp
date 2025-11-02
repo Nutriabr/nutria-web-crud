@@ -15,6 +15,7 @@
   int totalProdutos = (int) request.getAttribute("totalProdutos");
   int totalPages = (int) request.getAttribute("totalPages");
   int currentPage = (int) request.getAttribute("currentPage");
+  List<String> emailsList = (List<String>) request.getAttribute("emailsList");
   String filtro = (String) request.getAttribute("filtro");
   String buscaParam = (filtro != null && !filtro.trim().isEmpty()) ? "&busca=" + filtro : "";
 %>
@@ -62,6 +63,21 @@
           </a>
         </div>
       </header>
+      <div class="delete-popup" style="display: none">
+        <h2>Emails</h2>
+        <div class="delete-popup-content">
+          <select name="opcao" id="selectEmpresa">
+            <% for (String email : emailsList) { %>
+            <option value="<%= email %>"><%= email %></option>
+            <% } %>
+          </select>
+
+          <form action="${pageContext.request.contextPath}/produto/excluir" method="post">
+            <input type="hidden" name="acao" value="deletarPorEmail">
+            <button type="submit" class="btn-action deletar-por-empresa">Deletar todos os registros</button>
+          </form>
+        </div>
+      </div>
 
       <div class="table-container">
         <table>
@@ -120,15 +136,15 @@
 </div>
 
 
-<div class="overlay" id="delete-popup-overlay" style="display: none;">
+<div class="overlay" id="delete-all-popup-overlay" style="display: none;">
   <div class="popup-container">
-    <h1>Você tem certeza que deseja excluir este registro?</h1>
-    <p>Você não poderá recuperar o registro de ID <strong id="delete-id"></strong> após excluir.</p>
+    <h1>Você tem certeza que deseja excluir todos os registros dessa usuário?</h1>
+    <p>Você não poderá recuperar nenhum registro do usuário <strong id="empresa-nome"></strong> após excluir.</p>
     <div class="popup-actions">
-      <button class="btn btn-secondary" id="cancel-delete-btn">Cancelar</button>
-      <form id="delete-form" action="${pageContext.request.contextPath}/produto/excluir" method="post">
-        <input type="hidden" name="input-id" id="input-id">
-        <input type="submit" class="btn btn-danger" value="Excluir">
+      <button class="btn btn-secondary" id="cancel-delete-all-btn">Cancelar</button>
+      <form id="delete-all-form" action="${pageContext.request.contextPath}/usuario/excluir" method="post">
+        <input type="hidden" name="input-empresa" id="input-empresa">
+        <input type="submit" class="btn btn-danger" name="acao" value="Excluir">
       </form>
     </div>
   </div>

@@ -320,6 +320,23 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         }
     }
 
+    public boolean deletarPorEmailUsuario(String email) {
+        String sql = "DELETE FROM produto p USING usuario u WHERE p.id_usuario = u.id AND u.email = ?";
+
+        try (Connection connect = ConnectionFactory.conectar();
+             PreparedStatement ps = connect.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao deletar os produtos do usuário: " + email);
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao deletar produtos", e);
+        }
+    }
+
+
     @Override
     public int contarTodos() {
         int totalProdutos = 0;
