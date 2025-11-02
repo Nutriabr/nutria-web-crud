@@ -26,7 +26,7 @@
   <title>Tabelas Nutricionais - Nutria</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tables.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" href="${pageContext.request.contextPath}/assets/img/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/img/logo.svg" type="image/x-icon">
 </head>
 <body>
 <%@include file="../components/mensagemSucesso.jsp" %>
