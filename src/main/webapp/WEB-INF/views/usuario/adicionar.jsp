@@ -22,27 +22,27 @@
         <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/usuario/adicionar"
               method="post">
             <h2>Informações do usuário</h2>
-            <label for="name-input">Nome</label>
+            <label for="name-input">Nome*</label>
             <input class="parameter-input" type="text" id="name-input" name="name"
                    placeholder="Insira o nome" required>
 
-            <label for="email-input">E-mail</label>
+            <label for="email-input">E-mail*</label>
             <input class="parameter-input" type="email" id="email-input" oninput="return validateEmail()" name="email"
                     placeholder="Insira o endereço de email" required>
             <span id="errorFeedbackEmail"></span>
 
 
-            <label for="password-input">Senha</label>
+            <label for="password-input">Senha*</label>
             <input class="parameter-input" type="password" id="password-input" oninput="return validatePassword()" name="password"
                     placeholder="Insira a senha" required>
             <span id="errorFeedbackPassword"></span>
 
-            <label for="phone-input">Telefone</label>
+            <label for="phone-input">Telefone*</label>
             <input class="parameter-input" type="text" id="phone-input" oninput="return validatePhone()" name="phone"
                     placeholder="XX XXXXX-XXXX" required>
             <span id="errorFeedbackPhone"></span>
 
-            <label for="company-input">Empresa</label>
+            <label for="company-input">Empresa*</label>
             <input class="parameter-input" type="text" id="company-input" name="company"
                     placeholder="Insira sua empresa">
 

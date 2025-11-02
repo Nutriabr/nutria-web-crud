@@ -30,10 +30,10 @@
         <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/receita/adicionar"
               method="post">
             <h2>Informações da receita</h2>
-            <label for="porcao-input">Porção</label>
+            <label for="porcao-input">Porção*</label>
             <input class="parameter-input" type="text" id="porcao-input" name="porcao" placeholder="Insira a porção" required>
             <span id="errorFeedback"></span>
-            <label for="id-produto-input">ID-Produto</label>
+            <label for="id-produto-input">ID-Produto*</label>
             <input class="parameter-input" type="text" id="id-produto-input" name="id-produto" placeholder="Insira o ID Produto" required>
             <div class="submit-content">
                 <a href="${pageContext.request.contextPath}/receita/listar" id="btn-cancel">Cancelar</a>

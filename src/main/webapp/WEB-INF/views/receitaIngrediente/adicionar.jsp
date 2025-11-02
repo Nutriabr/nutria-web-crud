@@ -29,16 +29,16 @@
         <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/receitasIngredientes/adicionar"
               method="post">
             <h2>Informações da receita</h2>
-            <label for="id-receita-input">ID Receita</label>
+            <label for="id-receita-input">ID Receita*</label>
             <input class="parameter-input" type="number" id="id-receita-input" name="idReceita"
                    value="${idReceita}" placeholder="Insira o ID da receita" required>
 
-            <label for="id-ingrediente-input">ID Ingrediente</label>
+            <label for="id-ingrediente-input">ID Ingrediente*</label>
             <input class="parameter-input" type="number" id="id-ingrediente-input"  name="idIngrediente"
                    value="${idIngrediente}" placeholder="Insira o ID do Ingrediente" required>
 
 
-            <label for="quantidade-input">Quantidade</label>
+            <label for="quantidade-input">Quantidade*</label>
             <input class="parameter-input" type="number" id="quantidade-input" name="quantidade"
                    value="${quantidade}" placeholder="Insira a quantidade" required>
 

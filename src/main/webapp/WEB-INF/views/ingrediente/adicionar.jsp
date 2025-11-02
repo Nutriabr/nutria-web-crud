@@ -30,7 +30,7 @@
     <form class="form-content" name="forms-add-admin" action="${pageContext.request.contextPath}/ingrediente/adicionar"
           method="post">
       <h2>Informações do ingrediente</h2>
-      <label for="nome-input">Nome</label>
+      <label for="nome-input">Nome*</label>
       <input class="parameter-input" type="text" id="nome-input" name="nome" placeholder="Insira o nome" required>
       <span id="errorFeedback"></span>
       <div class="submit-content">
