@@ -7,6 +7,7 @@
   int totalIngredientes = (int) request.getAttribute("totalIngredientes");
   int totalPages = (int) request.getAttribute("totalPages");
   int currentPage = (int) request.getAttribute("currentPage");
+  List<String> nomesList = (List<String>) request.getAttribute("nomesList");
   String filtro = (String) request.getAttribute("filtro");
   String buscaParam = (filtro != null && !filtro.trim().isEmpty()) ? "&busca=" + filtro : "";
 %>
@@ -49,12 +50,33 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="search" name="busca" placeholder="Buscar" value="<%= filtro != null ? filtro : "" %>">
           </form>
+
+          <button class="btn-action btn-filter" id="btn-filter">
+            <i class="fa-solid fa-filter" name="filter"></i>
+          </button>
+
           <a href="${pageContext.request.contextPath}/ingrediente/adicionar" class="btn btn-primary">
             <i class="fa-solid fa-plus"></i>
             Adicionar novo ingrediente
           </a>
         </div>
       </header>
+
+      <div class="delete-popup" style="display: none">
+        <h2>Empresa</h2>
+        <div class="delete-popup-content">
+          <form action="${pageContext.request.contextPath}/ingrediente/excluir" method="post">
+            <input type="hidden" name="acao" value="deletarPorNome">
+            <select name="opcao" id="selectEmpresa">
+              <% for (int i = 0; i < nomesList.size(); i++) { %>
+              <option value="<%= nomesList.get(i)%>" id="empresa-opcao"><%= nomesList.get(i)%></option>
+              <% } %>
+            </select>
+
+            <button type="submit" class="btn-action deletar-por-empresa">Deletar todos os registros</button>
+          </form>
+        </div>
+      </div>
 
       <div class="table-container">
         <table>
@@ -74,9 +96,15 @@
               <a href="${pageContext.request.contextPath}/ingrediente/editar?id=<%= ingrediente.getId() %>" class="btn-action btn-edit">
                 <i class="fa-solid fa-pencil"></i>
               </a>
-              <button class="btn-action btn-delete" data-id="<%= ingrediente.getId() %>">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
+
+              <!-- deletar por id -->
+              <form action="${pageContext.request.contextPath}/ingrediente/excluir" method="post" style="display:inline-block">
+                <input type="hidden" name="input-id" value="<%= ingrediente.getId() %>">
+                <button type="submit" class="btn-action btn-delete">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </form>
+
             </td>
           </tr>
           <% } %>
@@ -103,7 +131,6 @@
     </section>
   </main>
 </div>
-
 
 <div class="overlay" id="delete-popup-overlay" style="display: none;">
   <div class="popup-container">
