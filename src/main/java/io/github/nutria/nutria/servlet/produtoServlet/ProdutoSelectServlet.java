@@ -43,8 +43,8 @@ public class ProdutoSelectServlet extends HttpServlet {
                     totalProdutos = produtoDAO.contarPorIdOuIdUsuario(numero);
                     produtosList = produtoDAO.buscarPorIdOuIdUsuario(numero, currentPage);
                 } catch (NumberFormatException nfe) {
-                    totalProdutos = produtoDAO.contarPorNome(filtro);
-                    produtosList = produtoDAO.buscarPorNome(filtro, currentPage);
+                    totalProdutos = produtoDAO.contarPorNomeProdutoOuNomeUsuario(filtro);
+                    produtosList = produtoDAO.buscarPorNomeProdutoOuNomeUsuario(filtro, currentPage);
                 }
             }
 

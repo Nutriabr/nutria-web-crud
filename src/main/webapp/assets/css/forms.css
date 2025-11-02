@@ -61,6 +61,7 @@ main {
     border-radius: var(--border-radius-md);
     width: 100%;
     max-width: var(--form-max-width);
+    margin-left: var(--sidebar-width);
 }
 
 .form-content label {

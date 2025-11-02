@@ -239,13 +239,13 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public List<Produto> buscarPorNome(String nome, int page) {
+    public List<Produto> buscarPorNomeProdutoOuNomeUsuario(String nome, int page) {
         int limite = 4;
         int offset = (page - 1) * limite;
         String sql = """
                 SELECT p.*, u.nome AS "nome_usuario", u.email AS "email_usuario", u.empresa AS "empresa_usuario" FROM produto p
                 JOIN usuario u ON p.id_usuario = u.id
-                WHERE LOWER(p.nome) LIKE LOWER(?)
+                WHERE LOWER(p.nome) LIKE LOWER(?) or LOWER(u.nome) LIKE LOWER(?)
                 LIMIT ? OFFSET ?
                 """;
 
@@ -258,8 +258,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setString(1, "%" + nome + "%");
-            ps.setInt(2,limite);
-            ps.setInt(3,offset);
+            ps.setString(2,"%" + nome + "%");
+            ps.setInt(3,limite);
+            ps.setInt(4,offset);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -446,8 +447,13 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
     }
 
     @Override
-    public int contarPorNome(String nome) {
-        String sql = "SELECT COUNT(*) FROM produto WHERE LOWER(nome) LIKE LOWER(?)";
+    public int contarPorNomeProdutoOuNomeUsuario(String nome) {
+        String sql = """
+        SELECT COUNT(*) FROM produto p
+        JOIN usuario u ON p.id_usuario = u.id
+        WHERE LOWER(p.nome) LIKE LOWER(?) OR LOWER(u.nome) LIKE LOWER(?)
+    """;
+
         Connection connect = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -457,6 +463,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
             ps.setString(1, "%" + nome + "%");
+            ps.setString(2, "%" + nome + "%");
             rs = ps.executeQuery();
             if (rs.next()) {
                 total = rs.getInt(1);

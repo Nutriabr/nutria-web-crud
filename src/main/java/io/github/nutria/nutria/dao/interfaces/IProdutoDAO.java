@@ -33,7 +33,7 @@ public interface IProdutoDAO {
      * @return uma lista de objetos {@link Produto} correspondentes ao nome informado.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
-    List<Produto> buscarPorNome(String nome, int page);
+    List<Produto> buscarPorNomeProdutoOuNomeUsuario(String nome, int page);
 
     /**
      * Conta a quantidade total de registros de {@link Produto} com o ID de {@link Produto} ou de {@link Usuario} informado.
@@ -51,5 +51,5 @@ public interface IProdutoDAO {
      * @return um inteiro com o número total de registros.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
-    int contarPorNome(String nome);
+    int contarPorNomeProdutoOuNomeUsuario(String nome);
 }
