@@ -149,6 +149,41 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         return produto;
     }
 
+    public List<String> buscarEmails() {
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<String> emails = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.conectar();
+
+            String sql = "SELECT DISTINCT p.id as id_produto, p.id_usuario as id_usuario, u.email as email_usuario FROM produto p JOIN usuario u ON p.id_usuario = u.id";
+            ps = connect.prepareStatement(sql);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                emails.add(rs.getString("email_usuario"));
+            }
+        } catch (SQLException e) {
+            System.err.println("[DAO ERROR] Erro ao buscar os produtos com email de usuário");
+            e.printStackTrace(System.err);
+            throw new DataAccessException("Erro ao buscar produtos pelo email de usuário", e);
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                throw new DataAccessException("Erro ao fechar recursos do banco de dados", e);
+            }
+        }
+
+        return emails;
+    }
+
     @Override
     public List<Produto> buscarPorIdOuIdUsuario(Long numero, int page) {
         int limite = 4;

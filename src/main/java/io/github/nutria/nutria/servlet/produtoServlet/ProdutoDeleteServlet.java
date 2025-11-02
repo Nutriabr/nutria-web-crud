@@ -21,8 +21,8 @@ public class ProdutoDeleteServlet extends HttpServlet {
         try {
             ProdutoDAO produtoDAO = new ProdutoDAO();
 
-            if ("deletarPorEmail".equals(acao)) {
-                String opcao = req.getParameter("opcao");
+            if ("Excluir".equals(acao)) {
+                String opcao = req.getParameter("input-opcao");
                 if (opcao != null && !opcao.isEmpty()) {
                     produtoDAO.deletarPorEmailUsuario(opcao);
                     req.getSession().setAttribute("successMessage",
