@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
     deletarPorId();
-    mostrarPopupDeletarEmpresa();
     deletarPorEmpresa();
     encerrarSessao();
 });
@@ -49,11 +48,10 @@ document.addEventListener("click", function (event) {
     console.log("Clicou no filtro!");
 
     const deletarPorEmpresaPopup = document.querySelector(".delete-popup");
+    console.log(deletarPorEmpresaPopup.style.display);
     if (!deletarPorEmpresaPopup) return;
 
-    if (deletarPorEmpresaPopup.style.display === "none") {
-        deletarPorEmpresaPopup.style.display = "flex";
-    }
+    deletarPorEmpresaPopup.style.display === "none" ? deletarPorEmpresaPopup.style.display = "flex" : deletarPorEmpresaPopup.style.display;
 });
 
 function deletarPorEmpresa() {
