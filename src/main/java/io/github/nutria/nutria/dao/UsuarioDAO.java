@@ -209,6 +209,37 @@ public class UsuarioDAO implements GenericDAO<Usuario, Long>, IUsuarioDAO {
 
         return empresas;
     }
+    public List<String> buscarEmails() {
+        Connection connect = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<String> empresas = new ArrayList<>();
+
+        try {
+            connect = ConnectionFactory.conectar();
+
+            String sql = "SELECT email FROM usuario";
+            ps = connect.prepareStatement(sql);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                empresas.add(rs.getString("email"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connect != null) ConnectionFactory.desconectar(connect);
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return empresas;
+    }
 
     @Override
     public Optional<Usuario> buscarPorEmail(String email) {

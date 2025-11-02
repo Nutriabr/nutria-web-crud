@@ -16,16 +16,27 @@ public class ProdutoDeleteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getParameter("input-id");
-        Long id = Long.parseLong(idStr);
+        String acao = req.getParameter("acao");
 
         try {
             ProdutoDAO produtoDAO = new ProdutoDAO();
 
-            produtoDAO.deletarPorId(id);
+            if ("deletarPorEmail".equals(acao)) {
+                String opcao = req.getParameter("opcao");
+                if (opcao != null && !opcao.isEmpty()) {
+                    produtoDAO.deletarPorEmailUsuario(opcao);
+                    req.getSession().setAttribute("successMessage",
+                            "Produtos do usuário " + opcao + " deletados com sucesso!");
+                }
+            } else if (idStr != null && !idStr.isEmpty()) {
+                Long id = Long.parseLong(idStr);
+                produtoDAO.deletarPorId(id);
+                req.getSession().setAttribute("successMessage", "Produto deletado com sucesso!");
+            }
 
-            req.getSession().setAttribute("successMessage", "Produto deletado com sucesso!");
             resp.sendRedirect(req.getContextPath() + "/produto/listar");
-        }  catch (NumberFormatException e) {
+
+        } catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "O ID informado é inválido.");
             req.getRequestDispatcher("/WEB-INF/views/produto/produtos.jsp").forward(req, resp);
         } catch (InvalidNumberException | EntityNotFoundException e) {
@@ -36,6 +47,5 @@ public class ProdutoDeleteServlet extends HttpServlet {
             req.setAttribute("errorMessage", "Erro ao acessar os dados. Tente novamente mais tarde.");
             req.getRequestDispatcher("/WEB-INF/views/erro.jsp").forward(req, resp);
         }
-
     }
 }
