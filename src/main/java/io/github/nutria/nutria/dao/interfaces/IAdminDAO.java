@@ -15,14 +15,6 @@ import java.util.Optional;
  */
 public interface IAdminDAO {
 
-    /**
-     * Lista todos os registros de {@link Admin} com o domínio de email informado.
-     *
-     * @param dominio o domínio de email que será utilizado na busca.
-     * @return um {@link Optional} contendo uma lista de objetos {@link Admin} encontrados, ou vazio se não houver correspondência.
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     */
-    Optional<List<Admin>> buscarPorDominioDoEmail(String dominio);
 
     /**
      * Busca um registro de {@link Admin} pelo email informado.
@@ -32,15 +24,6 @@ public interface IAdminDAO {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
     Optional<Admin> buscarPorEmail(String email);
-
-    /**
-     * Lista todos os registros de {@link Admin} com o nome informado.
-     *
-     * @param nome o nome que será utilizado na busca.
-     * @return um {@link Optional} contendo uma lista de objetos {@link Admin} encontrados, ou vazio se não houver correspondência
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     */
-    Optional<List<Admin>> buscarPorNome(String nome);
 
     /**
      * Lista todos os registros de {@link Admin} com o nome ou domínio de email informado.

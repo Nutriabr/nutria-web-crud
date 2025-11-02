@@ -43,15 +43,6 @@ public interface IUsuarioDAO {
     List<Usuario> buscarPorNomeEmailOuEmpresa(String valorBuscado, int page);
 
     /**
-     * Busca um registro de {@link Usuario} pelo telefone informado.
-     *
-     * @param fone o telefone que será utilizado na busca.
-     * @return um {@link Optional} contendo o {@link Usuario} encontrado, ou vazio se não encontrado.
-     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
-     */
-    Optional<Usuario> buscarPorTelefone(String fone);
-
-    /**
      * Deleta registros de {@link Usuario} pela empresa.
      *
      * @param empresa o nome da empresa que será utilizado na busca.
