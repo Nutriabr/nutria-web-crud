@@ -2,6 +2,7 @@ package io.github.nutria.nutria.dao.interfaces;
 
 import io.github.nutria.nutria.exceptions.DataAccessException;
 import io.github.nutria.nutria.model.Admin;
+import io.github.nutria.nutria.model.Usuario;
 
 import java.util.List;
 import java.util.Optional;
@@ -60,4 +61,21 @@ public interface IAdminDAO {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
     int contarTodosFiltrados(String valorBuscado);
+
+    /**
+     * Deleta registros de {@link Admin} pelo cargo.
+     *
+     * @param cargo o nome do cargo que será utilizado na hora de deletar.
+     * @return {@code true} se deletar com sucesso; {@code false} caso contrário.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    boolean deletarPorCargo(String cargo);
+
+    /**
+     * Lista todos os cargos dos registros de {@link Admin}.
+
+     * @return uma lista de {@link String} com todas os cargos encontrados.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    List<String> buscarCargos();
 }
