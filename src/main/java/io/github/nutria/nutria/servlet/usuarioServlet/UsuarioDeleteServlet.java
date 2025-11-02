@@ -25,7 +25,7 @@ public class UsuarioDeleteServlet extends HttpServlet {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
 
             if ("Excluir".equals(acao)) {
-                String opcao = req.getParameter("input-empresa");
+                String opcao = req.getParameter("input-opcao");
                 if (opcao != null && !opcao.isEmpty()) {
                     usuarioDAO.deletarPorEmpresa(opcao);
                     req.getSession().setAttribute("successMessage",

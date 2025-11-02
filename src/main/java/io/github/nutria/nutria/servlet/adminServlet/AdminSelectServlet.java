@@ -25,6 +25,7 @@ public class AdminSelectServlet extends HttpServlet {
         int totalAdmins = 0;
         int totalPaginas = 1;
         List<Admin> adminList = null;
+        List<String> cargoList = adminDAO.buscarCargos();
 
         String paginaParam = req.getParameter("page");
         if (paginaParam != null) {
@@ -42,6 +43,7 @@ public class AdminSelectServlet extends HttpServlet {
                 totalAdmins = adminDAO.contarTodosFiltrados(busca);
                 totalPaginas = (int) Math.ceil((double) totalAdmins / TOTAL_ADMINS_PAGINAS);
                 adminList = adminDAO.buscarPorNomeAdminOuDominioEmail(busca, paginaAtual);
+
             } else {
                 totalAdmins = adminDAO.contarTodos();
                 totalPaginas = (int) Math.ceil((double) totalAdmins / TOTAL_ADMINS_PAGINAS);
@@ -57,6 +59,7 @@ public class AdminSelectServlet extends HttpServlet {
             req.setAttribute("adminList", adminList);
             req.setAttribute("totalAdmins", totalAdmins);
             req.setAttribute("totalPages", totalPaginas);
+            req.setAttribute("cargoList", cargoList);
             req.setAttribute("currentPage", paginaAtual);
             req.setAttribute("busca", busca);
 
