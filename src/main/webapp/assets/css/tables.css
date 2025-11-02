@@ -338,7 +338,7 @@ tbody tr:last-child {
 }
 
 .delete-popup {
-    display: none;
+    flex-direction: column;
     background-color: rgba(238, 112, 38, 0.2);
     border: 1px solid var(--primary-color);
     border-radius: 5px;
