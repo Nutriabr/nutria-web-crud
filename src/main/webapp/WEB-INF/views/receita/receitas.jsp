@@ -4,9 +4,10 @@
 
 <%
     List<Receita> receitasList = (List<Receita>) request.getAttribute("receitasList");
+    List<Long> idsProdutosList = (List<Long>) request.getAttribute("idsProdutosList");
     int totalReceitas = (int) request.getAttribute("totalReceitas");
-    int totalPages = (int) request.getAttribute("totalPages");
-    int currentPage = (int) request.getAttribute("currentPage");
+    int totalPaginas = (int) request.getAttribute("totalPaginas");
+    int paginaAtual = (int) request.getAttribute("paginaAtual");
     String filtro = (String) request.getAttribute("filtro");
     String buscaParam = (filtro != null && !filtro.trim().isEmpty()) ? "&busca=" + filtro : "";
 %>
@@ -48,12 +49,33 @@
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="search" name="busca" placeholder="Buscar" value="<%= filtro != null ? filtro : "" %>">
                     </form>
+
+                    <button class="btn-action btn-filter" id="btn-filter">
+                        <i class="fa-solid fa-filter" name="filter"></i>
+                    </button>
+
                     <a href="${pageContext.request.contextPath}/receita/adicionar" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i>
                         Adicionar nova receita
                     </a>
                 </div>
             </header>
+
+            <div class="delete-popup" style="display: none">
+                <h3>ID PRODUTO</h3>
+                <div class="delete-popup-content">
+                    <select name="opcao" id="selectOpcao">
+                        <% for (int i = 0; i < idsProdutosList.size(); i++) { %>
+                        <option value="<%= idsProdutosList.get(i)%>" id="empresa-opcao"><%= idsProdutosList.get(i)%></option>
+                        <% } %>
+                    </select>
+
+                    <form action="${pageContext.request.contextPath}/receita/excluir" method="post">
+                        <input type="hidden" name="acao" value="deletarPorIdProduto">
+                        <button type="button" class="btn-action deletar-por-opcao">Deletar todos os registros</button>
+                    </form>
+                </div>
+            </div>
 
             <div class="table-container">
                 <table>
@@ -88,17 +110,17 @@
                 </table>
             </div>
             <footer class="table-footer">
-                <span>Página <%= currentPage %> de <%= totalPages %></span>
+                <span>Página <%= paginaAtual %> de <%= totalPaginas %></span>
                 <nav class="pagination">
-                    <a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage - 1 %><%= buscaParam %>"
-                       class="arrow <%= currentPage <= 1 ? "disabled" : "" %>">
+                    <a href="${pageContext.request.contextPath}/receita/listar?page=<%= paginaAtual - 1 %><%= buscaParam %>"
+                       class="arrow <%= paginaAtual <= 1 ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
 
-                    <span class="current-page"><%= currentPage %></span>
+                    <span class="current-page"><%= paginaAtual %></span>
 
-                    <a href="${pageContext.request.contextPath}/receita/listar?page=<%= currentPage + 1 %><%= buscaParam %>"
-                       class="arrow <%= currentPage >= totalPages ? "disabled" : "" %>">
+                    <a href="${pageContext.request.contextPath}/receita/listar?page=<%= paginaAtual + 1 %><%= buscaParam %>"
+                       class="arrow <%= paginaAtual >= totalPaginas ? "disabled" : "" %>">
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
                 </nav>
@@ -117,6 +139,20 @@
             <form id="delete-form" action="${pageContext.request.contextPath}/receita/excluir" method="post">
                 <input type="hidden" name="input-id" id="input-id">
                 <input type="submit" class="btn btn-danger" value="Excluir">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="overlay" id="delete-all-popup-overlay" style="display: none;">
+    <div class="popup-container">
+        <h1>Você tem certeza que deseja excluir todos os registros relacionados com esse produto?</h1>
+        <p>Você não poderá recuperar nenhum registro de receita com ID PRODUTO <strong id="opcao-nome"></strong> após excluir.</p>
+        <div class="popup-actions">
+            <button class="btn btn-secondary" id="cancel-delete-all-btn">Cancelar</button>
+            <form id="delete-all-form" action="${pageContext.request.contextPath}/receita/excluir" method="post">
+                <input type="hidden" name="input-opcao" id="input-opcao">
+                <input type="submit" class="btn btn-danger" name="acao" value="Excluir">
             </form>
         </div>
     </div>
