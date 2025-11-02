@@ -53,7 +53,7 @@ public class ProdutoSelectServlet extends HttpServlet {
             if (currentPage < 1) currentPage = 1;
             if (currentPage > totalPages) currentPage = totalPages;
 
-            emailsList = usuarioDAO.buscarEmails();
+            emailsList = produtoDAO.buscarEmails();
 
             req.setAttribute("totalProdutos", totalProdutos);
             req.setAttribute("produtosList", produtosList);
