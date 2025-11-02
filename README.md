@@ -3,8 +3,9 @@
 - `io.github.nutria.nutria.model`: Entidades que representam as tabelas do banco de dados.
 - `io.github.nutria.nutria.dao`: Objetos de acesso a dados (DAO) responsáveis pelo CRUD.
 - `io.github.nutria.nutria.service`: Camada de serviço, contém as regras de negócio e validações.
-- `io.github.nutria.nutria.servlet`: Servlets responsáveis por receber requisições HTTP.
-- `src/main/webapp`: Páginas JSP (views) para interação com o usuário.
+- `io.github.nutria.nutria.util`: Classes utilitarias para facilitar e otimizar o desenvolvimento.
+- `io.github.nutria.nutria.exceptions`: Exceções personalizadas utilizadas para facilitar o envio de erros e tratamento.
+- `src/main/webapp/WEB-INF/views`: Páginas JSP (views) para interação com o usuário.
 
 # Configuração de Variáveis de Ambiente (.env)
 
