@@ -23,6 +23,7 @@ public class IngredienteSelectServlet extends HttpServlet {
         String pageParam = req.getParameter("page");
         String filtro = req.getParameter("busca");
         List<Ingrediente> ingredientesList = new ArrayList<>();
+        List<String> nomesList;
         int totalIngredientes;
 
 
@@ -60,11 +61,14 @@ public class IngredienteSelectServlet extends HttpServlet {
             } else if (currentPage > totalPages && totalPages > 0) {
                 currentPage = totalPages;
             }
+
+            nomesList = ingredienteDAO.buscarNomes();
             req.setAttribute("totalIngredientes",totalIngredientes);
             req.setAttribute("ingredientesList", ingredientesList);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("totalPages",totalPages);
             req.setAttribute("filtro",filtro);
+            req.setAttribute("nomesList",nomesList);
             req.getRequestDispatcher("/WEB-INF/views/ingrediente/ingredientes.jsp").forward(req, resp);
 
         } catch (DataAccessException e) {
