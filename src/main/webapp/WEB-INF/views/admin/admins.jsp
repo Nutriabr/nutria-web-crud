@@ -60,7 +60,7 @@
                     <div class="search-bar">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <form id="form-busca"  action="${pageContext.request.contextPath}/admin/listar" method="get">
-                            <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
+                            <input type="search" placeholder="Buscar por nome ou e-mail" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
                         </form>
                     </div>
                     <a href="${pageContext.request.contextPath}/admin/adicionar" class="btn btn-primary">

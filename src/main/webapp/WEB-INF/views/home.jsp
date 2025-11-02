@@ -95,7 +95,7 @@
 
             <div class="card">
                 <div class="icon">
-                    <h3>Receita Ingrediente</h3>
+                    <h3>Ingredientes da Receita</h3>
                     <img src="${pageContext.request.contextPath}/assets/img/IconeReceitaIngrediente.png" alt="">
                 </div>
                 <span class="value"><%= receitaIngredienteDAO.contarTodos()%></span>

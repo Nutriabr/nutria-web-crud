@@ -59,7 +59,7 @@
                 <div class="table-actions">
                     <form id="form-busca"  action="${pageContext.request.contextPath}/usuario/listar" method="get" class="search-bar">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="search" placeholder="Buscar" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
+                        <input type="search" placeholder="Buscar por nome ou e-mail" id="input-busca"  name="busca" value="<%= busca != null ? busca : "" %>">
                     </form>
 
                     <i class="fa-solid fa-filter" name="filter"></i>
