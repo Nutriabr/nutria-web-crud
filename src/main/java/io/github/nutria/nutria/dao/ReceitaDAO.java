@@ -218,16 +218,14 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
     }
 
     @Override
-    public List<Receita> buscarPorPorcao(String porcao, int page){
+    public List<Receita> buscarPorNomeProduto(String nome, int page){
         int limite = 4;
         int offset = (page - 1) * limite;
         String sql =
                 """
                 SELECT r.*, p.nome AS "nome_produto"
-                FROM receita r 
-                JOIN produto p ON r.id_produto = p.id
-                WHERE LOWER(r.porcao) LIKE LOWER(?) 
-                LIMIT ? OFFSET ?
+                FROM receita r JOIN produto p ON r.id_produto = p.id
+                WHERE LOWER(p.nome) LIKE LOWER(?) LIMIT ? OFFSET ?
                 """;
 
         PreparedStatement ps = null;
@@ -238,7 +236,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         try{
             connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
-            ps.setString(1,"%" + porcao + "%");
+            ps.setString(1,"%" + nome + "%");
             ps.setInt(2,limite);
             ps.setInt(3,offset);
             rs = ps.executeQuery();
@@ -253,9 +251,9 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
             }
 
         } catch (SQLException sqle){
-            System.err.println("[DAO ERROR] Erro ao buscar a receita: " + porcao);
+            System.err.println("[DAO ERROR] Erro ao buscar a receita: " + nome);
             sqle.printStackTrace(System.err);
-            throw new DataAccessException("Erro ao buscar a receita com porcao: " + porcao, sqle);
+            throw new DataAccessException("Erro ao buscar a receita do produto: " + nome, sqle);
         } finally {
             try {
                 if(connect != null) ConnectionFactory.desconectar(connect);
@@ -268,6 +266,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         return receitas;
     }
 
+    @Override
     public List<Long> buscarIdProduto() {
         Connection connect = null;
         PreparedStatement ps = null;
@@ -278,7 +277,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         try {
             connect = ConnectionFactory.conectar();
 
-            String sql = "SELECT DISTINCT id_produto FROM receita";
+            String sql = "SELECT DISTINCT id_produto FROM receita ORDER BY id_produto";
             ps = connect.prepareStatement(sql);
 
             rs = ps.executeQuery();
@@ -371,6 +370,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         }
     }
 
+    @Override
     public boolean deletarPorIdProduto(Long idProduto) {
         String sql = "DELETE FROM receita WHERE id_produto = ?";
 
@@ -477,8 +477,12 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
     }
 
     @Override
-    public int contarPorPorcao(String porcao) {
-        String sql = "SELECT COUNT(*) FROM receita WHERE LOWER(porcao) LIKE LOWER(?)";
+    public int contarPorNomeProduto(String nome) {
+        String sql = """
+                        SELECT COUNT(*) FROM receita r
+                        JOIN produto p ON p.id_usuario = r.id
+                        WHERE LOWER(p.nome) LIKE LOWER(?)
+                """;
         Connection connect = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -487,7 +491,7 @@ public class ReceitaDAO implements GenericDAO<Receita,Long>, IReceitaDAO {
         try {
             connect = ConnectionFactory.conectar();
             ps = connect.prepareStatement(sql);
-            ps.setString(1, "%" + porcao + "%");
+            ps.setString(1, "%" + nome + "%");
             rs = ps.executeQuery();
             if (rs.next()) {
                 total = rs.getInt(1);

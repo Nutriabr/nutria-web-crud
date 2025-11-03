@@ -25,6 +25,23 @@ public interface IIngredienteDAO {
     List<Ingrediente> buscarPorNome(String nome, int page);
 
     /**
+     * Lista todos os nomes dos registros de {@link Ingrediente}.
+
+     * @return uma lista de {@link String} com todos os nomes encontrados.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    List<String> buscarNomes();
+
+    /**
+     * Deleta todos os registros de {@link Ingrediente} pelo cargo.
+     *
+     * @param nome o nome do ingrediente que será utilizado na exclusão.
+     * @return {@code true} se deletar com sucesso; {@code false} caso contrário.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    boolean deletarPorNome(String nome);
+
+    /**
      * Conta a quantidade total de registros de {@link Ingrediente} correspondentes ao nome informado.
      *
      * @param nome o nome que será utilizado na busca.

@@ -47,7 +47,7 @@ public class ReceitaSelectServlet extends HttpServlet {
                     Long numero = Long.parseLong(filtro);
                     totalReceitas = receitaDAO.contarPorIdOuIdProduto(numero);
                 } catch (NumberFormatException nfe) {
-                    totalReceitas = receitaDAO.contarPorPorcao(filtro);
+                    totalReceitas = receitaDAO.contarPorNomeProduto(filtro);
                 }
             }
 
@@ -60,16 +60,16 @@ public class ReceitaSelectServlet extends HttpServlet {
                 paginaAtual = totalPaginas;
             }
 
+            idsProdutosList = receitaDAO.buscarIdProduto();
+
             if (filtro == null || filtro.isEmpty()) {
                 receitasList = receitaDAO.buscarTodos(paginaAtual);
-                idsProdutosList = receitaDAO.buscarIdProduto();
             } else {
                 try {
                     Long numero = Long.parseLong(filtro);
                     receitasList = receitaDAO.buscarPorIdOuIdProduto(numero, paginaAtual);
-                    idsProdutosList = receitaDAO.buscarIdProduto();
                 } catch (NumberFormatException nfe) {
-                    receitasList = receitaDAO.buscarPorPorcao(filtro, paginaAtual);
+                    receitasList = receitaDAO.buscarPorNomeProduto(filtro, paginaAtual);
                 }
             }
 

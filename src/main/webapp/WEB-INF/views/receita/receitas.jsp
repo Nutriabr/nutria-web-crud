@@ -47,7 +47,7 @@
                 <div class="table-actions">
                     <form action="${pageContext.request.contextPath}/receita/listar" method="get" class="search-bar">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="search" name="busca" placeholder="Buscar" value="<%= filtro != null ? filtro : "" %>">
+                        <input type="search" name="busca" placeholder="Buscar pelo nome" value="<%= filtro != null ? filtro : "" %>">
                     </form>
 
                     <button class="btn-action btn-filter" id="btn-filter">

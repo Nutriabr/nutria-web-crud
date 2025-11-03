@@ -1,6 +1,7 @@
 package io.github.nutria.nutria.dao.interfaces;
 
 import io.github.nutria.nutria.exceptions.DataAccessException;
+import io.github.nutria.nutria.model.Ingrediente;
 import io.github.nutria.nutria.model.Produto;
 import io.github.nutria.nutria.model.Usuario;
 
@@ -14,6 +15,14 @@ import java.util.List;
  * @version 1.0
  */
 public interface IProdutoDAO {
+
+    /**
+     * Lista todos os emails dos registros de {@link Usuario}.
+
+     * @return uma lista de {@link String} com todos os emails encontrados.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    List<String> buscarEmails();
 
     /**
      * Lista todos os registros de {@link Produto} com o ID de {@link Produto} ou de {@link Usuario} informado.
@@ -34,6 +43,15 @@ public interface IProdutoDAO {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
     List<Produto> buscarPorNomeProdutoOuNomeUsuario(String nome, int page);
+
+    /**
+     * Deleta todos os registros de {@link Ingrediente} pelo email de {@link Usuario} informado.
+     *
+     * @param email o endereço de email que será utilizado na exclusão.
+     * @return {@code true} se deletar com sucesso; {@code false} caso contrário.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    boolean deletarPorEmailUsuario(String email);
 
     /**
      * Conta a quantidade total de registros de {@link Produto} com o ID de {@link Produto} ou de {@link Usuario} informado.

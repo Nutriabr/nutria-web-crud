@@ -16,6 +16,14 @@ import java.util.List;
 public interface IReceitaDAO {
 
     /**
+     * Lista todos os IDs dos registros de {@link Produto}.
+
+     * @return uma lista de {@link Long} com todos os IDs encontrados.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    List<Long> buscarIdProduto();
+
+    /**
      * Lista todos os registros de {@link Receita} com o ID de {@link Receita} ou de {@link Produto} informado.
      *
      * @param filtro o ID de {@link Receita} ou de {@link Produto} que será utilizado na busca.
@@ -28,12 +36,21 @@ public interface IReceitaDAO {
     /**
      * Lista todos os registros de {@link Receita} com a porção informada.
      *
-     * @param porcao a porção que será utilizada na busca.
+     * @param nome o nome do produto que será utilizada na busca.
      * @param page o número da página de resultados (para paginação).
      * @return uma lista de objetos {@link Receita} correspondentes à porção informada.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
-    List<Receita> buscarPorPorcao(String porcao, int page);
+    List<Receita> buscarPorNomeProduto(String nome, int page);
+
+    /**
+     * Deleta todos os registros de {@link Receita} pelo ID de {@link Produto} informado.
+     *
+     * @param idProduto o ID de {@link Produto} que será utilizado na exclusão.
+     * @return {@code true} se deletar com sucesso; {@code false} caso contrário.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    boolean deletarPorIdProduto(Long idProduto);
 
     /**
      * Conta a quantidade total de registros de {@link Receita} com o ID de {@link Receita} ou de {@link Produto} informado.
@@ -47,9 +64,9 @@ public interface IReceitaDAO {
     /**
      * Conta a quantidade total de registros de {@link Receita} com a porção informada.
      *
-     * @param porcao a porção que será utilizada na busca.
+     * @param nome o nome do produto que será utilizada na busca.
      * @return um inteiro com o número total de registros.
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
-    int contarPorPorcao(String porcao);
+    int contarPorNomeProduto(String nome);
 }
