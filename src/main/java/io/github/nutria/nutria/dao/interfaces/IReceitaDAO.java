@@ -16,6 +16,14 @@ import java.util.List;
 public interface IReceitaDAO {
 
     /**
+     * Lista todos os IDs dos registros de {@link Produto}.
+
+     * @return uma lista de {@link Long} com todos os IDs encontrados.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    List<Long> buscarIdProduto();
+
+    /**
      * Lista todos os registros de {@link Receita} com o ID de {@link Receita} ou de {@link Produto} informado.
      *
      * @param filtro o ID de {@link Receita} ou de {@link Produto} que será utilizado na busca.
@@ -34,6 +42,15 @@ public interface IReceitaDAO {
      * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
      */
     List<Receita> buscarPorNomeProduto(String nome, int page);
+
+    /**
+     * Deleta todos os registros de {@link Receita} pelo ID de {@link Produto} informado.
+     *
+     * @param idProduto o ID de {@link Produto} que será utilizado na exclusão.
+     * @return {@code true} se deletar com sucesso; {@code false} caso contrário.
+     * @throws DataAccessException se ocorrer algum erro ao acessar o banco de dados.
+     */
+    boolean deletarPorIdProduto(Long idProduto);
 
     /**
      * Conta a quantidade total de registros de {@link Receita} com o ID de {@link Receita} ou de {@link Produto} informado.

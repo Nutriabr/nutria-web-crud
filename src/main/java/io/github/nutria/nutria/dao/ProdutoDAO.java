@@ -149,6 +149,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         return produto;
     }
 
+    @Override
     public List<String> buscarEmails() {
         Connection connect = null;
         PreparedStatement ps = null;
@@ -356,6 +357,7 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
         }
     }
 
+    @Override
     public boolean deletarPorEmailUsuario(String email) {
         String sql = "DELETE FROM produto p USING usuario u WHERE p.id_usuario = u.id AND u.email = ?";
 
@@ -371,7 +373,6 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
             throw new DataAccessException("Erro ao deletar produtos", e);
         }
     }
-
 
     @Override
     public int contarTodos() {
@@ -491,7 +492,9 @@ public class ProdutoDAO implements GenericDAO<Produto, Long>, IProdutoDAO {
      */
     private void validarProduto(Produto produto) {
         if (produto == null) throw new ValidationException("Produto não pode ser nulo");
+
         if (produto.getNome() == null || produto.getNome().isBlank()) throw new RequiredFieldException("nome");
+
         if (produto.getIdUsuario() == null) throw new RequiredFieldException("usuario");
     }
 }
